@@ -3,9 +3,9 @@
     "private": true,
     "version": "0.0.0",
     "scripts": {
-        "ng": "ng",
         "lint": "ng lint",
-        "start": "ng serve --proxy-config proxy.conf.json",
+        "start:dev": "ng serve --hmr",
+        "start:prod": "ng serve",
         "build": "ng build"
     },
     "dependencies": {

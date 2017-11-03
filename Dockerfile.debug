@@ -6,8 +6,8 @@ COPY /src/ClientApp /app
 WORKDIR /app
 RUN npm prune && npm cache clean && npm install
 
-RUN npm run build:dev
+RUN npm run start:dev
 
 EXPOSE 5000
 
-ENTRYPOINT npm run start:dev:docker
+ENTRYPOINT npm run start:dev
