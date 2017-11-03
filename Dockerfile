@@ -1,12 +1,14 @@
-FROM microsoft/dotnet:1.1.2-runtime
+FROM node:6.10.2
 
-# Copy the app
-COPY /publish /app
+ENV NODE_ENV=production
+
+WORKDIR /src/ClientApp
+
+RUN npm run build
+
+COPY /dist /app
 WORKDIR /app
 
-# Configure the listening port to 80
-ENV ASPNETCORE_URLS http://*:5000
 EXPOSE 5000
 
-# Start the app
-ENTRYPOINT dotnet Voidwell.DaybreakGames.dll
+ENTRYPOINT ["npm", "run", "start:prod"]
