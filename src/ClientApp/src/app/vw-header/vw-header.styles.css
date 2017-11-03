@@ -1,0 +1,48 @@
+.vw-header {
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+
+    transition: background-color 0.5s ease;
+
+    margin-top: 53px;
+}
+
+.page-header {
+  color: #fff;
+  margin: 15px 0;
+}
+
+.header-title {
+  font-size: 2.5em;
+}
+
+.header-subtitle {
+  margin-top: -10px;
+  margin-bottom: 10px;
+  opacity: 0.5;
+  color: #fff;
+}
+
+.header-info-item {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+.header-info-item:first-child {
+  padding-left: 0;
+}
+.header-info-item:last-child {
+  padding-right: 0;
+}
+
+.header-info-item .header-info-item-value {
+  font-size: 1.2em;
+  text-align: right;
+}
+.header-info-item .header-info-item-label {
+  margin-top: 5px;
+  font-size: 0.7em;
+  opacity: 0.5;
+  text-align: right;
+  text-transform: uppercase;
+}

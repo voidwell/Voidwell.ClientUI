@@ -1,0 +1,37 @@
+﻿{
+    "project": {
+        "name": "Voidwell.ClientUI"
+    },
+    "defaults": {
+        "serve": {
+            "port": 5000,
+            "proxyConfig": "./proxy.conf.json"
+        }
+    },
+    "apps": [
+        {
+            "name": "ClientUI",
+            "root": "./src",
+            "outDir": "./dist",
+            "main": "main.ts",
+            "tsconfig": "../tsconfig.json",
+            "assets": [
+                "../node_modules/mdi/fonts/materialdesignicons-webfont.eot",
+                "../node_modules/mdi/fonts/materialdesignicons-webfont.svg",
+                "../node_modules/mdi/fonts/materialdesignicons-webfont.ttf",
+                "../node_modules/mdi/fonts/materialdesignicons-webfont.woff",
+                "../node_modules/mdi/fonts/materialdesignicons-webfont.woff2"
+            ],
+            "scripts": [
+                "../node_modules/jquery/dist/jquery.min.js",
+                "../node_modules/zone.js/dist/zone.js"
+            ]
+        }
+    ],
+    "lint": [
+        {
+            "project": "./tsconfig.json",
+            "tslintConfig": "../tslint.json"
+        }
+    ]
+}
