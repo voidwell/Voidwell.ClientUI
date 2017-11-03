@@ -1,0 +1,16 @@
+﻿<div>
+    <div>
+        <span *ngIf=errorMessage>{{errorMessage}}</span>
+    </div>
+    <ul>
+        <li *ngFor="let blogPost of blogPosts">
+            <div>
+                <div>{{blogPost.id}}</div>
+                <div>{{blogPost.title}}</div>
+                <div>{{blogPost.author}}</div>
+                <div>{{blogPost.content}}</div>
+                <div>{{blogPost.publishedDate}}</div>
+            </div>
+        </li>
+    </ul>
+</div>
