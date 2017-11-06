@@ -1,16 +1,12 @@
-﻿import { Routes, RouterModule } from '@angular/router';
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var router_1 = require("@angular/router");
 //import { IpreoAccountAuthGuard } from './shared/services/ipreoaccount-authguard.service';
 //import { IpreoAccountAuthService } from './shared/services/ipreoaccount-auth.service';
-
-const routes: Routes = [
+var routes = [
     { path: '', redirectTo: 'blog', pathMatch: 'full' },
     { path: 'blog', loadChildren: './blog/blog.module#BlogModule' },
     { path: 'account', loadChildren: './login/login.module#LoginModule' }
 ];
-
-export const appRouterProviders = [
-    //IpreoAccountAuthGuard,
-    //IpreoAccountAuthService
-];
-
-export const routing = RouterModule.forRoot(routes);
+exports.appRouterProviders = [];
+exports.routing = router_1.RouterModule.forRoot(routes);
