@@ -1,0 +1,28 @@
+﻿<div class="content-container">
+    <mat-card>
+        <mat-card-title>Register</mat-card-title>
+        <div>
+            Already a member? <a routerLink="../login">Sign in.</a>
+        </div>
+        <br />
+        <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Email" name="email" ngModel required>
+            </mat-form-field>
+            <br />
+            <mat-form-field>
+                <input matInput type="text" placeholder="Username" name="username" ngModel required>
+            </mat-form-field>
+            <br />
+            <mat-form-field>
+                <input matInput type="password" placeholder="Password" name="password" ngModel required>
+            </mat-form-field>
+            <br />
+            <mat-form-field>
+                <input matInput type="password" placeholder="Repeat password" name="repeatPassword" ngModel required>
+            </mat-form-field>
+            <br />
+            <button mat-raised-button type="submit">Submit</button>
+        </form>
+    </mat-card>
+</div>
