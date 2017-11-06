@@ -4,7 +4,6 @@ var $ = require("jquery");
 window['$'] = window['jQuery'] = window['jquery'] = $;
 require("reflect-metadata");
 require("bootstrap");
-require("core-js");
 var core_1 = require("@angular/core");
 var platform_browser_dynamic_1 = require("@angular/platform-browser-dynamic");
 var app_module_1 = require("./app/app.module");

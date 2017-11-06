@@ -13,6 +13,7 @@ import * as actionType from '../../reducers';
 export class VoidwellApi {
     apiBaseUrl = 'app/';
     public blogUrl = location.origin + '/api/vw/blog/';
+    public authUrl = location.origin + '/api/auth/';
 
     public options;
     private _requestTimeout = 30000;
@@ -75,6 +76,34 @@ export class VoidwellApi {
                 return this.handleError(error);
             })
             .map(payload => ({ type: 'GET_BLOG_POST_SUCCESS', payload }))
+            .subscribe(action => this.ngRedux.dispatch(action));
+    }
+
+    accountRegister(registrationForm: any) {
+        this.ngRedux.dispatch({ type: 'REGISTER_USER' });
+
+        return this.http.post(this.authUrl + 'register', registrationForm, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'REGISTRATION_FAIL' });
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            })
+            .map(payload => ({ type: 'REGISTER_USER_SUCCESS', payload }))
+            .subscribe(action => this.ngRedux.dispatch(action));
+    }
+
+    accoutLogin(loginForm: any) {
+        this.ngRedux.dispatch({ type: 'LOGIN_USER' });
+
+        return this.http.post(this.authUrl + 'login', loginForm, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOGIN_FAIL' });
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            })
+            .map(payload => ({ type: 'LOGIN_USER_SUCCESS', payload }))
             .subscribe(action => this.ngRedux.dispatch(action));
     }
 
