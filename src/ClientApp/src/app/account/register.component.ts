@@ -16,13 +16,24 @@ import { NgForm } from '@angular/forms';
 export class RegisterComponent implements OnDestroy {
     self = this;
     errorMessage: string = null;
+    completedInfo: boolean = false;
+    selectedTabIndex: number = 0;
 
     constructor() {
 
     }
 
-    onSubmit(registerForm: NgForm) {
+    onSubmitInformation(registerForm: NgForm) {
         console.log('submit', registerForm.value);
+        if (registerForm.valid)
+        {
+            this.completedInfo = true;
+            this.selectedTabIndex = 1;
+        }
+    }
+
+    onSubmitQuestions(securityQuestionsForm: NgForm) {
+        console.log('submit', securityQuestionsForm.value);
     }
 
     ngOnDestroy() {
