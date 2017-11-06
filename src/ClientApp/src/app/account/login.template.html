@@ -1,0 +1,20 @@
+﻿<div class="content-container">
+    <mat-card>
+        <mat-card-title>Login</mat-card-title>
+        <div>
+            Not a member yet? <a routerLink="../register">Register!</a>
+        </div>
+        <br />
+        <form (ngSubmit)="onSubmit(loginForm)" #loginForm="ngForm">
+            <mat-form-field>
+                <input matInput type="text" placeholder="Email" name="email" ngModel required>
+            </mat-form-field>
+            <br />
+            <mat-form-field>
+                <input matInput type="password" placeholder="Password" name="password" ngModel required>
+            </mat-form-field>
+            <br />
+            <button mat-raised-button type="submit">Submit</button>
+        </form>
+    </mat-card>
+</div>

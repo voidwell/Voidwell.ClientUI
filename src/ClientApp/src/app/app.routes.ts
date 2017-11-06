@@ -5,7 +5,7 @@
 const routes: Routes = [
     { path: '', redirectTo: 'blog', pathMatch: 'full' },
     { path: 'blog', loadChildren: './blog/blog.module#BlogModule' },
-    { path: 'account', loadChildren: './login/login.module#LoginModule' }
+    { path: 'account', loadChildren: './account/account.module#AccountModule' }
 ];
 
 export const appRouterProviders = [

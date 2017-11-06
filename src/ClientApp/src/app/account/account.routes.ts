@@ -3,7 +3,7 @@ import { ModuleWithProviders } from '@angular/core';
 import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
 
-const loginRoutes: Routes = [
+const accountRoutes: Routes = [
     {
         path: 'login',
         component: LoginComponent
@@ -14,4 +14,4 @@ const loginRoutes: Routes = [
     }
 ];
 
-export const routing: ModuleWithProviders = RouterModule.forChild(loginRoutes);
+export const routing: ModuleWithProviders = RouterModule.forChild(accountRoutes);
