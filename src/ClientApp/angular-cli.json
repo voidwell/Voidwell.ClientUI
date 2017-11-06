@@ -4,8 +4,7 @@
     },
     "defaults": {
         "serve": {
-            "port": 5000,
-            "proxyConfig": "./proxy.conf.json"
+            "port": 5000
         }
     },
     "apps": [
