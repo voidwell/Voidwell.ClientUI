@@ -5,24 +5,49 @@
             Already a member? <a routerLink="../login">Sign in.</a>
         </div>
         <br />
-        <form (ngSubmit)="onSubmit(registerForm)" #registerForm="ngForm">
-            <mat-form-field>
-                <input matInput type="text" placeholder="Email" name="email" ngModel required>
-            </mat-form-field>
-            <br />
-            <mat-form-field>
-                <input matInput type="text" placeholder="Username" name="username" ngModel required>
-            </mat-form-field>
-            <br />
-            <mat-form-field>
-                <input matInput type="password" placeholder="Password" name="password" ngModel required>
-            </mat-form-field>
-            <br />
-            <mat-form-field>
-                <input matInput type="password" placeholder="Repeat password" name="repeatPassword" ngModel required>
-            </mat-form-field>
-            <br />
-            <button mat-raised-button type="submit">Submit</button>
-        </form>
+        <mat-tab-group [selectedIndex]="selectedTabIndex">
+            <mat-tab label="Basic Information">
+                <form (ngSubmit)="onSubmitInformation(registerForm)" #registerForm="ngForm">
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Email" name="email" ngModel required>
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Username" name="username" ngModel required>
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="Password" name="password" ngModel required>
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="Repeat password" name="repeatPassword" ngModel required>
+                    </mat-form-field>
+                    <br />
+                    <button mat-raised-button type="submit">Next</button>
+                </form>
+            </mat-tab>
+            <mat-tab label="Security Questions" [disabled]="!completedInfo">
+                <form (ngSubmit)="onSubmitQuestions(securityQuestionsForm)" #securityQuestionsForm="ngForm">
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Email" name="email" ngModel required>
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field>
+                        <input matInput type="text" placeholder="Username" name="username" ngModel required>
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="Password" name="password" ngModel required>
+                    </mat-form-field>
+                    <br />
+                    <mat-form-field>
+                        <input matInput type="password" placeholder="Repeat password" name="repeatPassword" ngModel required>
+                    </mat-form-field>
+                    <br />
+                    <button mat-raised-button type="submit">Complete</button>
+                </form>
+            </mat-tab>
+        </mat-tab-group>
     </mat-card>
 </div>
