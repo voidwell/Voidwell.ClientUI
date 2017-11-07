@@ -18,9 +18,11 @@ export class RegisterComponent implements OnDestroy {
     errorMessage: string = null;
     completedInfo: boolean = false;
     selectedTabIndex: number = 0;
+    api: VoidwellApi = null;
+    securityQuestions: Array<string> = null;
 
-    constructor() {
-
+    constructor(api: VoidwellApi) {
+        this.api = api;
     }
 
     onSubmitInformation(registerForm: NgForm) {
@@ -29,11 +31,29 @@ export class RegisterComponent implements OnDestroy {
         {
             this.completedInfo = true;
             this.selectedTabIndex = 1;
+
+            if (this.securityQuestions == null)
+            {
+                this.loadSecurityQuestions();
+            }
         }
     }
 
     onSubmitQuestions(securityQuestionsForm: NgForm) {
         console.log('submit', securityQuestionsForm.value);
+
+        if (securityQuestionsForm.valid)
+        {
+            this.api.accountRegister(securityQuestionsForm);
+        }
+    }
+
+    private loadSecurityQuestions() {
+        this.api.getSecurityQuestions()
+            .subscribe(result => {
+                this.securityQuestions = result;
+            });
+        
     }
 
     ngOnDestroy() {
