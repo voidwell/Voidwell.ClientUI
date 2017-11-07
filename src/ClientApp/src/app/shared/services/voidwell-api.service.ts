@@ -28,32 +28,6 @@ export class VoidwellApi {
     getAllBlogPosts() {
         this.ngRedux.dispatch({ type: 'GET_BLOG_POSTS' });
 
-        let payload = [
-            {
-                "title": "Test Title",
-                "content": "Test Test Test",
-                "author": "Lampjaw",
-                "id": "123xyz",
-                "publishDate": "test"
-            },
-            {
-                "title": "Test Title2",
-                "content": "Test Test Test",
-                "author": "Lampjaw",
-                "id": "123xyz2",
-                "publishDate": "test2"
-            },
-            {
-                "title": "Test Title3",
-                "content": "Test Test Test",
-                "author": "Lampjaw",
-                "id": "123xyz3",
-                "publishDate": "test3"
-            }
-        ];
-
-        this.ngRedux.dispatch({ type: 'GET_BLOG_POSTS_SUCCESS', payload });
-
         return this.http.get(this.blogUrl, this.options)
             .map(resp => resp.json())
             .catch(error => {
@@ -105,6 +79,16 @@ export class VoidwellApi {
             })
             .map(payload => ({ type: 'LOGIN_USER_SUCCESS', payload }))
             .subscribe(action => this.ngRedux.dispatch(action));
+    }
+
+    getSecurityQuestions() {
+        return this.http.get(this.authUrl + 'questions', this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'SECURITY_QUESTIONS_FAIL' });
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
     }
 
     /*
