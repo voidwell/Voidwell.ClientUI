@@ -4,12 +4,41 @@ import {
     MatCheckboxModule,
     MatFormFieldModule,
     MatInputModule,
+    MatSelectModule,
     MatCardModule,
-    MatTabsModule
+    MatTabsModule,
+    MatMenuModule,
+    MatProgressSpinnerModule,
+    MatExpansionModule,
+    MatIconModule
 } from '@angular/material';
 
 @NgModule({
-    imports: [MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatCardModule, MatTabsModule],
-    exports: [MatButtonModule, MatCheckboxModule, MatFormFieldModule, MatInputModule, MatCardModule, MatTabsModule],
+    imports: [
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        MatTabsModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        MatExpansionModule,
+        MatIconModule
+    ],
+    exports: [
+        MatButtonModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatCardModule,
+        MatTabsModule,
+        MatSelectModule,
+        MatMenuModule,
+        MatProgressSpinnerModule,
+        MatExpansionModule,
+        MatIconModule
+    ],
 })
 export class MaterialLib { }

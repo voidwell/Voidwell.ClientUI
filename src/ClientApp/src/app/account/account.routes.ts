@@ -2,15 +2,28 @@
 import { ModuleWithProviders } from '@angular/core';
 import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
+import { UserSettingsComponent } from './usersettings.component';
+import { PasswordResetComponent } from './passwordreset.component';
+import { VoidwellAuthGuard } from '../shared/services/voidwell-authguard.service';
 
 const accountRoutes: Routes = [
     {
-        path: 'login',
-        component: LoginComponent
+        path: 'register',
+        component: RegisterComponent,
+        canActivate: [VoidwellAuthGuard],
+        data: { guestOnly: true }
     },
     {
-        path: 'register',
-        component: RegisterComponent
+        path: 'settings',
+        component: UserSettingsComponent,
+        canActivate: [VoidwellAuthGuard],
+        data: { roles: ['User'] }
+    },
+    {
+        path: 'resetpassword',
+        component: PasswordResetComponent,
+        canActivate: [VoidwellAuthGuard],
+        data: { roles: ['User'] }
     }
 ];
 

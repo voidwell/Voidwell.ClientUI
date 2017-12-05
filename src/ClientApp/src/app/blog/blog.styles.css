@@ -1,0 +1,14 @@
+﻿.mat-card-header-text {
+    width: 100%;
+}
+
+.blog-card {
+    margin-bottom: 20px;
+}
+.blog-card:first-of-type {
+    margin-top: 15px;
+}
+
+.blog-title {
+    font-size: 2em;
+}
