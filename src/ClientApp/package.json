@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "scripts": {
         "lint": "ng lint",
-        "start:dev": "ng serve --hmr",
+        "start:dev": "ng serve --hmr --disable-host-check",
         "start:prod": "ng serve",
         "build": "ng build"
     },
@@ -47,13 +47,15 @@
         "systemjs": "0.20.19",
         "to-string-loader": "1.1.5",
         "url-loader": "0.5.9",
-        "zone.js": "0.8.12"
+        "zone.js": "0.8.12",
+        "oidc-client": "1.4.1"
     },
     "devDependencies": {
-        "tslint": "5.8.0",
-        "codelyzer": "4.0.0",
+        "@angular/cli": "1.5.0",
         "@angular/compiler-cli": "4.4.4",
-        "typescript": "^2.6.1",
-        "@angular/cli": "1.5.0"
+        "@angularclass/hmr": "^2.1.3",
+        "codelyzer": "4.0.0",
+        "tslint": "5.8.0",
+        "typescript": "^2.6.1"
     }
 }

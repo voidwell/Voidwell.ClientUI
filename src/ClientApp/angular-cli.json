@@ -3,28 +3,50 @@
         "name": "Voidwell.ClientUI"
     },
     "defaults": {
+        "poll": 1000,
+        "build": {
+            "sourcemaps": false
+        },
         "serve": {
-            "port": 5000
+            "port": 5000,
+            "host": "0.0.0.0"
         }
     },
     "apps": [
         {
             "name": "ClientUI",
-            "root": "./src",
+            "root": "src",
             "outDir": "./dist",
             "main": "main.ts",
             "tsconfig": "../tsconfig.json",
             "assets": [
-                "../node_modules/mdi/fonts/materialdesignicons-webfont.eot",
-                "../node_modules/mdi/fonts/materialdesignicons-webfont.svg",
-                "../node_modules/mdi/fonts/materialdesignicons-webfont.ttf",
-                "../node_modules/mdi/fonts/materialdesignicons-webfont.woff",
-                "../node_modules/mdi/fonts/materialdesignicons-webfont.woff2"
+                {
+                    "glob": "signInCallback.html",
+                    "input": "./",
+                    "output": "./"
+                },
+                {
+                    "glob": "silentCallback.html",
+                    "input": "./",
+                    "output": "./"
+                },
+                {
+                    "glob": "**/*",
+                    "input": "../node_modules/mdi/fonts/",
+                    "output": "./fonts/"
+                },
+                {
+                    "glob": "**/*",
+                    "input": "../node_modules/oidc-client/dist/",
+                    "output": "./oidc/"
+                }
             ],
             "scripts": [
                 "../node_modules/jquery/dist/jquery.min.js",
-                "../node_modules/zone.js/dist/zone.js"
-            ]
+                "../node_modules/zone.js/dist/zone.js",
+                "../node_modules/oidc-client/lib/oidc-client.js"
+            ],
+            "showCircularDependencies": false
         }
     ],
     "lint": [
@@ -32,5 +54,9 @@
             "project": "./tsconfig.json",
             "tslintConfig": "../tslint.json"
         }
-    ]
+    ],
+    "warnings": {
+        "hmrWarning": false,
+        "typescriptMismatch": false
+    }
 }

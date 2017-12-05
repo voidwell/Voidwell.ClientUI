@@ -1,0 +1,24 @@
+﻿<div class="content-container">
+    <div>
+        <mat-form-field>
+            <input matInput #roleInput placeholder="Role name">
+        </mat-form-field>
+        <button mat-button (click)="addRole(roleInput.value)">Add role</button>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let role of roles" (opened)="getDetails(role)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{role.name}}
+                    </mat-panel-title>
+                </mat-expansion-panel-header>
+                <mat-spinner *ngIf="role.isLoading"></mat-spinner>
+                <div *ngIf="!role.isLoading" class="role-details">
+                    Details
+                </div>
+                <mat-action-row>
+                    <button mat-raised-button color="warn" (click)="deleteRole(role)">Delete</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>
