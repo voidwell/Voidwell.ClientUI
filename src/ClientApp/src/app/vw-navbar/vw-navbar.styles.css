@@ -1,7 +1,6 @@
 .vw-navbar {
     padding: 8px 16px;
     color: #fff;
-    overflow: hidden;
 
     transition: background-color 0.5s ease;
 
@@ -11,8 +10,4 @@
     width: 100%;
     z-index: 999;
     height: 37px;
-}
-
-.right-side {
-    float: right;
 }

@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
 import { NgRedux } from '@angular-redux/store';
 import { VoidwellApi } from '../shared/services/voidwell-api.service';
@@ -13,20 +13,39 @@ import { NgForm } from '@angular/forms';
     providers: [VoidwellApi]
 })
 
-export class RegisterComponent implements OnDestroy {
+export class RegisterComponent {
     self = this;
     errorMessage: string = null;
     completedInfo: boolean = false;
+    registrationSuccess: boolean = false;
+    isLoading: boolean = false;
     selectedTabIndex: number = 0;
-    api: VoidwellApi = null;
     securityQuestions: Array<string> = null;
+    registrationState: Observable<any>;
 
-    constructor(api: VoidwellApi) {
-        this.api = api;
+    registrationInfo: any;
+
+    constructor(private api: VoidwellApi, private ngRedux: NgRedux<IAppState>) {
+        this.registrationState = this.ngRedux.select('registration');
+        this.registrationState.subscribe(registration => {
+            if (registration) {
+                if (registration.isSuccess) {
+                    this.registrationSuccess = true;
+                }
+                if (registration.status === 'loading') {
+                    this.isLoading = true;
+                    this.errorMessage = null;
+                } else {
+                    this.isLoading = false;
+                }
+                if (registration.status === 'error') {
+                    this.errorMessage = registration.errorMessage;
+                }
+            }
+        });
     }
 
     onSubmitInformation(registerForm: NgForm) {
-        console.log('submit', registerForm.value);
         if (registerForm.valid)
         {
             this.completedInfo = true;
@@ -34,17 +53,25 @@ export class RegisterComponent implements OnDestroy {
 
             if (this.securityQuestions == null)
             {
+                this.registrationInfo = registerForm.value;
                 this.loadSecurityQuestions();
             }
         }
     }
 
     onSubmitQuestions(securityQuestionsForm: NgForm) {
-        console.log('submit', securityQuestionsForm.value);
-
         if (securityQuestionsForm.valid)
         {
-            this.api.accountRegister(securityQuestionsForm);
+            let formQuestions = securityQuestionsForm.value;
+            let questions = [
+                { question: formQuestions.question0, answer: formQuestions.answer0 },
+                { question: formQuestions.question1, answer: formQuestions.answer1 },
+                { question: formQuestions.question2, answer: formQuestions.answer2 }
+            ];
+
+            this.registrationInfo.securityQuestions = questions;
+
+            this.api.accountRegister(this.registrationInfo);
         }
     }
 
@@ -54,9 +81,5 @@ export class RegisterComponent implements OnDestroy {
                 this.securityQuestions = result;
             });
         
-    }
-
-    ngOnDestroy() {
-
     }
 }

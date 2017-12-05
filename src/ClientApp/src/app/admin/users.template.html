@@ -1,0 +1,43 @@
+﻿<div class="content-container">
+    <div>
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let user of users" (opened)="getDetails(user)">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{user.userName}}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                        {{user.lastLoginDate | date}}
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+                <mat-spinner *ngIf="user.isLoading"></mat-spinner>
+                <div *ngIf="!user.isLoading" class="user-details">
+                    <mat-form-field>
+                        <mat-select placeholder="Assign role" [(value)]="user.roles" multiple>
+                            <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <label>Id</label> {{user.id}}
+                    <br /><br />
+                    <label>Email</label> {{user.email}}
+                    <br /><br />
+                    <label>Timezone</label> {{user.timeZone}}
+                    <br /><br />
+                    <label>Created date</label> {{user.createdDate | date}}
+                    <br /><br />
+                    <label>Last login date</label> {{user.lastLoginDate | date}}
+                    <br /><br />
+                    <label>Password set date</label> {{user.passwordSetDate | date}}
+                    <br /><br />
+                    <label>Lockout end date</label> {{user.lockoutEndDate}}
+                    <br /><br />
+                </div>
+                <mat-action-row>
+                    <button mat-button>Reset password</button>
+                    <button mat-button>Disable</button>
+                    <button mat-raised-button color="warn" (click)="deleteUser(user)">Delete</button>
+                </mat-action-row>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

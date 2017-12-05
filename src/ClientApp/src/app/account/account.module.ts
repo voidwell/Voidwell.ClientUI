@@ -4,6 +4,9 @@ import { CommonModule } from '@angular/common';
 import { MaterialLib } from '../shared/materialLib.module';
 import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
+import { PasswordResetComponent } from './passwordreset.component';
+import { UserSettingsComponent } from './usersettings.component';
+import { ChangePasswordCardComponent } from './settings-cards/changepassword.component';
 import { routing } from './account.routes';
 
 @NgModule({
@@ -15,7 +18,10 @@ import { routing } from './account.routes';
     ],
     declarations: [
         LoginComponent,
-        RegisterComponent
+        RegisterComponent,
+        PasswordResetComponent,
+        UserSettingsComponent,
+        ChangePasswordCardComponent
     ],
     entryComponents: [LoginComponent]
 })

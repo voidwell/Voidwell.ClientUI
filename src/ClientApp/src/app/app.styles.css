@@ -47,38 +47,11 @@ md-icon[fonticon] {
     height: auto;
 }
 
-.voidwell md-card {
-    border-radius: 0;
-    position: relative;
-    margin: 8px;
-    padding: 0;
-    background: #1F2E32;
-}
+
 
     .voidwell md-card.inline,
     .voidwell .inline {
         display: inline-block;
-    }
-
-    .voidwell md-card md-card-title {
-        background: #3A4C58;
-        color: #fff;
-        padding: 15px;
-        font-size: initial;
-        margin: 0;
-    }
-
-    .voidwell md-card md-card-title-text {
-        opacity: 0.9;
-    }
-
-    .voidwell md-card md-card-content {
-        padding: 0;
-        position: relative;
-        font-size: initial;
-        color: #fff;
-        margin: 0;
-        overflow: hidden;
     }
 
     .voidwell md-card md-card-footer {
@@ -607,4 +580,82 @@ img.inverse-img {
         -webkit-transform: translateX(-50%) scale(0, 1);
         transform: translateX(-50%) scale(0, 1);
     }
+}
+
+
+
+
+
+
+
+
+
+
+
+.admin-panel {
+    background: #fff;
+    padding: 2px;
+}
+.user-details label {
+    font-weight: 600;
+    display: block;
+}
+.pull-right {
+    float: right;
+}
+
+.mat-card {
+    border-radius: 3px;
+    position: relative;
+    margin-bottom: 8px;
+    padding: 0;
+    background: #1F2E32;
+    overflow: hidden;
+}
+.mat-card .mat-card-header {
+    background: #3A4C58;
+    font-size: initial;
+    padding: 10px 10px 0 10px;
+}
+.mat-card .mat-card-header-text {
+    width: 100%;
+}
+.mat-card .mat-card-title,
+.mat-card .mat-card-subtitle {
+    color: #fff;
+}
+.mat-card .mat-card-title {
+    opacity: 0.9;
+}
+.mat-card .mat-card-subtitle {
+    opacity: 0.5;
+}
+.mat-card .mat-card-content {
+    padding: 10px;
+    position: relative;
+    font-size: initial;
+    color: #fff;
+    overflow: hidden;
+}
+
+.mat-form-field-placeholder {
+    color: #fff;
+    opacity: 0.8;
+}
+.mat-focused .mat-form-field-placeholder {
+    color: #fff;
+}
+.mat-form-field-invalid .mat-form-field-placeholder {
+    color: #ca1406;
+}
+
+.tab-nav-bar-background {
+    background: #1F2E32;
+}
+.mat-tab-link,
+.mat-tab-label {
+    color: #fff;
+}
+.mat-ink-bar {
+    background-color: #868686 !important;
 }

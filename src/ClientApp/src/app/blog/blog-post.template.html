@@ -1,12 +1,17 @@
-﻿<div>
+﻿<div class="content-container">
     <div>
         <span *ngIf=errorMessage>{{errorMessage}}</span>
     </div>
-    <div>
-        <div>{{blogPost.id}}</div>
-        <div>{{blogPost.title}}</div>
-        <div>{{blogPost.author}}</div>
-        <div>{{blogPost.content}}</div>
-        <div>{{blogPost.publishedDate}}</div>
-    </div>
+    <mat-card class="blog-card" *ngIf="!isLoading">
+        <mat-card-header>
+            <mat-card-title>
+                <span class="pull-right">{{blogPost.publishDate | date:'MMMM d, yyyy H:mm'}}</span>
+                <span class="blog-title">{{blogPost.title}}</span>
+            </mat-card-title>
+            <mat-card-subtitle>By {{blogPost.author}}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+            {{blogPost.content}}
+        </mat-card-content>
+    </mat-card>
 </div>

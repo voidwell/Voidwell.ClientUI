@@ -1,0 +1,24 @@
+﻿<div class="content-container">
+    <div>
+        <mat-expansion-panel hideToggle="true" [expanded]="isCreating" (opened)="isCreating = true">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
+                    New Post
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <form (ngSubmit)="onCreateBlogPost(blogPostForm)" #blogPostForm="ngForm">
+                <mat-form-field>
+                    <input matInput type="text" placeholder="Title" name="title" ngModel required>
+                </mat-form-field>
+                <br />
+                <mat-form-field>
+                    <textarea matInput name="content" ngModel required></textarea>
+                </mat-form-field>
+                <br />
+                <button mat-raised-button type="submit">Create</button>
+            </form>
+        </mat-expansion-panel>
+    </div>
+</div>

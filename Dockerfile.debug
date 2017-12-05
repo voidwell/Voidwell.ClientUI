@@ -2,9 +2,8 @@ FROM pivotalpa/angular-cli:1.4.2
 
 ENV NODE_ENV=dev
 
-COPY . /app
 WORKDIR /app/src/ClientApp
-RUN npm prune && npm cache verify && npm install
+RUN npm install
 
 EXPOSE 5000
 

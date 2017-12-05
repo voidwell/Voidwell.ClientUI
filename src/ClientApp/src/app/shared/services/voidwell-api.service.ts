@@ -2,64 +2,81 @@
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/timeout';
 import 'rxjs/add/operator/catch'
-//import { IpreoAccountAuthService } from '../services/ipreoaccount-auth.service';
+import 'rxjs/add/observable/throw';
 import { Http, RequestOptions, Response } from '@angular/http';
 import { NgRedux } from '@angular-redux/store';
 import { IAppState } from '../../app.component';
 import { Injectable } from '@angular/core';
 import * as actionType from '../../reducers';
+import { VoidwellAuthService } from '../services/voidwell-auth.service';
 
 @Injectable()
 export class VoidwellApi {
     apiBaseUrl = 'app/';
-    public blogUrl = location.origin + '/api/vw/blog/';
-    public authUrl = location.origin + '/api/auth/';
+    public blogUrl = location.origin + '/api/blog/';
+    public accountUrl = location.origin + '/api/account/';
+    public authAdminUrl = location.origin + '/api/authadmin/';
 
     public options;
     private _requestTimeout = 30000;
     private _requestTimeoutMessage = 'Request timed out';
 
-    constructor(//public authService: IpreoAccountAuthService,
+    constructor(public authService: VoidwellAuthService,
         public http: Http,
         public ngRedux: NgRedux<IAppState>) {
-        this.options = new RequestOptions(/*{ headers: this.authService.getAuthHeaders() }*/);
+        this.options = new RequestOptions({ headers: this.authService.getAuthHeaders() });
     }
 
     getAllBlogPosts() {
-        this.ngRedux.dispatch({ type: 'GET_BLOG_POSTS' });
-
         return this.http.get(this.blogUrl, this.options)
             .map(resp => resp.json())
             .catch(error => {
-                this.ngRedux.dispatch({ type: 'BLOG_POSTS_FAIL' });
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
                 return this.handleError(error);
-            })
-            .map(payload => ({ type: 'GET_BLOG_POSTS_SUCCESS', payload }))
-            .subscribe(action => this.ngRedux.dispatch(action));
+            });
     }
 
     getBlogPost(blogPostId: string) {
-        this.ngRedux.dispatch({ type: 'GET_BLOG_POST' });
-
         return this.http.get(this.blogUrl + blogPostId, this.options)
             .map(resp => resp.json())
             .catch(error => {
-                this.ngRedux.dispatch({ type: 'BLOG_POST_FAIL' });
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
                 return this.handleError(error);
-            })
-            .map(payload => ({ type: 'GET_BLOG_POST_SUCCESS', payload }))
-            .subscribe(action => this.ngRedux.dispatch(action));
+            });
+    }
+
+    createBlogPost(blogPost: any) {
+        return this.AuthPost(this.blogUrl, blogPost, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    updateBlogPost(blogPost: any) {
+        return this.AuthPut(this.blogUrl, blogPost, this.options)
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    deleteBlogPost(blogPostId: string) {
+        return this.AuthDelete(this.blogUrl + blogPostId, this.options)
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
     }
 
     accountRegister(registrationForm: any) {
         this.ngRedux.dispatch({ type: 'REGISTER_USER' });
 
-        return this.http.post(this.authUrl + 'register', registrationForm, this.options)
-            .map(resp => resp.json())
+        return this.http.post(this.accountUrl + 'register', registrationForm, this.options)
+            .map(resp => resp.ok ? null : resp.json())
             .catch(error => {
-                this.ngRedux.dispatch({ type: 'REGISTRATION_FAIL' });
+                this.ngRedux.dispatch({ type: 'REGISTRATION_FAIL', error });
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
                 return this.handleError(error);
             })
@@ -67,22 +84,8 @@ export class VoidwellApi {
             .subscribe(action => this.ngRedux.dispatch(action));
     }
 
-    accoutLogin(loginForm: any) {
-        this.ngRedux.dispatch({ type: 'LOGIN_USER' });
-
-        return this.http.post(this.authUrl + 'login', loginForm, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOGIN_FAIL' });
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            })
-            .map(payload => ({ type: 'LOGIN_USER_SUCCESS', payload }))
-            .subscribe(action => this.ngRedux.dispatch(action));
-    }
-
     getSecurityQuestions() {
-        return this.http.get(this.authUrl + 'questions', this.options)
+        return this.http.get(this.accountUrl + 'questions', this.options)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'SECURITY_QUESTIONS_FAIL' });
@@ -91,18 +94,107 @@ export class VoidwellApi {
             });
     }
 
-    /*
     getRoles() {
-        return this.AuthGet(this.rolesDataUrl + 'roles/', this.options)
-            .map(resp => this.extractData(resp, 'roles'))
+        return this.AuthGet(this.accountUrl + 'roles/', this.options)
+            .map(resp => resp.json())
             .catch(res => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', res });
                 return this.handleError(res);
             })
             .map(payload => ({ type: 'GET_USER_ROLES', payload }))
-            .subscribe(action => this.ngRedux.dispatch(action));
+            .subscribe(action => this.ngRedux.dispatch(action));;
     }
-    */
+
+    getUsers() {
+        return this.AuthGet(this.authAdminUrl + 'users', this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getUser(userId: string) {
+        return this.AuthGet(this.authAdminUrl + 'user/' + userId, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    deleteUser(userId: string) {
+        return this.AuthDelete(this.authAdminUrl + 'user/' + userId, this.options)
+            .map(resp => resp.ok ? null :resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getAllRoles() {
+        return this.AuthGet(this.authAdminUrl + 'roles', this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    addRole(roleName: string) {
+        let roleData = {
+            name: roleName
+        };
+        return this.AuthPost(this.authAdminUrl + 'role', roleData, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    deleteRole(roleId: string) {
+        return this.AuthDelete(this.authAdminUrl + 'role/' + roleId, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    changePassword(changePasswordForm: any) {
+        return this.AuthPost(this.accountUrl + 'changepassword', changePasswordForm, this.options)
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    startResetPassword(passwordResetStartForm: any) {
+        return this.http.post(this.accountUrl + 'resetpasswordstart', passwordResetStartForm, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    resetPasswordQuestions(passwordResetQuestionsForm: any) {
+        return this.http.post(this.accountUrl + 'resetpasswordquestions', passwordResetQuestionsForm, this.options)
+            .map(resp => this.extractData(resp, 'result'))
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    resetPassword(resetPasswordForm: any) {
+        return this.http.post(this.accountUrl + 'resetpassword', resetPasswordForm, this.options)
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
 
     private handleError(error: any) {
         this.checkAuthorization(error);
@@ -111,7 +203,7 @@ export class VoidwellApi {
 
     private checkAuthorization(error: Response) {
         if (error.status === 401) {
-            //this.authService.checkSession();
+            this.authService.checkSession();
         }
     }
 
