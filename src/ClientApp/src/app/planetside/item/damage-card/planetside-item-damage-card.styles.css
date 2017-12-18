@@ -1,0 +1,22 @@
+﻿.weapon-item-chart path {
+    stroke: #4682b4;
+    stroke-width: 4;
+    fill: none;
+}
+
+.weapon-item-chart .axis path,
+.weapon-item-chart .axis line {
+    fill: none;
+    stroke: #808080;
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+}
+
+.weapon-item-chart .tick text {
+    font-size: 12px;
+    fill: #fff;
+}
+
+.weapon-item-chart .tick line {
+    opacity: 0.2;
+}

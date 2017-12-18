@@ -1,4 +1,33 @@
 ﻿<div class="content-container">
-    <pre>{{newsList | json}}</pre>
-    <pre>{{updateList | json}}</pre>
+    <div class="main-news-container">
+        <div class="updates-content pull-right">
+            <div class="updates-title">Game Updates</div>
+            <mat-spinner *ngIf="isUpdatesLoading"></mat-spinner>
+            <ul *ngIf="!isUpdatesLoading">
+                <li *ngFor="let item of updateList">
+                    <a [href]="item.link" target="_blank">{{item.title}}</a>
+                </li>
+            </ul>
+        </div>
+        <div class="news-content">
+            <mat-spinner *ngIf="isNewsLoading"></mat-spinner>
+            <div *ngIf="!isNewsLoading">
+                <mat-card *ngFor="let item of newsList">
+                    <mat-card-header>
+                        <mat-card-title>
+                            <a mat-icon-button class="pull-right" [href]="item.link" target="_blank">
+                                <mat-icon fontSet="mdi" fontIcon="mdi-link-variant"></mat-icon>
+                            </a>
+                            <span class="news-title">{{item.title}}</span>
+                        </mat-card-title>
+                        <mat-card-subtitle>
+                            <span class="news-date pull-right">{{item.date | date:'MMMM d, yyyy H:mm'}}</span>
+                            <span>By {{item.author}}</span>
+                        </mat-card-subtitle>
+                    </mat-card-header>
+                    <mat-card-content [innerHtml]="item.content"></mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
 </div>

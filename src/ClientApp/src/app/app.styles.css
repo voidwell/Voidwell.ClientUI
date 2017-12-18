@@ -121,42 +121,42 @@ md-icon[fonticon] {
     opacity: 0.5;
 }
 
-.voidwell .faction-ns-bg {
+.faction-ns-bg {
     background-color: #999999;
 }
 
-.voidwell .faction-vs-bg {
+.faction-vs-bg {
     background-color: #8103CD;
 }
 
-.voidwell .faction-nc-bg {
+.faction-nc-bg {
     background-color: #1177EA;
 }
 
-.voidwell .faction-tr-bg {
+.faction-tr-bg {
     background-color: #C62828;
 }
 
-    .voidwell .faction-ns-bg,
-    .voidwell .faction-ns-bg h1,
-    .voidwell .faction-vs-bg,
-    .voidwell .faction-vs-bg h1,
-    .voidwell .faction-nc-bg,
-    .voidwell .faction-nc-bg h1,
-    .voidwell .faction-tr-bg,
-    .voidwell .faction-tr-bg h1 {
+    .faction-ns-bg,
+    .faction-ns-bg h1,
+    .faction-vs-bg,
+    .faction-vs-bg h1,
+    .faction-nc-bg,
+    .faction-nc-bg h1,
+    .faction-tr-bg,
+    .faction-tr-bg h1 {
         color: #fff;
     }
 
-.voidwell .faction-vs-text {
+.faction-vs-text {
     color: #8f45bb !important;
 }
 
-.voidwell .faction-nc-text {
+.faction-nc-text {
     color: #1565C0 !important;
 }
 
-.voidwell .faction-tr-text {
+.faction-tr-text {
     color: #C62828 !important;
 }
 
@@ -602,6 +602,9 @@ img.inverse-img {
 }
 .pull-right {
     float: right;
+}
+.pull-left {
+    float: left;
 }
 
 .mat-card {

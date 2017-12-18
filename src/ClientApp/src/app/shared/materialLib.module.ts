@@ -10,7 +10,8 @@ import {
     MatMenuModule,
     MatProgressSpinnerModule,
     MatExpansionModule,
-    MatIconModule
+    MatIconModule,
+    MatAutocompleteModule
 } from '@angular/material';
 
 @NgModule({
@@ -25,7 +26,8 @@ import {
         MatMenuModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
-        MatIconModule
+        MatIconModule,
+        MatAutocompleteModule
     ],
     exports: [
         MatButtonModule,
@@ -38,7 +40,8 @@ import {
         MatMenuModule,
         MatProgressSpinnerModule,
         MatExpansionModule,
-        MatIconModule
+        MatIconModule,
+        MatAutocompleteModule
     ],
 })
 export class MaterialLib { }

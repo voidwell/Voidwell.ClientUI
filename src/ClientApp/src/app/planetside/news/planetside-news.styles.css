@@ -1,0 +1,36 @@
+﻿.main-news-container {
+    padding-top: 15px;
+}
+
+.main-news-container ::ng-deep a:not(.mat-icon-button) {
+    text-decoration: none;
+    color: #8c8c8c;
+}
+
+.news-title {
+    font-size: 1.2em;
+}
+
+.updates-content {
+    width: 200px;
+    margin-left: 20px;
+}
+
+.updates-title {
+    text-transform: uppercase;
+    font-weight: bold;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #fff;
+}
+
+.updates-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.updates-content li {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}

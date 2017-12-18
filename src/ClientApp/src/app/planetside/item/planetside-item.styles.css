@@ -1,0 +1,26 @@
+﻿.main-content {
+    margin-top: 15px;
+}
+.weapon-description-card {
+    max-width: 350px;
+    margin-right: 20px;
+}
+.weapon-description-card img {
+    display: block;
+    margin: 0 auto;
+}
+.weapon-description-card .item-description {
+    margin-bottom: 20px;
+}
+
+.weapon-info-card {
+    
+}
+.weapon-info-card .label {
+    opacity: 0.8;
+    width: 130px;
+    display: inline-block;
+}
+.info-row {
+    padding: 8px;
+}

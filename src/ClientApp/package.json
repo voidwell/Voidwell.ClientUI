@@ -48,7 +48,8 @@
         "to-string-loader": "1.1.5",
         "url-loader": "0.5.9",
         "zone.js": "0.8.12",
-        "oidc-client": "1.4.1"
+        "oidc-client": "1.4.1",
+        "d3-ng2-service": "^1.23.2"
     },
     "devDependencies": {
         "@angular/cli": "1.5.0",
