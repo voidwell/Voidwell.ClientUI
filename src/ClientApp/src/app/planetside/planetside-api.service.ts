@@ -34,11 +34,30 @@ export class PlanetsideApi {
             });
     }
 
-    private extractData(res: Response, key?: string) {
-        let body = res.json();
-        if (key) {
-            return body[key];
-        }
-        return body.data || {};
+    search(query: string) {
+        return this.http.get(this.ps2Url + 'search/' + query)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getWeaponInfo(itemId: string) {
+        return this.http.get(this.ps2Url + 'weaponinfo/' + itemId)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getCharacter(characterId: string) {
+        return this.http.get(this.ps2Url + 'character/' + characterId)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
     }
 }
