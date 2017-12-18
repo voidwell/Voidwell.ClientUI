@@ -1,0 +1,35 @@
+﻿.search-box {
+    width: 300px;
+    height: 45px;
+}
+.search-option.mat-option {
+    border-bottom: 1px solid #ccc;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    white-space: normal;
+    overflow: visible;
+    height: inherit;
+}
+
+.search-option .mat-option-text {
+    display: block;
+}
+
+.search-option.mat-option:last-child {
+    border-bottom-width: 0;
+}
+.search-option.mat-option .mat-icon {
+    margin: initial;
+}
+
+.search-option .item-title,
+.search-option .item-metadata {
+    display: block;
+    line-height: 2;
+}
+
+.search-option .item-title .mat-icon {
+    height: 18px;
+    width: 18px;
+    font-size: 18px;
+}
