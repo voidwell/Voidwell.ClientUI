@@ -1,8 +1,13 @@
 ﻿.main-content {
     margin-top: 15px;
 }
+.weapon-info-card mat-card,
+.weapon-description-card mat-card {
+    padding: 15px;
+}
+
 .weapon-description-card {
-    max-width: 350px;
+    max-width: 380px;
     margin-right: 20px;
 }
 .weapon-description-card img {
@@ -14,7 +19,7 @@
 }
 
 .weapon-info-card {
-    
+    overflow: hidden;
 }
 .weapon-info-card .label {
     opacity: 0.8;

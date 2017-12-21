@@ -1,0 +1,107 @@
+<div class="content-container" *ngIf="playerData">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <div *ngIf="!isLoading" class="class-list">
+        <div *ngIf="!profile">
+            <mat-table #table [dataSource]="profilesDataSource">
+                <ng-container matColumnDef="rank">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let idx = index">
+                        <div class="rank-block">
+                            #{{idx + 1}}
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let profile">
+                        <span class="profile-icon" [style.background-image]="'url(' + (profile.imageId | dgcImageUrl) + ')'"></span>
+                        <div class="name-block">
+                            <strong>{{profile.name}}</strong>
+                            <small>{{profile.stats.score | number}}</small>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="accuracy">
+                    <div class="accuracy-block">
+                        <mat-header-cell *matHeaderCellDef>Accuracy</mat-header-cell>
+                        <mat-cell *matCellDef="let profile">{{profile.stats.hitCount / profile.stats.fireCount * 100 | number: '.1-1'}}%</mat-cell>
+                    </div>
+                </ng-container>
+                <ng-container matColumnDef="kdr">
+                    <mat-header-cell *matHeaderCellDef>K/D Ratio</mat-header-cell>
+                    <mat-cell *matCellDef="let profile">
+                        <div class="kdr-block">
+                            <div><strong>{{profile.stats.kills / profile.stats.deaths | number: '.2-2'}}</strong>:1 K/D</div>
+                            <small>{{profile.stats.kills | number}} / {{profile.stats.deaths | number}}</small>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="time">
+                    <div class="time-block">
+                        <mat-header-cell *matHeaderCellDef>Time Played</mat-header-cell>
+                        <mat-cell *matCellDef="let profile">{{profile.stats.playTime / 3600 | number:'.1-1'}} Hours</mat-cell>
+                    </div>
+                </ng-container>
+                <ng-container matColumnDef="gobutton">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let profile">
+                        <a mat-button routerLink="{{profile.profileTypeId}}" class="goto-button">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+                        </a>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['rank','name','accuracy','kdr','time','gobutton']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['rank','name','accuracy','kdr','time','gobutton'];"></mat-row>
+            </mat-table>
+        </div>
+        <div *ngIf="profile" class="single-class">
+            <mat-card>
+                <mat-card-content>
+                    <div>
+                        <div>
+                            <div class="profile-tab-content flexcolumn">
+                                <div class="layout-padding">
+                                    <div class="profile-icon-container">
+                                        <img class="inverse-img" [src]="profile.imageId | dgcImageUrl" />
+                                    </div>
+                                    <div class="profile-data">
+                                        <div>
+                                            <span class="label">Kills of enemy class:</span>
+                                            <span class="value">{{profile.stats.kills | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Deaths by enemy class:</span>
+                                            <span class="value">{{profile.stats.deaths | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Score:</span>
+                                            <span class="value">{{profile.stats.score | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Score/Min:</span>
+                                            <span class="value">{{profile.stats.score / (profile.stats.playTime / 60) | number: '.0-0'}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Shots fired:</span>
+                                            <span class="value">{{profile.stats.fireCount | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Shots hit:</span>
+                                            <span class="value">{{profile.stats.hitCount | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Time played:</span>
+                                            <span class="value">{{profile.stats.playTime / 60 / 60 | number: '.1-1'}} Hours</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <planetside-player-weapons-table [weapons]="profileWeapons"></planetside-player-weapons-table>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,8 +1,9 @@
 ﻿<div class="content-container">
-    <div class="main-news-container">
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <div class="main-news-container" *ngIf="!isLoading && !errorMessage">
         <div class="updates-content pull-right">
             <div class="updates-title">Game Updates</div>
-            <mat-spinner *ngIf="isUpdatesLoading"></mat-spinner>
             <ul *ngIf="!isUpdatesLoading">
                 <li *ngFor="let item of updateList">
                     <a [href]="item.link" target="_blank">{{item.title}}</a>
@@ -10,9 +11,8 @@
             </ul>
         </div>
         <div class="news-content">
-            <mat-spinner *ngIf="isNewsLoading"></mat-spinner>
             <div *ngIf="!isNewsLoading">
-                <mat-card *ngFor="let item of newsList">
+                <mat-card *ngFor="let item of newsList" class="news-card">
                     <mat-card-header>
                         <mat-card-title>
                             <a mat-icon-button class="pull-right" [href]="item.link" target="_blank">

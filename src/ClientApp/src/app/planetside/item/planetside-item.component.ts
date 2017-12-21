@@ -7,7 +7,7 @@ import { HeaderService } from './../../shared/services/header.service';
 @Component({
     selector: 'planetside-item',
     templateUrl: './planetside-item.template.html',
-    styleUrls: ['../../app.styles.css', './planetside-item.styles.css'],
+    styleUrls: ['./planetside-item.styles.css'],
     providers: [PlanetsideApi]
 })
 

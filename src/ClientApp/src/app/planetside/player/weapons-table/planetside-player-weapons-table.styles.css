@@ -1,0 +1,31 @@
+﻿.mat-column-name,
+.mat-column-name .mat-button,
+.auraxium-meter-back {
+    min-width: 160px;
+}
+
+.auraxium-meter-back {
+    height: 5px;
+    background: #797979;
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+}
+
+.auraxium-meter-fore {
+    background: #350c35;
+    height: 100%;
+}
+
+.mat-column-name {
+    text-align: left;
+}
+
+.mat-column-name .mat-button {
+    padding-top: 5px;
+    text-transform: none;
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+}
