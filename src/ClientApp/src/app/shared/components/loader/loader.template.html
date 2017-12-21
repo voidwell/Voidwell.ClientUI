@@ -1,0 +1,12 @@
+﻿<div class="loader-container" *ngIf="loading">
+    <div class="loader-wrapper">
+        <svg [attr.width]="width" [attr.height]="height" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-dual-ring">
+            <circle class="inner-ring" cx="50" cy="50" fill="none" stroke-linecap="round" [attr.r]="innerRadius" [attr.stroke-width]="innerStrokeWidth" [attr.stroke-dasharray]="innerDashArray" transform="rotate(68 50 50)">
+                <animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="1.0s" begin="0s" repeatCount="indefinite"></animateTransform>
+            </circle>
+            <circle class="outer-ring" cx="50" cy="50" fill="none" stroke-linecap="round" [attr.r]="outerRadius" [attr.stroke-width]="outerStrokeWidth" [attr.stroke-dasharray]="outerDashArray" transform="rotate(68 50 50)">
+                <animateTransform attributeName="transform" type="rotate" calcMode="linear" values="0 50 50;360 50 50" keyTimes="0;1" dur="3.0s" begin="0s" repeatCount="indefinite"></animateTransform>
+            </circle>
+        </svg>
+    </div>
+</div>

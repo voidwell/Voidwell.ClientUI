@@ -1,0 +1,103 @@
+﻿<mat-table #table [dataSource]="dataSource" class="striped" matSort>
+    <ng-container matColumnDef="name">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+        <mat-cell *matCellDef="let item">
+            <div class="weapon-name">
+                <a mat-button routerLink="/ps2/item/{{item.itemId}}">
+                    <div class="name">{{item.name}}</div>
+                </a>
+                <div class="auraxium-meter-back">
+                    <div class="auraxium-meter-fore" [style.width]="getPercentToAurax(item.stats.kills)"></div>
+                </div>
+            </div>
+        </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="kills">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.kills | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="vehicleKills">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>V.Kills</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.vehicleKills | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="deaths">
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Deaths</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.deaths | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="kdr">
+        <mat-header-cell *matHeaderCellDef>K/D Ratio</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.kills / item.stats.deaths | number: '.2-2'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="kdrDelta">
+        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.killDeathRatioDelta | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="accuracy">
+        <mat-header-cell *matHeaderCellDef>Accuracy</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.hitCount / item.stats.fireCount * 100 | number: '.1-1'}}%</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="accuracyDelta">
+        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.accuracyDelta | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="hsr">
+        <mat-header-cell *matHeaderCellDef>HSR</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.headshots / item.stats.kills | number: '.2-2'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="hsrDelta">
+        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.hsrDelta | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="kph">
+        <mat-header-cell *matHeaderCellDef>KPH</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.kills / (item.stats.playTime / 3600) | number: '.1-1'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="kphDelta">
+        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.kphDelta | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="vehicleKph">
+        <mat-header-cell *matHeaderCellDef>V.KPH</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.vehicleKills / (item.stats.playTime / 3600) | number: '.1-1'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="vehicleKphDelta">
+        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.vehicleKphDelta | number}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="spm">
+        <mat-header-cell *matHeaderCellDef>SPM</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.score / (item.stats.playTime / 60) | number: '.0-0'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="time">
+        <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.playTime / 3600 | number: '.1-1'}}h</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="lpk">
+        <mat-header-cell *matHeaderCellDef>LPK</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.hitCount / item.stats.kills | number: '.1-1'}}</mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="spk">
+        <mat-header-cell *matHeaderCellDef>SPK</mat-header-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.fireCount / item.stats.kills | number: '.1-1'}}</mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="['name','kills','vehicleKills','deaths','kdr','kdrDelta','accuracy','accuracyDelta','hsr','hsrDelta','kph','kphDelta','vehicleKph','vehicleKphDelta','spm','time','lpk','spk']"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: ['name','kills','vehicleKills','deaths','kdr','kdrDelta','accuracy','accuracyDelta','hsr','hsrDelta','kph','kphDelta','vehicleKph','vehicleKphDelta','spm','time','lpk','spk'];"></mat-row>
+</mat-table>

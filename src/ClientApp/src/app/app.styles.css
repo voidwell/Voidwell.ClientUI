@@ -1,7 +1,4 @@
-﻿@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "~mdi/css/materialdesignicons.css";
-
-.content-container {
+﻿.content-container {
     width: 1300px;
     /*padding-right: 15px;
     padding-left: 15px;*/
@@ -34,76 +31,13 @@ vw-header {
 }
 
 
-
-[md-button], [md-raised-button] {
-    text-transform: uppercase;
-}
-
-[md-button], [md-icon-button] {
-    background: transparent;
-}
-
-md-icon[fonticon] {
-    height: auto;
-}
-
-
-
-    .voidwell md-card.inline,
-    .voidwell .inline {
-        display: inline-block;
-    }
-
-    .voidwell md-card md-card-footer {
-        padding: 0;
-        display: block;
-        position: relative;
-        bottom: initial;
-        left: initial;
-        min-height: initial;
-        width: initial;
-    }
-
-        .voidwell md-card md-card-footer.bottom {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-        }
-
-    .voidwell md-card .info-rows .info-row .info-item {
-        border-top: 1px solid #E0E0E0;
-        padding: 10px;
-    }
-
-        .voidwell md-card .info-rows .info-row .info-item:not(:last-child) {
-            border-right: 1px solid #E0E0E0;
-        }
-
-        .voidwell md-card .info-rows .info-row .info-item .value,
-        .voidwell md-card .info-rows .info-row .info-item .label {
-            text-align: center;
-            color: #666
-        }
-
-        .voidwell md-card .info-rows .info-row .info-item .label {
-            opacity: 0.8;
-            font-size: 0.8em;
-        }
-
-        .voidwell md-card .info-rows .info-row .info-item .value {
-            font-size: 1.1em;
-        }
-
-
-
 .voidwell .tab-nav-bar,
-.voidwell md-tab-group md-tab-header {
+.voidwell mat-tab-group mat-tab-header {
     background: #19282F;
     color: #fff;
 }
 
-.voidwell md-ink-bar {
+.voidwell mat-ink-bar {
     background: #3A4C58;
 }
 
@@ -112,53 +46,16 @@ md-icon[fonticon] {
 
 
 
-.voidwell a:not([md-button]):not([md-tab-link]) {
+.voidwell a:not([mat-button]):not([mat-tab-link]) {
     color: #48DCF6;
     text-decoration: none;
 }
 
-.voidwell a:not([md-button]):hover {
+.voidwell a:not([mat-button]):hover {
     opacity: 0.5;
 }
 
-.faction-ns-bg {
-    background-color: #999999;
-}
 
-.faction-vs-bg {
-    background-color: #8103CD;
-}
-
-.faction-nc-bg {
-    background-color: #1177EA;
-}
-
-.faction-tr-bg {
-    background-color: #C62828;
-}
-
-    .faction-ns-bg,
-    .faction-ns-bg h1,
-    .faction-vs-bg,
-    .faction-vs-bg h1,
-    .faction-nc-bg,
-    .faction-nc-bg h1,
-    .faction-tr-bg,
-    .faction-tr-bg h1 {
-        color: #fff;
-    }
-
-.faction-vs-text {
-    color: #8f45bb !important;
-}
-
-.faction-nc-text {
-    color: #1565C0 !important;
-}
-
-.faction-tr-text {
-    color: #C62828 !important;
-}
 
 img.inverse-img {
     -webkit-filter: invert(100%);
@@ -285,272 +182,6 @@ img.inverse-img {
 
 
 
-
-
-
-
-
-.datatable.scroll-vertical {
-    height: 600px;
-}
-
-
-.datatable.darkmaterial {
-    background: #19282F;
-    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
-    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
-    /**
-	 * Shared Styles
-	 */
-    /**
-	 * Global Row Styles
-	 */
-    /**
-	 * Header Styles
-	 */
-    /**
-	 * Body Styles
-	 */
-    /**
-	 * Footer Styles
-	 */
-}
-
-    .datatable.darkmaterial.striped .datatable-row-odd {
-        background: #162327;
-    }
-
-    .datatable.darkmaterial.single-selection .datatable-body-row.active,
-    .datatable.darkmaterial.single-selection .datatable-body-row.active .datatable-row-group, .datatable.darkmaterial.multi-selection .datatable-body-row.active,
-    .datatable.darkmaterial.multi-selection .datatable-body-row.active .datatable-row-group, .datatable.darkmaterial.multi-click-selection .datatable-body-row.active,
-    .datatable.darkmaterial.multi-click-selection .datatable-body-row.active .datatable-row-group {
-        background-color: #3A4C58;
-        color: #1F2E32;
-    }
-
-        .datatable.darkmaterial.single-selection .datatable-body-row.active:hover,
-        .datatable.darkmaterial.single-selection .datatable-body-row.active:hover .datatable-row-group, .datatable.darkmaterial.multi-selection .datatable-body-row.active:hover,
-        .datatable.darkmaterial.multi-selection .datatable-body-row.active:hover .datatable-row-group, .datatable.darkmaterial.multi-click-selection .datatable-body-row.active:hover,
-        .datatable.darkmaterial.multi-click-selection .datatable-body-row.active:hover .datatable-row-group {
-            background-color: #193AE4;
-            color: #1F2E32;
-        }
-
-        .datatable.darkmaterial.single-selection .datatable-body-row.active:focus,
-        .datatable.darkmaterial.single-selection .datatable-body-row.active:focus .datatable-row-group, .datatable.darkmaterial.multi-selection .datatable-body-row.active:focus,
-        .datatable.darkmaterial.multi-selection .datatable-body-row.active:focus .datatable-row-group, .datatable.darkmaterial.multi-click-selection .datatable-body-row.active:focus,
-        .datatable.darkmaterial.multi-click-selection .datatable-body-row.active:focus .datatable-row-group {
-            background-color: #2041EF;
-            color: #1F2E32;
-        }
-
-    .datatable.darkmaterial:not(.cell-selection) .datatable-body-row:hover,
-    .datatable.darkmaterial:not(.cell-selection) .datatable-body-row:hover .datatable-row-group {
-        background-color: #162327;
-        transition-property: background;
-        transition-duration: .3s;
-        transition-timing-function: linear;
-    }
-
-    .datatable.darkmaterial:not(.cell-selection) .datatable-body-row:focus,
-    .datatable.darkmaterial:not(.cell-selection) .datatable-body-row:focus .datatable-row-group {
-        background-color: #ddd;
-    }
-
-    .datatable.darkmaterial.cell-selection .datatable-body-cell:hover,
-    .datatable.darkmaterial.cell-selection .datatable-body-cell:hover .datatable-row-group {
-        background-color: #162327;
-        transition-property: background;
-        transition-duration: .3s;
-        transition-timing-function: linear;
-    }
-
-    .datatable.darkmaterial.cell-selection .datatable-body-cell:focus,
-    .datatable.darkmaterial.cell-selection .datatable-body-cell:focus .datatable-row-group {
-        background-color: #ddd;
-    }
-
-    .datatable.darkmaterial.cell-selection .datatable-body-cell.active,
-    .datatable.darkmaterial.cell-selection .datatable-body-cell.active .datatable-row-group {
-        background-color: #3A4C58;
-        color: #1F2E32;
-    }
-
-        .datatable.darkmaterial.cell-selection .datatable-body-cell.active:hover,
-        .datatable.darkmaterial.cell-selection .datatable-body-cell.active:hover .datatable-row-group {
-            background-color: #193AE4;
-            color: #1F2E32;
-        }
-
-        .datatable.darkmaterial.cell-selection .datatable-body-cell.active:focus,
-        .datatable.darkmaterial.cell-selection .datatable-body-cell.active:focus .datatable-row-group {
-            background-color: #2041EF;
-            color: #1F2E32;
-        }
-
-    .datatable.darkmaterial .empty-row {
-        height: 50px;
-        text-align: left;
-        padding: .5rem .5rem;
-        vertical-align: top;
-        border-top: 0;
-    }
-
-    .datatable.darkmaterial .loading-row {
-        text-align: left;
-        padding: .5rem .5rem;
-        vertical-align: top;
-        border-top: 0;
-    }
-
-    .datatable.darkmaterial .datatable-header .datatable-row-left,
-    .datatable.darkmaterial .datatable-body .datatable-row-left {
-        background-color: #1F2E32;
-        background-position: 100% 0;
-        background-repeat: repeat-y;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAYAAAD5PA/NAAAAFklEQVQIHWPSkNeSBmJhTQVtbiDNCgASagIIuJX8OgAAAABJRU5ErkJggg==);
-    }
-
-    .datatable.darkmaterial .datatable-header .datatable-row-right,
-    .datatable.darkmaterial .datatable-body .datatable-row-right {
-        background-position: 0 0;
-        background-color: #1F2E32;
-        background-repeat: repeat-y;
-        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAABCAYAAAD5PA/NAAAAFklEQVQI12PQkNdi1VTQ5gbSwkAsDQARLAIGtOSFUAAAAABJRU5ErkJggg==);
-    }
-
-    .datatable.darkmaterial .datatable-header {
-        border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-    }
-
-        .datatable.darkmaterial .datatable-header .datatable-header-cell {
-            text-align: left;
-            padding: .5rem .5rem;
-            font-weight: 400;
-            color: #757575;
-            vertical-align: bottom;
-        }
-
-            .datatable.darkmaterial .datatable-header .datatable-header-cell.longpress {
-                color: #00E676;
-            }
-
-            .datatable.darkmaterial .datatable-header .datatable-header-cell.dragging .resize-handle {
-                border-right: none;
-            }
-
-        .datatable.darkmaterial .datatable-header .resize-handle {
-            border-right: solid 1px #162327;
-        }
-
-    .datatable.darkmaterial .datatable-body .datatable-row-detail {
-        background: #f5f5f5;
-        padding: 10px;
-    }
-
-    .datatable.darkmaterial .datatable-body .datatable-body-row .datatable-body-cell {
-        text-align: left;
-        padding: .5rem .5rem;
-        vertical-align: top;
-        border-top: 0;
-        -webkit-transition: width 0.3s ease;
-        transition: width 0.3s ease;
-    }
-
-    .datatable.darkmaterial .datatable-body .progress-linear {
-        display: block;
-        position: relative;
-        width: 100%;
-        height: 5px;
-        padding: 0;
-        margin: 0;
-        position: absolute;
-    }
-
-        .datatable.darkmaterial .datatable-body .progress-linear .container {
-            display: block;
-            position: relative;
-            overflow: hidden;
-            width: 100%;
-            height: 5px;
-            -webkit-transform: translate(0, 0) scale(1, 1);
-            transform: translate(0, 0) scale(1, 1);
-            background-color: #aad1f9;
-        }
-
-            .datatable.darkmaterial .datatable-body .progress-linear .container .bar {
-                transition: all .2s linear;
-                -webkit-animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1);
-                animation: query 0.8s infinite cubic-bezier(0.39, 0.575, 0.565, 1);
-                transition: -webkit-transform .2s linear;
-                transition: transform .2s linear;
-                background-color: #106cc8;
-                position: absolute;
-                left: 0;
-                top: 0;
-                bottom: 0;
-                width: 100%;
-                height: 5px;
-            }
-
-    .datatable.darkmaterial .datatable-footer {
-        border-top: 1px solid rgba(0, 0, 0, 0.12);
-        font-size: 16px;
-    }
-
-        .datatable.darkmaterial .datatable-footer .page-count {
-            line-height: 50px;
-            height: 50px;
-            padding: 0 .5rem;
-        }
-
-        .datatable.darkmaterial .datatable-footer .datatable-pager {
-            margin: 0 10px;
-        }
-
-            .datatable.darkmaterial .datatable-footer .datatable-pager li {
-                vertical-align: middle;
-            }
-
-                .datatable.darkmaterial .datatable-footer .datatable-pager li.disabled a {
-                    color: rgba(0, 0, 0, 0.26) !important;
-                    background-color: transparent !important;
-                }
-
-                .datatable.darkmaterial .datatable-footer .datatable-pager li.active a {
-                    background-color: rgba(158, 158, 158, 0.2);
-                    font-weight: bold;
-                }
-
-            .datatable.darkmaterial .datatable-footer .datatable-pager a {
-                height: 22px;
-                min-width: 24px;
-                line-height: 22px;
-                padding: 0 6px;
-                border-radius: 3px;
-                margin: 6px 3px;
-                text-align: center;
-                vertical-align: top;
-                color: rgba(0, 0, 0, 0.54);
-                text-decoration: none;
-                vertical-align: bottom;
-            }
-
-                .datatable.darkmaterial .datatable-footer .datatable-pager a:hover {
-                    color: rgba(0, 0, 0, 0.75);
-                    background-color: rgba(158, 158, 158, 0.2);
-                }
-
-            .datatable.darkmaterial .datatable-footer .datatable-pager .icon-left,
-            .datatable.darkmaterial .datatable-footer .datatable-pager .icon-skip,
-            .datatable.darkmaterial .datatable-footer .datatable-pager .icon-right,
-            .datatable.darkmaterial .datatable-footer .datatable-pager .icon-prev {
-                font-size: 20px;
-                line-height: 20px;
-                padding: 0 3px;
-            }
-
 /**
  * Progress bar animations
  */
@@ -607,39 +238,7 @@ img.inverse-img {
     float: left;
 }
 
-.mat-card {
-    border-radius: 3px;
-    position: relative;
-    margin-bottom: 8px;
-    padding: 0;
-    background: #1F2E32;
-    overflow: hidden;
-}
-.mat-card .mat-card-header {
-    background: #3A4C58;
-    font-size: initial;
-    padding: 10px 10px 0 10px;
-}
-.mat-card .mat-card-header-text {
-    width: 100%;
-}
-.mat-card .mat-card-title,
-.mat-card .mat-card-subtitle {
-    color: #fff;
-}
-.mat-card .mat-card-title {
-    opacity: 0.9;
-}
-.mat-card .mat-card-subtitle {
-    opacity: 0.5;
-}
-.mat-card .mat-card-content {
-    padding: 10px;
-    position: relative;
-    font-size: initial;
-    color: #fff;
-    overflow: hidden;
-}
+
 
 .mat-form-field-placeholder {
     color: #fff;
@@ -655,6 +254,9 @@ img.inverse-img {
 .tab-nav-bar-background {
     background: #1F2E32;
 }
+.tab-nav-bar-background.sub-bar {
+    background: #1f2e32a1;
+}
 .mat-tab-link,
 .mat-tab-label {
     color: #fff;
@@ -662,3 +264,183 @@ img.inverse-img {
 .mat-ink-bar {
     background-color: #868686 !important;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mat-table {
+    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+}
+
+mat-table.striped mat-row:nth-child(odd) {
+    background: #24313a;
+}
+
+mat-table mat-row {
+    background: #1F2E32;
+    position: relative;
+}
+mat-table mat-row mat-cell.mat-cell {
+    color: #bfbfbf;
+}
+
+mat-table mat-header-row {
+    background: #19282F;
+    color: #000;
+}
+mat-table mat-header-row mat-header-cell.mat-header-cell {
+    color: #bdbdbd;
+}
+
+[mat-button], [mat-raised-button] {
+    text-transform: uppercase;
+}
+
+[mat-button], [mat-icon-button] {
+    background: transparent;
+}
+
+mat-icon[fonticon] {
+    height: auto;
+}
+
+
+mat-card.mat-card {
+    border-radius: 0;
+    position: relative;
+    margin: 8px;
+    padding: 0;
+    background: #1F2E32;
+}
+
+mat-card.inline,
+.inline {
+    display: inline-block;
+}
+
+mat-card mat-card-header {
+    background: #3A4C58;
+    color: #fff;
+    font-size: initial;
+    margin: 0;
+    padding: 10px 10px 0 10px;
+}
+
+mat-card .mat-card-header-text {
+    width: 100%;
+}
+
+mat-card mat-card-title {
+    opacity: 0.9;
+}
+
+mat-card mat-card-subtitle {
+    color: #fff;
+    opacity: 0.5;
+}
+
+mat-card mat-card-content {
+    padding: 0;
+    position: relative;
+    font-size: initial;
+    color: #fff;
+    margin: 0;
+    overflow: hidden;
+}
+
+mat-card.mat-card mat-card-footer {
+    padding: 0;
+    display: block;
+    position: relative;
+    bottom: initial;
+    left: initial;
+    min-height: initial;
+    width: initial;
+    margin: 0;
+}
+
+mat-card mat-card-footer.bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+mat-card .info-rows .info-row .info-item {
+    border-top: 1px solid #9e9e9e;
+    padding: 10px;
+}
+
+    mat-card .info-rows .info-row .info-item:not(:last-child) {
+        border-right: 1px solid #9e9e9e;
+    }
+
+    mat-card .info-rows .info-row .info-item .value,
+    mat-card .info-rows .info-row .info-item .label {
+        text-align: center;
+        color: #fff;
+    }
+
+    mat-card .info-rows .info-row .info-item .label {
+        opacity: 0.5;
+        font-size: 0.8em;
+    }
+
+    mat-card .info-rows .info-row .info-item .value {
+        font-size: 1.1em;
+    }
+
+/*
+    .mat-card .mat-card-header {
+        background: #3A4C58;
+        font-size: initial;
+        padding: 10px 10px 0 10px;
+    }
+
+    .mat-card .mat-card-header-text {
+        width: 100%;
+    }
+
+    .mat-card .mat-card-title,
+    .mat-card .mat-card-subtitle {
+        color: #fff;
+    }
+
+    .mat-card .mat-card-content {
+        padding: 10px;
+        position: relative;
+        font-size: initial;
+        color: #fff;
+        overflow: hidden;
+    }
+*/

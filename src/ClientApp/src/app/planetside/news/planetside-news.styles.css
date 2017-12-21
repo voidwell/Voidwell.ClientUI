@@ -7,6 +7,13 @@
     color: #8c8c8c;
 }
 
+.news-card {
+    overflow: hidden;
+}
+.news-card mat-card-content {
+    padding: 15px;
+}
+
 .news-title {
     font-size: 1.2em;
 }

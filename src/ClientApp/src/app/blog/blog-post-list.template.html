@@ -1,17 +1,18 @@
 ﻿<div class="content-container">
-    <div>
-        <span *ngIf=errorMessage>{{errorMessage}}</span>
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngIf="!isLoading && !errorMessage">
+        <mat-card class="blog-card" *ngFor="let blogPost of blogPosts">
+            <mat-card-header>
+                <mat-card-title>
+                    <span class="pull-right">{{blogPost.publishDate | date:'MMMM d, yyyy H:mm'}}</span>
+                    <a class="blog-title" [routerLink]="blogPost.id">{{blogPost.title}}</a>
+                </mat-card-title>
+                <mat-card-subtitle>By {{blogPost.author}}</mat-card-subtitle>
+            </mat-card-header>
+            <mat-card-content>
+                {{blogPost.content}}
+            </mat-card-content>
+        </mat-card>
     </div>
-    <mat-card class="blog-card" *ngFor="let blogPost of blogPosts">
-        <mat-card-header>
-            <mat-card-title>
-                <span class="pull-right">{{blogPost.publishDate | date:'MMMM d, yyyy H:mm'}}</span>
-                <a class="blog-title" [routerLink]="blogPost.id">{{blogPost.title}}</a>
-            </mat-card-title>
-            <mat-card-subtitle>By {{blogPost.author}}</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
-            {{blogPost.content}}
-        </mat-card-content>
-    </mat-card>
 </div>

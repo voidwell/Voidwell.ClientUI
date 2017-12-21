@@ -1,31 +1,51 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { PlanetsideApi } from './../planetside-api.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
+import { PlanetsideApi } from './../planetside-api.service';
 import { HeaderService } from './../../shared/services/header.service';
+import { Observable } from 'rxjs/Observable';
+import { Observer } from "rxjs/Observer";
+import 'rxjs/add/observable/throw';
+import { Subscriber } from "rxjs/Subscriber";
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Component({
     selector: 'planetside-player',
     templateUrl: './planetside-player.template.html',
-    styleUrls: ['../../app.styles.css'],
     providers: [PlanetsideApi]
 })
 
 export class PlanetsidePlayerComponent implements OnDestroy {
-    errorMessage: string = null;
-    isLoading: boolean;
+    private isLoading: boolean;
+    private errorMessage: string = null;
+    private routeSub: Subscription;
+    private navLinks = [
+        { path: 'stats', label: 'Stats' },
+        { path: 'classes', label: 'Classes' },
+        { path: 'vehicles', label: 'Vehicles' },
+        { path: 'weapons', label: 'Weapons' },
+        { path: 'sessions', label: 'Sessions' },
+    ];
 
-    playerData: any;
-    routeSub: Subscription;
+    playerData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-    constructor(private api: PlanetsideApi, private route: ActivatedRoute, private headerService: HeaderService) {
+    constructor(private api: PlanetsideApi, private route: ActivatedRoute, private router: Router, private headerService: HeaderService, private decimalPipe: DecimalPipe) {
         this.routeSub = this.route.params.subscribe(params => {
             let id = params['id'];
             this.isLoading = true;
+            this.errorMessage = null;
+
+            this.playerData.next(null);
 
             this.api.getCharacter(id)
+                .catch(error => {
+                    this.errorMessage = error._body
+                    this.isLoading = false;
+                    return Observable.throw(error);
+                })
                 .subscribe(data => {
-                    this.playerData = data;
+                    this.playerData.next(data);
 
                     this.headerService.activeHeader.title = data.name;
                     this.headerService.activeHeader.subtitle = data.world;
@@ -37,6 +57,14 @@ export class PlanetsidePlayerComponent implements OnDestroy {
                     } else if (data.factionId === '3') {
                         this.headerService.activeHeader.background = '#471111';
                     }
+
+                    this.headerService.activeHeader.info = [
+                        { label: 'Battle Rank', value: data.battleRank },
+                        { label: 'Score', value: this.decimalPipe.transform(data.lifetimeStats.score) },
+                        { label: 'Kills', value: this.decimalPipe.transform(data.lifetimeStats.kills) },
+                        { label: 'Deaths', value: this.decimalPipe.transform(data.lifetimeStats.deaths) },
+                        { label: 'Hours Played', value: this.decimalPipe.transform(data.lifetimeStats.playTime / 3600, '.1-1') },
+                    ];
 
                     this.isLoading = false;
                 });

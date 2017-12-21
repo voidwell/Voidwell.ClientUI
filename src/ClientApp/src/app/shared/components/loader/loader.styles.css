@@ -1,0 +1,12 @@
+﻿.loader-container {
+    margin: 15px;
+}
+.loader-wrapper {
+    text-align: center;
+}
+.loader-wrapper .inner-ring {
+    stroke: #1d3975;
+}
+.loader-wrapper .outer-ring {
+    stroke: #3a4d75;
+}

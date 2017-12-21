@@ -60,4 +60,22 @@ export class PlanetsideApi {
                 return Observable.throw(error);
             });
     }
+
+    getAllProfiles() {
+        return this.http.get(this.ps2Url + 'profile')
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getAllVehicles() {
+        return this.http.get(this.ps2Url + 'vehicle')
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
 }

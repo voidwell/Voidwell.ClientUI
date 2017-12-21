@@ -26,7 +26,6 @@ export class PlanetsideItemDamageCardComponent implements OnInit {
         let minDamage = this.weaponData.minDamage;
 
         let d3 = this.d3;
-
         let damageElem = this.parentNativeElement;
 
         let margin = { top: 5, right: 10, bottom: 20, left: 30 };

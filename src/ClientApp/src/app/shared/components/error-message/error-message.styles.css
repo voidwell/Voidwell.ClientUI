@@ -1,0 +1,9 @@
+﻿.error-message {
+    font-size: 2em;
+    color: #bb1515;
+    text-align: center;
+}
+
+.error-message-icon {
+    margin-right: 15px;
+}

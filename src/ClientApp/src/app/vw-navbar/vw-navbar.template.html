@@ -13,7 +13,7 @@
                     <button mat-menu-item (click)="signOut()">Logout</button>
                 </mat-menu>
                 <button *ngIf="!isLoggedIn" mat-button (click)="signIn()">Login</button>
-                <a *ngIf="!isLoggedIn" mat-raised-button color="primary" routerLink="/account/register">Register</a>
+                <a *ngIf="!isLoggedIn" mat-button routerLink="/account/register">Register</a>
             </div>
         </nav>
     </div>

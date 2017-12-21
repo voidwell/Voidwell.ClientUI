@@ -1,0 +1,29 @@
+<mat-card class="vw-siege">
+  <mat-card-header>
+    <mat-card-title>Siege Level</mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="layout-margin">
+      <div #siegegauge id="siege-gauge"></div>
+      <div class="gauge-icons">
+        <mat-icon fontSet="mdi" class="shield-icon" fontIcon="mdi-shield"></mat-icon>
+        <div class="siege-level">{{siegeLevel | number: '.2-2'}}</div>
+        <mat-icon fontSet="mdi" class="sword-icon" fontIcon="mdi-sword"></mat-icon>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-footer class="bottom">
+    <div class="info-rows">
+      <div class="info-row flexrow flexalignspacearoundstretch">
+        <div class="info-item flex">
+          <div class="value">{{captured | number}}</div>
+          <div class="label">Captured</div>
+        </div>
+        <div class="info-item flex">
+          <div class="value">{{defended | number}}</div>
+          <div class="label">Defended</div>
+        </div>
+      </div>
+    </div>
+  </mat-card-footer>
+</mat-card>

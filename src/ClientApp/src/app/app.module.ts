@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconRegistry } from '@angular/material';
 
 import { MaterialLib } from './shared/materialLib.module';
+import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { VoidwellApi } from './shared/services/voidwell-api.service';
 import { HeaderService } from './shared/services/header.service';
 import { VWHeaderComponent } from './vw-header/vw-header.component';
@@ -24,6 +25,7 @@ import { AppComponent } from './app.component';
         VWNavbarComponent
     ],
     imports: [
+        SharedComponentsModule,
         BrowserModule,
         MaterialLib,
         BrowserAnimationsModule,
