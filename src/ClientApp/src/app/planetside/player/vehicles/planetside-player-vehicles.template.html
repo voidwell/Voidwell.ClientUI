@@ -1,0 +1,107 @@
+<div class="content-container" *ngIf="playerData">
+    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <div *ngIf="!isLoading" class="class-list">
+        <div *ngIf="!vehicle">
+            <mat-table #table [dataSource]="vehiclesDataSource">
+                <ng-container matColumnDef="rank">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let idx = index">
+                        <div class="rank-block">
+                            #{{idx + 1}}
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle">
+                        <span class="vehicle-icon" [style.background-image]="'url(' + (vehicle.imageId | dgcImageUrl) + ')'"></span>
+                        <div class="name-block">
+                            <strong>{{vehicle.name}}</strong>
+                            <small>{{vehicle.stats.score | number}}</small>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="accuracy">
+                    <div class="accuracy-block">
+                        <mat-header-cell *matHeaderCellDef>Accuracy</mat-header-cell>
+                        <mat-cell *matCellDef="let vehicle">{{vehicle.stats.hitCount / vehicle.stats.fireCount * 100 | number: '.1-1'}}%</mat-cell>
+                    </div>
+                </ng-container>
+                <ng-container matColumnDef="kdr">
+                    <mat-header-cell *matHeaderCellDef>K/D Ratio</mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle">
+                        <div class="kdr-block">
+                            <div><strong>{{vehicle.stats.kills / vehicle.stats.deaths | number: '.2-2'}}</strong>:1 K/D</div>
+                            <small>{{vehicle.stats.kills | number}} / {{vehicle.stats.deaths | number}}</small>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+                <ng-container matColumnDef="time">
+                    <div class="time-block">
+                        <mat-header-cell *matHeaderCellDef>Time Played</mat-header-cell>
+                        <mat-cell *matCellDef="let vehicle">{{vehicle.stats.playTime / 3600 | number:'.1-1'}} Hours</mat-cell>
+                    </div>
+                </ng-container>
+                <ng-container matColumnDef="gobutton">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let vehicle">
+                        <a mat-button routerLink="{{vehicle.id}}" class="goto-button">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+                        </a>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['rank','name','accuracy','kdr','time','gobutton']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['rank','name','accuracy','kdr','time','gobutton'];"></mat-row>
+            </mat-table>
+        </div>
+        <div *ngIf="vehicle" class="single-class">
+            <mat-card>
+                <mat-card-content>
+                    <div>
+                        <div>
+                            <div class="vehicle-tab-content flexcolumn">
+                                <div class="layout-padding">
+                                    <div class="vehicle-icon-container">
+                                        <img [src]="vehicle.imageId | dgcImageUrl" />
+                                    </div>
+                                    <div class="vehicle-data">
+                                        <div>
+                                            <span class="label">Kills of enemy class:</span>
+                                            <span class="value">{{vehicle.stats.kills | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Deaths by enemy class:</span>
+                                            <span class="value">{{vehicle.stats.deaths | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Score:</span>
+                                            <span class="value">{{vehicle.stats.score | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Score/Min:</span>
+                                            <span class="value">{{vehicle.stats.score / (vehicle.stats.playTime / 60) | number: '.0-0'}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Shots fired:</span>
+                                            <span class="value">{{vehicle.stats.fireCount | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Shots hit:</span>
+                                            <span class="value">{{vehicle.stats.hitCount | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Time played:</span>
+                                            <span class="value">{{vehicle.stats.playTime / 60 / 60 | number: '.1-1'}} Hours</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <planetside-player-weapons-table [weapons]="vehicleWeapons"></planetside-player-weapons-table>
+                            </div>
+                        </div>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

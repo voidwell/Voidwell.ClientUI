@@ -2,3 +2,6 @@
     text-decoration: none;
     color: #fff;
 }
+.blog-card mat-card-content {
+    padding: 15px;
+}

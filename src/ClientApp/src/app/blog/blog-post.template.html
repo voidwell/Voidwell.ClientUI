@@ -1,8 +1,7 @@
 ﻿<div class="content-container">
-    <div>
-        <span *ngIf=errorMessage>{{errorMessage}}</span>
-    </div>
-    <mat-card class="blog-card" *ngIf="!isLoading">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <mat-card class="blog-card" *ngIf="!isLoading && !errorMessage">
         <mat-card-header>
             <mat-card-title>
                 <span class="pull-right">{{blogPost.publishDate | date:'MMMM d, yyyy H:mm'}}</span>

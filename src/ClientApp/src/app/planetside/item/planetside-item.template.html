@@ -7,7 +7,9 @@
                     <div class="item-description">
                         {{weaponData.description}}
                     </div>
-                    <planetside-item-damage-card [weaponData]="weaponData"></planetside-item-damage-card>
+                    <div *ngIf="!weaponData.isVehicleWeapon">
+                        <planetside-item-damage-card [weaponData]="weaponData"></planetside-item-damage-card>
+                    </div>
                 </mat-card-content>
             </mat-card>
         </div>
@@ -26,7 +28,7 @@
                         <span class="label">Fire rate</span>
                         <span class="value">{{60000 / weaponData.fireRateMs }} RPM ({{weaponData.fireRateMs / 1000}} s)</span>
                     </div>
-                    <div class="info-row">
+                    <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
                         <span class="label">Damage</span>
                         <span class="value">{{weaponData.maxDamage}} / {{weaponData.maxDamageRange}}m / {{weaponData.minDamage}} / {{weaponData.MinDamageRange}}m</span>
                     </div>
@@ -42,11 +44,11 @@
                         <span class="label">Ammunition</span>
                         <span class="value">{{weaponData.clipSize}} / {{weaponData.capacity}}</span>
                     </div>
-                    <div class="info-row">
+                    <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
                         <span class="label">Hip accuracy</span>
                         <span class="value">{{weaponData.hipAcc.crouching}} / {{weaponData.hipAcc.crouchWalking}} / {{weaponData.hipAcc.standing}} / {{weaponData.hipAcc.running}} / {{weaponData.hipAcc.cof}}</span>
                     </div>
-                    <div class="info-row">
+                    <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
                         <span class="label">Aim accuracy</span>
                         <span class="value">{{weaponData.aimAcc.crouching}} / {{weaponData.aimAcc.crouchWalking}} / {{weaponData.aimAcc.standing}} / {{weaponData.aimAcc.running}} / {{weaponData.aimAcc.cof}}</span>
                     </div>

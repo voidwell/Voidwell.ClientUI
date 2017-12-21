@@ -7,7 +7,7 @@ import { PlanetsideApi } from './planetside-api.service';
 @Component({
     selector: 'voidwell-planetside-wrapper',
     templateUrl: './planetsidewrapper.template.html',
-    styleUrls: ['./planetsidewrapper.styles.css'],
+    styleUrls: ['./planetsidewrapper.styles.css', './planetside.styles.css'],
     providers: [PlanetsideApi],
     encapsulation: ViewEncapsulation.None
 })

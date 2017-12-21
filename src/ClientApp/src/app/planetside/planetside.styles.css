@@ -1,0 +1,38 @@
+﻿.faction-ns-bg {
+    background-color: #999999;
+}
+
+.faction-vs-bg {
+    background-color: #8103CD;
+}
+
+.faction-nc-bg {
+    background-color: #112447;
+}
+
+.faction-tr-bg {
+    background-color: #471111;
+}
+
+.faction-ns-bg,
+.faction-ns-bg h1,
+.faction-vs-bg,
+.faction-vs-bg h1,
+.faction-nc-bg,
+.faction-nc-bg h1,
+.faction-tr-bg,
+.faction-tr-bg h1 {
+    color: #fff;
+}
+
+.faction-vs-text {
+    color: #8f45bb !important;
+}
+
+.faction-nc-text {
+    color: #1565C0 !important;
+}
+
+.faction-tr-text {
+    color: #C62828 !important;
+}
