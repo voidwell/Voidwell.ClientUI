@@ -1,6 +1,7 @@
 ﻿import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { SharedComponentsModule } from '../shared/components/shared-components.module';
 import { MaterialLib } from '../shared/materialLib.module';
 import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
@@ -10,18 +11,19 @@ import { ChangePasswordCardComponent } from './settings-cards/changepassword.com
 import { routing } from './account.routes';
 
 @NgModule({
-    imports: [
-        FormsModule,
-        MaterialLib,
-        CommonModule,
-        routing
-    ],
     declarations: [
         LoginComponent,
         RegisterComponent,
         PasswordResetComponent,
         UserSettingsComponent,
         ChangePasswordCardComponent
+    ],
+    imports: [
+        FormsModule,
+        MaterialLib,
+        CommonModule,
+        routing,
+        SharedComponentsModule
     ],
     entryComponents: [LoginComponent]
 })

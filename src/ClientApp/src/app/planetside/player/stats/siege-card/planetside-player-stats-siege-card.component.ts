@@ -51,7 +51,7 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
             labelFormat					: d3.format(''),
             labelInset					: 10,
 
-            arcColorFn					: d3.interpolateHsl(d3.rgb('#686e7d'), d3.rgb('#4a66b7'))
+            arcColorFn					: d3.interpolateHsl(d3.rgb('#686e7d'), d3.rgb('#b11b1b'))
         };
 
         let range = undefined;
@@ -102,22 +102,18 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
         function render(newValue) {
             svg = d3.select(gaugeElem)
                 .append('svg:svg')
-                    .attr('width', config.clipWidth)
-                    .attr('height', config.clipHeight);
+                .attr('width', config.clipWidth)
+                .attr('height', config.clipHeight);
 
             var centerTx = centerTranslation();
 
-            var arcs = svg.append('g')
-                    .attr('class', 'arc')
-                    .attr('transform', centerTx);
-
-            arcs.selectAll('path')
-                    .data(tickData)
+            svg.append('g')
+                .attr('transform', centerTx)
+                .selectAll('path')
+                .data(d3.range(500).map(function () { return 1 / 500; }))
                 .enter().append('path')
-                    .attr('fill', function(d, i) {
-                        return config.arcColorFn(d * i);
-                    })
-                    .attr('d', arc);
+                .attr('d', arc)
+                .style('fill', function (d, i) { return config.arcColorFn(d * i); });
 
             var lg = svg.append('g')
                     .attr('class', 'label')
