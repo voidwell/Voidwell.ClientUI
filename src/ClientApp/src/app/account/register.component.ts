@@ -9,7 +9,7 @@ import { NgForm } from '@angular/forms';
 @Component({
     selector: 'voidwell-register',
     templateUrl: './register.template.html',
-    styleUrls: ['../app.styles.css'],
+    styleUrls: ['account.styles.css'],
     providers: [VoidwellApi]
 })
 
