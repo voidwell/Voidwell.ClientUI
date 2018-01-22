@@ -22,7 +22,7 @@ export class PlanetsidePlayerClassesComponent implements OnDestroy {
 
     private profilesDataSource: DataSource<any>;
 
-    constructor(private planetsidePlayer: PlanetsidePlayerComponent, private api: PlanetsideApi, private route: ActivatedRoute,) {
+    constructor(private planetsidePlayer: PlanetsidePlayerComponent, private api: PlanetsideApi, private route: ActivatedRoute) {
         this.isLoading = true;
         this.api.getAllProfiles().subscribe(profiles => {
             planetsidePlayer.playerData.subscribe(data => {

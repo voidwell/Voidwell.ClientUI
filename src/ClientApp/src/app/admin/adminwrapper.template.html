@@ -1,14 +1,16 @@
 ﻿<div class="content-container">
     <div class="admin-panel">
-        <nav mat-tab-nav-bar>
-            <a mat-tab-link
-               *ngFor="let link of navLinks"
-               [routerLink]="link.path"
-               routerLinkActive #rla="routerLinkActive"
-               [active]="rla.isActive">
-                {{link.label}}
-            </a>
-        </nav>
+        <div class="tab-nav-bar-background">
+            <nav mat-tab-nav-bar class="content-container">
+                <a mat-tab-link
+                   *ngFor="let link of navLinks"
+                   [routerLink]="link.path"
+                   routerLinkActive #rla="routerLinkActive"
+                   [active]="rla.isActive">
+                    {{link.label}}
+                </a>
+            </nav>
+        </div>
     </div>
     <router-outlet></router-outlet>
 </div>

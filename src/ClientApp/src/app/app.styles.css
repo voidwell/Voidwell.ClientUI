@@ -223,14 +223,7 @@ img.inverse-img {
 
 
 
-.admin-panel {
-    background: #fff;
-    padding: 2px;
-}
-.user-details label {
-    font-weight: 600;
-    display: block;
-}
+
 .pull-right {
     float: right;
 }
@@ -255,7 +248,7 @@ img.inverse-img {
     background: #1F2E32;
 }
 .tab-nav-bar-background.sub-bar {
-    background: #1f2e32a1;
+    background: #19282F;
 }
 .mat-tab-link,
 .mat-tab-label {
@@ -297,9 +290,7 @@ img.inverse-img {
 
 
 mat-table {
-    -webkit-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
-    -moz-box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 1px 2px 0 rgba(0, 0, 0, 0.24);
+    
 }
 
 mat-table.striped mat-row:nth-child(odd) {
@@ -311,15 +302,24 @@ mat-table mat-row {
     position: relative;
 }
 mat-table mat-row mat-cell.mat-cell {
-    color: #bfbfbf;
+    color: #fff;
 }
 
+mat-paginator.mat-paginator,
 mat-table mat-header-row {
     background: #19282F;
-    color: #000;
 }
+mat-paginator.mat-paginator,
 mat-table mat-header-row mat-header-cell.mat-header-cell {
-    color: #bdbdbd;
+    color: #fff;
+}
+mat-paginator .mat-paginator-increment,
+mat-paginator .mat-paginator-decrement {
+    border-color: #fff;
+}
+mat-paginator .mat-icon-button[disabled] .mat-paginator-increment,
+mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
+    border-color: #585858;
 }
 
 [mat-button], [mat-raised-button] {

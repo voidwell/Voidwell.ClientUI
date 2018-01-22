@@ -1,5 +1,9 @@
 ﻿<div class="content-container">
-    <div>
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <div *ngIf="!isLoading">
+        <div *ngIf="errorMessage">
+            <pre>{{errorMessage | json}}</pre>
+        </div>
         <mat-form-field>
             <input matInput #roleInput placeholder="Role name">
         </mat-form-field>

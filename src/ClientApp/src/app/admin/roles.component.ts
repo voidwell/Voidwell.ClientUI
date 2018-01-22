@@ -3,6 +3,9 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
 import { VoidwellApi } from '../shared/services/voidwell-api.service';
 import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/catch'
+import 'rxjs/add/operator/finally'
+import 'rxjs/add/observable/throw';
 
 @Component({
     selector: 'voidwell-admin-roles',
@@ -12,8 +15,9 @@ import { Observable } from 'rxjs/Observable';
 })
 
 export class RolesComponent implements OnInit, OnDestroy {
+    isLoading: boolean;
+    errorMessage: string = null;
     roles: Array<any>;
-    isLoading: boolean = false;
     getRolesRequest: Subscription;
 
     constructor(private api: VoidwellApi) {
@@ -30,20 +34,46 @@ export class RolesComponent implements OnInit, OnDestroy {
     }
 
     addRole(roleName: string) {
+        this.errorMessage = null;
         this.isLoading = true;
-        this.api.addRole(roleName).subscribe(role => {
-            this.isLoading = false;
-            this.roles.push(role);
-        });;
+        this.api.addRole(roleName)
+            .catch(error => {
+                try {
+                    this.errorMessage = JSON.parse(error._body);
+                }
+                catch (ex) {
+                    this.errorMessage = error._body;
+                }
+                return Observable.throw(error);
+            })
+            .finally(() => {
+                this.isLoading = false;
+            })
+            .subscribe(role => {
+                this.roles.push(role);
+            });
     }
 
     deleteRole(role: any) {
+        this.errorMessage = null;
         this.isLoading = true;
-        this.api.deleteRole(role.id).subscribe(result => {
-            this.isLoading = false;
-            let idx = this.roles.indexOf(role);
-            this.roles.splice(idx, 1);
-        });;
+        this.api.deleteRole(role.id)
+            .catch(error => {
+                try {
+                    this.errorMessage = JSON.parse(error._body);
+                }
+                catch (ex) {
+                    this.errorMessage = error._body;
+                }
+                return Observable.throw(error);
+            })
+            .finally(() => {
+                this.isLoading = false;
+            })
+            .subscribe(result => {
+                let idx = this.roles.indexOf(role);
+                this.roles.splice(idx, 1);
+            });
     }
 
     getDetails(role: any) {

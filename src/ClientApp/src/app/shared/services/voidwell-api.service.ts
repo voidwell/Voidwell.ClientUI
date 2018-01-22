@@ -14,6 +14,7 @@ import { VoidwellAuthService } from '../services/voidwell-auth.service';
 export class VoidwellApi {
     apiBaseUrl = 'app/';
     public blogUrl = location.origin + '/api/blog/';
+    public eventsUrl = location.origin + '/api/events/';
     public accountUrl = location.origin + '/api/account/';
     public authAdminUrl = location.origin + '/api/authadmin/';
 
@@ -123,6 +124,15 @@ export class VoidwellApi {
             });
     }
 
+    updateUserRoles(userId: string, userForm: any) {
+        return this.AuthPut(this.authAdminUrl + 'user/' + userId + '/roles', userForm, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
     deleteUser(userId: string) {
         return this.AuthDelete(this.authAdminUrl + 'user/' + userId, this.options)
             .map(resp => resp.ok ? null :resp.json())
@@ -190,6 +200,33 @@ export class VoidwellApi {
 
     resetPassword(resetPasswordForm: any) {
         return this.http.post(this.accountUrl + 'resetpassword', resetPasswordForm, this.options)
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getCustomEvents() {
+        return this.http.get(this.eventsUrl, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getCustomEventsByGame(gameId: any) {
+        return this.http.get(this.eventsUrl + 'game/' + gameId, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getCustomEvent(eventId: any) {
+        return this.http.get(this.eventsUrl + eventId, this.options)
+            .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
                 return this.handleError(error);

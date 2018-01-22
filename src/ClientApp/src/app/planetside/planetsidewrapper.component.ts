@@ -21,7 +21,8 @@ export class PlanetsideWrapperComponent {
 
     navLinks = [
         { path: 'news', label: 'News' },
-        { path: 'alerts', label: 'Alerts' }
+        { path: 'alerts', label: 'Alerts' },
+        { path: 'events', label: 'Events' }
     ];
 
     constructor(private api: PlanetsideApi, private router: Router) {

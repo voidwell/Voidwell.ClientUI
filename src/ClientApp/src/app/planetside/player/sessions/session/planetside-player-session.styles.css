@@ -1,0 +1,65 @@
+﻿.player-session {
+    margin-top: 5px;
+}
+
+.session-log {
+    overflow: hidden;
+}
+
+.session-info {
+    width: 195px;
+}
+
+.data-block strong {
+    display: block;
+}
+
+.data-block .label {
+    text-transform: uppercase;
+    font-size: 0.8em;
+    opacity: 0.7;
+}
+
+.data-block:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.session-info mat-card-content {
+    padding: 15px;
+}
+
+.weapon-image,
+.weapon-details,
+.weapon-headshot {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.weapon-image {
+    width: 100px;
+    padding: 3px 0;
+}
+.weapon-image img {
+    vertical-align: middle;
+    max-width: 80px;
+    max-height: 40px;
+}
+
+.weapon-details {
+    line-height: 16px;
+}
+
+.weapon-headshot {
+    width: 15px;
+    font-size: 30px;
+    line-height: 40px;
+    opacity: 0.5;
+}
+
+.mat-column-time {
+    max-width: 160px;
+}
+
+.mat-column-location {
+    max-width: 60px;
+}
