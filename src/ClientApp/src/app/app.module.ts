@@ -6,6 +6,7 @@ import { HttpModule } from '@angular/http';
 import { NgReduxModule } from '@angular-redux/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconRegistry } from '@angular/material';
+import { NgPipesModule } from 'ngx-pipes';
 
 import { MaterialLib } from './shared/materialLib.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
@@ -33,7 +34,8 @@ import { AppComponent } from './app.component';
         CommonModule,
         HttpModule,
         FormsModule,
-        NgReduxModule
+        NgReduxModule,
+        NgPipesModule
     ],
     providers: [
         MatIconRegistry,

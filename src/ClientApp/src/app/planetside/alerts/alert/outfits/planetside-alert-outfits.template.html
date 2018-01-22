@@ -1,0 +1,67 @@
+﻿<div class="content-container">
+    <mat-table #table [dataSource]="dataSource" class="striped" matSort>
+        <ng-container matColumnDef="idx">
+            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+            <mat-cell *matCellDef="let idx = index">{{idx + 1 + (paginator.pageIndex * paginator.pageSize) | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Outfit</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">
+                <div class="outfit-name">
+                    <a routerLink="/ps2/outfit/{{outfit.outfit.id}}" [ngClass]="outfit.outfit.factionId | factionColor">
+                        <span [ngClass]="outfit.outfit.factionId | factionColor">
+                            <span *ngIf="outfit.outfit.alias">[{{outfit.outfit.alias}}]</span>
+                            <span>{{outfit.outfit.name}}</span>
+                        </span>
+                    </a>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="kills">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">{{outfit.kills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="vehicleKills">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>V.Kills</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">{{outfit.vehicleKills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="deaths">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Deaths</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">{{outfit.deaths | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="kdr">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>K/D</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">{{outfit.kills / outfit.deaths | number: '.2-2'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tks">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>TKs</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">{{outfit.teamkills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="suicides">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Suicides</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">{{outfit.suicides | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="headshots">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Headshots</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">{{outfit.headshots | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hsper">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>HS %</mat-header-cell>
+            <mat-cell *matCellDef="let outfit">{{outfit.headshots / outfit.kills * 100 | number: '.0-0'}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['idx','name','kills','vehicleKills','deaths','kdr','tks','suicides','headshots','hsper']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['idx','name','kills','vehicleKills','deaths','kdr','tks','suicides','headshots','hsper'];"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+</div>

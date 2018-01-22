@@ -1,0 +1,254 @@
+﻿<div class="content-container">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngIf="!isLoading">
+        <vw-loader [loading]="isLoadingMembers"></vw-loader>
+        <div *ngIf="!isLoadingMembers || !errorMessage" class="outfit-stats">
+            <!--
+            <mat-card class="outfit-totals">
+                <mat-card-header>
+                    <mat-card-title>
+                        Total
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="outfit-card-content">
+                    <div>
+                        <span class="label">Kills:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponKills' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">V. Kills:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponVehicleKills' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Deaths:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponDeaths' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Assists:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.assistCount' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Score:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponScore' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Battlerank:</span>
+                        <span class="value">{{members | pluck: 'battleRank' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Headshots:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponHeadshots' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Captures:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.facilityCaptureCount' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Defends:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.facilityDefendedCount' | sum | number}}</span>
+                    </div>
+                    <div>
+                        <span class="label">SPM:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponScore' | sum) / ((members | pluck: 'lifetimeStats.weaponPlayTime' | avg) / 60) | number: '.1-1'}}</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="outfit-averages">
+                <mat-card-header>
+                    <mat-card-title>
+                        Average
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="outfit-card-content">
+                    <div>
+                        <span class="label">Kills:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponKills' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">V. Kills:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponVehicleKills' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Deaths:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponDeaths' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Assists:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.assistCount' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Score:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponScore' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Battlerank:</span>
+                        <span class="value">{{members | pluck: 'battleRank' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Headshots:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponHeadshots' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Captures:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.facilityCaptureCount' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Defends:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.facilityDefendedCount' | avg | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">KDR:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponKills' | avg) / (members | pluck: 'lifetimeStats.weaponDeaths' | avg) | number: '.2-2'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Accuracy:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponHitCount' | avg) / (members | pluck: 'lifetimeStats.weaponFireCount' | avg) * 100 | number: '.2-2'}}%</span>
+                    </div>
+                    <div>
+                        <span class="label">HSR:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponHeadshots' | avg) / (members | pluck: 'lifetimeStats.weaponKills' | avg) * 100 | number: '.2-2'}}%</span>
+                    </div>
+                    <div>
+                        <span class="label">SPM:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponScore' | avg) / ((members | pluck: 'lifetimeStats.weaponPlayTime' | avg) / 60) | number: '.1-1'}}</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card class="outfit-medians">
+                <mat-card-header>
+                    <mat-card-title>
+                        Median
+                    </mat-card-title>
+                </mat-card-header>
+                <mat-card-content class="outfit-card-content">
+                    <div>
+                        <span class="label">Kills:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponKills' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">V. Kills:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponVehicleKills' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Deaths:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponDeaths' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Assists:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.assistCount' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Score:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponScore' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Battlerank:</span>
+                        <span class="value">{{members | pluck: 'battleRank' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Headshots:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.weaponHeadshots' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Captures:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.facilityCaptureCount' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Defends:</span>
+                        <span class="value">{{members | pluck: 'lifetimeStats.facilityDefendedCount' | median | number: '.0-0'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">KDR:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponKills' | median) / (members | pluck: 'lifetimeStats.weaponDeaths' | median) | number: '.2-2'}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Accuracy:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponHitCount' | median) / (members | pluck: 'lifetimeStats.weaponFireCount' | median) * 100 | number: '.2-2'}}%</span>
+                    </div>
+                    <div>
+                        <span class="label">HSR:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponHeadshots' | median) / (members | pluck: 'lifetimeStats.weaponKills' | median) * 100 | number: '.2-2'}}%</span>
+                    </div>
+                    <div>
+                        <span class="label">SPM:</span>
+                        <span class="value">{{(members | pluck: 'lifetimeStats.weaponScore' | median) / ((members | pluck: 'lifetimeStats.weaponPlayTime' | median) / 60) | number: '.1-1'}}</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            -->
+        </div>
+        <div *ngIf="!isLoadingMembers || !errorMessage" class="members-list">
+            <mat-table #table [dataSource]="dataSource" class="striped" matSort>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let character">
+                        <div class="character-name">
+                            <a mat-button routerLink="/ps2/player/{{character.characterId}}">
+                                <div class="name">{{character.name}}</div>
+                            </a>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="memberSinceDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Joined</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.memberSinceDate | date}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="rank">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Rank</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.rank}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="battleRank">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Battle Rank</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.battleRank | number}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="kdr">
+                    <mat-header-cell *matHeaderCellDef>K/D Ratio</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.lifetimeStats.weaponKills / character.lifetimeStats.weaponDeaths | number: '.2-2'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="accuracy">
+                    <mat-header-cell *matHeaderCellDef>Accuracy</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.lifetimeStats.weaponHitCount / character.lifetimeStats.weaponFireCount * 100 | number: '.1-1'}}%</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="hsr">
+                    <mat-header-cell *matHeaderCellDef>H/S Ratio</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.lifetimeStats.weaponHeadshots / character.lifetimeStats.weaponKills * 100 | number: '.1-1'}}%</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="siege">
+                    <mat-header-cell *matHeaderCellDef>Siege</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.lifetimeStats.facilityCaptureCount / character.lifetimeStats.facilityDefendedCount * 100 | number: '.0-0'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="score">
+                    <mat-header-cell *matHeaderCellDef>Score</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.lifetimeStats.weaponScore | number}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="spm">
+                    <mat-header-cell *matHeaderCellDef>SPM</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.lifetimeStats.weaponScore / (character.lifetimeStats.weaponPlayTime / 60) | number: '.0-0'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="ivir">
+                    <mat-header-cell *matHeaderCellDef>IVIR</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{0 | number}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="lastLogin">
+                    <mat-header-cell *matHeaderCellDef>Last Login</mat-header-cell>
+                    <mat-cell *matCellDef="let character">{{character.lastLoginDate | date}}</mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['name','memberSinceDate','rank','battleRank','kdr','accuracy','hsr','siege','score','spm','ivir','lastLogin']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['name','memberSinceDate','rank','battleRank','kdr','accuracy','hsr','siege','score','spm','ivir','lastLogin'];"></mat-row>
+            </mat-table>
+        </div>
+    </div>
+</div>

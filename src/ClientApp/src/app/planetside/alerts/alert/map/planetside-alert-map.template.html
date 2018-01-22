@@ -1,0 +1,56 @@
+﻿<div class="content-container">
+    <mat-table #table [dataSource]="dataSource" class="striped" matSort>
+        <ng-container matColumnDef="time">
+            <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
+            <mat-cell *matCellDef="let event">{{event.timestamp | date: 'HH:mm:ss'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="facility">
+            <mat-header-cell *matHeaderCellDef>Facility</mat-header-cell>
+            <mat-cell *matCellDef="let event">
+                <span [ngClass]="event.newFactionId | factionColor">
+                    {{event.mapRegion.facilityName}}
+                </span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="winner">
+            <mat-header-cell *matHeaderCellDef>Winner</mat-header-cell>
+            <mat-cell *matCellDef="let event">
+                <span [ngClass]="event.newFactionId | factionColor">{{event.newFactionId | factionCode}}</span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="loser">
+            <mat-header-cell *matHeaderCellDef>Loser</mat-header-cell>
+            <mat-cell *matCellDef="let event">
+                <span [ngClass]="event.oldFactionId | factionColor">{{event.oldFactionId | factionCode}}</span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="outfit">
+            <mat-header-cell *matHeaderCellDef>Outfit</mat-header-cell>
+            <mat-cell *matCellDef="let event">
+                <a *ngIf="event.outfit" routerLink="outfit/{{event.outfit.id}}" class="outfit-name">
+                    <span *ngIf="event.outfit.alias">[{{event.outfit.alias}}]</span>
+                    <span>{{event.outfit.name}}</span>
+                </a>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="mapper">
+            <mat-header-cell *matHeaderCellDef>Map %</mat-header-cell>
+            <mat-cell *matCellDef="let event">
+                <div class="faction-bar-container">
+                    <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="event.factionVs + '%'">{{event.factionVs | number: '.0-0'}}%</div>
+                    <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="event.factionNc + '%'">{{event.factionNc | number: '.0-0'}}%</div>
+                    <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="event.factionTr + '%'">{{event.factionTr | number: '.0-0'}}%</div>
+                    <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="100 - (event.factionVs + event.factionNc + event.factionTr) + '%'"></div>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['time','facility','winner','loser','outfit','mapper']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['time','facility','winner','loser','outfit','mapper'];"></mat-row>
+    </mat-table>
+</div>

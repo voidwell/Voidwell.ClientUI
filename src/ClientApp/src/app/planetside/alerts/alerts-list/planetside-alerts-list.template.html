@@ -1,0 +1,56 @@
+﻿<div class="content-container">
+    <div class="alerts-list">
+        <vw-loader [loading]="isLoading"></vw-loader>
+        <vw-error-message [message]="errorMessage"></vw-error-message>
+        <div *ngIf="!isLoading">
+            <div class="active-alerts">
+                <div *ngIf="activeAlerts.length === 0" class="no-alerts">
+                    <strong>No alerts in progress</strong>
+                </div>
+                <mat-card *ngFor="let alert of activeAlerts | orderBy: 'startDate'" class="alert-row">
+                    <a mat-button class="alert-link" routerLink="{{alert.worldId}}/{{alert.metagameInstanceId}}">
+                        <mat-icon fontIcon="mdi-chevron-right"></mat-icon>
+                    </a>
+                    <div class="world-name">{{alert.worldId | worldName}}</div>
+                    <div class="alert-block">
+                        <div>
+                            <span class="description">{{alert.metagameEvent.description}}</span>
+                            <span class="remaining-time">
+                                Time left: <vw-countdown [end]="getEndDate(alert)"></vw-countdown>
+                            </span>
+                        </div>
+                        <div class="faction-bar-container">
+                            <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="alert.lastFactionVs + '%'">{{alert.lastFactionVs | number: '.0-0'}}%</div>
+                            <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="alert.lastFactionNc + '%'">{{alert.lastFactionNc | number: '.0-0'}}%</div>
+                            <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="alert.lastFactionTr + '%'">{{alert.lastFactionTr | number: '.0-0'}}%</div>
+                            <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="100 - (alert.lastFactionVs + alert.lastFactionNc + alert.lastFactionTr) + '%'"></div>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+            <h3>Past Alerts</h3>
+            <div class="past-alerts">
+                <mat-card *ngFor="let alert of pastAlerts | orderBy: '-startDate'" class="alert-row">
+                    <a mat-button class="alert-link" routerLink="{{alert.worldId}}/{{alert.metagameInstanceId}}">
+                        <mat-icon fontIcon="mdi-chevron-right"></mat-icon>
+                    </a>
+                    <div class="world-name">{{alert.worldId | worldName}}</div>
+                    <div class="alert-block">
+                        <div>
+                            <span class="description">{{alert.metagameEvent.description}}</span>
+                            <span class="remaining-time">
+                                Ended: {{alert.endDate | date:'y-MM-dd hh:mm:ss a'}}
+                            </span>
+                        </div>
+                        <div class="faction-bar-container">
+                            <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="alert.lastFactionVs + '%'">{{alert.lastFactionVs | number: '.0-0'}}%</div>
+                            <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="alert.lastFactionNc + '%'">{{alert.lastFactionNc | number: '.0-0'}}%</div>
+                            <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="alert.lastFactionTr + '%'">{{alert.lastFactionTr | number: '.0-0'}}%</div>
+                            <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="100 - (alert.lastFactionVs + alert.lastFactionNc + alert.lastFactionTr) + '%'"></div>
+                        </div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

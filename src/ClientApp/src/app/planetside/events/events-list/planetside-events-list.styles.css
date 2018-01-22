@@ -1,0 +1,58 @@
+﻿.events-list {
+    margin-top: 10px;
+}
+
+.no-events {
+    text-align: center;
+}
+
+.event-row {
+    position: relative;
+    padding: 10px;
+    background: #3A4C58;
+    color: #fff;
+    display: flex;
+    justify-content: space-between
+}
+
+    .event-row:not(:last-child) {
+        margin-bottom: 10px;
+    }
+
+    .event-row .event-link {
+        float: right;
+        font-size: 3em;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: right;
+        line-height: 100%;
+        padding-top: 2px;
+        padding-right: 30px;
+    }
+
+    .event-row .event-name-block {
+        display: inline-block;
+    }
+
+    .event-row .event-block {
+        display: inline-block;
+    }
+
+    .event-row .event-info-block {
+        display: inline-block;
+        margin-right: 80px;
+    }
+
+    .event-row .event-description {
+        font-size: 0.8em;
+        opacity: 0.7;
+        margin-top: 5px;
+    }
+
+    .event-row .remaining-time {
+        margin-left: 30px;
+        float: right;
+    }

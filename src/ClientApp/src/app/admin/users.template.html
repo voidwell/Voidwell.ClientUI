@@ -12,11 +12,14 @@
                 </mat-expansion-panel-header>
                 <mat-spinner *ngIf="user.isLoading"></mat-spinner>
                 <div *ngIf="!user.isLoading" class="user-details">
-                    <mat-form-field>
-                        <mat-select placeholder="Assign role" [(value)]="user.roles" multiple>
-                            <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
+                    <vw-error-message [message]="errorMessage"></vw-error-message>
+                    <form #userRolesForm="ngForm">
+                        <mat-form-field>
+                            <mat-select name="roles" placeholder="Assign role" (onClose)="setRoles(user, userRolesForm)" multiple [disabled]="user.isLocked" [ngModel]="user.roles">
+                                <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </form>
                     <label>Id</label> {{user.id}}
                     <br /><br />
                     <label>Email</label> {{user.email}}
@@ -33,9 +36,9 @@
                     <br /><br />
                 </div>
                 <mat-action-row>
-                    <button mat-button>Reset password</button>
-                    <button mat-button>Disable</button>
-                    <button mat-raised-button color="warn" (click)="deleteUser(user)">Delete</button>
+                    <button mat-button (click)="resetPassword(user)" [disabled]="user.isLocked">Reset password</button>
+                    <button mat-button (click)="disableUser(user)" [disabled]="user.isLocked">Disable</button>
+                    <button mat-raised-button color="warn" (click)="deleteUser(user)" [disabled]="user.isLocked">Delete</button>
                 </mat-action-row>
             </mat-expansion-panel>
         </mat-accordion>
