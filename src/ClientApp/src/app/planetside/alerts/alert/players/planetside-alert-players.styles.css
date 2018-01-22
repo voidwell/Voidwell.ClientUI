@@ -1,0 +1,48 @@
+﻿.table-filter {
+    background: #19282F;
+    text-align: right;
+    padding: 0 50px;
+}
+.table-filter .mat-form-field {
+    width: 100%;
+}
+
+.mat-table {
+    max-height: 800px;
+    overflow: auto;
+}
+
+.mat-table .mat-row {
+    min-height: 25px;
+}
+
+.mat-table .mat-row .mat-cell {
+    font-size: 0.8em;
+}
+
+.character-name a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.mat-column-idx {
+    max-width: 45px;
+}
+
+.mat-column-name,
+.mat-column-outfit {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.mat-column-kills,
+.mat-column-vehicleKills,
+.mat-column-deaths,
+.mat-column-kdr,
+.mat-column-tks,
+.mat-column-suicides,
+.mat-column-headshots,
+.mat-column-hsper {
+    max-width: 80px;
+}

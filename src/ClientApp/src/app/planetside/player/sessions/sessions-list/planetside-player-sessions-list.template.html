@@ -1,0 +1,39 @@
+﻿<div class="content-container">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngIf="!isLoading" class="session-list">
+        <mat-table #table [dataSource]="dataSource" class="striped">
+            <ng-container matColumnDef="sessionId">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let session">#{{session.id}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="startDate">
+                <mat-header-cell *matHeaderCellDef>Start</mat-header-cell>
+                <mat-cell *matCellDef="let session">{{session.loginDate | date: 'M/d/yy h:mm a'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="endDate">
+                <mat-header-cell *matHeaderCellDef>End</mat-header-cell>
+                <mat-cell *matCellDef="let session">{{session.logoutDate | date: 'M/d/yy h:mm a'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="duration">
+                <mat-header-cell *matHeaderCellDef>Duration</mat-header-cell>
+                <mat-cell *matCellDef="let session">{{session.duration / 3600000 | number: '.1-1'}} Hours</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="gobutton">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let session">
+                    <a mat-button routerLink="{{session.id}}" class="goto-button">
+                        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+                    </a>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['sessionId','startDate','endDate','duration','gobutton']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['sessionId','startDate','endDate','duration','gobutton'];"></mat-row>
+        </mat-table>
+    </div>
+</div>

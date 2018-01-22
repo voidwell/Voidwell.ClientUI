@@ -1,0 +1,57 @@
+﻿<div class="content-container">
+    <div class="events-list">
+        <vw-loader [loading]="isLoading"></vw-loader>
+        <vw-error-message [message]="errorMessage"></vw-error-message>
+        <div *ngIf="!isLoading">
+            <div class="active-events">
+                <div *ngIf="activeEvents.length === 0" class="no-events">
+                    <strong>No events in progress</strong>
+                </div>
+                <mat-card *ngFor="let event of activeEvents | orderBy: 'startDate'" class="event-row">
+                    <a mat-button class="event-link" routerLink="{{event.mapId}}">
+                        <mat-icon fontIcon="mdi-chevron-right"></mat-icon>
+                    </a>
+                    <div class="event-name-block">
+                        <div class="event-name">{{event.name}}</div>
+                        <div class="event-description">{{event.description}}</div>
+                    </div>
+                    <div class="event-block">
+                        <div>
+                            <span class="remaining-time">
+                                Time left: <vw-countdown [end]="getEndDate(event)"></vw-countdown>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="event-info-block">
+                        <div class="server-name">Server: {{event.serverId | worldName}}</div>
+                        <div class="map-name">Map: {{event.mapId | zoneName}}</div>
+                    </div>
+                </mat-card>
+            </div>
+            <h3>Past events</h3>
+            <div class="past-events">
+                <mat-card *ngFor="let event of pastEvents | orderBy: '-startDate'" class="event-row">
+                    <a mat-button class="event-link" routerLink="{{event.id}}">
+                        <mat-icon fontIcon="mdi-chevron-right"></mat-icon>
+                    </a>
+                    <div class="event-name-block">
+                        <div class="event-name">{{event.name}}</div>
+                        <div class="event-description">{{event.description}}</div>
+                    </div>
+                    <div class="event-block">
+                        <span class="started-time">
+                            Started: {{event.startDate | date:'y-MM-dd hh:mm:ss a'}}
+                        </span>
+                        <span class="remaining-time">
+                            Ended: {{event.endDate | date:'y-MM-dd hh:mm:ss a'}}
+                        </span>
+                    </div>
+                    <div class="event-info-block">
+                        <div class="server-name">Server: {{event.serverId | worldName}}</div>
+                        <div class="map-name">Map: {{event.mapId | zoneName}}</div>
+                    </div>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>

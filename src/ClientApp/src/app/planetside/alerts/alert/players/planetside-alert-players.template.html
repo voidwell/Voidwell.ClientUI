@@ -1,0 +1,80 @@
+﻿<div class="content-container">
+    <div class="table-filter">
+        <mat-form-field floatPlaceholder="never">
+            <input matInput #filter placeholder="Filter players">
+        </mat-form-field>
+    </div>
+
+    <mat-table #table [dataSource]="dataSource" class="striped" matSort>
+        <ng-container matColumnDef="idx">
+            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+            <mat-cell *matCellDef="let idx = index">{{idx + 1 + (paginator.pageIndex * paginator.pageSize) | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Player</mat-header-cell>
+            <mat-cell *matCellDef="let participant">
+                <div class="character-name">
+                    <a routerLink="/ps2/player/{{participant.character.id}}" [ngClass]="participant.character.factionId | factionColor">
+                        <div class="name">{{participant.character.name}}</div>
+                    </a>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="outfit">
+            <mat-header-cell *matHeaderCellDef>Outfit</mat-header-cell>
+            <mat-cell *matCellDef="let participant">
+                <span *ngIf="participant.outfit" [ngClass]="participant.character.factionId | factionColor">
+                    <span *ngIf="participant.outfit.alias">[{{participant.outfit.alias}}]</span>
+                    <span>{{participant.outfit.name}}</span>
+                </span>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="kills">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
+            <mat-cell *matCellDef="let participant">{{participant.kills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="vehicleKills">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>V.Kills</mat-header-cell>
+            <mat-cell *matCellDef="let participant">{{participant.vehicleKills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="deaths">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Deaths</mat-header-cell>
+            <mat-cell *matCellDef="let participant">{{participant.deaths | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="kdr">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>K/D</mat-header-cell>
+            <mat-cell *matCellDef="let participant">{{participant.kills / participant.deaths | number: '.2-2'}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tks">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>TKs</mat-header-cell>
+            <mat-cell *matCellDef="let participant">{{participant.teamkills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="suicides">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Suicides</mat-header-cell>
+            <mat-cell *matCellDef="let participant">{{participant.suicides | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="headshots">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Headshots</mat-header-cell>
+            <mat-cell *matCellDef="let participant">{{participant.headshots | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hsper">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>HS %</mat-header-cell>
+            <mat-cell *matCellDef="let participant">{{participant.headshots / participant.kills * 100 | number: '.0-0'}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['idx','name','outfit','kills','vehicleKills','deaths','kdr','tks','suicides','headshots','hsper']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['idx','name','outfit','kills','vehicleKills','deaths','kdr','tks','suicides','headshots','hsper'];"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+</div>

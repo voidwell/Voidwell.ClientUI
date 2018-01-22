@@ -1,0 +1,59 @@
+﻿.alert-info {
+    margin: 10px 0;
+}
+
+    .alert-info .top-info {
+        overflow: hidden;
+    }
+
+.alert-times {
+    margin-bottom: 5px;
+    text-align: center;
+    overflow: hidden;
+    width: auto;
+    display: flex;
+    justify-content: space-around;
+}
+
+    .alert-times small {
+        font-size: 0.7em;
+        opacity: 0.5;
+        text-transform: uppercase;
+    }
+
+.world-name {
+    float: left;
+    text-align: center;
+    font-size: 2em;
+    padding: 10px 0;
+}
+
+.time-start,
+.time-end {
+    display: inline-block;
+    padding: 10px;
+}
+
+.faction-bar-container {
+    display: block;
+    white-space: nowrap;
+    height: 30px;
+}
+
+    .faction-bar-container .faction-bar {
+        display: block;
+        float: left;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+    }
+
+.remaining-timer {
+    display: block;
+    text-align: center;
+    font-size: 1.5em;
+    overflow: hidden;
+    width: auto;
+    padding: 10px;
+    float: right;
+}

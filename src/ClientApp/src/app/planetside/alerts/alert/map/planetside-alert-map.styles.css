@@ -1,0 +1,38 @@
+﻿.mat-table .mat-row {
+    min-height: 25px;
+}
+
+.mat-table .mat-row .mat-cell {
+    font-size: 0.8em;
+}
+
+
+.faction-bar-container {
+    display: block;
+    white-space: nowrap;
+    margin-top: 10px;
+    height: 18px;
+}
+
+    .faction-bar-container .faction-bar {
+        display: block;
+        float: left;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+    }
+
+.mat-column-time,
+.mat-column-winner,
+.mat-column-loser {
+    max-width: 80px;
+}
+
+.mat-column-mapper {
+    width: 450px;
+}
+
+a.outfit-name {
+    color: #fff;
+    text-decoration: none;
+}

@@ -1,0 +1,44 @@
+﻿<div class="content-container">
+    <mat-table #table [dataSource]="dataSource" class="striped" matSort>
+        <ng-container matColumnDef="idx">
+            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+            <mat-cell *matCellDef="let idx = index">{{idx + 1 + (paginator.pageIndex * paginator.pageSize) | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Weapon</mat-header-cell>
+            <mat-cell *matCellDef="let weapon">
+                <div class="weapon-name">
+                    <a routerLink="/ps2/item/{{weapon.item.id}}" [ngClass]="weapon.item.factionId | factionColor">
+                        <div class="name">{{weapon.item.name}}</div>
+                    </a>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="kills">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
+            <mat-cell *matCellDef="let weapon">{{weapon.kills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tks">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>TKs</mat-header-cell>
+            <mat-cell *matCellDef="let weapon">{{weapon.teamkills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="headshots">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Headshots</mat-header-cell>
+            <mat-cell *matCellDef="let weapon">{{weapon.headshots | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="hsper">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>HS %</mat-header-cell>
+            <mat-cell *matCellDef="let weapon">{{weapon.headshots / weapon.kills * 100 | number: '.0-0'}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['idx','name','kills','tks','headshots','hsper']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['idx','name','kills','tks','headshots','hsper'];"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+</div>

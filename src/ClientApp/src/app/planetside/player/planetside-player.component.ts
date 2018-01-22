@@ -5,9 +5,7 @@ import { Subscription } from 'rxjs/Subscription';
 import { PlanetsideApi } from './../planetside-api.service';
 import { HeaderService } from './../../shared/services/header.service';
 import { Observable } from 'rxjs/Observable';
-import { Observer } from "rxjs/Observer";
 import 'rxjs/add/observable/throw';
-import { Subscriber } from "rxjs/Subscriber";
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Component({
@@ -72,6 +70,7 @@ export class PlanetsidePlayerComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
+        this.playerData.unsubscribe();
         this.routeSub.unsubscribe();
         this.headerService.reset();
     }

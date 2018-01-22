@@ -58,7 +58,7 @@
             <mat-card-content class="layout-padding">
                 <div>
                     <div [ngClass]="playerData.factionId | factionColor" class="outfit-header">
-                        <a class="link-text" href="{{'/ps2/outfit/' + playerData.outfit.id}}">
+                        <a class="link-text" routerLink="/ps2/outfit/{{playerData.outfit.id}}">
                             <span *ngIf="playerData.outfit.alias">[{{playerData.outfit.alias}}]</span>
                             <span>{{playerData.outfit.name}}</span>
                         </a>

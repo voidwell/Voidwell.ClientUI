@@ -1,0 +1,26 @@
+﻿.outfit-stats {
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+
+.members-list {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.label {
+    opacity: 0.8;
+    width: 130px;
+    display: inline-block;
+}
+
+.outfit-totals,
+.outfit-averages,
+.outfit-medians {
+    vertical-align: top;
+    display: inline-block;
+}
+
+.outfit-card-content {
+    padding: 15px;
+}

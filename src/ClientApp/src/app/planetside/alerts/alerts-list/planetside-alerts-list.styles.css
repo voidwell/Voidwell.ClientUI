@@ -1,0 +1,62 @@
+﻿.alerts-list {
+    margin-top: 10px;
+}
+
+.no-alerts {
+    text-align: center;
+}
+
+.alert-row {
+    position: relative;
+    padding: 10px;
+    background: #3A4C58;
+    color: #fff;
+}
+
+    .alert-row:not(:last-child) {
+        margin-bottom: 10px;
+    }
+
+    .alert-row .alert-link {
+        float: right;
+        font-size: 3em;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        text-align: right;
+        line-height: 100%;
+        padding-top: 5px;
+        padding-right: 30px;
+    }
+
+    .alert-row .world-name {
+        display: inline-block;
+        width: 100px;
+        vertical-align: top;
+    }
+
+    .alert-row .remaining-time {
+        float: right;
+    }
+
+    .alert-row .alert-block {
+        display: inline-block;
+        width: 1000px;
+    }
+
+.faction-bar-container {
+    display: block;
+    white-space: nowrap;
+    margin-top: 10px;
+    height: 18px;
+}
+
+    .faction-bar-container .faction-bar {
+        display: block;
+        float: left;
+        height: 18px;
+        line-height: 18px;
+        text-align: center;
+    }

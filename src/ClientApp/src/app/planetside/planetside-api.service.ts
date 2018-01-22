@@ -61,6 +61,24 @@ export class PlanetsideApi {
             });
     }
 
+    getCharacterSessions(characterId: string) {
+        return this.http.get(this.ps2Url + 'character/' + characterId + '/sessions')
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getCharacterSession(characterId: string, sessionId: string) {
+        return this.http.get(this.ps2Url + 'character/' + characterId + '/sessions/' + sessionId)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
     getAllProfiles() {
         return this.http.get(this.ps2Url + 'profile')
             .map(resp => resp.json())
@@ -72,6 +90,51 @@ export class PlanetsideApi {
 
     getAllVehicles() {
         return this.http.get(this.ps2Url + 'vehicle')
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getOutfit(outfitId: string) {
+        return this.http.get(this.ps2Url + 'outfit/' + outfitId)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getOutfitMembers(outfitId: string) {
+        return this.http.get(this.ps2Url + 'outfit/' + outfitId + '/members')
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getAllAlerts() {
+        return this.http.get(this.ps2Url + 'alert')
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getAllAlertsByWorldId(worldId: string) {
+        return this.http.get(this.ps2Url + 'alert/' + worldId)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getAlert(worldId: string, alertId: string) {
+        return this.http.get(this.ps2Url + 'alert/' + worldId + '/' + alertId)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });

@@ -1,0 +1,37 @@
+﻿<div class="content-container">
+    <mat-table #table [dataSource]="dataSource" class="striped" matSort>
+        <ng-container matColumnDef="idx">
+            <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+            <mat-cell *matCellDef="let idx = index">{{idx + 1 + (paginator.pageIndex * paginator.pageSize) | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Vehicle</mat-header-cell>
+            <mat-cell *matCellDef="let vehicle">
+                <div class="vehicle-name" [ngClass]="vehicle.vehicle.factionId | factionColor">
+                    <div class="name">{{vehicle.vehicle.name}}</div>
+                </div>
+            </mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="kills">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
+            <mat-cell *matCellDef="let vehicle">{{vehicle.kills | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="deaths">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Deaths</mat-header-cell>
+            <mat-cell *matCellDef="let vehicle">{{vehicle.deaths | number}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="tks">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>TKs</mat-header-cell>
+            <mat-cell *matCellDef="let vehicle">{{vehicle.teamkills | number}}</mat-cell>
+        </ng-container>
+
+        <mat-header-row *matHeaderRowDef="['idx','name','kills','deaths','tks']"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: ['idx','name','kills','deaths','tks'];"></mat-row>
+    </mat-table>
+
+    <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+</div>

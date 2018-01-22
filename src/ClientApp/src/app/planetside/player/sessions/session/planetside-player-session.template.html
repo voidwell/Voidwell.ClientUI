@@ -1,0 +1,117 @@
+﻿<div class="content-container player-session">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngIf="!isLoading && !errorMessage">
+        <div class="session-info pull-left">
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Session</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="data-block">
+                        <strong>{{session.loginDate | date:'M/dd/yy h:mm a'}}</strong>
+                        <span class="label">Start</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{session.logoutDate | date:'M/dd/yy h:mm a'}}</strong>
+                        <span class="label">End</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{session.duration / 3600000 | number: '.1-1'}} Hours</strong>
+                        <span class="label">Duration</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card>
+                <mat-card-header>
+                    <mat-card-title>Stats</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                    <div class="data-block">
+                        <strong>{{sessionStats.kills / sessionStats.deaths | number: '.1-1'}}</strong>
+                        <span class="label">K/D Ratio</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{sessionStats.headshots / sessionStats.kills * 100 | number: '.1-1'}}%</strong>
+                        <span class="label">Headshot Ratio</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{sessionStats.kills | number}}</strong>
+                        <span class="label">Kills</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{sessionStats.deaths | number}}</strong>
+                        <span class="label">Deaths</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{sessionStats.suicides | number}}</strong>
+                        <span class="label">Suicides</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{sessionStats.teamkills | number}}</strong>
+                        <span class="label">Teamkills</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{sessionStats.headshots | number}}</strong>
+                        <span class="label">Headshots</span>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+        </div>
+        <div *ngIf="!isLoading" class="session-log">
+            <mat-card class="action-log-card">
+                <mat-card-header>
+                    <mat-card-title>Action Log</mat-card-title>
+                </mat-card-header>
+                <mat-table #table [dataSource]="dataSource">
+                    <ng-container matColumnDef="time">
+                        <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
+                        <mat-cell *matCellDef="let event">{{event.timestamp | date: 'MMM d, h:mm:ss a'}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="attacker">
+                        <mat-header-cell *matHeaderCellDef>Attacker</mat-header-cell>
+                        <mat-cell *matCellDef="let event">
+                            <a mat-button routerLink="/ps2/player/{{event.attacker.id}}">
+                                <span [class]="event.attacker.factionId | factionColor">{{event.attacker.name || event.attacker.id}}</span>
+                            </a>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="weapon">
+                        <mat-header-cell *matHeaderCellDef>Weapon</mat-header-cell>
+                        <mat-cell *matCellDef="let event">
+                            <div class="weapon-image">
+                                <img [src]="event.weapon.imageId | dgcImageUrl" />
+                            </div>
+                            <div class="weapon-details">
+                                <div>{{event.weapon.name}}</div>
+                                <strong *ngIf="event.isHeadshot">Headshot</strong>
+                            </div>
+                            <div class="weapon-headshot">
+                                <mat-icon *ngIf="event.isHeadshot" fontSet="mdi" fontIcon="mdi-target"></mat-icon>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="victim">
+                        <mat-header-cell *matHeaderCellDef>Victim</mat-header-cell>
+                        <mat-cell *matCellDef="let event">
+                            <a mat-button routerLink="/ps2/player/{{event.victim.id}}">
+                                <span [class]="event.victim.factionId | factionColor">{{event.victim.name || event.victim.id}}</span>
+                            </a>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="location">
+                        <mat-header-cell *matHeaderCellDef>Location</mat-header-cell>
+                        <mat-cell *matCellDef="let event">{{event.zoneId | zoneName}}</mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="['time','attacker','weapon','victim','location']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['time','attacker','weapon','victim','location'];"></mat-row>
+                </mat-table>
+            </mat-card>
+        </div>
+    </div>
+</div>

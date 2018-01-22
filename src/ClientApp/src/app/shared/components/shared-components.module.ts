@@ -4,11 +4,13 @@ import { MaterialLib } from './../materialLib.module';
 
 import { ErrorMessageComponent } from './error-message/error-message.component';
 import { LoaderComponent } from './loader/loader.component';
+import { VWCountdownComponent } from './vw-countdown/vw-countdown.component';
 
 @NgModule({
     declarations: [
         ErrorMessageComponent,
-        LoaderComponent
+        LoaderComponent,
+        VWCountdownComponent
     ],
     imports: [
         CommonModule,
@@ -16,7 +18,8 @@ import { LoaderComponent } from './loader/loader.component';
     ],
     exports: [
         ErrorMessageComponent,
-        LoaderComponent
+        LoaderComponent,
+        VWCountdownComponent
     ]
 })
 export class SharedComponentsModule { }

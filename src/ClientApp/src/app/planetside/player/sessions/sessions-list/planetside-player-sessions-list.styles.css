@@ -1,0 +1,21 @@
+﻿.session-list {
+    margin-top: 15px;
+}
+.mat-column-sessionId {
+    max-width: 100px;
+}
+
+.goto-button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    text-align: right;
+    width: 100%;
+    height: 100%;
+    padding-right: 15px;
+    padding-top: 5px;
+}
+
+.mat-column-gobutton .mdi:before {
+    font-weight: bold;
+}
