@@ -9,6 +9,7 @@
 export class AdminWrapperComponent {
     navLinks = [
         { path: 'dashboard', label: 'Dashboard' },
+        { path: 'events', label: 'Events' },
         { path: 'blog', label: 'Blog' },
         { path: 'users', label: 'Users' },
         { path: 'roles', label: 'Roles' }

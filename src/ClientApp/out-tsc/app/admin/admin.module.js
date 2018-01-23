@@ -11,12 +11,14 @@ var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
 var materialLib_module_1 = require("../shared/materialLib.module");
 var shared_components_module_1 = require("../shared/components/shared-components.module");
+var voidwellpipes_modules_1 = require("../shared/pipes/voidwellpipes.modules");
 var admin_routes_1 = require("./admin.routes");
 var adminwrapper_component_1 = require("./adminwrapper.component");
 var dashboard_component_1 = require("./dashboard.component");
 var blog_component_1 = require("./blog.component");
 var users_component_1 = require("./users.component");
 var roles_component_1 = require("./roles.component");
+var events_component_1 = require("./events.component");
 var AdminModule = (function () {
     function AdminModule() {
     }
@@ -29,12 +31,14 @@ AdminModule = __decorate([
             dashboard_component_1.DashboardComponent,
             blog_component_1.BlogComponent,
             users_component_1.UsersComponent,
-            roles_component_1.RolesComponent
+            roles_component_1.RolesComponent,
+            events_component_1.EventsComponent
         ],
         imports: [
             forms_1.FormsModule,
             materialLib_module_1.MaterialLib,
             common_1.CommonModule,
+            voidwellpipes_modules_1.VoidwellPipesModule,
             admin_routes_1.routing,
             shared_components_module_1.SharedComponentsModule
         ],
