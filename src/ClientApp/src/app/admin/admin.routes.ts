@@ -5,6 +5,7 @@ import { DashboardComponent } from './dashboard.component';
 import { BlogComponent } from './blog.component';
 import { UsersComponent } from './users.component';
 import { RolesComponent } from './roles.component';
+import { EventsComponent } from './events.component';
 import { VoidwellAuthGuard } from '../shared/services/voidwell-authguard.service';
 
 const adminRoutes: Routes = [
@@ -22,7 +23,13 @@ const adminRoutes: Routes = [
 
             },
             { path: 'users', component: UsersComponent },
-            { path: 'roles', component: RolesComponent }
+            { path: 'roles', component: RolesComponent },
+            {
+                path: 'events',
+                component: EventsComponent,
+                canActivate: [VoidwellAuthGuard],
+                data: { roles: ['Events'] }
+            }
         ],
         canActivate: [VoidwellAuthGuard],
         data: { roles: ['Administrator'] }
