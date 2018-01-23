@@ -1,0 +1,41 @@
+﻿<div>
+    <div>
+        <mat-form-field>
+            <input matInput [(ngModel)]="data.event.name" placeholder="Event name">
+        </mat-form-field>
+        <mat-slide-toggle [(ngModel)]="!data.event.isPrivate">Public</mat-slide-toggle>
+    </div>
+    <div>
+        <mat-form-field>
+            <input matInput [(ngModel)]="data.event.description" placeholder="Description">
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <mat-select placeholder="Server" [(ngModel)]="data.event.serverId">
+                <mat-option *ngFor="let server of servers" [value]="server.id">
+                    {{server.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-select placeholder="Map" [(ngModel)]="data.event.mapId">
+                <mat-option *ngFor="let map of maps" [value]="map.id">
+                    {{map.name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+    </div>
+    <div>
+        <mat-form-field>
+            <input matInput [matDatepicker]="pickerStart" placeholder="Start date" [(ngModel)]="data.event.startDate">
+            <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
+            <mat-datepicker #pickerStart></mat-datepicker>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="pickerEnd" placeholder="End date" [(ngModel)]="data.event.endDate">
+            <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
+            <mat-datepicker #pickerEnd></mat-datepicker>
+        </mat-form-field>
+    </div>
+</div>

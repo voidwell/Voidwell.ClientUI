@@ -32,7 +32,7 @@
                 <ng-container matColumnDef="options">
                     <mat-header-cell *matHeaderCellDef></mat-header-cell>
                     <mat-cell *matCellDef="let event">
-                        <button mat-raised-button (click)="onEdit(event.id)">Edit</button>
+                        <button mat-raised-button (click)="onEdit(event)">Edit</button>
                         <a mat-raised-button routerLink="/ps2/events/{{event.id}}">Stats</a>
                     </mat-cell>
                 </ng-container>
