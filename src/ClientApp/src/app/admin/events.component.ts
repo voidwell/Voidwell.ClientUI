@@ -38,8 +38,7 @@ export class EventsComponent implements OnDestroy {
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            console.log('The dialog was closed');
-            //this.animal = result;
+            //Todo: save event after editing.
         });
     }
 
