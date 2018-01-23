@@ -30,7 +30,11 @@ MaterialLib = __decorate([
             material_1.MatAutocompleteModule,
             material_1.MatTableModule,
             material_1.MatSortModule,
-            material_1.MatPaginatorModule
+            material_1.MatPaginatorModule,
+            material_1.MatDialogModule,
+            material_1.MatDatepickerModule,
+            material_1.MatNativeDateModule,
+            material_1.MatSlideToggleModule
         ],
         exports: [
             material_1.MatButtonModule,
@@ -47,7 +51,11 @@ MaterialLib = __decorate([
             material_1.MatAutocompleteModule,
             material_1.MatTableModule,
             material_1.MatSortModule,
-            material_1.MatPaginatorModule
+            material_1.MatPaginatorModule,
+            material_1.MatDialogModule,
+            material_1.MatDatepickerModule,
+            material_1.MatNativeDateModule,
+            material_1.MatSlideToggleModule
         ],
     })
 ], MaterialLib);
