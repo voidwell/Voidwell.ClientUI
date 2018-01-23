@@ -14,7 +14,11 @@ import {
     MatAutocompleteModule,
     MatTableModule,
     MatSortModule,
-    MatPaginatorModule
+    MatPaginatorModule,
+    MatDialogModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatSlideToggleModule
 } from '@angular/material';
 
 @NgModule({
@@ -33,7 +37,11 @@ import {
         MatAutocompleteModule,
         MatTableModule,
         MatSortModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatDialogModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSlideToggleModule
     ],
     exports: [
         MatButtonModule,
@@ -50,7 +58,11 @@ import {
         MatAutocompleteModule,
         MatTableModule,
         MatSortModule,
-        MatPaginatorModule
+        MatPaginatorModule,
+        MatDialogModule,
+        MatDatepickerModule,
+        MatNativeDateModule,
+        MatSlideToggleModule
     ],
 })
 export class MaterialLib { }

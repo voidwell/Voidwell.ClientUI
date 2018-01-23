@@ -10,7 +10,7 @@ import { DashboardComponent } from './dashboard.component';
 import { BlogComponent } from './blog.component';
 import { UsersComponent } from './users.component';
 import { RolesComponent } from './roles.component';
-import { EventsComponent } from './events.component';
+import { EventsComponent, EventEditorDialog } from './events.component';
 
 @NgModule({
     declarations: [
@@ -19,7 +19,8 @@ import { EventsComponent } from './events.component';
         BlogComponent,
         UsersComponent,
         RolesComponent,
-        EventsComponent
+        EventsComponent,
+        EventEditorDialog
     ],
     imports: [
         FormsModule,
@@ -29,6 +30,6 @@ import { EventsComponent } from './events.component';
         routing,
         SharedComponentsModule
     ],
-    entryComponents: [AdminWrapperComponent]
+    entryComponents: [AdminWrapperComponent, EventEditorDialog]
 })
 export class AdminModule { }
