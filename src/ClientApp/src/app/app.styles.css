@@ -45,7 +45,6 @@ vw-header {
 
 
 
-
 .voidwell a:not([mat-button]):not([mat-tab-link]) {
     color: #48DCF6;
     text-decoration: none;
@@ -216,7 +215,15 @@ img.inverse-img {
 
 
 
+.table-filter {
+    background: #19282F;
+    text-align: right;
+    padding: 0 50px;
+}
 
+.table-filter .mat-form-field {
+    width: 100%;
+}
 
 
 
@@ -229,6 +236,11 @@ img.inverse-img {
 }
 .pull-left {
     float: left;
+}
+
+.large-width {
+    max-width: 500px;
+    width: 100%;
 }
 
 
@@ -271,7 +283,9 @@ img.inverse-img {
 
 
 
-
+.dialog-action-footer {
+    margin-top: 25px;
+}
 
 
 
@@ -446,3 +460,19 @@ mat-card .info-rows .info-row .info-item {
         overflow: hidden;
     }
 */
+
+.mat-dialog-container,
+.mat-select-value {
+    color: rgba(255,255,255,0.8);
+}
+
+.mat-dialog-container label:not(.mat-checkbox-layout) {
+    display: inline-block;
+    width: 150px;
+    opacity: 0.5;
+}
+
+
+mat-checkbox.mat-checkbox.mat-checkbox-checked .mat-checkbox-background {
+    background-color: #525252;
+}

@@ -48,9 +48,13 @@ var EventsComponent = (function () {
         var dialogRef = this.dialog.open(EventEditorDialog, {
             data: { event: event }
         });
+    };
+    EventsComponent.prototype.newEvent = function () {
+        var dialogRef = this.dialog.open(EventEditorDialog, {
+            data: { event: null }
+        });
         dialogRef.afterClosed().subscribe(function (result) {
-            console.log('The dialog was closed');
-            //this.animal = result;
+            //Todo: save event after editing.
         });
     };
     EventsComponent.prototype.ngOnDestroy = function () {
@@ -88,8 +92,9 @@ var TableDataSource = (function (_super) {
 }(collections_1.DataSource));
 exports.TableDataSource = TableDataSource;
 var EventEditorDialog = (function () {
-    function EventEditorDialog(dialogRef, data) {
+    function EventEditorDialog(dialogRef, api, data) {
         this.dialogRef = dialogRef;
+        this.api = api;
         this.data = data;
         this.servers = [
             { id: "1", name: "Connery" },
@@ -105,7 +110,68 @@ var EventEditorDialog = (function () {
             { id: "6", name: "Amerish" },
             { id: "8", name: "Esamir" }
         ];
+        this.defaultTeams = [
+            { teamId: "1", name: "Vanu Sovereignty", enabled: true },
+            { teamId: "2", name: "New Conglomerate", enabled: true },
+            { teamId: "3", name: "Terran Republic", enabled: true }
+        ];
+        this.createEvent = false;
+        this.teams = this.defaultTeams.slice();
+        if (this.data.event != null) {
+            this.teams.forEach(function (team) {
+                var teamIdx = data.event.teams.map(function (t) { return t.teamId; }).indexOf(team.teamId);
+                if (teamIdx > -1) {
+                    Object.assign(team, data.event.teams[teamIdx]);
+                }
+                else {
+                    team.enabled = false;
+                }
+            });
+        }
+        else {
+            this.createEvent = true;
+            this.data.event = {
+                name: null,
+                description: null,
+                startDate: null,
+                endDate: null,
+                gameId: 'ps2',
+                isPrivate: false,
+                mapId: this.maps[0].id,
+                serverId: this.servers[0].id,
+                teams: []
+            };
+        }
     }
+    EventEditorDialog.prototype.saveEvent = function (event, teams) {
+        var _this = this;
+        event.teams = [];
+        teams.forEach(function (team) {
+            if (team.enabled) {
+                var eventTeam = {
+                    teamId: team.teamId,
+                    name: team.name
+                };
+                event.teams.push(eventTeam);
+            }
+        });
+        if (this.createEvent) {
+            this.api.createCustomEvent(event)
+                .subscribe(function (result) {
+                Object.assign(_this.data.event, result);
+                _this.createEvent = false;
+            });
+        }
+        else {
+            this.api.updateCustomEvent(event.id, event)
+                .subscribe(function (result) {
+                Object.assign(_this.data.event, result);
+            });
+        }
+    };
+    EventEditorDialog.prototype.closeDialog = function () {
+        this.dialogRef.close();
+    };
     EventEditorDialog.prototype.onNoClick = function () {
         this.dialogRef.close();
     };
@@ -116,7 +182,7 @@ EventEditorDialog = __decorate([
         selector: 'event-editor-dialog',
         templateUrl: 'event-editor-dialog.html',
     }),
-    __param(1, core_1.Inject(material_1.MAT_DIALOG_DATA)),
-    __metadata("design:paramtypes", [material_1.MatDialogRef, Object])
+    __param(2, core_1.Inject(material_1.MAT_DIALOG_DATA)),
+    __metadata("design:paramtypes", [material_1.MatDialogRef, voidwell_api_service_1.VoidwellApi, Object])
 ], EventEditorDialog);
 exports.EventEditorDialog = EventEditorDialog;

@@ -6,7 +6,7 @@
         <mat-slide-toggle [(ngModel)]="!data.event.isPrivate">Public</mat-slide-toggle>
     </div>
     <div>
-        <mat-form-field>
+        <mat-form-field class="large-width">
             <input matInput [(ngModel)]="data.event.description" placeholder="Description">
         </mat-form-field>
     </div>
@@ -37,5 +37,20 @@
             <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
             <mat-datepicker #pickerEnd></mat-datepicker>
         </mat-form-field>
+    </div>
+    <div>
+        <div *ngFor="let team of teams">
+            <mat-checkbox [(ngModel)]="team.enabled"></mat-checkbox>
+            <mat-icon fontSet="mdi" fontIcon="mdi-account" [ngClass]="team.teamId | factionColor"></mat-icon>
+            <mat-form-field>
+                <input matInput [(ngModel)]="team.name" placeholder="Team name">
+            </mat-form-field>
+        </div>
+    </div>
+    <div class="dialog-action-footer">
+        <button mat-raised-button (click)="closeDialog()">Close</button>
+        <div class="pull-right">
+            <button mat-raised-button (click)="saveEvent(data.event, teams)">Save</button>
+        </div>
     </div>
 </div>

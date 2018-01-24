@@ -1,22 +1,31 @@
-﻿import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
+import { DataSource } from '@angular/cdk/collections';
+import { ActivatedRoute } from '@angular/router';
+import { MatDialog, MatDialogRef, MatPaginator, MAT_DIALOG_DATA } from '@angular/material';
+import { Subscription } from 'rxjs/Subscription';
 import { VoidwellApi } from '../shared/services/voidwell-api.service';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+import 'rxjs/add/observable/merge';
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/observable/fromEvent';
 
 @Component({
     selector: 'voidwell-admin-users',
     templateUrl: './users.template.html',
-    styleUrls: ['users.styles.css'],
-    providers: [VoidwellApi]
+    styleUrls: ['./users.styles.css']
 })
 
 export class UsersComponent implements OnInit, OnDestroy {
-    users: Array<any>;
+    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild('filter') filter: ElementRef;
+
+    users: Array<any> = [];
     roles: Array<any>;
     errorMessage: string = null;
     isLoading: boolean = false;
@@ -25,15 +34,20 @@ export class UsersComponent implements OnInit, OnDestroy {
     getUsersRequest: Subscription;
     getRolesRequest: Subscription;
 
-    constructor(private api: VoidwellApi) {
-        
+    private dataSource: TableDataSource;
+
+    constructor(private api: VoidwellApi, private dialog: MatDialog) {
     }
 
     ngOnInit() {
+        this.isLoading = true;
+        this.dataSource = new TableDataSource(this.users, this.paginator);
+
         this.isLoadingUsers = true;
         this.getUsersRequest = this.api.getUsers()
             .subscribe(users => {
-                this.users = users.sort(this.usersSort);
+                this.users = users;
+                this.dataSource = new TableDataSource(this.users, this.paginator);
                 this.isLoadingUsers = false;
                 this.updateLoading();
             });
@@ -47,39 +61,92 @@ export class UsersComponent implements OnInit, OnDestroy {
             });
 
         this.updateLoading();
+
+        Observable.fromEvent(this.filter.nativeElement, 'keyup')
+            .debounceTime(150)
+            .distinctUntilChanged()
+            .subscribe(() => {
+                if (!this.dataSource) { return; }
+                this.dataSource.filter = this.filter.nativeElement.value;
+            });
     }
 
-    getDetails(user: any) {
-        this.errorMessage = null;
-        user.isLoading = true;
-        this.api.getUser(user.id).subscribe(userDetails => {
-            user.isLoading = false;
-            Object.assign(user, userDetails);
-        });;
+    onEdit(user: any) {
+        let dialogRef = this.dialog.open(UserEditorDialog, {
+            data: {
+                userId: user.id,
+                roles: this.roles
+            }
+        });
+
+        dialogRef.afterClosed().subscribe(result => {
+            //Todo: save event after editing.
+        });
     }
 
-    deleteUser(user: any) {
-        this.errorMessage = null;
-        user.isLocked = true;
-        this.api.deleteUser(user.id).subscribe(users => {
-            user.isLocked = false;
-            let idx = this.users.indexOf(user);
-            this.users.splice(idx, 1);
-        });;
+    private updateLoading() {
+        this.isLoading = this.isLoadingRoles || this.isLoadingUsers;
     }
 
-    disableUser(user: any) {
-        this.errorMessage = null;
-        user.isLocked = true;
+    ngOnDestroy() {
+        if (this.getUsersRequest) {
+            this.getUsersRequest.unsubscribe();
+        }
+        if (this.getRolesRequest) {
+            this.getRolesRequest.unsubscribe();
+        }
+    }
+}
 
-        user.isLocked = false;
+export class TableDataSource extends DataSource<any> {
+    constructor(private data, private paginator: MatPaginator) {
+        super();
     }
 
-    resetPassword(user: any) {
-        this.errorMessage = null;
-        user.isLocked = true;
+    _filterChange = new BehaviorSubject('');
+    get filter(): string { return this._filterChange.value; }
+    set filter(filter: string) { this._filterChange.next(filter); }
 
-        user.isLocked = false;
+    connect(): Observable<any[]> {
+        let first = Observable.of(this.data);
+        return Observable.merge(first, this.paginator.page, this._filterChange).map(() => {
+            if (this.data == null || this.data.length == 0) {
+                return [];
+            }
+
+            const data = this.data.slice();
+
+            let filteredData = data.filter(item => {
+                let searchStr = item.userName.toLowerCase();
+                return searchStr.indexOf(this.filter.toLowerCase()) != -1;
+            });
+
+            let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
+            return filteredData.splice(startIndex, this.paginator.pageSize);
+        });
+    }
+
+    disconnect() { }
+}
+
+@Component({
+    selector: 'user-editor-dialog',
+    templateUrl: 'user-editor-dialog.html',
+})
+export class UserEditorDialog {
+    private errorMessage: string;
+    private isLoading: boolean;
+    private user: any;
+
+    constructor(public dialogRef: MatDialogRef<UserEditorDialog>, private api: VoidwellApi, @Inject(MAT_DIALOG_DATA) public data: any) {
+        this.errorMessage = null;
+        this.isLoading = true;
+
+        this.api.getUser(this.data.userId)
+            .subscribe(user => {
+                this.user = user;
+                this.isLoading = false;
+            });
     }
 
     private setRoles(user, userRolesForm: NgForm) {
@@ -104,23 +171,37 @@ export class UsersComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateLoading() {
-        this.isLoading = this.isLoadingRoles || this.isLoadingUsers;
+    lockUser(user: any) {
+        this.errorMessage = null;
+        user.isLocked = true;
+
+        let params = {
+            IsPermanant: true,
+            LockLength: 60
+        };
+
+        this.api.lockUser(this.data.userId, params)
+            .subscribe(() => {
+                user.isLocked = false;
+            });
     }
 
-    private usersSort(a, b) {
-        if (a.userName > b.userName)
-            return true;
+    unlockUser(user: any) {
+        this.errorMessage = null;
+        user.isLocked = true;
 
-        return false;
+        this.api.unlockUser(this.data.userId)
+            .subscribe(() => {
+                user.isLocked = false;
+            });
     }
 
-    ngOnDestroy() {
-        if (this.getUsersRequest) {
-            this.getUsersRequest.unsubscribe();
-        }
-        if (this.getRolesRequest) {
-            this.getRolesRequest.unsubscribe();
-        }
+    closeDialog() {
+        this.dialogRef.close();
     }
+
+    onNoClick(): void {
+        this.dialogRef.close();
+    }
+
 }

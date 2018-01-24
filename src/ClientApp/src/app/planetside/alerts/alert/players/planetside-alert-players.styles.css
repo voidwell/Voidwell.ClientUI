@@ -1,13 +1,4 @@
-﻿.table-filter {
-    background: #19282F;
-    text-align: right;
-    padding: 0 50px;
-}
-.table-filter .mat-form-field {
-    width: 100%;
-}
-
-.mat-table {
+﻿.mat-table {
     max-height: 800px;
     overflow: auto;
 }

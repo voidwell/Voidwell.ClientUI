@@ -2,3 +2,7 @@
     font-weight: 600;
     display: block;
 }
+
+.mat-column-options {
+    text-align: right;
+}

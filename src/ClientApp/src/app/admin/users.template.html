@@ -1,46 +1,37 @@
 ﻿<div class="content-container">
-    <div>
-        <mat-accordion>
-            <mat-expansion-panel *ngFor="let user of users" (opened)="getDetails(user)">
-                <mat-expansion-panel-header>
-                    <mat-panel-title>
-                        {{user.userName}}
-                    </mat-panel-title>
-                    <mat-panel-description>
-                        {{user.lastLoginDate | date}}
-                    </mat-panel-description>
-                </mat-expansion-panel-header>
-                <mat-spinner *ngIf="user.isLoading"></mat-spinner>
-                <div *ngIf="!user.isLoading" class="user-details">
-                    <vw-error-message [message]="errorMessage"></vw-error-message>
-                    <form #userRolesForm="ngForm">
-                        <mat-form-field>
-                            <mat-select name="roles" placeholder="Assign role" (onClose)="setRoles(user, userRolesForm)" multiple [disabled]="user.isLocked" [ngModel]="user.roles">
-                                <mat-option *ngFor="let role of roles" [value]="role.name">{{role.name}}</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </form>
-                    <label>Id</label> {{user.id}}
-                    <br /><br />
-                    <label>Email</label> {{user.email}}
-                    <br /><br />
-                    <label>Timezone</label> {{user.timeZone}}
-                    <br /><br />
-                    <label>Created date</label> {{user.createdDate | date}}
-                    <br /><br />
-                    <label>Last login date</label> {{user.lastLoginDate | date}}
-                    <br /><br />
-                    <label>Password set date</label> {{user.passwordSetDate | date}}
-                    <br /><br />
-                    <label>Lockout end date</label> {{user.lockoutEndDate}}
-                    <br /><br />
-                </div>
-                <mat-action-row>
-                    <button mat-button (click)="resetPassword(user)" [disabled]="user.isLocked">Reset password</button>
-                    <button mat-button (click)="disableUser(user)" [disabled]="user.isLocked">Disable</button>
-                    <button mat-raised-button color="warn" (click)="deleteUser(user)" [disabled]="user.isLocked">Delete</button>
-                </mat-action-row>
-            </mat-expansion-panel>
-        </mat-accordion>
+    <div class="events-list">
+        <vw-loader [loading]="isLoading"></vw-loader>
+        <vw-error-message [message]="errorMessage"></vw-error-message>
+        <div [hidden]="isLoading">
+            <div class="table-filter">
+                <mat-form-field floatPlaceholder="never">
+                    <input matInput #filter placeholder="Filter users">
+                </mat-form-field>
+            </div>
+
+            <mat-table #table [dataSource]="dataSource" class="striped">
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                    <mat-cell *matCellDef="let user">{{user.userName}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="lastLogin">
+                    <mat-header-cell *matHeaderCellDef>Last Login</mat-header-cell>
+                    <mat-cell *matCellDef="let user">{{user.lastLoginDate | date: 'short'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="options">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let user">
+                        <button mat-raised-button (click)="onEdit(user)">Edit</button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['name','lastLogin','options']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['name','lastLogin','options'];"></mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+        </div>
     </div>
 </div>

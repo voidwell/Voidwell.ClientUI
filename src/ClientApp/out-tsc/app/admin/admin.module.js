@@ -33,7 +33,8 @@ AdminModule = __decorate([
             users_component_1.UsersComponent,
             roles_component_1.RolesComponent,
             events_component_1.EventsComponent,
-            events_component_1.EventEditorDialog
+            events_component_1.EventEditorDialog,
+            users_component_1.UserEditorDialog
         ],
         imports: [
             forms_1.FormsModule,
@@ -43,7 +44,11 @@ AdminModule = __decorate([
             admin_routes_1.routing,
             shared_components_module_1.SharedComponentsModule
         ],
-        entryComponents: [adminwrapper_component_1.AdminWrapperComponent, events_component_1.EventEditorDialog]
+        entryComponents: [
+            adminwrapper_component_1.AdminWrapperComponent,
+            events_component_1.EventEditorDialog,
+            users_component_1.UserEditorDialog
+        ]
     })
 ], AdminModule);
 exports.AdminModule = AdminModule;
