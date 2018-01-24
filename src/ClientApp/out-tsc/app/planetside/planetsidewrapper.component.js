@@ -68,7 +68,7 @@ PlanetsideWrapperComponent = __decorate([
     core_1.Component({
         selector: 'voidwell-planetside-wrapper',
         templateUrl: './planetsidewrapper.template.html',
-        styleUrls: ['./planetsidewrapper.styles.css', './planetside.styles.css'],
+        styleUrls: ['./planetsidewrapper.styles.css'],
         providers: [planetside_api_service_1.PlanetsideApi],
         encapsulation: core_1.ViewEncapsulation.None
     }),

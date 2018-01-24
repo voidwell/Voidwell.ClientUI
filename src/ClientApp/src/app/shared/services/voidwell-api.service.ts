@@ -142,6 +142,22 @@ export class VoidwellApi {
             });
     }
 
+    lockUser(userId: string, params: any) {
+        return this.AuthPost(this.authAdminUrl + 'user/' + userId + '/lock', params, this.options)
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    unlockUser(userId: string) {
+        return this.AuthPost(this.authAdminUrl + 'user/' + userId + '/unlock', null, this.options)
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
     getAllRoles() {
         return this.AuthGet(this.authAdminUrl + 'roles', this.options)
             .map(resp => resp.json())
@@ -226,6 +242,24 @@ export class VoidwellApi {
 
     getCustomEvent(eventId: any) {
         return this.http.get(this.eventsUrl + eventId, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    updateCustomEvent(eventId: string, event: any) {
+        return this.AuthPut(this.eventsUrl + eventId, event, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    createCustomEvent(event: any) {
+        return this.AuthPost(this.eventsUrl, event, this.options)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });

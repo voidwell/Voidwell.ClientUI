@@ -8,7 +8,7 @@ import { routing } from './admin.routes';
 import { AdminWrapperComponent } from './adminwrapper.component';
 import { DashboardComponent } from './dashboard.component';
 import { BlogComponent } from './blog.component';
-import { UsersComponent } from './users.component';
+import { UsersComponent, UserEditorDialog } from './users.component';
 import { RolesComponent } from './roles.component';
 import { EventsComponent, EventEditorDialog } from './events.component';
 
@@ -20,7 +20,8 @@ import { EventsComponent, EventEditorDialog } from './events.component';
         UsersComponent,
         RolesComponent,
         EventsComponent,
-        EventEditorDialog
+        EventEditorDialog,
+        UserEditorDialog
     ],
     imports: [
         FormsModule,
@@ -30,6 +31,10 @@ import { EventsComponent, EventEditorDialog } from './events.component';
         routing,
         SharedComponentsModule
     ],
-    entryComponents: [AdminWrapperComponent, EventEditorDialog]
+    entryComponents: [
+        AdminWrapperComponent,
+        EventEditorDialog,
+        UserEditorDialog
+    ]
 })
 export class AdminModule { }

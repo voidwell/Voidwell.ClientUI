@@ -1,5 +1,5 @@
 <div class="content-container" *ngIf="playerData">
-    <mat-spinner *ngIf="isLoading"></mat-spinner>
+    <vw-loader [loading]="isLoading"></vw-loader>
     <div *ngIf="!isLoading" class="class-list">
         <div *ngIf="!profile">
             <mat-table #table [dataSource]="profilesDataSource">
