@@ -36,6 +36,12 @@ export class EventsComponent implements OnDestroy {
         let dialogRef = this.dialog.open(EventEditorDialog, {
             data: { event: event }
         });
+    }
+
+    newEvent() {
+        let dialogRef = this.dialog.open(EventEditorDialog, {
+            data: { event: null }
+        });
 
         dialogRef.afterClosed().subscribe(result => {
             //Todo: save event after editing.
@@ -87,9 +93,75 @@ export class EventEditorDialog {
         { id: "8", name: "Esamir" }
     ];
 
-    constructor(
-        public dialogRef: MatDialogRef<EventEditorDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: any) { }
+    defaultTeams = [
+        { teamId: "1", name: "Vanu Sovereignty", enabled: true },
+        { teamId: "2", name: "New Conglomerate", enabled: true },
+        { teamId: "3", name: "Terran Republic", enabled: true }
+    ];
+
+    teams: any[];
+    createEvent: boolean = false;
+
+    constructor(public dialogRef: MatDialogRef<EventEditorDialog>, private api: VoidwellApi, @Inject(MAT_DIALOG_DATA) public data: any) {
+        this.teams = this.defaultTeams.slice();
+
+        if (this.data.event != null) {
+            this.teams.forEach(function (team) {
+                var teamIdx = data.event.teams.map(function (t) { return t.teamId }).indexOf(team.teamId);
+                if (teamIdx > -1) {
+                    Object.assign(team, data.event.teams[teamIdx]);
+                } else {
+                    team.enabled = false;
+                }
+            });
+        }
+        else
+        {
+            this.createEvent = true;
+            this.data.event = {
+                name: null,
+                description: null,
+                startDate: null,
+                endDate: null,
+                gameId: 'ps2',
+                isPrivate: false,
+                mapId: this.maps[0].id,
+                serverId: this.servers[0].id,
+                teams: []
+            };
+        }
+    }
+
+    saveEvent(event: any, teams: any) {
+        event.teams = [];
+        teams.forEach(function (team) {
+            if (team.enabled) {
+                var eventTeam = {
+                    teamId: team.teamId,
+                    name: team.name
+                };
+                event.teams.push(eventTeam);
+            }
+        });
+
+        if (this.createEvent) {
+            this.api.createCustomEvent(event)
+                .subscribe(result => {
+                    Object.assign(this.data.event, result);
+                    this.createEvent = false;
+                });
+        }
+        else {
+            this.api.updateCustomEvent(event.id, event)
+                .subscribe(result => {
+                    Object.assign(this.data.event, result);
+                });
+        }
+    }
+
+    closeDialog() {
+        this.dialogRef.close();
+    }
 
     onNoClick(): void {
         this.dialogRef.close();

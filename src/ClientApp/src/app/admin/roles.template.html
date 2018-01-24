@@ -15,7 +15,7 @@
                         {{role.name}}
                     </mat-panel-title>
                 </mat-expansion-panel-header>
-                <mat-spinner *ngIf="role.isLoading"></mat-spinner>
+                <vw-loader [loading]="isLoading"></vw-loader>
                 <div *ngIf="!role.isLoading" class="role-details">
                     Details
                 </div>

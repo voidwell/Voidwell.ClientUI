@@ -1,0 +1,35 @@
+﻿<div>
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngIf="!isLoading">
+        <h1>{{user.userName}}</h1>
+        <form #userRolesForm="ngForm">
+            <mat-form-field class="large-width">
+                <mat-select name="roles" placeholder="Assign role" (onClose)="setRoles(user, userRolesForm)" multiple [disabled]="user.isLocked" [ngModel]="user.roles">
+                    <mat-option *ngFor="let role of data.roles" [value]="role.name">{{role.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </form>
+        <label>Id:</label> {{user.id}}
+        <br /><br />
+        <label>Email:</label> {{user.email}}
+        <br /><br />
+        <label>Timezone:</label> {{user.timeZone}}
+        <br /><br />
+        <label>Created date:</label> {{user.createdDate | date}}
+        <br /><br />
+        <label>Last login date:</label> {{user.lastLoginDate | date}}
+        <br /><br />
+        <label>Password set date:</label> {{user.passwordSetDate | date}}
+        <br /><br />
+        <label>Lockout end date:</label> {{user.lockoutEndDate}}
+        <br /><br />
+        <div class="dialog-action-footer">
+            <button mat-raised-button (click)="closeDialog()">Close</button>
+            <div class="pull-right">
+                <button mat-raised-button (click)="unlockUser(user)" [disabled]="user.isLocked">Unlock</button>
+                <button mat-raised-button color="warn" (click)="lockUser(user)" [disabled]="user.isLocked">Lock</button>
+            </div>
+        </div>
+    </div>
+</div>

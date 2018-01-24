@@ -146,6 +146,22 @@ var VoidwellApi = (function () {
             return _this.handleError(error);
         });
     };
+    VoidwellApi.prototype.lockUser = function (userId, params) {
+        var _this = this;
+        return this.AuthPost(this.authAdminUrl + 'user/' + userId + '/lock', params, this.options)
+            .catch(function (error) {
+            _this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error: error });
+            return _this.handleError(error);
+        });
+    };
+    VoidwellApi.prototype.unlockUser = function (userId) {
+        var _this = this;
+        return this.AuthPost(this.authAdminUrl + 'user/' + userId + '/unlock', null, this.options)
+            .catch(function (error) {
+            _this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error: error });
+            return _this.handleError(error);
+        });
+    };
     VoidwellApi.prototype.getAllRoles = function () {
         var _this = this;
         return this.AuthGet(this.authAdminUrl + 'roles', this.options)
@@ -231,6 +247,24 @@ var VoidwellApi = (function () {
     VoidwellApi.prototype.getCustomEvent = function (eventId) {
         var _this = this;
         return this.http.get(this.eventsUrl + eventId, this.options)
+            .map(function (resp) { return resp.json(); })
+            .catch(function (error) {
+            _this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error: error });
+            return _this.handleError(error);
+        });
+    };
+    VoidwellApi.prototype.updateCustomEvent = function (eventId, event) {
+        var _this = this;
+        return this.AuthPut(this.eventsUrl + eventId, event, this.options)
+            .map(function (resp) { return resp.json(); })
+            .catch(function (error) {
+            _this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error: error });
+            return _this.handleError(error);
+        });
+    };
+    VoidwellApi.prototype.createCustomEvent = function (event) {
+        var _this = this;
+        return this.AuthPost(this.eventsUrl, event, this.options)
             .map(function (resp) { return resp.json(); })
             .catch(function (error) {
             _this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error: error });
