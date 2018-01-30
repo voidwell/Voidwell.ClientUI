@@ -1,4 +1,8 @@
 ﻿import { Component } from '@angular/core';
+import { NgRedux } from '@angular-redux/store';
+import { Observable } from 'rxjs/Observable';
+import { IAppState } from './../app.component';
+import { VoidwellAuthService } from './../shared/services/voidwell-auth.service';
 
 @Component({
     selector: 'voidwell-admin-wrapper',
@@ -7,11 +11,59 @@
 })
 
 export class AdminWrapperComponent {
+    userRoles: Array<string>;
+    userState: Observable<any>;
+
     navLinks = [
-        { path: 'dashboard', label: 'Dashboard' },
-        { path: 'events', label: 'Events' },
-        { path: 'blog', label: 'Blog' },
-        { path: 'users', label: 'Users' },
-        { path: 'roles', label: 'Roles' }
+        { path: 'dashboard', label: 'Dashboard', roles: null },
+        { path: 'events', label: 'Events', roles: ['Administrator', 'SuperAdmin', 'Events'] },
+        { path: 'blog', label: 'Blog', roles: ['Administrator', 'SuperAdmin', 'Blog'] },
+        { path: 'users', label: 'Users', roles: ['Administrator', 'SuperAdmin'] },
+        { path: 'roles', label: 'Roles', roles: ['Administrator', 'SuperAdmin'] }
     ];
+
+    constructor(private auth: VoidwellAuthService, private ngRedux: NgRedux<IAppState>) {
+        this.userState = this.ngRedux.select('loggedInUser');
+        this.userState.subscribe(user => {
+            if (user) {
+                if (user.roles) {
+                    this.userRoles = user.roles || [];
+                }
+            }
+        });
+    }
+
+    getNavLinks(): any[] {
+        let permittedLinks = [];
+
+        for (let i = 0; i < this.navLinks.length; i++) {
+            if (this.navLinks[i].roles == null || this.hasRoles(this.navLinks[i].roles)) {
+                permittedLinks.push(this.navLinks[i]);
+            }
+        }
+
+        return permittedLinks;
+    }
+
+    hasRoles(roles: any[]) {
+        if (!roles) {
+            return true;
+        }
+
+        for (var i = 0; i < roles.length; i++) {
+            if (this.hasRole(roles[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    hasRole(role: string): boolean {
+        if (this.userRoles && this.userRoles.indexOf(role) > -1) {
+            return true;
+        }
+
+        return false;
+    }
 }

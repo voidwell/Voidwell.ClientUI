@@ -16,23 +16,31 @@ const adminRoutes: Routes = [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: DashboardComponent },
             {
+                path: 'users',
+                component: UsersComponent,
+                data: { roles: ['Administrator', 'SuperAdmin'] }
+            },
+            {
+                path: 'roles',
+                component: RolesComponent,
+                data: { roles: ['Administrator', 'SuperAdmin'] }
+            },
+            {
                 path: 'blog',
                 component: BlogComponent,
                 canActivate: [VoidwellAuthGuard],
-                data: { roles: ['Blog'] }
+                data: { roles: ['Administrator', 'SuperAdmin', 'Blog'] }
 
             },
-            { path: 'users', component: UsersComponent },
-            { path: 'roles', component: RolesComponent },
             {
                 path: 'events',
                 component: EventsComponent,
                 canActivate: [VoidwellAuthGuard],
-                data: { roles: ['Events'] }
+                data: { roles: ['Administrator', 'SuperAdmin', 'Events'] }
             }
         ],
         canActivate: [VoidwellAuthGuard],
-        data: { roles: ['Administrator'] }
+        data: { roles: ['Administrator', 'SuperAdmin', 'Blog', 'Events'] }
     }
 ];
 

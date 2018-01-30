@@ -25,7 +25,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var collections_1 = require("@angular/cdk/collections");
 var material_1 = require("@angular/material");
-var voidwell_api_service_1 = require("../shared/services/voidwell-api.service");
 var BehaviorSubject_1 = require("rxjs/BehaviorSubject");
 var Observable_1 = require("rxjs/Observable");
 require("rxjs/add/observable/of");
@@ -35,6 +34,7 @@ require("rxjs/add/operator/distinctUntilChanged");
 require("rxjs/add/operator/startWith");
 require("rxjs/add/operator/map");
 require("rxjs/add/observable/fromEvent");
+var voidwell_api_service_1 = require("../shared/services/voidwell-api.service");
 var UsersComponent = (function () {
     function UsersComponent(api, dialog) {
         this.api = api;

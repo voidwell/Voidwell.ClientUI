@@ -34,7 +34,8 @@ AdminModule = __decorate([
             roles_component_1.RolesComponent,
             events_component_1.EventsComponent,
             events_component_1.EventEditorDialog,
-            users_component_1.UserEditorDialog
+            users_component_1.UserEditorDialog,
+            blog_component_1.BlogEditorDialog
         ],
         imports: [
             forms_1.FormsModule,
@@ -47,7 +48,8 @@ AdminModule = __decorate([
         entryComponents: [
             adminwrapper_component_1.AdminWrapperComponent,
             events_component_1.EventEditorDialog,
-            users_component_1.UserEditorDialog
+            users_component_1.UserEditorDialog,
+            blog_component_1.BlogEditorDialog
         ]
     })
 ], AdminModule);

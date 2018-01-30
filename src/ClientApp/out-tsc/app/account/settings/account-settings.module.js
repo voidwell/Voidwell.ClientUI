@@ -9,32 +9,30 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
 var forms_1 = require("@angular/forms");
 var common_1 = require("@angular/common");
-var shared_components_module_1 = require("../shared/components/shared-components.module");
-var materialLib_module_1 = require("../shared/materialLib.module");
-var login_component_1 = require("./login.component");
-var register_component_1 = require("./register.component");
-var passwordreset_component_1 = require("./passwordreset.component");
-var account_routes_1 = require("./account.routes");
-var AccountModule = (function () {
-    function AccountModule() {
+var shared_components_module_1 = require("./../../shared/components/shared-components.module");
+var materialLib_module_1 = require("./../../shared/materialLib.module");
+var account_settings_wrapper_component_1 = require("./account-settings-wrapper.component");
+var change_password_component_1 = require("./change-password/change-password.component");
+var account_settings_routes_1 = require("./account-settings.routes");
+var AccountSettingsModule = (function () {
+    function AccountSettingsModule() {
     }
-    return AccountModule;
+    return AccountSettingsModule;
 }());
-AccountModule = __decorate([
+AccountSettingsModule = __decorate([
     core_1.NgModule({
         declarations: [
-            login_component_1.LoginComponent,
-            register_component_1.RegisterComponent,
-            passwordreset_component_1.PasswordResetComponent
+            account_settings_wrapper_component_1.AccountSettingsWrapperComponent,
+            change_password_component_1.ChangePasswordComponent
         ],
         imports: [
             forms_1.FormsModule,
             materialLib_module_1.MaterialLib,
             common_1.CommonModule,
-            account_routes_1.routing,
+            account_settings_routes_1.routing,
             shared_components_module_1.SharedComponentsModule
         ],
-        entryComponents: [login_component_1.LoginComponent]
+        entryComponents: [account_settings_wrapper_component_1.AccountSettingsWrapperComponent]
     })
-], AccountModule);
-exports.AccountModule = AccountModule;
+], AccountSettingsModule);
+exports.AccountSettingsModule = AccountSettingsModule;

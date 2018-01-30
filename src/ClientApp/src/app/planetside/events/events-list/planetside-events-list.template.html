@@ -39,12 +39,8 @@
                         <div class="event-description">{{event.description}}</div>
                     </div>
                     <div class="event-block">
-                        <span class="started-time">
-                            Started: {{event.startDate | date:'y-MM-dd hh:mm:ss a'}}
-                        </span>
-                        <span class="remaining-time">
-                            Ended: {{event.endDate | date:'y-MM-dd hh:mm:ss a'}}
-                        </span>
+                        <div class="started-time">Started: {{event.startDate | date:'y-MM-dd hh:mm:ss a'}}</div>
+                        <div class="remaining-time">Ended: {{event.endDate | date:'y-MM-dd hh:mm:ss a'}}</div>
                     </div>
                     <div class="event-info-block">
                         <div class="server-name">Server: {{event.serverId | worldName}}</div>

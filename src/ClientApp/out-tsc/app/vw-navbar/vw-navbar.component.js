@@ -42,6 +42,17 @@ var VWNavbarComponent = (function () {
     VWNavbarComponent.prototype.signOut = function () {
         this.authService.signOut();
     };
+    VWNavbarComponent.prototype.hasRoles = function (roles) {
+        if (roles == null) {
+            return true;
+        }
+        for (var i = 0; i < roles.length; i++) {
+            if (this.hasRole(roles[i])) {
+                return true;
+            }
+        }
+        return false;
+    };
     VWNavbarComponent.prototype.hasRole = function (role) {
         if (this.userRoles && this.userRoles.indexOf(role) > -1) {
             return true;
