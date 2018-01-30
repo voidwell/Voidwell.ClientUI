@@ -1,0 +1,39 @@
+﻿.wrapper-container {
+    margin-top: 25px;
+}
+
+.tab-nav-bar-vertical {
+
+}
+
+.nav-sidebar {
+    float: left;
+    width: 150px;
+    margin-right: 20px;
+}
+
+.nav-sidebar-outlet {
+    overflow: hidden;
+}
+
+.nav-bar-link-vertical {
+    height: 48px;
+    padding: 0 24px;
+    cursor: pointer;
+    box-sizing: border-box;
+    opacity: .6;
+    min-width: 160px;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    vertical-align: top;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+}
+
+.nav-bar-link-vertical.active {
+    border-bottom: 2px solid #868686;
+}

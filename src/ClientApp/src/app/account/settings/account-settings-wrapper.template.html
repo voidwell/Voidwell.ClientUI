@@ -1,0 +1,16 @@
+﻿<div class="content-container wrapper-container">
+    <div class="nav-sidebar">
+        <nav class="tab-nav-bar-vertical">
+            <a class="mat-tab-link nav-bar-link-vertical"
+               *ngFor="let link of navLinks"
+               [routerLink]="link.path"
+               routerLinkActive #rla="routerLinkActive"
+               [ngClass]="rla.isActive ? 'active' : ''">
+                {{link.label}}
+            </a>
+        </nav>
+    </div>
+    <div class="nav-sidebar-outlet">
+        <router-outlet></router-outlet>
+    </div>
+</div>

@@ -1,24 +1,41 @@
 ﻿<div class="content-container">
     <div>
-        <mat-expansion-panel hideToggle="true" [expanded]="isCreating" (opened)="isCreating = true">
-            <mat-expansion-panel-header>
-                <mat-panel-title>
+        <vw-loader [loading]="isLoading"></vw-loader>
+        <vw-error-message [message]="errorMessage"></vw-error-message>
+        <div [hidden]="isLoading">
+            <div class="header-buttons">
+                <button mat-raised-button (click)="newPost()">
                     <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                    New Post
-                </mat-panel-title>
-            </mat-expansion-panel-header>
+                    <span>New Post</span>
+                </button>
+            </div>
+            <mat-table #table [dataSource]="dataSource" class="striped">
+                <ng-container matColumnDef="published">
+                    <mat-header-cell *matHeaderCellDef>Publish date</mat-header-cell>
+                    <mat-cell *matCellDef="let entry">{{entry.publishDate | date}}</mat-cell>
+                </ng-container>
 
-            <form (ngSubmit)="onCreateBlogPost(blogPostForm)" #blogPostForm="ngForm">
-                <mat-form-field>
-                    <input matInput type="text" placeholder="Title" name="title" ngModel required>
-                </mat-form-field>
-                <br />
-                <mat-form-field>
-                    <textarea matInput name="content" ngModel required></textarea>
-                </mat-form-field>
-                <br />
-                <button mat-raised-button type="submit">Create</button>
-            </form>
-        </mat-expansion-panel>
+                <ng-container matColumnDef="title">
+                    <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
+                    <mat-cell *matCellDef="let entry">{{entry.title}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="author">
+                    <mat-header-cell *matHeaderCellDef>Author</mat-header-cell>
+                    <mat-cell *matCellDef="let entry">{{entry.author}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="options">
+                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                    <mat-cell *matCellDef="let entry">
+                        <button mat-raised-button (click)="onEdit(entry)">Edit</button>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['published','title','author','options']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['published','title','author','options'];"></mat-row>
+            </mat-table>
+            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+        </div>
     </div>
 </div>

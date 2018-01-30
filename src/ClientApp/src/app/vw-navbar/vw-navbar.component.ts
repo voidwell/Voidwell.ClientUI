@@ -47,6 +47,20 @@ export class VWNavbarComponent implements OnInit {
         this.authService.signOut();
     }
 
+    hasRoles(roles: string[]) {
+        if (roles == null) {
+            return true;
+        }
+
+        for (var i = 0; i < roles.length; i++) {
+            if (this.hasRole(roles[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     hasRole(role: string): boolean {
         if (this.userRoles && this.userRoles.indexOf(role) > -1) {
             return true;

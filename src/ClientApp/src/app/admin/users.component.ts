@@ -1,10 +1,8 @@
 ﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Inject } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { DataSource } from '@angular/cdk/collections';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MatPaginator, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
-import { VoidwellApi } from '../shared/services/voidwell-api.service';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
@@ -14,6 +12,8 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromEvent';
+import { VoidwellApi } from '../shared/services/voidwell-api.service';
+
 
 @Component({
     selector: 'voidwell-admin-users',
