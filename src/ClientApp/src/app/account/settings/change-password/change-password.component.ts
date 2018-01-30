@@ -1,15 +1,12 @@
 ﻿import { Component } from '@angular/core';
-import { VoidwellApi } from '../../shared/services/voidwell-api.service';
+import { VoidwellApi } from '../../../shared/services/voidwell-api.service';
 import { NgForm } from '@angular/forms';
 
 @Component({
-    selector: 'voidwell-user-settings-change-password',
-    templateUrl: './changepassword.template.html',
-    styleUrls: ['../../app.styles.css'],
-    providers: [VoidwellApi]
+    templateUrl: './change-password.template.html'
 })
 
-export class ChangePasswordCardComponent {
+export class ChangePasswordComponent {
     isLoading: boolean = false;
     errorMessage: string = null;
 

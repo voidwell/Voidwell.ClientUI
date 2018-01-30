@@ -7,7 +7,7 @@ import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
 import { routing } from './admin.routes';
 import { AdminWrapperComponent } from './adminwrapper.component';
 import { DashboardComponent } from './dashboard.component';
-import { BlogComponent } from './blog.component';
+import { BlogComponent, BlogEditorDialog } from './blog.component';
 import { UsersComponent, UserEditorDialog } from './users.component';
 import { RolesComponent } from './roles.component';
 import { EventsComponent, EventEditorDialog } from './events.component';
@@ -21,7 +21,8 @@ import { EventsComponent, EventEditorDialog } from './events.component';
         RolesComponent,
         EventsComponent,
         EventEditorDialog,
-        UserEditorDialog
+        UserEditorDialog,
+        BlogEditorDialog
     ],
     imports: [
         FormsModule,
@@ -34,7 +35,8 @@ import { EventsComponent, EventEditorDialog } from './events.component';
     entryComponents: [
         AdminWrapperComponent,
         EventEditorDialog,
-        UserEditorDialog
+        UserEditorDialog,
+        BlogEditorDialog
     ]
 })
 export class AdminModule { }

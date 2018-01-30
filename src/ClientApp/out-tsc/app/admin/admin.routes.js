@@ -16,22 +16,30 @@ var adminRoutes = [
             { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
             { path: 'dashboard', component: dashboard_component_1.DashboardComponent },
             {
+                path: 'users',
+                component: users_component_1.UsersComponent,
+                data: { roles: ['Administrator', 'SuperAdmin'] }
+            },
+            {
+                path: 'roles',
+                component: roles_component_1.RolesComponent,
+                data: { roles: ['Administrator', 'SuperAdmin'] }
+            },
+            {
                 path: 'blog',
                 component: blog_component_1.BlogComponent,
                 canActivate: [voidwell_authguard_service_1.VoidwellAuthGuard],
-                data: { roles: ['Blog'] }
+                data: { roles: ['Administrator', 'SuperAdmin', 'Blog'] }
             },
-            { path: 'users', component: users_component_1.UsersComponent },
-            { path: 'roles', component: roles_component_1.RolesComponent },
             {
                 path: 'events',
                 component: events_component_1.EventsComponent,
                 canActivate: [voidwell_authguard_service_1.VoidwellAuthGuard],
-                data: { roles: ['Events'] }
+                data: { roles: ['Administrator', 'SuperAdmin', 'Events'] }
             }
         ],
         canActivate: [voidwell_authguard_service_1.VoidwellAuthGuard],
-        data: { roles: ['Administrator'] }
+        data: { roles: ['Administrator', 'SuperAdmin', 'Blog', 'Events'] }
     }
 ];
 exports.routing = router_1.RouterModule.forChild(adminRoutes);

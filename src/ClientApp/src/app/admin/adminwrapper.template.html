@@ -3,7 +3,7 @@
         <div class="tab-nav-bar-background">
             <nav mat-tab-nav-bar class="content-container">
                 <a mat-tab-link
-                   *ngFor="let link of navLinks"
+                   *ngFor="let link of getNavLinks()"
                    [routerLink]="link.path"
                    routerLinkActive #rla="routerLinkActive"
                    [active]="rla.isActive">

@@ -7,23 +7,24 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var core_1 = require("@angular/core");
-var general_1 = require("./general");
-var ps2_1 = require("./ps2");
-var ngx_pipes_1 = require("ngx-pipes");
-var VoidwellPipesModule = (function () {
-    function VoidwellPipesModule() {
+var FilterByFuncPipe = (function () {
+    function FilterByFuncPipe() {
     }
-    return VoidwellPipesModule;
+    FilterByFuncPipe.prototype.transform = function (arr, fn) {
+        if (!Array.isArray(arr)) {
+            return arr;
+        }
+        var returnList = [];
+        for (var i = 0; i < arr.length; i++) {
+            if (fn(arr[i]) === true) {
+                returnList.push(arr[i]);
+            }
+        }
+        return returnList;
+    };
+    return FilterByFuncPipe;
 }());
-VoidwellPipesModule = __decorate([
-    core_1.NgModule({
-        declarations: [],
-        imports: [],
-        exports: [
-            general_1.GeneralPipesModule,
-            ps2_1.PlanetsidePipesModule,
-            ngx_pipes_1.NgPipesModule
-        ]
-    })
-], VoidwellPipesModule);
-exports.VoidwellPipesModule = VoidwellPipesModule;
+FilterByFuncPipe = __decorate([
+    core_1.Pipe({ name: 'filterByFunc' })
+], FilterByFuncPipe);
+exports.FilterByFuncPipe = FilterByFuncPipe;

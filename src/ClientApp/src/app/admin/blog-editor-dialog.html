@@ -1,0 +1,21 @@
+﻿<div>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div>
+        <div>
+            <mat-form-field class="large-width">
+                <input matInput [(ngModel)]="entry.title" placeholder="Title">
+            </mat-form-field>
+            <mat-form-field class="large-width">
+                <textarea matInput [(ngModel)]="entry.content"></textarea>
+            </mat-form-field>
+        </div>
+        <br /><br />
+        <div class="dialog-action-footer">
+            <button mat-raised-button (click)="closeDialog()">Close</button>
+            <div class="pull-right">
+                <button mat-raised-button (click)="onSaveBlogPost(entry)">Save</button>
+                <button mat-raised-button color="warn" *ngIf="entry.id" (click)="onDeleteBlogPost(entry)">Delete</button>
+            </div>
+        </div>
+    </div>
+</div>

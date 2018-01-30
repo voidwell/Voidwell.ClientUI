@@ -7,6 +7,7 @@ var routes = [
     { path: '', redirectTo: 'blog', pathMatch: 'full' },
     { path: 'blog', loadChildren: './blog/blog.module#BlogModule' },
     { path: 'account', loadChildren: './account/account.module#AccountModule' },
+    { path: 'account/settings', loadChildren: './account/settings/account-settings.module#AccountSettingsModule' },
     { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
     { path: 'ps2', loadChildren: './planetside/planetside.module#PlanetsideModule' }
 ];
