@@ -17,7 +17,7 @@
         <div class="pull-right">
             <ng-content></ng-content>
         </div>
-        <a mat-button *ngFor="let link of navLinks"
+        <a *ngFor="let link of navLinks"
            [routerLink]="link.path"
            routerLinkActive #rla="routerLinkActive"
            [ngClass]="{ 'active': rla.isActive }">
