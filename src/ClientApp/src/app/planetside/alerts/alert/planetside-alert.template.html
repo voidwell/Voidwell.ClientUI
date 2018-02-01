@@ -17,6 +17,10 @@
                             <div>{{activeEvent.endDate | date:'MMM d, y h:mm:ss a'}}</div>
                             <div><small>End</small></div>
                         </div>
+                        <div class="map-display">
+                            <div>{{activeEvent.zoneId | zoneName}}</div>
+                            <div><small>Map</small></div>
+                        </div>
                     </div>
                     <div *ngIf="!activeEvent.endDate" class="remaining-timer">
                         Time left: <vw-countdown [end]="getEndDate(activeEvent)"></vw-countdown>
