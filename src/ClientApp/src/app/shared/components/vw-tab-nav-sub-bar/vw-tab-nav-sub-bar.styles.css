@@ -1,0 +1,42 @@
+﻿.vw-tab-nav-sub-bar {
+    background: #111819;
+    box-shadow: 0 3px 0 -2px rgba(0,0,0,.2), 0 2px 0 0 rgba(0,0,0,.14), 0 1px 0 0 rgba(0,0,0,.12);
+}
+
+.vw-tab-nav-sub-bar .mat-tab-nav-bar .mat-tab-link {
+    font-size: 0.8em;
+    height: 36px;
+    padding: 0 12px;
+    min-width: 100px;
+}
+
+.vw-nav {
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+
+.vw-nav a {
+    height: 36px;
+    padding: 0 12px;
+    cursor: pointer;
+    box-sizing: border-box;
+    color: rgba(255, 255, 255, 0.3);
+    min-width: 100px;
+    text-align: center;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    vertical-align: top;
+    text-decoration: none;
+    position: relative;
+    overflow: hidden;
+    font-size: 0.8em;
+    font-weight: 500;
+    text-transform: initial;
+}
+
+.vw-nav a.active {
+    color: rgba(255, 255, 255, 0.9);
+}

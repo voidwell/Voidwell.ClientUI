@@ -1,22 +1,26 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { PlanetsideApi } from './../planetside-api.service';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 import { Subscription } from 'rxjs/Subscription';
-import { HeaderService } from './../../shared/services/header.service';
+import { PlanetsideApi } from './../planetside-api.service';
+import { HeaderService, HeaderConfig } from './../../shared/services/header.service';
 
 @Component({
-    selector: 'planetside-item',
     templateUrl: './planetside-item.template.html',
-    styleUrls: ['./planetside-item.styles.css'],
-    providers: [PlanetsideApi]
+    styleUrls: ['./planetside-item.styles.css']
 })
 
 export class PlanetsideItemComponent implements OnDestroy {
     errorMessage: string = null;
     isLoading: boolean;
 
-    weaponData: any;
     routeSub: Subscription;
+    weaponData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
+    navLinks = [
+        { path: 'stats', display: 'Stats' },
+        { path: 'leaderboard', display: 'Leaderboard' }
+    ];
 
     constructor(private api: PlanetsideApi, private route: ActivatedRoute, private headerService: HeaderService) {
         this.routeSub = this.route.params.subscribe(params => {
@@ -25,18 +29,21 @@ export class PlanetsideItemComponent implements OnDestroy {
 
             this.api.getWeaponInfo(id)
                 .subscribe(data => {
-                    this.weaponData = data;
+                    this.weaponData.next(data);
 
-                    this.headerService.activeHeader.title = data.name;
-                    this.headerService.activeHeader.subtitle = data.category;
+                    let headerConfig = new HeaderConfig();
+                    headerConfig.title = data.name;
+                    headerConfig.subtitle = data.category;
 
                     if (data.factionId === '1') {
-                        this.headerService.activeHeader.background = '#321147';
+                        headerConfig.background = '#321147';
                     } else if (data.factionId === '2') {
-                        this.headerService.activeHeader.background = '#112447';
+                        headerConfig.background = '#112447';
                     } else if (data.factionId === '3') {
-                        this.headerService.activeHeader.background = '#471111';
+                        headerConfig.background = '#471111';
                     }
+
+                    this.headerService.setHeaderConfig(headerConfig);
 
                     this.isLoading = false;
                 });
@@ -46,5 +53,6 @@ export class PlanetsideItemComponent implements OnDestroy {
     ngOnDestroy() {
         this.routeSub.unsubscribe();
         this.headerService.reset();
+        this.weaponData.unsubscribe();
     }
 }

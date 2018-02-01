@@ -11,6 +11,9 @@ export class VWHeaderComponent {
     private header;
 
     constructor(private headerService: HeaderService) {
-        this.header = this.headerService.activeHeader;
+        this.headerService.activeHeader
+            .subscribe(header => {
+                this.header = header;
+            });
     }
 }

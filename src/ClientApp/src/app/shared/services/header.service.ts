@@ -1,27 +1,32 @@
 ﻿import { Injectable } from '@angular/core';
-import { HeaderConfig } from './headerConfig';
+import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Injectable()
-
 export class HeaderService {
-    private defaultHeader: HeaderConfig = {
-        title: 'Voidwell',
-        subtitle: '',
-        info: [],
-        background: '#5099D1'
-    };
+    activeHeader: BehaviorSubject<HeaderConfig> = new BehaviorSubject<HeaderConfig>(new HeaderConfig());
 
-    public activeHeader: HeaderConfig;
-
-    constructor() {
-        this.activeHeader = Object.assign({}, this.defaultHeader);
-    }
-
-    getHeaderConfig(): HeaderConfig {
-        return this.activeHeader;
+    setHeaderConfig(config: HeaderConfig) {
+        this.activeHeader.next(config);
     }
 
     reset() {
-        Object.assign(this.activeHeader, this.defaultHeader);
+        this.activeHeader.next(new HeaderConfig());
+    }
+}
+
+export class HeaderConfig {
+    public title: string = 'Voidwell';
+    public subtitle: string = '';
+    public background: string = '#1f2e32';
+    public info: Array<HeaderInfoItem> = [];
+}
+
+export class HeaderInfoItem {
+    public label: string;
+    public value: any;
+
+    constructor(label: string, value: string) {
+        this.label = label;
+        this.value = value;
     }
 }

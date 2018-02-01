@@ -2,17 +2,7 @@
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <div [hidden]="isLoading || errorMessage">
-        <div class="tab-nav-bar-background sub-bar">
-            <nav mat-tab-nav-bar class="content-container">
-                <a mat-tab-link
-                   *ngFor="let link of navLinks"
-                   [routerLink]="link.path"
-                   routerLinkActive #rla="routerLinkActive"
-                   [active]="rla.isActive">
-                    {{link.label}}
-                </a>
-            </nav>
-        </div>
+        <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
         <router-outlet></router-outlet>
     </div>
 </div>

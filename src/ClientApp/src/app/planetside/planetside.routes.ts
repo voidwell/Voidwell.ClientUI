@@ -4,6 +4,8 @@ import { PlanetsideWrapperComponent } from './planetsidewrapper.component';
 import { PlanetsideNewsComponent } from './news/planetside-news.component';
 import { PlanetsidePlayerComponent } from './player/planetside-player.component';
 import { PlanetsideItemComponent } from './item/planetside-item.component';
+import { PlanetsideItemStatsComponent } from './item/planetside-item-stats.component';
+import { PlanetsideItemLeaderboardComponent } from './item/planetside-item-leaderboard.component';
 import { PlanetsidePlayerStatsComponent } from './player/stats/planetside-player-stats.component';
 import { PlanetsidePlayerClassesComponent } from './player/classes/planetside-player-classes.component';
 import { PlanetsidePlayerVehiclesComponent } from './player/vehicles/planetside-player-vehicles.component';
@@ -28,7 +30,15 @@ const planetsideRoutes: Routes = [
         children: [
             { path: '', redirectTo: 'news', pathMatch: 'full' },
             { path: 'news', component: PlanetsideNewsComponent },
-            { path: 'item/:id', component: PlanetsideItemComponent },
+            {
+                path: 'item/:id',
+                component: PlanetsideItemComponent,
+                children: [
+                    { path: '', redirectTo: 'stats', pathMatch: 'full' },
+                    { path: 'stats', component: PlanetsideItemStatsComponent },
+                    { path: 'leaderboard', component: PlanetsideItemLeaderboardComponent },
+                ]
+            },
             {
                 path: 'player/:id',
                 component: PlanetsidePlayerComponent,

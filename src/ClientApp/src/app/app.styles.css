@@ -256,12 +256,6 @@ img.inverse-img {
     color: #ca1406;
 }
 
-.tab-nav-bar-background {
-    background: #1F2E32;
-}
-.tab-nav-bar-background.sub-bar {
-    background: #19282F;
-}
 .mat-tab-link,
 .mat-tab-label {
     color: #fff;

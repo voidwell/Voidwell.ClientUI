@@ -12,6 +12,8 @@ import { PlanetsideWrapperComponent } from './planetsidewrapper.component';
 import { PlanetsideCombatEventComponent } from './combat-event/planetside-combat-event.component';
 import { PlanetsideNewsComponent } from './news/planetside-news.component';
 import { PlanetsideItemComponent } from './item/planetside-item.component';
+import { PlanetsideItemStatsComponent } from './item/planetside-item-stats.component';
+import { PlanetsideItemLeaderboardComponent } from './item/planetside-item-leaderboard.component';
 import { PlanetsideItemDamageCardComponent } from './item/damage-card/planetside-item-damage-card.component';
 import { PlanetsidePlayerComponent } from './player/planetside-player.component';
 import { PlanetsidePlayerStatsComponent } from './player/stats/planetside-player-stats.component';
@@ -39,6 +41,8 @@ import { PlanetsideEventComponent } from './events/event/planetside-event.compon
         PlanetsideCombatEventComponent,
         PlanetsideNewsComponent,
         PlanetsideItemComponent,
+        PlanetsideItemStatsComponent,
+        PlanetsideItemLeaderboardComponent,
         PlanetsideItemDamageCardComponent,
         PlanetsidePlayerComponent,
         PlanetsidePlayerStatsComponent,

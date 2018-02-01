@@ -30,6 +30,10 @@
                 </div>
             </div>
         </div>
+        <div class="content-container event-nav">
+            <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+        </div>
+        <!--
         <div class="content-container tab-nav-bar-background sub-bar">
             <nav mat-tab-nav-bar>
                 <a mat-tab-link
@@ -37,10 +41,11 @@
                    [routerLink]="link.path"
                    routerLinkActive #rla="routerLinkActive"
                    [active]="rla.isActive">
-                    {{link.label}}
+                    {{link.display}}
                 </a>
             </nav>
         </div>
+            -->
         <router-outlet></router-outlet>
     </div>
 </div>
