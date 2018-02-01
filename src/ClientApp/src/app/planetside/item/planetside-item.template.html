@@ -1,72 +1,19 @@
-﻿<div class="content-container">
-    <div class="main-content" *ngIf="!isLoading">
-        <div class="weapon-description-card pull-left">
-            <mat-card>
-                <mat-card-content>
-                    <img [src]="weaponData.imageId | dgcImageUrl" />
-                    <div class="item-description">
-                        {{weaponData.description}}
-                    </div>
-                    <div *ngIf="!weaponData.isVehicleWeapon">
-                        <planetside-item-damage-card [weaponData]="weaponData"></planetside-item-damage-card>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
-        <div class="weapon-info-card">
-            <mat-card>
-                <mat-card-content>
-                    <div class="info-row">
-                        <span class="label">Type</span>
-                        <span class="value">{{weaponData.category}}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Range</span>
-                        <span class="value">{{weaponData.range}}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Fire rate</span>
-                        <span class="value">{{60000 / weaponData.fireRateMs }} RPM ({{weaponData.fireRateMs / 1000}} s)</span>
-                    </div>
-                    <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
-                        <span class="label">Damage</span>
-                        <span class="value">{{weaponData.maxDamage}} / {{weaponData.maxDamageRange}}m / {{weaponData.minDamage}} / {{weaponData.MinDamageRange}}m</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Muzzle velocity</span>
-                        <span class="value">{{weaponData.muzzleVelocity}} m/sec</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Reload speed</span>
-                        <span class="value">{{weaponData.minReloadSpeed / 1000}} sec / {{weaponData.maxReloadSpeed / 1000}} sec</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Ammunition</span>
-                        <span class="value">{{weaponData.clipSize}} / {{weaponData.capacity}}</span>
-                    </div>
-                    <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
-                        <span class="label">Hip accuracy</span>
-                        <span class="value">{{weaponData.hipAcc.crouching}} / {{weaponData.hipAcc.crouchWalking}} / {{weaponData.hipAcc.standing}} / {{weaponData.hipAcc.running}} / {{weaponData.hipAcc.cof}}</span>
-                    </div>
-                    <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
-                        <span class="label">Aim accuracy</span>
-                        <span class="value">{{weaponData.aimAcc.crouching}} / {{weaponData.aimAcc.crouchWalking}} / {{weaponData.aimAcc.standing}} / {{weaponData.aimAcc.running}} / {{weaponData.aimAcc.cof}}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Iron sight zoom</span>
-                        <span class="value">{{weaponData.ironSightZoom}}x</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Fire modes</span>
-                        <span class="value">{{weaponData.fireModes.join(' / ')}}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="label">Faction restriction</span>
-                        <span class="value" *ngIf="weaponData.factionId" [ngClass]="weaponData.factionId | factionColor">{{weaponData.factionId | factionName}}</span>
-                        <span class="value" *ngIf="!weaponData.factionId">None</span>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+﻿<div>
+    <!--
+    <div class="tab-nav-sub-bar-background">
+        <nav mat-tab-nav-bar class="content-container sub-bar">
+            <a mat-tab-link
+                *ngFor="let link of navLinks"
+                [routerLink]="link.path"
+                routerLinkActive #rla="routerLinkActive"
+                [active]="rla.isActive">
+                {{link.display}}
+            </a>
+        </nav>
+    </div>
+    -->
+    <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+    <div class="outlet-content content-container">
+        <router-outlet></router-outlet>
     </div>
 </div>

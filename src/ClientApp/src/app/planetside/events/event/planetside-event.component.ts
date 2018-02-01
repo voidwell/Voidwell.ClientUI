@@ -16,15 +16,15 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent imp
     private errorMessage: string = null;
     private sub: any;
     private navLinks = [
-        { path: 'players', label: 'Players' },
-        { path: 'outfits', label: 'Outfits' },
-        { path: 'weapons', label: 'Weapons' },
-        { path: 'vehicles', label: 'Vehicles' },
-        { path: 'map', label: 'Map' }
+        { path: 'players', display: 'Players' },
+        { path: 'outfits', display: 'Outfits' },
+        { path: 'weapons', display: 'Weapons' },
+        { path: 'vehicles', display: 'Vehicles' },
+        { path: 'map', display: 'Map' }
     ];
 
     constructor(private api: VoidwellApi, private route: ActivatedRoute, private headerService: HeaderService) {
-        super();
+        super(headerService);
 
         this.sub = this.route.params.subscribe(params => {
             let eventId = params['eventId'];
@@ -46,24 +46,7 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent imp
     }
 
     private setup(data: any) {
-        this.headerService.activeHeader.title = data.name;
-        this.headerService.activeHeader.subtitle = data.description;
-
-        if (data.mapId === '2') {
-            // Indar
-            this.headerService.activeHeader.background = '#421c0a';
-        } else if (data.mapId === '4') {
-            // Hossin
-            this.headerService.activeHeader.background = '#2a3f0d';
-        } else if (data.mapId === '6') {
-            // Amerish
-            this.headerService.activeHeader.background = '#0a421c';
-        } else if (data.mapId === '8') {
-            // Esamir
-            this.headerService.activeHeader.background = '#10393c';
-        } else {
-            this.headerService.activeHeader.background = '#1e282e';
-        }
+        this.setupHeader(data.name, data.description, data.mapId);
 
         this.event.next(data);
         this.activeEvent = data;
@@ -78,6 +61,6 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent imp
 
     ngOnDestroy() {
         this.sub.unsubscribe();
-        this.headerService.reset();
+        super.ngOnDestroy();
     }
 }

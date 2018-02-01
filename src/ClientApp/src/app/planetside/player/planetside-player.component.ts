@@ -3,7 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { PlanetsideApi } from './../planetside-api.service';
-import { HeaderService } from './../../shared/services/header.service';
+import { HeaderService, HeaderConfig, HeaderInfoItem } from './../../shared/services/header.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import { BehaviorSubject } from "rxjs/BehaviorSubject";
@@ -19,11 +19,11 @@ export class PlanetsidePlayerComponent implements OnDestroy {
     private errorMessage: string = null;
     private routeSub: Subscription;
     private navLinks = [
-        { path: 'stats', label: 'Stats' },
-        { path: 'classes', label: 'Classes' },
-        { path: 'vehicles', label: 'Vehicles' },
-        { path: 'weapons', label: 'Weapons' },
-        { path: 'sessions', label: 'Sessions' },
+        { path: 'stats', display: 'Stats' },
+        { path: 'classes', display: 'Classes' },
+        { path: 'vehicles', display: 'Vehicles' },
+        { path: 'weapons', display: 'Weapons' },
+        { path: 'sessions', display: 'Sessions' },
     ];
 
     playerData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
@@ -45,24 +45,27 @@ export class PlanetsidePlayerComponent implements OnDestroy {
                 .subscribe(data => {
                     this.playerData.next(data);
 
-                    this.headerService.activeHeader.title = data.name;
-                    this.headerService.activeHeader.subtitle = data.world;
+                    let headerConfig = new HeaderConfig();
+                    headerConfig.title = data.name;
+                    headerConfig.subtitle = data.world;
 
                     if (data.factionId === '1') {
-                        this.headerService.activeHeader.background = '#321147';
+                        headerConfig.background = '#321147';
                     } else if (data.factionId === '2') {
-                        this.headerService.activeHeader.background = '#112447';
+                        headerConfig.background = '#112447';
                     } else if (data.factionId === '3') {
-                        this.headerService.activeHeader.background = '#471111';
+                        headerConfig.background = '#471111';
                     }
 
-                    this.headerService.activeHeader.info = [
-                        { label: 'Battle Rank', value: data.battleRank },
-                        { label: 'Score', value: this.decimalPipe.transform(data.lifetimeStats.score) },
-                        { label: 'Kills', value: this.decimalPipe.transform(data.lifetimeStats.kills) },
-                        { label: 'Deaths', value: this.decimalPipe.transform(data.lifetimeStats.deaths) },
-                        { label: 'Hours Played', value: this.decimalPipe.transform(data.lifetimeStats.playTime / 3600, '.1-1') },
+                    headerConfig.info = [
+                        new HeaderInfoItem('Battle Rank', data.battleRank),
+                        new HeaderInfoItem('Score', this.decimalPipe.transform(data.lifetimeStats.score)),
+                        new HeaderInfoItem('Kills', this.decimalPipe.transform(data.lifetimeStats.kills)),
+                        new HeaderInfoItem('Deaths', this.decimalPipe.transform(data.lifetimeStats.deaths)),
+                        new HeaderInfoItem('Hours Played', this.decimalPipe.transform(data.lifetimeStats.playTime / 3600, '.1-1'))
                     ];
+
+                    this.headerService.setHeaderConfig(headerConfig);
 
                     this.isLoading = false;
                 });

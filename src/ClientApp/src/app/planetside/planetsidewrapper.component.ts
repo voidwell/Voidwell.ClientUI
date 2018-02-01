@@ -3,29 +3,30 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { PlanetsideApi } from './planetside-api.service';
+import { HeaderService, HeaderConfig } from './../shared/services/header.service';
 
 @Component({
     selector: 'voidwell-planetside-wrapper',
     templateUrl: './planetsidewrapper.template.html',
     styleUrls: ['./planetsidewrapper.styles.css'],
-    providers: [PlanetsideApi],
     encapsulation: ViewEncapsulation.None
 })
 
 export class PlanetsideWrapperComponent {
     private queryWait: any;
     private filteredResults: Observable<any[]>;
+    private isSearching: boolean = false;
 
     results: any[];
     searchControl: FormControl;
 
     navLinks = [
-        { path: 'news', label: 'News' },
-        { path: 'alerts', label: 'Alerts' },
-        { path: 'events', label: 'Events' }
+        { path: 'news', display: 'News' },
+        { path: 'alerts', display: 'Alerts' },
+        { path: 'events', display: 'Events' }
     ];
 
-    constructor(private api: PlanetsideApi, private router: Router) {
+    constructor(private api: PlanetsideApi, private router: Router, private headerService: HeaderService) {
         this.searchControl = new FormControl();
 
         this.searchControl.valueChanges
@@ -47,6 +48,8 @@ export class PlanetsideWrapperComponent {
     }
 
     clearSearch() {
+        this.isSearching = false;
+
         if (this.searchControl.dirty) {
             this.searchControl.reset();
             this.results = [];
@@ -65,9 +68,12 @@ export class PlanetsideWrapperComponent {
         }
 
         this.queryWait = setTimeout(() => {
+            this.isSearching = true;
             this.results = [];
+
             this.api.search(query).subscribe(data => {
                 this.results = data;
+                this.isSearching = false;
             });
         }, 1000);
     }

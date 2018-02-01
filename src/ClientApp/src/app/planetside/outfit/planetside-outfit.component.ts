@@ -5,7 +5,7 @@ import { MatSort, MatSortable } from '@angular/material';
 import { DatePipe } from '@angular/common';
 import { Subscription } from 'rxjs/Subscription';
 import { PlanetsideApi } from './../planetside-api.service';
-import { HeaderService } from './../../shared/services/header.service';
+import { HeaderService, HeaderConfig, HeaderInfoItem } from './../../shared/services/header.service';
 import { Observable } from 'rxjs/Observable';
 import { Observer } from "rxjs/Observer";
 import 'rxjs/add/operator/catch'
@@ -16,8 +16,7 @@ import { Subscriber } from "rxjs/Subscriber";
 @Component({
     selector: 'planetside-outfit',
     templateUrl: './planetside-outfit.template.html',
-    styleUrls: ['./planetside-outfit.styles.css'],
-    providers: [PlanetsideApi]
+    styleUrls: ['./planetside-outfit.styles.css']
 })
 
 export class PlanetsideOutfitComponent implements OnDestroy {
@@ -52,24 +51,28 @@ export class PlanetsideOutfitComponent implements OnDestroy {
                     this.outfitData = data;
 
                     let alias = data.alias ? '[' + data.alias + '] ' : '';
-                    this.headerService.activeHeader.title = alias + data.name;
-                    this.headerService.activeHeader.subtitle = data.worldName;
+
+                    let headerConfig = new HeaderConfig();
+                    headerConfig.title = alias + data.name;
+                    headerConfig.subtitle = data.worldName;
 
                     if (data.factionId === '1') {
-                        this.headerService.activeHeader.background = '#321147';
+                        headerConfig.background = '#321147';
                     } else if (data.factionId === '2') {
-                        this.headerService.activeHeader.background = '#112447';
+                        headerConfig.background = '#112447';
                     } else if (data.factionId === '3') {
-                        this.headerService.activeHeader.background = '#471111';
+                        headerConfig.background = '#471111';
                     }
 
                     let createdDate = this.datePipe.transform(data.createdDate, 'MMM d, y');
 
-                    this.headerService.activeHeader.info = [
-                        { label: 'Members', value: data.memberCount },
-                        { label: 'Created', value: createdDate },
-                        { label: 'Leader', value: data.leaderName },
+                    headerConfig.info = [
+                        new HeaderInfoItem('Members', data.memberCount),
+                        new HeaderInfoItem('Created', createdDate),
+                        new HeaderInfoItem('Leader', data.leaderName)
                     ];
+
+                    this.headerService.setHeaderConfig(headerConfig);
                 });
 
             this.api.getOutfitMembers(id)

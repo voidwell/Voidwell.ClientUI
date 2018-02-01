@@ -52,6 +52,15 @@ export class PlanetsideApi {
             });
     }
 
+    getWeaponLeaderboard(itemId: string) {
+        return this.http.get(this.ps2Url + 'leaderboard/weapon/' + itemId)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
     getCharacter(characterId: string) {
         return this.http.get(this.ps2Url + 'character/' + characterId)
             .map(resp => resp.json())
