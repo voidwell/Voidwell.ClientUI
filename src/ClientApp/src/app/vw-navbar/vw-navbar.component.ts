@@ -23,7 +23,10 @@ export class VWNavbarComponent implements OnInit {
         private ngRedux: NgRedux<IAppState>) { }
 
     ngOnInit() {
-        this.header = this.headerService.activeHeader;
+        this.headerService.activeHeader
+            .subscribe(header => {
+                this.header = header;
+            });
 
         this.userState = this.ngRedux.select('loggedInUser');
         this.userState.subscribe(user => {

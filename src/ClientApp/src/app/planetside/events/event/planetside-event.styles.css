@@ -57,3 +57,7 @@
     padding: 10px;
     float: right;
 }
+
+.event-nav ::ng-deep .vw-tab-nav-sub-bar {
+    background: #19282f;
+}

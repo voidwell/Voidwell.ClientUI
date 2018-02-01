@@ -1,6 +1,30 @@
 ﻿.search-box {
-    width: 300px;
     height: 45px;
+    margin-right: 25px;
+    margin-top: -8px;
+}
+.search-box,
+mat-progress-bar.mat-progress-bar {
+    width: 300px;
+}
+.search-icon {
+    position: absolute;
+    top: 8px;
+    left: 5px;
+}
+.search-input {
+    padding: 0 0 0 28px !important;
+}
+mat-progress-bar.mat-progress-bar {
+    position: absolute;
+    bottom: 2px;
+    height: 2px;
+}
+.search-box .mat-input-underline .mat-input-ripple {
+    background: rgba(255, 255, 255, 0.6);
+}
+.search-box .mat-form-field-underline {
+    background-color: rgba(255, 255, 255, 0.42);
 }
 .search-option.mat-option {
     border-bottom: 1px solid #ccc;

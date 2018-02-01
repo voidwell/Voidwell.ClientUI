@@ -17,15 +17,15 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
     private errorMessage: string = null;
     private sub: any;
     private navLinks = [
-        { path: 'players', label: 'Players' },
-        { path: 'outfits', label: 'Outfits' },
-        { path: 'weapons', label: 'Weapons' },
-        { path: 'vehicles', label: 'Vehicles' },
-        { path: 'map', label: 'Map' }
+        { path: 'players', display: 'Players' },
+        { path: 'outfits', display: 'Outfits' },
+        { path: 'weapons', display: 'Weapons' },
+        { path: 'vehicles', display: 'Vehicles' },
+        { path: 'map', display: 'Map' }
     ];
 
     constructor(private api: PlanetsideApi, private route: ActivatedRoute, private headerService: HeaderService) {
-        super();
+        super(headerService);
 
         this.sub = this.route.params.subscribe(params => {
             let worldId = params['worldId'];
@@ -48,28 +48,9 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
     }
 
     private setup(data: any) {
-        this.headerService.activeHeader.title = data.metagameEvent.name;
-        this.headerService.activeHeader.subtitle = data.metagameEvent.description;
-
-        if (data.zoneId === '2') {
-            // Indar
-            this.headerService.activeHeader.background = '#421c0a';
-        } else if (data.zoneId === '4') {
-            // Hossin
-            this.headerService.activeHeader.background = '#2a3f0d';
-        } else if (data.zoneId === '6') {
-            // Amerish
-            this.headerService.activeHeader.background = '#0a421c';
-        } else if (data.zoneId === '8') {
-            // Esamir
-            this.headerService.activeHeader.background = '#10393c';
-        } else {
-            this.headerService.activeHeader.background = '#1e282e';
-        }
+        this.setupHeader(data.metagameEvent.name, data.metagameEvent.description, data.zoneId);
 
         this.event.next(data);
-        console.log('alert');
-        console.log(data);
         this.activeEvent = data;
         this.isLoading = false;
     }
@@ -82,6 +63,6 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
 
     ngOnDestroy() {
         this.sub.unsubscribe();
-        this.headerService.reset();
+        super.ngOnDestroy();
     }
 }

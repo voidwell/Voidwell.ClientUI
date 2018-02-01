@@ -1,0 +1,72 @@
+﻿<div class="item-leaderboard">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div [hidden]="isLoading">
+        <mat-card>
+            <mat-card-content>
+                <mat-table #table [dataSource]="dataSource" class="striped" matSort>
+                    <ng-container matColumnDef="idx">
+                        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+                        <mat-cell *matCellDef="let idx = index">{{idx + 1 + (paginator.pageIndex * paginator.pageSize) | number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Player</mat-header-cell>
+                        <mat-cell *matCellDef="let row">
+                            <div class="character-name">
+                                <a routerLink="/ps2/player/{{row.characterId}}" [ngClass]="row.factionId | factionColor">
+                                    <div class="name">{{row.name}}</div>
+                                </a>
+                            </div>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kills">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.kills | number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="vehicleKills">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>V.Kills</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.vehicleKills | number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deaths">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Deaths</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.deaths | number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kdr">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>K/D</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.kills / row.deaths | number: '.2-2'}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kdrDelta">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.kdrDelta | number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="aga">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>AgA</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.aga | number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="accuracy">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Accu.</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.shotsHit / row.shotsFired * 100 | number: '.0-0'}}%</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="accuracyDelta">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.accuracyDelta | number}}</mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="['idx','name','kills','vehicleKills','deaths','kdr','kdrDelta','aga','accuracy','accuracyDelta']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['idx','name','kills','vehicleKills','deaths','kdr','kdrDelta','aga','accuracy','accuracyDelta'];"></mat-row>
+                </mat-table>
+
+                <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>
