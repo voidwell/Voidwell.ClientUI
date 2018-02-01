@@ -15,11 +15,11 @@ export class AdminWrapperComponent {
     userState: Observable<any>;
 
     navLinks = [
-        { path: 'dashboard', label: 'Dashboard', roles: null },
-        { path: 'events', label: 'Events', roles: ['Administrator', 'SuperAdmin', 'Events'] },
-        { path: 'blog', label: 'Blog', roles: ['Administrator', 'SuperAdmin', 'Blog'] },
-        { path: 'users', label: 'Users', roles: ['Administrator', 'SuperAdmin'] },
-        { path: 'roles', label: 'Roles', roles: ['Administrator', 'SuperAdmin'] }
+        { path: 'dashboard', display: 'Dashboard', roles: null },
+        { path: 'events', display: 'Events', roles: ['Administrator', 'SuperAdmin', 'Events'] },
+        { path: 'blog', display: 'Blog', roles: ['Administrator', 'SuperAdmin', 'Blog'] },
+        { path: 'users', display: 'Users', roles: ['Administrator', 'SuperAdmin'] },
+        { path: 'roles', display: 'Roles', roles: ['Administrator', 'SuperAdmin'] }
     ];
 
     constructor(private auth: VoidwellAuthService, private ngRedux: NgRedux<IAppState>) {
