@@ -49,11 +49,11 @@ export class PlanetsidePlayerComponent implements OnDestroy {
                     headerConfig.title = data.name;
                     headerConfig.subtitle = data.world;
 
-                    if (data.factionId === '1') {
+                    if (data.factionId === 1) {
                         headerConfig.background = '#321147';
-                    } else if (data.factionId === '2') {
+                    } else if (data.factionId === 2) {
                         headerConfig.background = '#112447';
-                    } else if (data.factionId === '3') {
+                    } else if (data.factionId === 3) {
                         headerConfig.background = '#471111';
                     }
 

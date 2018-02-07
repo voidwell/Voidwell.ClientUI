@@ -1,0 +1,32 @@
+﻿<div class="content-container">
+    <div class="online-players">
+        <mat-card class="player-totals">
+            <mat-card-content class="layout-padding">
+                <div>
+                    <div class="total-row" *ngFor="let faction of players | groupBy: 'character.factionId' | pairs ">
+                        <span class="total-label" [ngClass]="faction[0] | factionColor">{{faction[0] | factionName}}:</span>
+                        <span>{{faction[1].length}}</span>
+                    </div>
+                    <div class="total-row">
+                        <span class="total-label">Total:</span>
+                        <span>{{players.length}}</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card *ngFor="let faction of players | groupBy: 'character.factionId' | pairs">
+            <mat-card-content class="layout-padding">
+                <h3 [ngClass]="faction[0] | factionColor">{{faction[0] | factionName}}</h3>
+                <div class="header-row">
+                    <span class="player-col">Player</span>
+                    <span class="date-col">Login date</span>
+                </div>
+                <div *ngFor="let player of faction[1] | orderBy: '-loginDate'" class="player-row">
+                    <a routerLink="/ps2/player/{{player.character.characterId}}" [ngClass]="player.character.factionId | factionColor" class="player-col">{{player.character.name}}</a>
+                    <span class="date-col">{{player.loginDate | date: 'short'}}</span>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

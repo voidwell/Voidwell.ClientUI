@@ -1,18 +1,17 @@
 <div class="content-container voidwell-character-stats" *ngIf="playerData">
-  <div class="stats-header flexrow">
-    <div class="header-left flex">
-      <span *ngIf="playerData.title" class="title">{{playerData.title}} of the</span>
-      <span *ngIf="!playerData.title">Soldier of the </span>
-      <span class="faction-name" [ngClass]="playerData.factionId | factionColor">{{playerData.faction}}</span>
+    <div class="stats-header flexrow">
+        <div class="header-left flex">
+            <span *ngIf="playerData.title" class="title">{{playerData.title}} of the</span>
+            <span *ngIf="!playerData.title">Soldier of the </span>
+            <span class="faction-name" [ngClass]="playerData.factionId | factionColor">{{playerData.faction}}</span>
+        </div>
+        <div class="header-right">
+            <div class="value">{{playerData.times.lastLoginDate | date:'MMM d, y h:mm:ss a'}}</div>
+            <div class="label">Last seen</div>
+        </div>
     </div>
-    <div class="header-right">
-      <div class="value">{{playerData.times.lastLoginDate | date:'MMM d, y h:mm:ss a'}}</div>
-      <div class="label">Last seen</div>
-    </div>
-  </div>
-  <div class="flexrow flexalignspacebetweenstretch">
-    <div class="vw-character-overview flex">
-        <mat-card>
+    <div class="card-row card-row-stretch">
+        <mat-card class="vw-character-overview">
             <mat-card-header>
                 <mat-card-title>General</mat-card-title>
             </mat-card-header>
@@ -49,9 +48,7 @@
                 </div>
             </mat-card-content>
         </mat-card>
-    </div>
-    <div class="vw-character-outfit flex" *ngIf="playerData.outfit">
-        <mat-card>
+        <mat-card class="vw-character-outfit" *ngIf="playerData.outfit">
             <mat-card-header>
                 <mat-card-title>Outfit</mat-card-title>
             </mat-card-header>
@@ -85,170 +82,169 @@
             </mat-card-content>
         </mat-card>
     </div>
-  </div>
-  
-  <div class="flexrow layout-wrap">
-    <planetside-player-stats-siege-card class="siege-container" captured="{{playerData.lifetimeStats.facilityCaptureCount}}" defended="{{playerData.lifetimeStats.facilityDefendedCount}}"></planetside-player-stats-siege-card>
-    <mat-card class="vw-character-kdr inline">
-        <mat-card-header>
-            <mat-card-title>Overall KD Performance</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <div class="kdr-data">
-                <div class="layout-margin">
-                    <div>
-                        <span class="label">Kill/Death ratio</span>
-                        <span class="value">{{playerData.lifetimeStats.kills / playerData.lifetimeStats.deaths | number: '.2-2'}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Headshot ratio</span>
-                        <span class="value">{{playerData.lifetimeStats.headshots / playerData.lifetimeStats.kills * 100 | number: '.2-2'}}%</span>
-                    </div>
-                    <div>
-                        <span class="label">KD Spread</span>
-                        <span class="value" [ngClass]="{'positive': playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths > 0, 'negative': playerData.lifetimeStats.kills-playerData.lifetimeStats.deaths < 0}">
-                            <span *ngIf="playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths > 0">+</span>
-                            <span>{{playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths | number}}</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </mat-card-content>
-        <mat-card-footer class="bottom">
-            <div class="info-rows">
-                <div class="info-row flexrow flexalignspacearoundstretch">
-                    <div class="info-item flex">
-                        <div class="value">{{playerData.lifetimeStats.kills | number}}</div>
-                        <div class="label">Kills</div>
-                    </div>
-                    <div class="info-item flex">
-                        <div class="value">{{playerData.lifetimeStats.deaths | number}}</div>
-                        <div class="label">Deaths</div>
+
+    <div class="card-row">
+        <planetside-player-stats-siege-card class="siege-container" captured="{{playerData.lifetimeStats.facilityCaptureCount}}" defended="{{playerData.lifetimeStats.facilityDefendedCount}}"></planetside-player-stats-siege-card>
+        <mat-card class="vw-character-kdr inline">
+            <mat-card-header>
+                <mat-card-title>Overall KD Performance</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="kdr-data">
+                    <div class="layout-margin">
+                        <div>
+                            <span class="label">Kill/Death ratio</span>
+                            <span class="value">{{playerData.lifetimeStats.kills / playerData.lifetimeStats.deaths | number: '.2-2'}}</span>
+                        </div>
+                        <div>
+                            <span class="label">Headshot ratio</span>
+                            <span class="value">{{playerData.lifetimeStats.headshots / playerData.lifetimeStats.kills * 100 | number: '.2-2'}}%</span>
+                        </div>
+                        <div>
+                            <span class="label">KD Spread</span>
+                            <span class="value" [ngClass]="{'positive': playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths > 0, 'negative': playerData.lifetimeStats.kills-playerData.lifetimeStats.deaths < 0}">
+                                <span *ngIf="playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths > 0">+</span>
+                                <span>{{playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths | number}}</span>
+                            </span>
+                        </div>
                     </div>
                 </div>
-                <div class="info-row flexrow flexalignspacearoundstretch">
-                    <div class="info-item flex">
-                        <div class="value">{{playerData.lifetimeStats.headshots | number}}</div>
-                        <div class="label">Headshots</div>
-                    </div>
-                    <div class="info-item flex">
-                        <div class="value">{{playerData.lifetimeStats.assistCount | number}}</div>
-                        <div class="label">Assists</div>
-                    </div>
-                </div>
-            </div>
-        </mat-card-footer>
-    </mat-card>
-    <mat-card class="vw-character-weapons inline">
-        <mat-card-header>
-            <mat-card-title>Overall Weapon Performance</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-            <div class="weapon-data">
-                <div class="layout-margin">
-                    <div>
-                        <span class="label">Accuracy:</span>
-                        <span class="value">{{playerData.lifetimeStats.hitCount / playerData.lifetimeStats.fireCount * 100 | number: '.2-2'}}%</span>
-                    </div>
-                    <div>
-                        <span class="label">Shots per kill:</span>
-                        <span class="value">{{playerData.lifetimeStats.fireCount / playerData.lifetimeStats.kills | number: '.2-2'}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Landed per kill:</span>
-                        <span class="value">{{playerData.lifetimeStats.hitCount / playerData.lifetimeStats.kills | number: '.2-2'}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Damage spread:</span>
-                        <span class="value" [ngClass]="{'positive': playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy > 0, 'negative': playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy < 0}">
-                            <span *ngIf="playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy > 0">+</span>
-                            <span>{{playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy | number}}</span>
-                        </span>
-                    </div>
-                </div>
-            </div>
-        </mat-card-content>
-        <mat-card-footer>
-            <div class="info-rows">
-                <div class="info-row flexrow flexalignspacearoundstretch">
-                    <div class="info-item flex">
-                        <div class="value">{{playerData.lifetimeStats.fireCount | number}}</div>
-                        <div class="label">Shots fired</div>
-                    </div>
-                    <div class="info-item flex">
-                        <div class="value">{{playerData.lifetimeStats.hitCount | number}}</div>
-                        <div class="label">Shots hit</div>
-                    </div>
-                </div>
-                <div class="info-row flexrow flexalignspacearoundstretch">
-                    <div class="info-item flex">
-                        <div class="value">{{playerData.lifetimeStats.damageGiven | number}}</div>
-                        <div class="label">Damage given</div>
-                    </div>
-                    <div class="info-item flex">
-                        <div class="value">{{playerData.lifetimeStats.damageTakenBy | number}}</div>
-                        <div class="label">Damage taken</div>
-                    </div>
-                </div>
-            </div>
-        </mat-card-footer>
-    </mat-card>
-  </div>
-  <!--
-  <div class="vw-character-ivi">
-      <mat-card>
-        <mat-card-header>
-          <mat-card-title>
-              Infantry vs Infantry
-          </mat-card-title>
-        </mat-card-header>
-          <mat-card-content class="layout-padding">
-            <div class="flexrow">
-                <div class="flexcolumn">
-                    <div>
-                        <span class="label">Rating:</span>
-                        <span class="value">{{stats.rating | number: '.2-2'}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Kill/Death ratio:</span>
-                        <span class="value">{{stats.killDeathRatio | number: '.2-2'}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Accuracy:</span>
-                        <span class="value">{{stats.accuracy * 100 | number: '.2-2'}}%</span>
-                    </div>
-                    <div>
-                        <span class="label">Headshot ratio:</span>
-                        <span class="value">{{stats.headshotRatio * 100 | number: '.2-2'}}%</span>
-                    </div>
-                    <div>
-                        <span class="label">Kills per hour:</span>
-                        <span class="value">{{stats.killsPerHour | number: '.2-2'}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Shots per kill:</span>
-                        <span class="value">{{stats.shotsPerKill | number: '.2-2'}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Landed per kill:</span>
-                        <span class="value">{{stats.landedPerKill | number: '.2-2'}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Kills:</span>
-                        <span class="value">{{stats.kills | number}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Deaths:</span>
-                        <span class="value">{{stats.deaths | number}}</span>
-                    </div>
-                    <div>
-                        <span class="label">Play time:</span>
-                        <span class="value">{{stats.playTime / 3600 | number: '.1-1'}} hours</span>
-                    </div>
-                </div>
-            </div>
             </mat-card-content>
+            <mat-card-footer class="bottom">
+                <div class="info-rows">
+                    <div class="info-row flexrow flexalignspacearoundstretch">
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.lifetimeStats.kills | number}}</div>
+                            <div class="label">Kills</div>
+                        </div>
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.lifetimeStats.deaths | number}}</div>
+                            <div class="label">Deaths</div>
+                        </div>
+                    </div>
+                    <div class="info-row flexrow flexalignspacearoundstretch">
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.lifetimeStats.headshots | number}}</div>
+                            <div class="label">Headshots</div>
+                        </div>
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.lifetimeStats.assistCount | number}}</div>
+                            <div class="label">Assists</div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-footer>
+        </mat-card>
+        <mat-card class="vw-character-weapons inline">
+            <mat-card-header>
+                <mat-card-title>Overall Weapon Performance</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="weapon-data">
+                    <div class="layout-margin">
+                        <div>
+                            <span class="label">Accuracy:</span>
+                            <span class="value">{{playerData.lifetimeStats.hitCount / playerData.lifetimeStats.fireCount * 100 | number: '.2-2'}}%</span>
+                        </div>
+                        <div>
+                            <span class="label">Shots per kill:</span>
+                            <span class="value">{{playerData.lifetimeStats.fireCount / playerData.lifetimeStats.kills | number: '.2-2'}}</span>
+                        </div>
+                        <div>
+                            <span class="label">Landed per kill:</span>
+                            <span class="value">{{playerData.lifetimeStats.hitCount / playerData.lifetimeStats.kills | number: '.2-2'}}</span>
+                        </div>
+                        <div>
+                            <span class="label">Damage spread:</span>
+                            <span class="value" [ngClass]="{'positive': playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy > 0, 'negative': playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy < 0}">
+                                <span *ngIf="playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy > 0">+</span>
+                                <span>{{playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy | number}}</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-footer>
+                <div class="info-rows">
+                    <div class="info-row flexrow flexalignspacearoundstretch">
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.lifetimeStats.fireCount | number}}</div>
+                            <div class="label">Shots fired</div>
+                        </div>
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.lifetimeStats.hitCount | number}}</div>
+                            <div class="label">Shots hit</div>
+                        </div>
+                    </div>
+                    <div class="info-row flexrow flexalignspacearoundstretch">
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.lifetimeStats.damageGiven | number}}</div>
+                            <div class="label">Damage given</div>
+                        </div>
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.lifetimeStats.damageTakenBy | number}}</div>
+                            <div class="label">Damage taken</div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-footer>
         </mat-card>
     </div>
-    -->
+    <!--
+    <div class="vw-character-ivi">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>
+                Infantry vs Infantry
+            </mat-card-title>
+          </mat-card-header>
+            <mat-card-content class="layout-padding">
+              <div class="flexrow">
+                  <div class="flexcolumn">
+                      <div>
+                          <span class="label">Rating:</span>
+                          <span class="value">{{stats.rating | number: '.2-2'}}</span>
+                      </div>
+                      <div>
+                          <span class="label">Kill/Death ratio:</span>
+                          <span class="value">{{stats.killDeathRatio | number: '.2-2'}}</span>
+                      </div>
+                      <div>
+                          <span class="label">Accuracy:</span>
+                          <span class="value">{{stats.accuracy * 100 | number: '.2-2'}}%</span>
+                      </div>
+                      <div>
+                          <span class="label">Headshot ratio:</span>
+                          <span class="value">{{stats.headshotRatio * 100 | number: '.2-2'}}%</span>
+                      </div>
+                      <div>
+                          <span class="label">Kills per hour:</span>
+                          <span class="value">{{stats.killsPerHour | number: '.2-2'}}</span>
+                      </div>
+                      <div>
+                          <span class="label">Shots per kill:</span>
+                          <span class="value">{{stats.shotsPerKill | number: '.2-2'}}</span>
+                      </div>
+                      <div>
+                          <span class="label">Landed per kill:</span>
+                          <span class="value">{{stats.landedPerKill | number: '.2-2'}}</span>
+                      </div>
+                      <div>
+                          <span class="label">Kills:</span>
+                          <span class="value">{{stats.kills | number}}</span>
+                      </div>
+                      <div>
+                          <span class="label">Deaths:</span>
+                          <span class="value">{{stats.deaths | number}}</span>
+                      </div>
+                      <div>
+                          <span class="label">Play time:</span>
+                          <span class="value">{{stats.playTime / 3600 | number: '.1-1'}} hours</span>
+                      </div>
+                  </div>
+              </div>
+              </mat-card-content>
+          </mat-card>
+      </div>
+      -->
 </div>

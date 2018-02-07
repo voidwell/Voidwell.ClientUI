@@ -15,6 +15,7 @@ import { HeaderService, HeaderConfig } from './../shared/services/header.service
 export class PlanetsideWrapperComponent {
     private queryWait: any;
     private filteredResults: Observable<any[]>;
+    private activeSelection: any;
     private isSearching: boolean = false;
 
     results: any[];
@@ -23,7 +24,8 @@ export class PlanetsideWrapperComponent {
     navLinks = [
         { path: 'news', display: 'News' },
         { path: 'alerts', display: 'Alerts' },
-        { path: 'events', display: 'Events' }
+        { path: 'events', display: 'Events' },
+        { path: 'worlds', display: 'Worlds' }
     ];
 
     constructor(private api: PlanetsideApi, private router: Router, private headerService: HeaderService) {
@@ -36,6 +38,8 @@ export class PlanetsideWrapperComponent {
     }
 
     onClickSearchResult(result: any) {
+        this.activeSelection = result;
+
         if (result.type === 'character') {
             this.router.navigateByUrl('ps2/player/' + result.id);
         }
@@ -68,6 +72,10 @@ export class PlanetsideWrapperComponent {
         }
 
         this.queryWait = setTimeout(() => {
+            if (this.activeSelection && this.activeSelection.name === query) {
+                return;
+            }
+
             this.isSearching = true;
             this.results = [];
 

@@ -11,7 +11,7 @@
 }
 
 .weapon-info-card {
-    overflow: hidden;
+    flex: 1;
 }
 .weapon-info-card .label {
     opacity: 0.8;
@@ -20,4 +20,10 @@
 }
 .info-row {
     padding: 8px;
+}
+
+.card-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
 }

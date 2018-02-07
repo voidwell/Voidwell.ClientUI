@@ -22,6 +22,9 @@ import { PlanetsideAlertVehiclesComponent } from './alerts/alert/vehicles/planet
 import { PlanetsideAlertMapComponent } from './alerts/alert/map/planetside-alert-map.component';
 import { PlanetsideEventsListComponent } from './events/events-list/planetside-events-list.component';
 import { PlanetsideEventComponent } from './events/event/planetside-event.component';
+import { PlanetsideWorldWrapperComponent } from './worlds/planetside-world-wrapper.component';
+import { PlanetsideWorldComponent } from './worlds/world/planetside-world.component';
+import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetside-world-players.component';
 
 const planetsideRoutes: Routes = [
     {
@@ -80,7 +83,17 @@ const planetsideRoutes: Routes = [
                     { path: 'vehicles', component: PlanetsideAlertVehiclesComponent },
                     { path: 'map', component: PlanetsideAlertMapComponent }
                 ]
-            }
+            },
+            { path: 'worlds', component: PlanetsideWorldWrapperComponent },
+            {
+                path: 'worlds/:worldId',
+                component: PlanetsideWorldComponent,
+                children: [
+                    { path: '', redirectTo: 'players', pathMatch: 'full' },
+                    { path: 'players', component: PlanetsideWorldPlayersComponent }
+                ]
+            },
+
         ]
     }
 ];

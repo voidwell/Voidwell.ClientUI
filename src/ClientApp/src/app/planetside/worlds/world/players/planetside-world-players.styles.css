@@ -1,0 +1,40 @@
+﻿.player-col {
+    min-width: 350px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.online-players {
+    margin-top: 25px;
+}
+
+.header-row {
+    margin-bottom: 3px;
+    font-weight: bold;
+    background: #111819;
+}
+
+.online-players {
+    max-width: 600px;
+}
+
+.player-row {
+    padding: 1px;
+}
+
+.player-row:nth-child(odd) {
+    background: #24313a;
+}
+
+.player-totals {
+    margin-bottom: 25px;
+}
+
+.total-row {
+    font-weight: bold;
+}
+
+.total-label {
+    display: inline-block;
+    min-width: 160px;
+}
