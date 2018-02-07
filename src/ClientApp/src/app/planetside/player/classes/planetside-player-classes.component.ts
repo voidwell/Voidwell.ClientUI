@@ -16,7 +16,7 @@ export class PlanetsidePlayerClassesComponent implements OnDestroy {
     private isLoading: boolean;
     private profiles: any[];
     private playerData: any;
-    private profileId: string;
+    private profileId: number;
     private profile: any = null;
     private profileWeapons = [];
 
@@ -44,7 +44,7 @@ export class PlanetsidePlayerClassesComponent implements OnDestroy {
             this.profile = null;
             this.profileWeapons = [];
 
-            this.profileId = params['id'];
+            this.profileId = parseInt(params['id']);
 
             if (!this.isLoading && this.profileId) {
                 this.setupProfile(this.profileId);
@@ -84,12 +84,12 @@ export class PlanetsidePlayerClassesComponent implements OnDestroy {
         }
 
         var PROFILE = {
-            INFILTRATOR: '1',
-            LIGHTASSAULT: '3',
-            COMBATMEDIC: '4',
-            ENGINEER: '5',
-            HEAVYASSAULT: '6',
-            MAX: '7'
+            INFILTRATOR: 1,
+            LIGHTASSAULT: 3,
+            COMBATMEDIC: 4,
+            ENGINEER: 5,
+            HEAVYASSAULT: 6,
+            MAX: 7
         };
 
         var profileWeapons = [];

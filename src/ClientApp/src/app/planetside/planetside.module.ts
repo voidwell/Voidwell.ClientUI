@@ -5,6 +5,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { D3Service } from 'd3-ng2-service';
 import { MaterialLib } from '../shared/materialLib.module';
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
+import { WorldNamePipe } from '../shared/pipes/ps2/world-name.pipe';
 import { SharedComponentsModule } from '../shared/components/shared-components.module';
 import { routing } from './planetside.routes';
 import { PlanetsideApi } from './planetside-api.service';
@@ -34,6 +35,9 @@ import { PlanetsideAlertVehiclesComponent } from './alerts/alert/vehicles/planet
 import { PlanetsideAlertMapComponent } from './alerts/alert/map/planetside-alert-map.component';
 import { PlanetsideEventsListComponent } from './events/events-list/planetside-events-list.component';
 import { PlanetsideEventComponent } from './events/event/planetside-event.component';
+import { PlanetsideWorldWrapperComponent } from './worlds/planetside-world-wrapper.component';
+import { PlanetsideWorldComponent } from './worlds/world/planetside-world.component';
+import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetside-world-players.component';
 
 @NgModule({
     declarations: [
@@ -62,7 +66,10 @@ import { PlanetsideEventComponent } from './events/event/planetside-event.compon
         PlanetsideAlertVehiclesComponent,
         PlanetsideAlertMapComponent,
         PlanetsideEventsListComponent,
-        PlanetsideEventComponent
+        PlanetsideEventComponent,
+        PlanetsideWorldWrapperComponent,
+        PlanetsideWorldComponent,
+        PlanetsideWorldPlayersComponent
     ],
     imports: [
         FormsModule,
@@ -78,7 +85,8 @@ import { PlanetsideEventComponent } from './events/event/planetside-event.compon
         PlanetsideApi,
         DecimalPipe,
         DatePipe,
-        D3Service
+        D3Service,
+        WorldNamePipe
     ],
     entryComponents: [PlanetsideWrapperComponent]
 })

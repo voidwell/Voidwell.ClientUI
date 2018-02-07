@@ -13,6 +13,16 @@
     width: auto;
 }
 
+.card-row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.card-row.card-row-stretch .mat-card {
+    flex: 1;
+}
+
 .vw-character-outfit .outfit-header {
     font-size: 1.3em;
     padding-left: 5px;

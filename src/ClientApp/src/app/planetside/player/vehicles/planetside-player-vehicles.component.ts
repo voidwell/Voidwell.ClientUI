@@ -16,7 +16,7 @@ export class PlanetsidePlayerVehiclesComponent implements OnDestroy {
     private isLoading: boolean;
     private vehicles: any[];
     private playerData: any;
-    private vehicleId: string;
+    private vehicleId: number;
     private vehicle: any = null;
     private vehicleWeapons = [];
     private allVehicles = [];
@@ -44,7 +44,7 @@ export class PlanetsidePlayerVehiclesComponent implements OnDestroy {
             this.vehicle = null;
             this.vehicleWeapons = [];
 
-            this.vehicleId = params['id'];
+            this.vehicleId = parseInt(params['id']);
 
             if (!this.isLoading && this.vehicleId) {
                 this.setupVehicle(this.vehicleId);
