@@ -93,9 +93,9 @@ export class PlanetsidePlayerVehiclesComponent implements OnDestroy {
     }
 
     private sortVehicles(a, b) {
-        if (a.stats.score < b.stats.score)
+        if ((a.stats.pilotScore + a.stats.score) < (b.stats.pilotScore + b.stats.score ))
             return 1
-        if (a.stats.score > b.stats.score)
+        if ((a.stats.pilotScore + a.stats.score) > (b.stats.pilotScore + b.stats.score))
             return -1;
         return 0;
     }

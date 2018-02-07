@@ -56,3 +56,8 @@
 .mat-column-gobutton .mdi:before {
     font-weight: bold;
 }
+
+.profile-data .label {
+    min-width: 160px;
+    display: inline-block;
+}

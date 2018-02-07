@@ -57,12 +57,14 @@ export class PlanetsidePlayerComponent implements OnDestroy {
                         headerConfig.background = '#471111';
                     }
 
+                    let timePlayedHeader = this.decimalPipe.transform(data.lifetimeStats.playTime / 3600, '.1-1') + ' (' + this.decimalPipe.transform(data.times.minutesPlayed / 60, '.1-1') + ')';
+
                     headerConfig.info = [
                         new HeaderInfoItem('Battle Rank', data.battleRank),
                         new HeaderInfoItem('Score', this.decimalPipe.transform(data.lifetimeStats.score)),
                         new HeaderInfoItem('Kills', this.decimalPipe.transform(data.lifetimeStats.kills)),
                         new HeaderInfoItem('Deaths', this.decimalPipe.transform(data.lifetimeStats.deaths)),
-                        new HeaderInfoItem('Hours Played', this.decimalPipe.transform(data.lifetimeStats.playTime / 3600, '.1-1'))
+                        new HeaderInfoItem('Hours Played', timePlayedHeader)
                     ];
 
                     this.headerService.setHeaderConfig(headerConfig);
