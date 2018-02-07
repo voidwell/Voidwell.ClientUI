@@ -8,6 +8,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/operator/finally'
 import 'rxjs/add/observable/throw';
+import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
 
 @Component({
     selector: 'voidwell-admin-events',
@@ -77,6 +78,8 @@ export class TableDataSource extends DataSource<any> {
     templateUrl: 'event-editor-dialog.html',
 })
 export class EventEditorDialog {
+    form: FormGroup;
+
     servers = [
         { id: "1", name: "Connery" },
         { id: "10", name: "Miller" },
@@ -102,14 +105,16 @@ export class EventEditorDialog {
     teams: any[];
     createEvent: boolean = false;
 
-    constructor(public dialogRef: MatDialogRef<EventEditorDialog>, private api: VoidwellApi, @Inject(MAT_DIALOG_DATA) public data: any) {
+    constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EventEditorDialog>, private api: VoidwellApi, @Inject(MAT_DIALOG_DATA) public data: any) {
         this.teams = this.defaultTeams.slice();
 
-        if (this.data.event != null) {
+        let event = Object.assign({}, this.data.event);
+
+        if (event != null) {
             this.teams.forEach(function (team) {
-                var teamIdx = data.event.teams.map(function (t) { return t.teamId }).indexOf(team.teamId);
+                var teamIdx = event.teams.map(function (t) { return t.teamId }).indexOf(team.teamId);
                 if (teamIdx > -1) {
-                    Object.assign(team, data.event.teams[teamIdx]);
+                    Object.assign(team, event.teams[teamIdx]);
                 } else {
                     team.enabled = false;
                 }
@@ -118,7 +123,7 @@ export class EventEditorDialog {
         else
         {
             this.createEvent = true;
-            this.data.event = {
+            event = {
                 name: null,
                 description: null,
                 startDate: null,
@@ -130,6 +135,18 @@ export class EventEditorDialog {
                 teams: []
             };
         }
+
+        this.form = this.formBuilder.group({
+            name: event.name,
+            description: event.description,
+            startDate: new Date(event.startDate),
+            endDate: new Date(event.endDate),
+            isPrivate: event.isPrivate,
+            mapId: event.mapId,
+            serverId: event.serverId,
+            gameId: event.gameId,
+            teams: new FormArray(event.teams)
+        });
     }
 
     saveEvent(event: any, teams: any) {
