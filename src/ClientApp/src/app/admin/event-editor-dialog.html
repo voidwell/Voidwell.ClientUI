@@ -1,25 +1,25 @@
-﻿<div>
+﻿<form [formGroup]="form">
     <div>
         <mat-form-field>
-            <input matInput [(ngModel)]="data.event.name" placeholder="Event name">
+            <input matInput formControlName="name" placeholder="Event name">
         </mat-form-field>
-        <mat-slide-toggle [(ngModel)]="!data.event.isPrivate">Public</mat-slide-toggle>
+        <mat-slide-toggle formControlName="isPrivate">Public</mat-slide-toggle>
     </div>
     <div>
         <mat-form-field class="large-width">
-            <input matInput [(ngModel)]="data.event.description" placeholder="Description">
+            <input matInput formControlName="description" placeholder="Description">
         </mat-form-field>
     </div>
     <div>
         <mat-form-field>
-            <mat-select placeholder="Server" [(ngModel)]="data.event.serverId">
+            <mat-select placeholder="Server" formControlName="serverId">
                 <mat-option *ngFor="let server of servers" [value]="server.id">
                     {{server.name}}
                 </mat-option>
             </mat-select>
         </mat-form-field>
         <mat-form-field>
-            <mat-select placeholder="Map" [(ngModel)]="data.event.mapId">
+            <mat-select placeholder="Map" formControlName="mapId">
                 <mat-option *ngFor="let map of maps" [value]="map.id">
                     {{map.name}}
                 </mat-option>
@@ -28,16 +28,17 @@
     </div>
     <div>
         <mat-form-field>
-            <input matInput [matDatepicker]="pickerStart" placeholder="Start date" [(ngModel)]="data.event.startDate">
-            <mat-datepicker-toggle matSuffix [for]="pickerStart"></mat-datepicker-toggle>
-            <mat-datepicker #pickerStart></mat-datepicker>
+            <mat-datetimepicker-toggle [for]="pickerStart" matSuffix></mat-datetimepicker-toggle>
+            <mat-datetimepicker #pickerStart type="datetime" openOnFocus="true" timeInterval="1"></mat-datetimepicker>
+            <input matInput [matDatetimepicker]="pickerStart" required placeholder="Start date" formControlName="startDate">
         </mat-form-field>
         <mat-form-field>
-            <input matInput [matDatepicker]="pickerEnd" placeholder="End date" [(ngModel)]="data.event.endDate">
-            <mat-datepicker-toggle matSuffix [for]="pickerEnd"></mat-datepicker-toggle>
-            <mat-datepicker #pickerEnd></mat-datepicker>
+            <mat-datetimepicker-toggle [for]="pickerEnd" matSuffix></mat-datetimepicker-toggle>
+            <mat-datetimepicker #pickerEnd type="datetime" openOnFocus="true" timeInterval="1"></mat-datetimepicker>
+            <input matInput [matDatetimepicker]="pickerEnd" required placeholder="End date" formControlName="endDate">
         </mat-form-field>
     </div>
+    <!--
     <div>
         <div *ngFor="let team of teams">
             <mat-checkbox [(ngModel)]="team.enabled"></mat-checkbox>
@@ -47,10 +48,11 @@
             </mat-form-field>
         </div>
     </div>
+    -->
     <div class="dialog-action-footer">
         <button mat-raised-button (click)="closeDialog()">Close</button>
         <div class="pull-right">
             <button mat-raised-button (click)="saveEvent(data.event, teams)">Save</button>
         </div>
     </div>
-</div>
+</form>

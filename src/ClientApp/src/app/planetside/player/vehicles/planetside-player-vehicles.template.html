@@ -119,6 +119,10 @@
                                                 {{vehicle.stats.pilotVehicleKills / (vehicle.stats.pilotPlayTime / 3600) | number: '.2-2'}}
                                             </span>
                                         </div>
+                                        <div>
+                                            <span class="label">Road kills:</span>
+                                            <span class="value">{{vehicle.stats.pilotKills - vehicle.stats.kills | number}}</span>
+                                        </div>
                                     </div>
                                     <div class="vehicle-data">
                                         <h3>As Gunner</h3>
