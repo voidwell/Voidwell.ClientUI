@@ -25,10 +25,15 @@
 }
 
 .name-block small,
-.kdr-block small {
-    display: block;
+.kdr-block small,
+.vehicle-data small {
     opacity: 0.5;
     font-size: 12px;
+}
+
+.name-block small,
+.kdr-block small {
+    display: block;
 }
 
 .mat-column-rank {
@@ -54,4 +59,12 @@
 }
 .mat-column-gobutton .mdi:before {
     font-weight: bold;
+}
+.vehicle-data {
+    display: inline-block;
+    margin-right: 40px;
+}
+.vehicle-data .label {
+    min-width: 90px;
+    display: inline-block;
 }
