@@ -1,7 +1,8 @@
 ﻿import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MaterialLib } from '../shared/materialLib.module';
+import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimepicker/core'
 import { SharedComponentsModule } from '../shared/components/shared-components.module';
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
 import { routing } from './admin.routes';
@@ -26,11 +27,14 @@ import { EventsComponent, EventEditorDialog } from './events.component';
     ],
     imports: [
         FormsModule,
+        ReactiveFormsModule,
         MaterialLib,
         CommonModule,
         VoidwellPipesModule,
         routing,
-        SharedComponentsModule
+        SharedComponentsModule,
+        MatNativeDatetimeModule,
+        MatDatetimepickerModule
     ],
     entryComponents: [
         AdminWrapperComponent,

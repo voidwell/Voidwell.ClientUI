@@ -4,7 +4,6 @@ ENV NODE_ENV=dev
 
 WORKDIR /app/src/ClientApp
 RUN npm install
-
 EXPOSE 5000
 
 ENTRYPOINT npm run start:dev
