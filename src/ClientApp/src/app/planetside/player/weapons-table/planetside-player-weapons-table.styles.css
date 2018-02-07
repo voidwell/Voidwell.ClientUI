@@ -5,7 +5,7 @@
 }
 
 .auraxium-meter-back {
-    height: 5px;
+    height: 3px;
     background: #797979;
     position: absolute;
     left: 0;
@@ -21,6 +21,11 @@
     text-align: left;
 }
 
+.mat-column-name a {
+    text-decoration: none;
+    color: #fff;
+}
+
 .mat-column-name .mat-button {
     padding-top: 5px;
     text-transform: none;
@@ -29,4 +34,12 @@
     top: 0;
     bottom: 0;
     text-align: left;
+}
+
+.mat-table .mat-row {
+    min-height: 25px;
+}
+
+.mat-table .mat-row .mat-cell {
+    font-size: 0.8em;
 }

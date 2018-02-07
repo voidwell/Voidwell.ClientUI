@@ -17,18 +17,18 @@
                         <span class="vehicle-icon" [style.background-image]="'url(' + (vehicle.imageId | dgcImageUrl) + ')'"></span>
                         <div class="name-block">
                             <strong>{{vehicle.name}}</strong>
-                            <small>{{vehicle.stats.score | number}}</small>
+                            <small>{{vehicle.stats.pilotScore + vehicle.stats.score | number}}</small>
                         </div>
                     </mat-cell>
                 </ng-container>
                 <ng-container matColumnDef="accuracy">
                     <div class="accuracy-block">
-                        <mat-header-cell *matHeaderCellDef>Accuracy</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef>Gunner Accuracy</mat-header-cell>
                         <mat-cell *matCellDef="let vehicle">{{vehicle.stats.hitCount / vehicle.stats.fireCount * 100 | number: '.1-1'}}%</mat-cell>
                     </div>
                 </ng-container>
                 <ng-container matColumnDef="kdr">
-                    <mat-header-cell *matHeaderCellDef>K/D Ratio</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>Gunner K/D Ratio</mat-header-cell>
                     <mat-cell *matCellDef="let vehicle">
                         <div class="kdr-block">
                             <div><strong>{{vehicle.stats.kills / vehicle.stats.deaths | number: '.2-2'}}</strong>:1 K/D</div>
@@ -36,9 +36,15 @@
                         </div>
                     </mat-cell>
                 </ng-container>
-                <ng-container matColumnDef="time">
+                <ng-container matColumnDef="pilotTime">
                     <div class="time-block">
-                        <mat-header-cell *matHeaderCellDef>Time Played</mat-header-cell>
+                        <mat-header-cell *matHeaderCellDef>Time Played (Pilot)</mat-header-cell>
+                        <mat-cell *matCellDef="let vehicle">{{vehicle.stats.pilotPlayTime / 3600 | number:'.1-1'}} Hours</mat-cell>
+                    </div>
+                </ng-container>
+                <ng-container matColumnDef="gunnerTime">
+                    <div class="time-block">
+                        <mat-header-cell *matHeaderCellDef>Time Played (Gunner)</mat-header-cell>
                         <mat-cell *matCellDef="let vehicle">{{vehicle.stats.playTime / 3600 | number:'.1-1'}} Hours</mat-cell>
                     </div>
                 </ng-container>
@@ -51,8 +57,8 @@
                     </mat-cell>
                 </ng-container>
 
-                <mat-header-row *matHeaderRowDef="['rank','name','accuracy','kdr','time','gobutton']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['rank','name','accuracy','kdr','time','gobutton'];"></mat-row>
+                <mat-header-row *matHeaderRowDef="['rank','name','accuracy','kdr','pilotTime', 'gunnerTime','gobutton']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['rank','name','accuracy','kdr','pilotTime','gunnerTime','gobutton'];"></mat-row>
             </mat-table>
         </div>
         <div *ngIf="vehicle" class="single-class">
@@ -66,13 +72,68 @@
                                         <img [src]="vehicle.imageId | dgcImageUrl" />
                                     </div>
                                     <div class="vehicle-data">
+                                        <h3>As Pilot</h3>
                                         <div>
-                                            <span class="label">Kills of enemy class:</span>
-                                            <span class="value">{{vehicle.stats.kills | number}}</span>
+                                            <span class="label">K/D Ratio:</span>
+                                            <span class="value">
+                                                {{vehicle.stats.pilotKills / vehicle.stats.pilotDeaths | number: '.2-2'}}
+                                                <small>({{vehicle.stats.pilotKills | number}} / {{vehicle.stats.pilotDeaths | number}})</small>
+                                            </span>
                                         </div>
                                         <div>
-                                            <span class="label">Deaths by enemy class:</span>
-                                            <span class="value">{{vehicle.stats.deaths | number}}</span>
+                                            <span class="label">KpH:</span>
+                                            <span class="value">
+                                                {{vehicle.stats.pilotKills / (vehicle.stats.pilotPlayTime / 3600) | number: '.2-2'}}
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Score:</span>
+                                            <span class="value">{{vehicle.stats.pilotScore | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Score/Min:</span>
+                                            <span class="value">{{vehicle.stats.pilotScore / (vehicle.stats.pilotPlayTime / 60) | number: '.0-0'}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Accuracy:</span>
+                                            <span class="value">
+                                                {{vehicle.stats.pilotHitCount / vehicle.stats.pilotFireCount * 100 | number: '.2-2'}}%
+                                                <small>({{vehicle.stats.pilotHitCount | number}} / {{vehicle.stats.pilotFireCount | number}})</small>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Headshots:</span>
+                                            <span class="value">{{vehicle.stats.pilotHeadshots | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Time played:</span>
+                                            <span class="value">{{vehicle.stats.pilotPlayTime / 60 / 60 | number: '.1-1'}} Hours</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Vehicle kills:</span>
+                                            <span class="value">{{vehicle.stats.pilotVehicleKills | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Vehicle KpH:</span>
+                                            <span class="value">
+                                                {{vehicle.stats.pilotVehicleKills / (vehicle.stats.pilotPlayTime / 3600) | number: '.2-2'}}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="vehicle-data">
+                                        <h3>As Gunner</h3>
+                                        <div>
+                                            <span class="label">K/D Ratio:</span>
+                                            <span class="value">
+                                                {{vehicle.stats.kills / vehicle.stats.deaths | number: '.2-2'}}
+                                                <small>({{vehicle.stats.kills | number}} / {{vehicle.stats.deaths | number}})</small>
+                                            </span>
+                                        </div>
+                                        <div>
+                                            <span class="label">KpH:</span>
+                                            <span class="value">
+                                                {{vehicle.stats.kills / (vehicle.stats.playTime / 3600) | number: '.2-2'}}
+                                            </span>
                                         </div>
                                         <div>
                                             <span class="label">Score:</span>
@@ -83,16 +144,29 @@
                                             <span class="value">{{vehicle.stats.score / (vehicle.stats.playTime / 60) | number: '.0-0'}}</span>
                                         </div>
                                         <div>
-                                            <span class="label">Shots fired:</span>
-                                            <span class="value">{{vehicle.stats.fireCount | number}}</span>
+                                            <span class="label">Accuracy:</span>
+                                            <span class="value">
+                                                {{vehicle.stats.hitCount / vehicle.stats.fireCount * 100 | number: '.2-2'}}%
+                                                <small>({{vehicle.stats.hitCount | number}} / {{vehicle.stats.fireCount | number}})</small>
+                                            </span>
                                         </div>
                                         <div>
-                                            <span class="label">Shots hit:</span>
-                                            <span class="value">{{vehicle.stats.hitCount | number}}</span>
+                                            <span class="label">Headshots:</span>
+                                            <span class="value">{{vehicle.stats.headshots | number}}</span>
                                         </div>
                                         <div>
                                             <span class="label">Time played:</span>
-                                            <span class="value">{{vehicle.stats.playTime / 60 / 60 | number: '.1-1'}} Hours</span>
+                                            <span class="value">{{vehicle.stats.playTime / 3600 | number: '.1-1'}} Hours</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Vehicle kills:</span>
+                                            <span class="value">{{vehicle.stats.vehicleKills | number}}</span>
+                                        </div>
+                                        <div>
+                                            <span class="label">Vehicle KpH:</span>
+                                            <span class="value">
+                                                {{vehicle.stats.vehicleKills / (vehicle.stats.playTime / 3600) | number: '.2-2'}}
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
