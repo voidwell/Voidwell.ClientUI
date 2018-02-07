@@ -17,7 +17,7 @@ mat-progress-bar.mat-progress-bar {
 }
 mat-progress-bar.mat-progress-bar {
     position: absolute;
-    bottom: 2px;
+    bottom: 0px;
     height: 2px;
 }
 .search-box .mat-input-underline .mat-input-ripple {

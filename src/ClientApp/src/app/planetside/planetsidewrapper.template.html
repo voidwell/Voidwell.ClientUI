@@ -7,7 +7,7 @@
             <button mat-button *ngIf="searchControl.dirty" matSuffix mat-icon-button (click)="clearSearch()">
                 <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
             </button>
-            <mat-autocomplete #auto="matAutocomplete" disableRipple="false">
+            <mat-autocomplete #auto="matAutocomplete">
                 <mat-option *ngFor="let result of results" class="search-option" [value]="result.name" (click)="onClickSearchResult(result)">
                     <div class="item-title">
                         <div class="pull-right">
