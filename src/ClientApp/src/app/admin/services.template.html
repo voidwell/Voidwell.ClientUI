@@ -1,0 +1,13 @@
+﻿<div class="content-container">
+    <h3>Planetside</h3>
+    <div *ngFor="let service of planetsideServices | keys">
+        <mat-card>
+            <mat-card-header>
+                <mat-card-title>{{service}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <pre>{{planetsideServices[service] | json}}</pre>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

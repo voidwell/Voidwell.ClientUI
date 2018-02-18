@@ -19,7 +19,8 @@ export class AdminWrapperComponent {
         { path: 'events', display: 'Events', roles: ['Administrator', 'SuperAdmin', 'Events'] },
         { path: 'blog', display: 'Blog', roles: ['Administrator', 'SuperAdmin', 'Blog'] },
         { path: 'users', display: 'Users', roles: ['Administrator', 'SuperAdmin'] },
-        { path: 'roles', display: 'Roles', roles: ['Administrator', 'SuperAdmin'] }
+        { path: 'roles', display: 'Roles', roles: ['Administrator', 'SuperAdmin'] },
+        { path: 'services', display: 'Services', roles: ['Administrator', 'SuperAdmin'] }
     ];
 
     constructor(private auth: VoidwellAuthService, private ngRedux: NgRedux<IAppState>) {

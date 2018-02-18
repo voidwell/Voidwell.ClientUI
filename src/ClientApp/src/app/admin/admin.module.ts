@@ -12,6 +12,7 @@ import { BlogComponent, BlogEditorDialog } from './blog.component';
 import { UsersComponent, UserEditorDialog } from './users.component';
 import { RolesComponent } from './roles.component';
 import { EventsComponent, EventEditorDialog } from './events.component';
+import { ServicesComponent } from './services.component';
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { EventsComponent, EventEditorDialog } from './events.component';
         UsersComponent,
         RolesComponent,
         EventsComponent,
+        ServicesComponent,
         EventEditorDialog,
         UserEditorDialog,
         BlogEditorDialog
