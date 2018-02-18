@@ -17,6 +17,7 @@ export class VoidwellApi {
     public eventsUrl = location.origin + '/api/events/';
     public accountUrl = location.origin + '/api/account/';
     public authAdminUrl = location.origin + '/api/authadmin/';
+    public ps2ServiceUrl = location.origin + '/api/ps2/services/';
 
     public options;
     private _requestTimeout = 30000;
@@ -260,6 +261,42 @@ export class VoidwellApi {
 
     createCustomEvent(event: any) {
         return this.AuthPost(this.eventsUrl, event, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getPS2AllServiceStatus() {
+        return this.AuthGet(this.ps2ServiceUrl + 'status', this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getPS2ServiceStatus(service: string) {
+        return this.AuthGet(this.ps2ServiceUrl + service + '/status', this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    enablePS2Service(service: string) {
+        return this.AuthPost(this.ps2ServiceUrl + service + '/enable', null, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    disablePS2Service(service: string) {
+        return this.AuthPost(this.ps2ServiceUrl + service + '/disable', null, this.options)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
