@@ -1,12 +1,21 @@
 ﻿<div class="content-container">
     <h3>Planetside</h3>
-    <div *ngFor="let service of planetsideServices | keys">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngFor="let service of planetsideServices">
         <mat-card>
             <mat-card-header>
-                <mat-card-title>{{service}}</mat-card-title>
+                <mat-card-title>{{service.name}}</mat-card-title>
             </mat-card-header>
-            <mat-card-content>
-                <pre>{{planetsideServices[service] | json}}</pre>
+            <mat-card-content class="layout-padding">
+                <vw-error-message [message]="service.errorMessage"></vw-error-message>
+                <mat-slide-toggle [checked]="service.isEnabled" [disabled]="service.isLoading" (change)="onServiceUpdate(service, $event)">
+                    Enable
+                </mat-slide-toggle>
+                <div *ngIf="service.details">
+                    <div>Details</div>
+                    <pre>{{service.details | json}}</pre>
+                </div>
             </mat-card-content>
         </mat-card>
     </div>
