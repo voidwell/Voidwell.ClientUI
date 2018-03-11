@@ -12,8 +12,8 @@ import { PlanetsideCombatEventComponent } from './../../combat-event/planetside-
 })
 
 export class PlanetsideEventComponent extends PlanetsideCombatEventComponent implements OnDestroy {
-    private isLoading: boolean = true;
-    private errorMessage: string = null;
+    isLoading: boolean = true;
+    errorMessage: string = null;
     private sub: any;
     private navLinks = [
         { path: 'players', display: 'Players' },

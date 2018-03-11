@@ -21,7 +21,7 @@ export class PlanetsideAlertPlayersComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild('filter') filter: ElementRef;
 
-    private dataSource: TableDataSource;
+    dataSource: TableDataSource;
 
     constructor(private injector: Injector) {
     }
@@ -54,7 +54,7 @@ export class PlanetsideAlertPlayersComponent implements OnInit {
 }
 
 export class TableDataSource extends DataSource<any> {
-    constructor(private data, private sort: MatSort, private paginator: MatPaginator) {
+    constructor(public data, private sort: MatSort, private paginator: MatPaginator) {
         super();
     }
 

@@ -7,7 +7,7 @@ import { PlanetsidePlayerComponent } from './../planetside-player.component';
 })
 
 export class PlanetsidePlayerStatsComponent {
-    private playerData: any;
+    playerData: any;
 
     constructor(private planetsidePlayer: PlanetsidePlayerComponent) {
         planetsidePlayer.playerData.subscribe(data => {

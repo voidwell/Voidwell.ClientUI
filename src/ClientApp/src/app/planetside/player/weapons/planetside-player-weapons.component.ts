@@ -7,7 +7,8 @@ import { PlanetsidePlayerComponent } from './../planetside-player.component';
 })
 
 export class PlanetsidePlayerWeaponsComponent {
-    private playerData: any;
+    playerData: any;
+
     private weaponStats: any[];
 
     constructor(private planetsidePlayer: PlanetsidePlayerComponent) {

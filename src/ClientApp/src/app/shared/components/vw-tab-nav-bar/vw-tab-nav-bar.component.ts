@@ -10,7 +10,7 @@ import { HeaderService } from './../../services/header.service';
 export class VWTabNavBarComponent {
     @Input("links") navLinks: Array<any>;
 
-    private header;
+    public header;
 
     constructor(private headerService: HeaderService) {
         this.headerService.activeHeader

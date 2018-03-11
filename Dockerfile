@@ -1,14 +1,30 @@
+FROM pivotalpa/angular-cli:1.4.2 AS build-env
+WORKDIR /app
+
+# Copy and restore as distinct layers
+COPY ./src/ClientApp/src /app/src
+COPY ./src/ClientApp/*.json /app/
+
+RUN npm install
+
+RUN npm run build:prod
+
+# Build runtime image
 FROM node:6.10.2
+WORKDIR /app
+
+RUN mkdir -p /opt && cd /opt && curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.3 && mv ~/.yarn /opt/yarn
+ENV PATH "$PATH:/opt/yarn/bin"
 
 ENV NODE_ENV=production
 
-WORKDIR /src/ClientApp
+RUN yarn add express
 
-RUN npm run build
+COPY --from=build-env /app/dist ./dist
+COPY ./src/ClientApp/server .
 
-COPY /dist /app
-WORKDIR /app
+RUN yarn add oidc-client@1.2.0 helmet@3.3.0
 
 EXPOSE 5000
 
-ENTRYPOINT ["npm", "run", "start:prod"]
+ENTRYPOINT ["node", "server.js"]

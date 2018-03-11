@@ -12,169 +12,174 @@ import { VoidwellApi } from './voidwell-api.service';
 
 @Injectable()
 export class VoidwellAuthService {
-  mgr: UserManager;
-  private authHeaders: Headers;
-  userRoleState: Observable<any>;
-  private api: any;
-  rolesState: Observable<any>;
+    mgr: UserManager;
+    private authHeaders: Headers;
+    userRoleState: Observable<any>;
+    private api: any;
+    rolesState: Observable<any>;
 
-  constructor(private http: Http,
-    private router: Router,
-    private route: ActivatedRoute,
-    private ngRedux: NgRedux<IAppState>,
-    private injector: Injector) {
+    constructor(private http: Http,
+        private router: Router,
+        private route: ActivatedRoute,
+        private ngRedux: NgRedux<IAppState>,
+        private injector: Injector) {
 
-    let authority: string;
-    let redirectUri: string;
-    let signInCallbackUri: string;
-    let silentCallbackUri: string;
+        let authority: string;
+        let redirectUri: string;
+        let signInCallbackUri: string;
+        let silentCallbackUri: string;
 
-    authority = "http://auth.localdev.com/";
-    redirectUri = location.origin + '/';
-    signInCallbackUri = redirectUri + 'signInCallback.html';
-    silentCallbackUri = redirectUri + 'silentCallback.html';
+        if (/^voidwell.com/.test(location.origin)) {
+            authority = 'https://auth.voidwell.com/';
+        } else {
+            authority = 'http://auth.localdev.com/';
+        }
 
-    Log.logger = console;
-    Log.level = Log.WARN;
+        redirectUri = location.origin + '/';
+        signInCallbackUri = redirectUri + 'signInCallback.html';
+        silentCallbackUri = redirectUri + 'silentCallback.html';
 
-    const settings: UserManagerSettings = {
-      client_id: 'voidwell-clientui',
-      authority: authority,
-      response_type: 'id_token token',
-      scope: 'openid email profile voidwell-api',
-      redirect_uri: signInCallbackUri,
-      post_logout_redirect_uri: redirectUri,
-      silent_redirect_uri: silentCallbackUri,
-      automaticSilentRenew: true
-    };
-    this.mgr = new UserManager(settings);
-    this.mgr.clearStaleState().then(function(){
-        Log.info('clearStateState success');
-    }).catch(function(e){
-        Log.error('clearStateState error', e.message);
-    });
+        Log.logger = console;
+        Log.level = Log.WARN;
 
-    this.route.url.subscribe(url => {
+        const settings: UserManagerSettings = {
+            client_id: 'voidwell-clientui',
+            authority: authority,
+            response_type: 'id_token token',
+            scope: 'openid email profile voidwell-api',
+            redirect_uri: signInCallbackUri,
+            post_logout_redirect_uri: redirectUri,
+            silent_redirect_uri: silentCallbackUri,
+            automaticSilentRenew: true
+        };
+        this.mgr = new UserManager(settings);
+        this.mgr.clearStaleState().then(function () {
+            Log.info('clearStateState success');
+        }).catch(function (e) {
+            Log.error('clearStateState error', e.message);
+        });
 
-      let currentRoute: string;
-      currentRoute = location.pathname;
+        this.route.url.subscribe(url => {
 
-      this.router.navigate([currentRoute]);
-
-      this.mgr.getUser()
-        .then((user) => {
-
-          this.ngRedux.subscribe(() => {
-            const state = ngRedux.getState();
-            if (state.loggedInUser && state.loggedInUser.user) {
-              this.setAuthHeaders(state.loggedInUser.user);
-            }
-          });
-
-          this.rolesState = this.ngRedux.select(['loggedInUser', 'roles']);
-          this.rolesState.subscribe(userRoles => {
-            if (userRoles) {
-              this.hasRoles(['Administrator']).subscribe(payload => {
-                this.ngRedux.dispatch({ type: IS_ADMIN, payload });
-              });
-            }
-          });
-
-          if (user) {
-            this.ngRedux.dispatch({ type: LOAD_USER, user });
-            if (!this.api) {
-              this.api = this.injector.get(VoidwellApi);
-              this.api.getRoles();
-            }
+            let currentRoute: string;
+            currentRoute = location.pathname;
 
             this.router.navigate([currentRoute]);
-          }
-        })
-        .catch((err) => {
-          this.ngRedux.dispatch({ type: UNLOAD_USER });
+
+            this.mgr.getUser()
+                .then((user) => {
+
+                    this.ngRedux.subscribe(() => {
+                        const state = ngRedux.getState();
+                        if (state.loggedInUser && state.loggedInUser.user) {
+                            this.setAuthHeaders(state.loggedInUser.user);
+                        }
+                    });
+
+                    this.rolesState = this.ngRedux.select(['loggedInUser', 'roles']);
+                    this.rolesState.subscribe(userRoles => {
+                        if (userRoles) {
+                            this.hasRoles(['Administrator']).subscribe(payload => {
+                                this.ngRedux.dispatch({ type: IS_ADMIN, payload });
+                            });
+                        }
+                    });
+
+                    if (user) {
+                        this.ngRedux.dispatch({ type: LOAD_USER, user });
+                        if (!this.api) {
+                            this.api = this.injector.get(VoidwellApi);
+                            this.api.getRoles();
+                        }
+
+                        this.router.navigate([currentRoute]);
+                    }
+                })
+                .catch((err) => {
+                    this.ngRedux.dispatch({ type: UNLOAD_USER });
+                });
         });
-    });
 
-    this.mgr.events.addUserLoaded((user) => {
-      this.ngRedux.dispatch({ type: LOAD_USER, user });
-    });
+        this.mgr.events.addUserLoaded((user) => {
+            this.ngRedux.dispatch({ type: LOAD_USER, user });
+        });
 
-    this.mgr.events.addUserSignedOut((e) => {
-      this.signOut();
-    });
+        this.mgr.events.addUserSignedOut((e) => {
+            this.signOut();
+        });
 
-    this.mgr.events.addAccessTokenExpiring((e) => {
-      this.ngRedux.dispatch({ type: RENEW_TOKEN });
-    });
+        this.mgr.events.addAccessTokenExpiring((e) => {
+            this.ngRedux.dispatch({ type: RENEW_TOKEN });
+        });
 
-    this.mgr.events.addAccessTokenExpired((e) => {
-      this.signOut();
-    });
+        this.mgr.events.addAccessTokenExpired((e) => {
+            this.signOut();
+        });
 
-    this.mgr.events.addSilentRenewError((e) => {
-      this.ngRedux.dispatch({ type: RENEW_TOKEN_FAILED });
-      this.signOut();
-      throw new Error('Silent token renewal failed: ' + e.message);
-    });
+        this.mgr.events.addSilentRenewError((e) => {
+            this.ngRedux.dispatch({ type: RENEW_TOKEN_FAILED });
+            this.signOut();
+            throw new Error('Silent token renewal failed: ' + e.message);
+        });
 
-    //this.checkSession();
-  }
+        //this.checkSession();
+    }
 
-  signIn() {
-    this.mgr.signinRedirect().then(function () {
-    }).catch(function (error) {
-      return Observable.throw(error);
-    });
-  }
+    signIn() {
+        this.mgr.signinRedirect().then(function () {
+        }).catch(function (error) {
+            return Observable.throw(error);
+        });
+    }
 
-  signOut() {
-    this.ngRedux.dispatch({ type: UNLOAD_USER });
-    this.mgr.signoutRedirect().then(function () {
-    }).catch(function (error) {
-      return Observable.throw(error);
-    });
-  };
+    signOut() {
+        this.ngRedux.dispatch({ type: UNLOAD_USER });
+        this.mgr.signoutRedirect().then(function () {
+        }).catch(function (error) {
+            return Observable.throw(error);
+        });
+    };
 
-  checkSession() {
-    this.mgr.querySessionStatus()
-      .catch((e: Error) => {
-        if (e['error'] === 'login_required') {
-          this.revokeSession();
-        }
-      });
-  }
+    checkSession() {
+        this.mgr.querySessionStatus()
+            .catch((e: Error) => {
+                if (e['error'] === 'login_required') {
+                    this.revokeSession();
+                }
+            });
+    }
 
-  revokeSession() {
-    this.mgr.removeUser();
-    this.signIn();
-  }
+    revokeSession() {
+        this.mgr.removeUser();
+        this.signIn();
+    }
 
-  hasRoles(routeRoles: string[]): Observable<boolean> {
-    this.userRoleState = this.ngRedux.select(['loggedInUser', 'roles']);
-    return Observable.create((observer: Subject<boolean>) => {
-      this.userRoleState.subscribe(userRoles => {
-        if (routeRoles) {
-          let found = false;
-          routeRoles.forEach(role => {
-            if (userRoles && userRoles.indexOf(role) > -1) {
-              found = true;
-            }
-          });
-          observer.next(found);
-        } else {
-          observer.next(false);
-        }
-      });
-    }).take(1);
-  }
+    hasRoles(routeRoles: string[]): Observable<boolean> {
+        this.userRoleState = this.ngRedux.select(['loggedInUser', 'roles']);
+        return Observable.create((observer: Subject<boolean>) => {
+            this.userRoleState.subscribe(userRoles => {
+                if (routeRoles) {
+                    let found = false;
+                    routeRoles.forEach(role => {
+                        if (userRoles && userRoles.indexOf(role) > -1) {
+                            found = true;
+                        }
+                    });
+                    observer.next(found);
+                } else {
+                    observer.next(false);
+                }
+            });
+        }).take(1);
+    }
 
-  getAuthHeaders() {
-    return this.authHeaders;
-  };
+    getAuthHeaders() {
+        return this.authHeaders;
+    };
 
-  private setAuthHeaders(user: any) {
-    this.authHeaders = new Headers();
-    this.authHeaders.append('Authorization', user.token_type + ' ' + user.access_token);
-    this.authHeaders.append('Content-Type', 'application/json');
-  }
+    private setAuthHeaders(user: any) {
+        this.authHeaders = new Headers();
+        this.authHeaders.append('Authorization', user.token_type + ' ' + user.access_token);
+        this.authHeaders.append('Content-Type', 'application/json');
+    }
 }

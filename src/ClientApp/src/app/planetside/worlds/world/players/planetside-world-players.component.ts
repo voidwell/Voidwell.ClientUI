@@ -8,7 +8,7 @@ import { PlanetsideWorldComponent } from './../planetside-world.component';
 })
 
 export class PlanetsideWorldPlayersComponent {
-    private players: any[] = [];
+    players: any[] = [];
 
     constructor(private api: PlanetsideApi, private parent: PlanetsideWorldComponent) {
         this.parent.getOnlinePlayers()

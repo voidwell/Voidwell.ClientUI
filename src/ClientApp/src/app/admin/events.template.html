@@ -4,7 +4,7 @@
         <vw-error-message [message]="errorMessage"></vw-error-message>
         <div *ngIf="!isLoading">
             <div class="header-buttons">
-                <button mat-raised-button (click)="newEvent()">
+                <button mat-raised-button (click)="onEdit(null)">
                     <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
                     <span>New Event</span>
                 </button>

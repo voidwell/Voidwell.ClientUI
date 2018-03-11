@@ -8,7 +8,7 @@ import { HeaderService } from '../shared/services/header.service';
 })
 
 export class VWHeaderComponent {
-    private header;
+    public header;
 
     constructor(private headerService: HeaderService) {
         this.headerService.activeHeader

@@ -1,0 +1,32 @@
+﻿.world-button {
+    margin: 5px;
+}
+
+.world-state {
+    color: #b60d0d;
+    margin-right: 3px;
+}
+
+.world-state .online {
+    color: #1b8f2f;
+}
+
+.world-name {
+    width: 7em;
+    text-align: left;
+}
+
+.world-state,
+.world-name,
+.online-players {
+    display: inline-block;
+}
+
+.world-button,
+.online-players {
+    font-size: 1.5em;
+}
+
+.online-players .mat-icon {
+    margin-right: 5px;
+}

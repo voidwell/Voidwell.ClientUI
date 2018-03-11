@@ -15,7 +15,7 @@ export class PlanetsidePlayerWeaponsTableComponent implements OnInit {
     @ViewChild(MatSort) sort: MatSort;
     @Input() weapons: any;
 
-    private dataSource: TableDataSource;
+    dataSource: TableDataSource;
 
     ngOnInit() {
         this.sort.sort(<MatSortable>{
