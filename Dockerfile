@@ -3,8 +3,8 @@ WORKDIR /app
 
 # Copy and restore as distinct layers
 COPY ./src/ClientApp/src /app/src
-COPY ./src/ClientApp/*.json /app/
 
+COPY ./src/ClientApp/*.json /app/
 RUN npm install
 
 RUN npm run build:prod
@@ -22,8 +22,6 @@ RUN yarn add express
 
 COPY --from=build-env /app/dist ./dist
 COPY ./src/ClientApp/server .
-
-RUN yarn add oidc-client@1.2.0 helmet@3.3.0
 
 EXPOSE 5000
 
