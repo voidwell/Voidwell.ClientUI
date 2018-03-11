@@ -20,9 +20,10 @@ import { Subscriber } from "rxjs/Subscriber";
 })
 
 export class PlanetsideOutfitComponent implements OnDestroy {
-    private isLoading: boolean;
+    isLoading: boolean;
+    errorMessage: string = null;
+
     private isLoadingMembers: boolean;
-    private errorMessage: string = null;
     private routeSub: Subscription;
     private outfitData: any = null;
     private members: any[];

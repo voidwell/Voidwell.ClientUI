@@ -1,14 +1,15 @@
-﻿import { Component, OnDestroy, Inject } from '@angular/core';
+﻿import { Component, OnDestroy, Inject, OnInit, OnChanges } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription } from 'rxjs/Subscription';
 import { VoidwellApi } from '../shared/services/voidwell-api.service';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/operator/finally'
 import 'rxjs/add/observable/throw';
-import { FormGroup, FormBuilder, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 
 @Component({
     selector: 'voidwell-admin-events',
@@ -20,6 +21,7 @@ export class EventsComponent implements OnDestroy {
     errorMessage: string = null;
     getEventsRequest: Subscription;
 
+    private events: any[];
     private dataSource: TableDataSource;
 
     constructor(private api: VoidwellApi, private dialog: MatDialog) {
@@ -27,7 +29,8 @@ export class EventsComponent implements OnDestroy {
 
         this.getEventsRequest = this.api.getCustomEvents()
             .subscribe(events => {
-                this.dataSource = new TableDataSource(events);
+                this.events = events;
+                this.dataSource = new TableDataSource(this.events);
 
                 this.isLoading = false;
             });
@@ -37,15 +40,22 @@ export class EventsComponent implements OnDestroy {
         let dialogRef = this.dialog.open(EventEditorDialog, {
             data: { event: event }
         });
-    }
-
-    newEvent() {
-        let dialogRef = this.dialog.open(EventEditorDialog, {
-            data: { event: null }
-        });
 
         dialogRef.afterClosed().subscribe(result => {
-            //Todo: save event after editing.
+            if (!result) {
+                return;
+            }
+
+            for (let i = 0; i < this.events.length; i++) {
+                if (this.events[i].id == result.id) {
+                    this.events[i] = result;
+                    this.dataSource.refresh();
+                    return;
+                }
+            }
+
+            this.events.push(result);
+            this.dataSource.refresh();
         });
     }
 
@@ -57,17 +67,23 @@ export class EventsComponent implements OnDestroy {
 }
 
 export class TableDataSource extends DataSource<any> {
-    constructor(private data) {
+    private dataSubject: BehaviorSubject<any>;
+
+    constructor(private data: any[]) {
         super();
+
+        this.dataSubject = new BehaviorSubject(this.data);
     }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
+        let first = this.dataSubject;
         return Observable.merge(first).map(() => {
-            const data = this.data.slice();
-
-            return data;
+            return this.data.sort((a, b) => a.startDate < b.startDate ? 1 : -1);
         });
+    }
+
+    refresh() {
+        this.dataSubject.next(this.data);
     }
 
     disconnect() { }
@@ -77,8 +93,9 @@ export class TableDataSource extends DataSource<any> {
     selector: 'event-editor-dialog',
     templateUrl: 'event-editor-dialog.html',
 })
-export class EventEditorDialog {
+export class EventEditorDialog implements OnInit, OnChanges {
     form: FormGroup;
+    event: any;
 
     servers = [
         { id: "1", name: "Connery" },
@@ -102,78 +119,117 @@ export class EventEditorDialog {
         { teamId: "3", name: "Terran Republic", enabled: true }
     ];
 
-    teams: any[];
-    createEvent: boolean = false;
-
     constructor(private formBuilder: FormBuilder, public dialogRef: MatDialogRef<EventEditorDialog>, private api: VoidwellApi, @Inject(MAT_DIALOG_DATA) public data: any) {
-        this.teams = this.defaultTeams.slice();
-
-        let event = Object.assign({}, this.data.event);
-
-        if (event != null) {
-            this.teams.forEach(function (team) {
-                var teamIdx = event.teams.map(function (t) { return t.teamId }).indexOf(team.teamId);
-                if (teamIdx > -1) {
-                    Object.assign(team, event.teams[teamIdx]);
-                } else {
-                    team.enabled = false;
-                }
-            });
-        }
-        else
-        {
-            this.createEvent = true;
-            event = {
-                name: null,
-                description: null,
-                startDate: null,
-                endDate: null,
-                gameId: 'ps2',
-                isPrivate: false,
-                mapId: this.maps[0].id,
-                serverId: this.servers[0].id,
-                teams: []
-            };
-        }
-
         this.form = this.formBuilder.group({
-            name: event.name,
-            description: event.description,
-            startDate: new Date(event.startDate),
-            endDate: new Date(event.endDate),
-            isPrivate: event.isPrivate,
-            mapId: event.mapId,
-            serverId: event.serverId,
-            gameId: event.gameId,
-            teams: new FormArray(event.teams)
+            id: new FormControl(),
+            name: ['', Validators.required],
+            description: new FormControl(),
+            startDate: new FormControl(),
+            endDate: new FormControl(),
+            isPrivate: new FormControl(false),
+            mapId: new FormControl(),
+            serverId: new FormControl(),
+            gameId: new FormControl('ps2'),
+            teams: this.formBuilder.array([])
         });
+    };
+
+    get teamForm() { return <FormArray>this.form.get('teams'); }
+
+    ngOnInit() {
+        if (this.data.event) {
+            this.event = Object.assign({}, this.data.event);
+            this.ngOnChanges();
+        }
+        else {
+            this.setupTeams(this.defaultTeams);
+        }
     }
 
-    saveEvent(event: any, teams: any) {
-        event.teams = [];
+    ngOnChanges() {
+        let self = this;
+
+        this.form.reset({
+            id: this.event.id
+        });
+
+        this.form.setControl('name', new FormControl(this.event.name));
+        this.form.setControl('description', new FormControl(this.event.description));
+        this.form.setControl('startDate', new FormControl(new Date(this.event.startDate)));
+        this.form.setControl('endDate', new FormControl(new Date(this.event.endDate)));
+        this.form.setControl('isPrivate', new FormControl(this.event.isPrivate));
+        this.form.setControl('mapId', new FormControl(this.event.mapId));
+        this.form.setControl('serverId', new FormControl(this.event.serverId));
+        this.form.setControl('gameId', new FormControl(this.event.gameId));
+
+        this.setupTeams(this.event.teams);
+    }
+
+    setupTeams(inputTeams: any[]) {
+        let teams = this.defaultTeams.slice();
+
         teams.forEach(function (team) {
+            var teamIdx = inputTeams.map(function (t) { return t.teamId }).indexOf(team.teamId);
+            if (teamIdx > -1) {
+                Object.assign(team, inputTeams[teamIdx]);
+            } else {
+                team.enabled = false;
+            }
+        });
+
+        let teamFGs = teams.map(team => this.formBuilder.group(team));
+        let teamFormArray = this.formBuilder.array(teamFGs);
+        this.form.setControl('teams', teamFormArray);
+    }
+
+    onSubmit() {
+        if (this.form.invalid) {
+            return;
+        }
+
+        this.event = this.prepareSaveEvent();
+
+        if (this.event.id) {
+            this.api.updateCustomEvent(this.event.id, this.event)
+                .subscribe(result => {
+                    this.dialogRef.close(result);
+                });
+        }
+        else {
+            this.api.createCustomEvent(this.event)
+                .subscribe(result => {
+                    this.dialogRef.close(result);
+                });
+        }
+    }
+
+    prepareSaveEvent() {
+        let eventModel = this.form.value;
+
+        let saveEvent = {
+            id: eventModel.id,
+            name: eventModel.name,
+            description: eventModel.description,
+            startDate: eventModel.startDate,
+            endDate: eventModel.endDate,
+            isPrivate: eventModel.isPrivate,
+            mapId: eventModel.mapId,
+            serverId: eventModel.serverId,
+            gameId: eventModel.gameId,
+            teams: []
+        };
+
+        eventModel.teams.forEach(function (team) {
             if (team.enabled) {
                 var eventTeam = {
                     teamId: team.teamId,
                     name: team.name
                 };
-                event.teams.push(eventTeam);
+                saveEvent.teams.push(eventTeam);
             }
         });
 
-        if (this.createEvent) {
-            this.api.createCustomEvent(event)
-                .subscribe(result => {
-                    Object.assign(this.data.event, result);
-                    this.createEvent = false;
-                });
-        }
-        else {
-            this.api.updateCustomEvent(event.id, event)
-                .subscribe(result => {
-                    Object.assign(this.data.event, result);
-                });
-        }
+        return saveEvent;
     }
 
     closeDialog() {
@@ -183,5 +239,4 @@ export class EventEditorDialog {
     onNoClick(): void {
         this.dialogRef.close();
     }
-
 }

@@ -15,18 +15,18 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 })
 
 export class PlanetsidePlayerComponent implements OnDestroy {
-    private isLoading: boolean;
-    private errorMessage: string = null;
-    private routeSub: Subscription;
-    private navLinks = [
+    isLoading: boolean;
+    errorMessage: string = null;
+    navLinks = [
         { path: 'stats', display: 'Stats' },
         { path: 'classes', display: 'Classes' },
         { path: 'vehicles', display: 'Vehicles' },
         { path: 'weapons', display: 'Weapons' },
         { path: 'sessions', display: 'Sessions' },
     ];
-
     playerData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
+
+    private routeSub: Subscription;
 
     constructor(private api: PlanetsideApi, private route: ActivatedRoute, private router: Router, private headerService: HeaderService, private decimalPipe: DecimalPipe) {
         this.routeSub = this.route.params.subscribe(params => {

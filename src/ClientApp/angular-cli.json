@@ -4,9 +4,6 @@
     },
     "defaults": {
         "poll": 1000,
-        "build": {
-            "sourcemaps": false
-        },
         "serve": {
             "port": 5000,
             "host": "0.0.0.0"

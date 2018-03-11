@@ -5,8 +5,9 @@
     "scripts": {
         "lint": "ng lint",
         "start:dev": "npm rebuild node-sass | ng serve --hmr --disable-host-check",
-        "start:prod": "npm rebuild node-sass | ng serve",
-        "build": "npm rebuild node-sass | ng build"
+        "start:prod": "npm rebuild node-sass | node server.js",
+        "build:dev": "npm rebuild node-sass | ng build --dev",
+        "build:prod": "npm rebuild node-sass | ng build --prod"
     },
     "dependencies": {
         "@angular-redux/store": "7.1.0",

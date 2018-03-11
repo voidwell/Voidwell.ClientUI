@@ -22,11 +22,12 @@ export class PlanetsideItemLeaderboardComponent implements OnInit, OnDestroy {
     @ViewChild(MatSort) sort: MatSort;
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
-    weaponDataSub: Subscription;
+    errorMessage: string = null;
     isLoading: boolean = true;
+    weaponDataSub: Subscription;
     leaderboard: any[] = [];
 
-    private dataSource: TableDataSource;
+    public dataSource: TableDataSource;
 
     constructor(private itemComponent: PlanetsideItemComponent, private api: PlanetsideApi) {
         
@@ -61,7 +62,7 @@ export class PlanetsideItemLeaderboardComponent implements OnInit, OnDestroy {
 }
 
 export class TableDataSource extends DataSource<any> {
-    constructor(private data, private sort: MatSort, private paginator: MatPaginator) {
+    constructor(public data, private sort: MatSort, private paginator: MatPaginator) {
         super();
     }
 

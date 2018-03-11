@@ -12,10 +12,11 @@ import 'rxjs/add/observable/of';
 })
 
 export class PlanetsidePlayerClassesComponent implements OnDestroy {
+    playerData: any;
+
     private routeSub: any;
     private isLoading: boolean;
     private profiles: any[];
-    private playerData: any;
     private profileId: number;
     private profile: any = null;
     private profileWeapons = [];
