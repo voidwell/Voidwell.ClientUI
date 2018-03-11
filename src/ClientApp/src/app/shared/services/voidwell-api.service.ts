@@ -2,6 +2,7 @@
 import 'rxjs/add/observable/of';
 import 'rxjs/add/operator/timeout';
 import 'rxjs/add/operator/catch'
+import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Http, RequestOptions, Response } from '@angular/http';
 import { NgRedux } from '@angular-redux/store';
