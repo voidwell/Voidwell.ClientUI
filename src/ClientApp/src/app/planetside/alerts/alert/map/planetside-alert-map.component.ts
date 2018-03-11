@@ -9,7 +9,7 @@ import 'rxjs/add/observable/of';
 })
 
 export class PlanetsideAlertMapComponent implements OnInit {
-    private dataSource: TableDataSource;
+    dataSource: TableDataSource;
 
     constructor(private injector: Injector) {
     }

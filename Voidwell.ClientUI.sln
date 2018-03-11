@@ -28,6 +28,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{14F9F82A-26E
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{32E10CB7-82BA-4F0D-9351-44F2189970F4}"
 	ProjectSection(SolutionItems) = preProject
+		.dockerignore = .dockerignore
 		.gitattributes = .gitattributes
 		.gitignore = .gitignore
 		Dockerfile = Dockerfile

@@ -14,11 +14,11 @@ import 'rxjs/add/observable/throw';
 })
 
 export class PlanetsidePlayerSessionComponent implements OnDestroy {
+    isLoading: boolean;
+    errorMessage: string = null;
+
     private routeSub: any;
     private dataSub: any;
-
-    private isLoading: boolean;
-    private errorMessage: string = null;
     private session: any;
     private sessionStats: any;
     private playerData: any;

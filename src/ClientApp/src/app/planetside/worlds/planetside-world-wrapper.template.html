@@ -1,5 +1,17 @@
 ﻿<div class="content-container">
-    <div *ngFor="let world of worlds">
-        <a mat-button routerLink="{{world.id}}">{{world.name}}</a>
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngFor="let world of worlds | orderBy: 'name'">
+        <a mat-button routerLink="{{world.id}}" class="world-button">
+            <div class="world-state">
+                <mat-icon *ngIf="world.isOnline" fontSet="mdi" fontIcon="mdi-check-circle" class="online"></mat-icon>
+                <mat-icon *ngIf="!world.isOnline" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+            </div>
+            <div class="world-name">{{world.name}}</div>
+        </a>
+        <div class="online-players">
+            <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
+            {{world.onlineCharacters}}
+        </div>
     </div>
 </div>

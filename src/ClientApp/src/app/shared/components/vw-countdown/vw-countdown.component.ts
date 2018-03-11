@@ -10,7 +10,7 @@ export class VWCountdownComponent implements OnInit {
     @Input() end: Date;
 
     private diff: number;
-    private remaining: string;
+    public remaining: string;
 
     private hms() {
         let t = this.diff;

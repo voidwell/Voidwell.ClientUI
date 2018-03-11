@@ -23,12 +23,12 @@ import { VoidwellApi } from '../shared/services/voidwell-api.service';
 export class BlogComponent implements OnInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
 
+    errorMessage: string = null;
     blogPosts: Array<any> = [];
     isLoading: boolean;
     isCreating: boolean;
     getBlogPostsRequest: Subscription;
-
-    private dataSource: TableDataSource;
+    dataSource: TableDataSource;
 
     constructor(private api: VoidwellApi, private dialog: MatDialog) {
 
@@ -70,7 +70,7 @@ export class BlogComponent implements OnInit {
 }
 
 export class TableDataSource extends DataSource<any> {
-    constructor(private data, private paginator: MatPaginator) {
+    constructor(public data, private paginator: MatPaginator) {
         super();
     }
 
@@ -96,9 +96,9 @@ export class TableDataSource extends DataSource<any> {
     templateUrl: 'blog-editor-dialog.html',
 })
 export class BlogEditorDialog {
-    private errorMessage: string;
-    private entry: any;
-    private updateList: boolean = false;
+    public entry: any;
+    public errorMessage: string;
+    updateList: boolean = false;
 
     constructor(public dialogRef: MatDialogRef<BlogEditorDialog>, private api: VoidwellApi, @Inject(MAT_DIALOG_DATA) public data: any) {
         this.errorMessage = null;

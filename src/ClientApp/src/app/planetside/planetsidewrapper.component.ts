@@ -13,10 +13,11 @@ import { HeaderService, HeaderConfig } from './../shared/services/header.service
 })
 
 export class PlanetsideWrapperComponent {
+    isSearching: boolean = false;
+
     private queryWait: any;
     private filteredResults: Observable<any[]>;
     private activeSelection: any;
-    private isSearching: boolean = false;
 
     results: any[];
     searchControl: FormControl;

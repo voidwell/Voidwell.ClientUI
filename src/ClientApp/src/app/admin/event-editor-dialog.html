@@ -1,4 +1,4 @@
-﻿<form [formGroup]="form">
+﻿<form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
     <div>
         <mat-form-field>
             <input matInput formControlName="name" placeholder="Event name">
@@ -38,21 +38,21 @@
             <input matInput [matDatetimepicker]="pickerEnd" required placeholder="End date" formControlName="endDate">
         </mat-form-field>
     </div>
-    <!--
-    <div>
-        <div *ngFor="let team of teams">
-            <mat-checkbox [(ngModel)]="team.enabled"></mat-checkbox>
-            <mat-icon fontSet="mdi" fontIcon="mdi-account" [ngClass]="team.teamId | factionColor"></mat-icon>
-            <mat-form-field>
-                <input matInput [(ngModel)]="team.name" placeholder="Team name">
-            </mat-form-field>
+    <div >
+        <div formArrayName="teams">
+            <div *ngFor="let team of teamForm.controls; index as i" [formGroupName]="i">
+                <mat-checkbox formControlName="enabled"></mat-checkbox>
+                <mat-icon fontSet="mdi" fontIcon="mdi-account" [ngClass]="team.value.teamId | factionColor"></mat-icon>
+                <mat-form-field>
+                    <input matInput formControlName="name" placeholder="Team name">
+                </mat-form-field>
+            </div>
         </div>
     </div>
-    -->
     <div class="dialog-action-footer">
         <button mat-raised-button (click)="closeDialog()">Close</button>
         <div class="pull-right">
-            <button mat-raised-button (click)="saveEvent(data.event, teams)">Save</button>
+            <button type="submit" [disabled]="form.pristine || form.invalid" mat-raised-button>Save</button>
         </div>
     </div>
 </form>

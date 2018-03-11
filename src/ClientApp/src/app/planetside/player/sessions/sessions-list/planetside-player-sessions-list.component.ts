@@ -13,8 +13,9 @@ import 'rxjs/add/observable/throw';
 })
 
 export class PlanetsidePlayerSessionsListComponent {
-    private isLoading: boolean;
-    private errorMessage: string = null;
+    isLoading: boolean;
+    errorMessage: string = null;
+
     private sessions: any[];
     private playerData: any;
 

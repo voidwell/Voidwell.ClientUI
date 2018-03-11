@@ -34,7 +34,7 @@ export class UsersComponent implements OnInit, OnDestroy {
     getUsersRequest: Subscription;
     getRolesRequest: Subscription;
 
-    private dataSource: TableDataSource;
+    dataSource: TableDataSource;
 
     constructor(private api: VoidwellApi, private dialog: MatDialog) {
     }
@@ -99,7 +99,7 @@ export class UsersComponent implements OnInit, OnDestroy {
 }
 
 export class TableDataSource extends DataSource<any> {
-    constructor(private data, private paginator: MatPaginator) {
+    constructor(public data, private paginator: MatPaginator) {
         super();
     }
 
@@ -134,8 +134,8 @@ export class TableDataSource extends DataSource<any> {
     templateUrl: 'user-editor-dialog.html',
 })
 export class UserEditorDialog {
-    private errorMessage: string;
-    private isLoading: boolean;
+    public errorMessage: string;
+    public isLoading: boolean;
     private user: any;
 
     constructor(public dialogRef: MatDialogRef<UserEditorDialog>, private api: VoidwellApi, @Inject(MAT_DIALOG_DATA) public data: any) {

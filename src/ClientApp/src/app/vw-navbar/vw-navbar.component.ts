@@ -12,7 +12,7 @@ import { IAppState } from '../app.component';
 })
 
 export class VWNavbarComponent implements OnInit {
-    private header;
+    public header;
     isLoggedIn: boolean = false;
     userName: string;
     userRoles: Array<string>;
