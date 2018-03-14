@@ -28,13 +28,8 @@ export class VoidwellAuthService {
         let redirectUri: string;
         let signInCallbackUri: string;
         let silentCallbackUri: string;
-
-        if (/^voidwell.com/.test(location.origin)) {
-            authority = 'https://auth.voidwell.com/';
-        } else {
-            authority = 'http://auth.localdev.com/';
-        }
-
+        
+        authority = 'https://auth.voidwell.com/';
         redirectUri = location.origin + '/';
         signInCallbackUri = redirectUri + 'signInCallback.html';
         silentCallbackUri = redirectUri + 'silentCallback.html';

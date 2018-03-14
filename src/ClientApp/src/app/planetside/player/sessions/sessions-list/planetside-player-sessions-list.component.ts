@@ -48,9 +48,9 @@ export class PlanetsidePlayerSessionsListComponent {
     }
 
     private sortSessions(a, b) {
-        if (a.stats.loginDate < b.stats.loginDate)
+        if (a.loginDate < b.loginDate)
             return 1
-        if (a.stats.loginDate > b.stats.loginDate)
+        if (a.loginDate > b.loginDate)
             return -1;
         return 0;
     }
