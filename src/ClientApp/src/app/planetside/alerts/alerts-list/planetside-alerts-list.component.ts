@@ -36,6 +36,6 @@ export class PlanetsideAlertsListComponent {
     private getEndDate(alert: any): Date {
         let startString = alert.startDate;
         let startMs = new Date(startString).getTime();
-        return new Date(startMs + 1000 * 60 * 90);
+        return new Date(startMs + 1000 * 60 * 45);
     }
 }
