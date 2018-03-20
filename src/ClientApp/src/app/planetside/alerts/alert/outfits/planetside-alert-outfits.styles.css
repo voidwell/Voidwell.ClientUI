@@ -26,6 +26,7 @@
     text-overflow: ellipsis;
 }
 
+.mat-column-participants,
 .mat-column-kills,
 .mat-column-vehicleKills,
 .mat-column-deaths,
@@ -34,5 +35,5 @@
 .mat-column-suicides,
 .mat-column-headshots,
 .mat-column-hsper {
-    max-width: 80px;
+    max-width: 85px;
 }
