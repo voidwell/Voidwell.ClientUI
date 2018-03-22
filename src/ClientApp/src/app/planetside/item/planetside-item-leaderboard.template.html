@@ -43,26 +43,41 @@
 
                     <ng-container matColumnDef="kdrDelta">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{row.kdrDelta | number}}</mat-cell>
-                    </ng-container>
-
-                    <ng-container matColumnDef="aga">
-                        <mat-header-cell *matHeaderCellDef mat-sort-header>AgA</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{row.aga | number}}</mat-cell>
+                        <mat-cell *matCellDef="let row"><vw-grade [delta]="row.kdrDelta"></vw-grade></mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="accuracy">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Accu.</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{row.shotsHit / row.shotsFired * 100 | number: '.0-0'}}%</mat-cell>
+                        <mat-cell *matCellDef="let row">{{row.shotsHit / row.shotsFired * 100 | number: '.2-2'}}%</mat-cell>
                     </ng-container>
 
                     <ng-container matColumnDef="accuracyDelta">
                         <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
-                        <mat-cell *matCellDef="let row">{{row.accuracyDelta | number}}</mat-cell>
+                        <mat-cell *matCellDef="let row"><vw-grade [delta]="row.accuracyDelta"></vw-grade></mat-cell>
                     </ng-container>
 
-                    <mat-header-row *matHeaderRowDef="['idx','name','kills','vehicleKills','deaths','kdr','kdrDelta','aga','accuracy','accuracyDelta']"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: ['idx','name','kills','vehicleKills','deaths','kdr','kdrDelta','aga','accuracy','accuracyDelta'];"></mat-row>
+                    <ng-container matColumnDef="hsr">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>HSR</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.headshots / row.kills * 100 | number: '.2-2'}}%</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="hsrDelta">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
+                        <mat-cell *matCellDef="let row"><vw-grade [delta]="row.hsrDelta"></vw-grade></mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kph">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>KPH</mat-header-cell>
+                        <mat-cell *matCellDef="let row">{{row.kills / (row.playTime / 3600) | number: '.1-1'}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="kphDelta">
+                        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
+                        <mat-cell *matCellDef="let row"><vw-grade [delta]="row.kphDelta"></vw-grade></mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="['idx','name','kills','vehicleKills','deaths','kdr','kdrDelta','accuracy','accuracyDelta','hsr','hsrDelta','kph','kphDelta']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['idx','name','kills','vehicleKills','deaths','kdr','kdrDelta','accuracy','accuracyDelta','hsr','hsrDelta','kph','kphDelta'];"></mat-row>
                 </mat-table>
 
                 <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>

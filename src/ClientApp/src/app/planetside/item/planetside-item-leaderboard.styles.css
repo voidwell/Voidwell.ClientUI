@@ -37,6 +37,10 @@
 .mat-column-kdrDelta,
 .mat-column-aga,
 .mat-column-accuracy,
-.mat-column-accuracyDelta {
+.mat-column-accuracyDelta,
+.mat-column-hsr,
+.mat-column-hsrDelta,
+.mat-column-kph,
+.mat-column-kphDelta {
     max-width: 80px;
 }
