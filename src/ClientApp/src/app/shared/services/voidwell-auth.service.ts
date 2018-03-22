@@ -29,7 +29,7 @@ export class VoidwellAuthService {
         let signInCallbackUri: string;
         let silentCallbackUri: string;
         
-        authority = 'https://auth.voidwell.com/';
+        authority = location.protocol + '//auth.' + location.host;
         redirectUri = location.origin + '/';
         signInCallbackUri = redirectUri + 'signInCallback.html';
         silentCallbackUri = redirectUri + 'silentCallback.html';
