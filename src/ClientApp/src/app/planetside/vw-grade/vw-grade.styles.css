@@ -1,0 +1,31 @@
+﻿.vw-grade {
+    font-weight: bold;
+}
+
+.grade-S {
+    color: #FF2626;
+}
+
+.grade-M {
+    color: #b7378a;
+}
+
+.grade-A {
+    color: #7454c1;
+}
+
+.grade-B {
+    color: #3e9003;
+}
+
+.grade-D {
+    color: #bb3918;
+}
+
+.grade-F {
+    color: #861d1d;
+}
+
+.grade-T {
+    color: #714b4b;
+}
