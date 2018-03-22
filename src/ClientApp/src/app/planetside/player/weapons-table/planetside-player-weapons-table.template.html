@@ -33,7 +33,7 @@
 
     <ng-container matColumnDef="kdrDelta">
         <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.killDeathRatioDelta | number}}</mat-cell>
+        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.killDeathRatioDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="accuracy">
@@ -43,17 +43,17 @@
 
     <ng-container matColumnDef="accuracyDelta">
         <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.accuracyDelta | number}}</mat-cell>
+        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.accuracyDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="hsr">
         <mat-header-cell *matHeaderCellDef>HSR</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.headshots / item.stats.kills | number: '.2-2'}}</mat-cell>
+        <mat-cell *matCellDef="let item">{{item.stats.headshots / item.stats.kills * 100 | number: '.1-1'}}%</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="hsrDelta">
         <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.hsrDelta | number}}</mat-cell>
+        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.hsrDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="kph">
@@ -63,7 +63,7 @@
 
     <ng-container matColumnDef="kphDelta">
         <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.kphDelta | number}}</mat-cell>
+        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.kphDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="vehicleKph">
@@ -73,7 +73,7 @@
 
     <ng-container matColumnDef="vehicleKphDelta">
         <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.vehicleKphDelta | number}}</mat-cell>
+        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.vehicleKphDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="spm">

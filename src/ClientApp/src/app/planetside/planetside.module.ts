@@ -9,6 +9,7 @@ import { WorldNamePipe } from '../shared/pipes/ps2/world-name.pipe';
 import { SharedComponentsModule } from '../shared/components/shared-components.module';
 import { routing } from './planetside.routes';
 import { PlanetsideApi } from './planetside-api.service';
+import { PerformanceGrades } from './performance-grades.service';
 import { PlanetsideWrapperComponent } from './planetsidewrapper.component';
 import { PlanetsideCombatEventComponent } from './combat-event/planetside-combat-event.component';
 import { PlanetsideNewsComponent } from './news/planetside-news.component';
@@ -38,6 +39,7 @@ import { PlanetsideEventComponent } from './events/event/planetside-event.compon
 import { PlanetsideWorldWrapperComponent } from './worlds/planetside-world-wrapper.component';
 import { PlanetsideWorldComponent } from './worlds/world/planetside-world.component';
 import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetside-world-players.component';
+import { VWGradeComponent } from './vw-grade/vw-grade.component';
 
 @NgModule({
     declarations: [
@@ -69,7 +71,8 @@ import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetsi
         PlanetsideEventComponent,
         PlanetsideWorldWrapperComponent,
         PlanetsideWorldComponent,
-        PlanetsideWorldPlayersComponent
+        PlanetsideWorldPlayersComponent,
+        VWGradeComponent
     ],
     imports: [
         FormsModule,
@@ -83,6 +86,7 @@ import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetsi
     ],
     providers: [
         PlanetsideApi,
+        PerformanceGrades,
         DecimalPipe,
         DatePipe,
         D3Service,
