@@ -115,7 +115,7 @@ export class BlogEditorDialog {
 
     onSaveBlogPost(blogPost: any) {
         if (blogPost.id) {
-            this.api.updateBlogPost(blogPost)
+            this.api.updateBlogPost(blogPost.id, blogPost)
                 .subscribe(result => {
                     this.entry = result;
                     Object.assign(this.data.entry, result);

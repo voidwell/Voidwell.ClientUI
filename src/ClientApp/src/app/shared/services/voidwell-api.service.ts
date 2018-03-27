@@ -57,8 +57,8 @@ export class VoidwellApi {
             });
     }
 
-    updateBlogPost(blogPost: any) {
-        return this.AuthPut(this.blogUrl, blogPost, this.options)
+    updateBlogPost(blogPostId: string, blogPost: any) {
+        return this.AuthPut(this.blogUrl + blogPostId, blogPost, this.options)
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
                 return this.handleError(error);
