@@ -49,7 +49,7 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
     }
 
     private setup(data: any) {
-        this.setupHeader(data.metagameEvent.name, data.metagameEvent.description, data.zoneId);
+        this.setupHeader(data.metagameEvent.name, data.metagameEvent.description, data.mapId);
 
         this.event.next(data);
         this.activeEvent = data;
