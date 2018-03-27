@@ -13,6 +13,7 @@ import { PerformanceGrades } from './performance-grades.service';
 import { PlanetsideWrapperComponent } from './planetsidewrapper.component';
 import { PlanetsideCombatEventComponent } from './combat-event/planetside-combat-event.component';
 import { PlanetsideNewsComponent } from './news/planetside-news.component';
+import { NewsCardComponent } from './news/news-card/news-card.component';
 import { PlanetsideItemComponent } from './item/planetside-item.component';
 import { PlanetsideItemStatsComponent } from './item/planetside-item-stats.component';
 import { PlanetsideItemLeaderboardComponent } from './item/planetside-item-leaderboard.component';
@@ -46,6 +47,7 @@ import { VWGradeComponent } from './vw-grade/vw-grade.component';
         PlanetsideWrapperComponent,
         PlanetsideCombatEventComponent,
         PlanetsideNewsComponent,
+        NewsCardComponent,
         PlanetsideItemComponent,
         PlanetsideItemStatsComponent,
         PlanetsideItemLeaderboardComponent,
