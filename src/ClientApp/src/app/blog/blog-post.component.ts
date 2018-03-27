@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Observable';
 @Component({
     selector: 'voidwell-blog-post',
     templateUrl: './blog-post.template.html',
-    styleUrls: ['./../app.styles.css', './blog.styles.css', './blog-post.styles.css'],
+    styleUrls: ['./blog-post.styles.css'],
     providers: [VoidwellApi]
 })
 
