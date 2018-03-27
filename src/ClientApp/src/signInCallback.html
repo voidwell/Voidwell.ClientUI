@@ -10,7 +10,13 @@
         let mgr = new Oidc.UserManager();
         mgr.signinRedirectCallback().then(function () {
             mgr.clearStaleState();
-            window.location = '/';
+
+            let redirect = localStorage.getItem('voidwell-auth-redirect');
+            if (redirect) {
+                window.location = '/' + redirect;
+            } else {
+                window.location = '/';
+            }
         }).catch(function (e) {
             console.error(e);
         });

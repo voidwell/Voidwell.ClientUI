@@ -38,7 +38,7 @@ export class PlanetsidePlayerComponent implements OnDestroy {
 
             this.api.getCharacter(id)
                 .catch(error => {
-                    this.errorMessage = error._body
+                    this.errorMessage = error._body || error.statusText
                     this.isLoading = false;
                     return Observable.throw(error);
                 })

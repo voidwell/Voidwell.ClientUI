@@ -1,0 +1,13 @@
+﻿.mat-table .mat-row {
+    min-height: 25px;
+}
+
+.mat-table .mat-row .mat-cell {
+    font-size: 11.2px;
+}
+
+.mat-cell a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: bold;
+}

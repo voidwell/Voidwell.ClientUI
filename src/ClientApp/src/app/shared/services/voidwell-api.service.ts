@@ -18,7 +18,7 @@ export class VoidwellApi {
     public eventsUrl = location.origin + '/api/events/';
     public accountUrl = location.origin + '/api/account/';
     public authAdminUrl = location.origin + '/api/authadmin/';
-    public ps2ServiceUrl = location.origin + '/api/ps2/services/';
+    public ps2Url = location.origin + '/api/ps2/';
 
     public options;
     private _requestTimeout = 30000;
@@ -270,7 +270,7 @@ export class VoidwellApi {
     }
 
     getPS2AllServiceStatus() {
-        return this.AuthGet(this.ps2ServiceUrl + 'status', this.options)
+        return this.AuthGet(this.ps2Url + 'services/status', this.options)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
@@ -279,7 +279,7 @@ export class VoidwellApi {
     }
 
     getPS2ServiceStatus(service: string) {
-        return this.AuthGet(this.ps2ServiceUrl + service + '/status', this.options)
+        return this.AuthGet(this.ps2Url + 'services/' + service + '/status', this.options)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
@@ -288,7 +288,7 @@ export class VoidwellApi {
     }
 
     enablePS2Service(service: string) {
-        return this.AuthPost(this.ps2ServiceUrl + service + '/enable', null, this.options)
+        return this.AuthPost(this.ps2Url + 'services/' + service + '/enable', null, this.options)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
@@ -297,7 +297,16 @@ export class VoidwellApi {
     }
 
     disablePS2Service(service: string) {
-        return this.AuthPost(this.ps2ServiceUrl + service + '/disable', null, this.options)
+        return this.AuthPost(this.ps2Url + 'services/' + service + '/disable', null, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getPSBAccountSessions() {
+        return this.AuthGet(this.ps2Url + 'psb/sessions', this.options)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });

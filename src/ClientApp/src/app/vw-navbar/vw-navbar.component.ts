@@ -50,7 +50,11 @@ export class VWNavbarComponent implements OnInit {
         this.authService.signOut();
     }
 
-    hasRoles(roles: string[]) {
+    canAccessAdmin(): boolean {
+        return this.hasRoles(['Administrator', 'SuperAdmin', 'Blog', 'Events', 'PSB']);
+    }
+
+    hasRoles(roles: string[]): boolean {
         if (roles == null) {
             return true;
         }

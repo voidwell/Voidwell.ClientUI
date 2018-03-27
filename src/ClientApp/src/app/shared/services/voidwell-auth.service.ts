@@ -128,6 +128,8 @@ export class VoidwellAuthService {
     }
 
     signOut() {
+        localStorage.removeItem('voidwell-auth-redirect');
+
         this.ngRedux.dispatch({ type: UNLOAD_USER });
         this.mgr.signoutRedirect().then(function () {
         }).catch(function (error) {
@@ -153,7 +155,7 @@ export class VoidwellAuthService {
         this.userRoleState = this.ngRedux.select(['loggedInUser', 'roles']);
         return Observable.create((observer: Subject<boolean>) => {
             this.userRoleState.subscribe(userRoles => {
-                if (routeRoles) {
+                if (routeRoles && userRoles) {
                     let found = false;
                     routeRoles.forEach(role => {
                         if (userRoles && userRoles.indexOf(role) > -1) {
@@ -161,8 +163,6 @@ export class VoidwellAuthService {
                         }
                     });
                     observer.next(found);
-                } else {
-                    observer.next(false);
                 }
             });
         }).take(1);
