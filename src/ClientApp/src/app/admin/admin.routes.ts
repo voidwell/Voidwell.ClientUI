@@ -7,6 +7,7 @@ import { UsersComponent } from './users.component';
 import { RolesComponent } from './roles.component';
 import { EventsComponent } from './events.component';
 import { ServicesComponent } from './services.component';
+import { PsbComponent } from './psb.component';
 import { VoidwellAuthGuard } from '../shared/services/voidwell-authguard.service';
 
 const adminRoutes: Routes = [
@@ -39,13 +40,19 @@ const adminRoutes: Routes = [
                 data: { roles: ['Administrator', 'SuperAdmin', 'Events'] }
             },
             {
+                path: 'psb',
+                component: PsbComponent,
+                canActivate: [VoidwellAuthGuard],
+                data: { roles: ['Administrator', 'SuperAdmin', 'PSB'] }
+            },
+            {
                 path: 'services',
                 component: ServicesComponent,
                 data: { roles: ['Administrator', 'SuperAdmin'] }
             }
         ],
         canActivate: [VoidwellAuthGuard],
-        data: { roles: ['Administrator', 'SuperAdmin', 'Blog', 'Events'] }
+        data: { roles: ['Administrator', 'SuperAdmin', 'Blog', 'Events', 'PSB'] }
     }
 ];
 

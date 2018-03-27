@@ -13,6 +13,7 @@ import { UsersComponent, UserEditorDialog } from './users.component';
 import { RolesComponent } from './roles.component';
 import { EventsComponent, EventEditorDialog } from './events.component';
 import { ServicesComponent } from './services.component';
+import { PsbComponent } from './psb.component';
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import { ServicesComponent } from './services.component';
         RolesComponent,
         EventsComponent,
         ServicesComponent,
+        PsbComponent,
         EventEditorDialog,
         UserEditorDialog,
         BlogEditorDialog
