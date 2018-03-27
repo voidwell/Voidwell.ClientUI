@@ -1,0 +1,65 @@
+﻿<div class="content-container layout-margin">
+    <div class="account-sessions">
+        <div class="header-buttons">
+            <button mat-raised-button (click)="loadAccountSessions()">
+                <span>Load Accounts</span>
+            </button>
+            <small>May take a few seconds to load</small>
+        </div>
+
+        <vw-loader [loading]="isLoading"></vw-loader>
+        <vw-error-message [message]="errorMessage"></vw-error-message>
+
+        <div [hidden]="!sessions || isLoading">
+            <div class="table-filter">
+                <mat-form-field floatPlaceholder="never">
+                    <input matInput #filter placeholder="Character id or partial name">
+                </mat-form-field>
+            </div>
+
+            <mat-table #table [dataSource]="dataSource" class="striped" matSort>
+                <ng-container matColumnDef="name">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Player</mat-header-cell>
+                    <mat-cell *matCellDef="let session">
+                        <div class="character-name">
+                            <a routerLink="/ps2/player/{{session.characterId}}">
+                                <div class="name">{{session.name}}</div>
+                            </a>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="loginDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Login (UTC)</mat-header-cell>
+                    <mat-cell *matCellDef="let session">{{session.loginDate | date:'yyyy-MM-dd HH:mm':'UTC'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="logoutDate">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Logout (UTC)</mat-header-cell>
+                    <mat-cell *matCellDef="let session">{{session.logoutDate | date:'yyyy-MM-dd HH:mm':'UTC'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="duration">
+                    <mat-header-cell *matHeaderCellDef mat-sort-header>Duration (mins)</mat-header-cell>
+                    <mat-cell *matCellDef="let session">{{session.duration / (1000 * 60) | number:'.0-0'}}</mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="session">
+                    <mat-header-cell *matHeaderCellDef>Session</mat-header-cell>
+                    <mat-cell *matCellDef="let session">
+                        <div class="session-link">
+                            <a routerLink="/ps2/player/{{session.characterId}}/sessions/{{session.sessionId}}">
+                                #{{session.sessionId}}
+                            </a>
+                        </div>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['name','loginDate','logoutDate','duration','session']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['name','loginDate','logoutDate','duration','session'];"></mat-row>
+            </mat-table>
+
+            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+        </div>
+    </div>
+</div>

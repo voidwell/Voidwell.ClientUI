@@ -8,7 +8,7 @@
                 <button *ngIf="isLoggedIn" mat-button [matMenuTriggerFor]="userMenu">{{userName}}</button>
                 <mat-menu #userMenu="matMenu">
                     <button mat-menu-item routerLink="/account/settings">Settings</button>
-                    <button *ngIf="hasRoles(['Administrator','SuperAdmin','Blog','Events'])" mat-menu-item routerLink="/admin">Admin</button>
+                    <button *ngIf="canAccessAdmin()" mat-menu-item routerLink="/admin">Admin</button>
                     <button mat-menu-item (click)="signOut()">Logout</button>
                 </mat-menu>
                 <button *ngIf="!isLoggedIn" mat-button (click)="signIn()">Login</button>

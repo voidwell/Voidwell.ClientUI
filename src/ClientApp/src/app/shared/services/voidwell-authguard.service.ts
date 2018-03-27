@@ -13,6 +13,8 @@ export class VoidwellAuthGuard implements CanActivate {
         private authService: VoidwellAuthService) { }
 
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+        localStorage.setItem('voidwell-auth-redirect', state.url);
+
         let guestOnly = route.data['guestOnly'] as boolean;
         if (guestOnly) {
             if (this.ngRedux.getState().loggedInUser && this.ngRedux.getState().loggedInUser.isLoggedIn) {
