@@ -10,7 +10,7 @@
 }
 
 
-.main-news-container ::ng-deep a:not(.mat-icon-button) {
+.news-content ::ng-deep a:not(.mat-icon-button) {
     text-decoration: none;
     color: #8c8c8c;
 }
@@ -29,11 +29,10 @@
 }
 
 .updates-title {
-    text-transform: uppercase;
     font-weight: bold;
     font-size: 1.2em;
     margin-bottom: 10px;
-    border-bottom: 2px solid #fff;
+    border-bottom: 2px solid #b82601;
 }
 
 .updates-content ul {
@@ -45,4 +44,8 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+}
+.updates-content a {
+    color: inherit;
+    text-decoration: none;
 }

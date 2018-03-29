@@ -1,16 +1,14 @@
 ﻿:host {
     position: relative;
     display: flex;
-    width: 1000px;
     box-shadow: 0 3px 0 -2px rgba(0,0,0,.2);
 }
 
 
 .blog-left {
-    background: #3A4C58;
+    background: #19182b;
     max-width: 300px;
     min-width: 300px;
-    color: #fff;
     padding: 40px;
     position: relative;
 }
@@ -32,7 +30,7 @@
 .blog-title-spacer {
     width: 50px;
     height: 5px;
-    background: #327279;
+    background: #b82601;
 }
 
 .blog-author {
@@ -58,6 +56,7 @@
 
 .blog-time {
     font-weight: bold;
+    color: #b82601;
 }
 
 .blog-date,
