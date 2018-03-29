@@ -11,7 +11,7 @@
 .header-row {
     margin-bottom: 3px;
     font-weight: bold;
-    background: #111819;
+    background: #19282F;
 }
 
 .online-players {
@@ -20,10 +20,11 @@
 
 .player-row {
     padding: 1px;
+    background: #1b2831;
 }
 
 .player-row:nth-child(odd) {
-    background: #24313a;
+    background: #14212a;
 }
 
 .player-totals {

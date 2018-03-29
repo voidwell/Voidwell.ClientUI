@@ -1,49 +1,18 @@
 ﻿<div class="content-container">
-    <div class="events-list">
+    <div class="events-list-container">
         <vw-loader [loading]="isLoading"></vw-loader>
         <vw-error-message [message]="errorMessage"></vw-error-message>
         <div *ngIf="!isLoading">
-            <h3>Active events</h3>
-            <div *ngIf="activeEvents.length === 0" class="no-events">
+            <h3>Active Events</h3>
+            <div *ngIf="getActiveEvents().length === 0" class="no-events">
                 <strong>No events in progress</strong>
             </div>
-            <div class="active-events">
-                <mat-card *ngFor="let event of activeEvents | orderBy: 'startDate'" class="event-row">
-                    <a mat-button class="event-link" routerLink="{{event.mapId}}"></a>
-                    <div class="event-name-block">
-                        <div class="event-name">{{event.name}}</div>
-                        <div class="event-description">{{event.description}}</div>
-                    </div>
-                    <div class="event-block">
-                        <div>
-                            <span class="remaining-time">
-                                Time left: <vw-countdown [end]="getEndDate(event)"></vw-countdown>
-                            </span>
-                        </div>
-                    </div>
-                    <div class="event-info-block">
-                        <div class="server-name">Server: {{event.serverId | worldName}}</div>
-                        <div class="map-name">Map: {{event.mapId | zoneName}}</div>
-                    </div>
-                </mat-card>
+            <div class="events-list in-progress">
+                <vw-event-card [event]="event" *ngFor="let event of getActiveEvents() | orderBy: 'startDate'"></vw-event-card>
             </div>
-            <h3>Past events</h3>
-            <div class="past-events">
-                <mat-card *ngFor="let event of pastEvents | orderBy: '-startDate'" class="event-row">
-                    <a mat-button class="event-link" routerLink="{{event.id}}"></a>
-                    <div class="event-name-block">
-                        <div class="event-name">{{event.name}}</div>
-                        <div class="event-date-block">
-                            <span class="started-time">{{event.startDate | date:'EEE dd MMM yyyy HH:mm'}}</span>
-                            <span>-</span>
-                            <span class="remaining-time">{{event.endDate | date:'HH:mm'}}</span>
-                        </div>
-                    </div>
-                    <div class="title-spacer"></div>
-                    <div class="event-location-block">
-                        <span class="server-name">{{event.serverId | worldName}}</span> on <span class="map-name">{{event.mapId | zoneName}}</span>
-                    </div>
-                </mat-card>
+            <h3>Past Events</h3>
+            <div class="events-list">
+                <vw-event-card [event]="event" *ngFor="let event of getPastEvents() | orderBy: '-startDate'"></vw-event-card>
             </div>
         </div>
     </div>

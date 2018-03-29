@@ -1,5 +1,5 @@
 ﻿.vw-tab-nav-sub-bar {
-    background: #111819;
+    background: #14212a;
     box-shadow: 0 3px 0 -2px rgba(0,0,0,.2), 0 2px 0 0 rgba(0,0,0,.14), 0 1px 0 0 rgba(0,0,0,.12);
 }
 
@@ -21,7 +21,7 @@
     padding: 0 12px;
     cursor: pointer;
     box-sizing: border-box;
-    color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.4);
     min-width: 100px;
     text-align: center;
     display: inline-flex;

@@ -50,11 +50,11 @@ export class PlanetsidePlayerComponent implements OnDestroy {
                     headerConfig.subtitle = data.world;
 
                     if (data.factionId === 1) {
-                        headerConfig.background = '#321147';
+                        headerConfig.background = '#3f1f66';
                     } else if (data.factionId === 2) {
-                        headerConfig.background = '#112447';
+                        headerConfig.background = '#1f3866';
                     } else if (data.factionId === 3) {
-                        headerConfig.background = '#471111';
+                        headerConfig.background = '#661f20';
                     }
 
                     let timePlayedHeader = this.decimalPipe.transform(data.lifetimeStats.playTime / 3600, '.1-1') + ' (' + this.decimalPipe.transform(data.times.minutesPlayed / 60, '.1-1') + ')';

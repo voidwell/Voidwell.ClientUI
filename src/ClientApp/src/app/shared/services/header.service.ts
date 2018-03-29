@@ -17,7 +17,7 @@ export class HeaderService {
 export class HeaderConfig {
     public title: string = 'Voidwell';
     public subtitle: string = '';
-    public background: string = '#29182b';
+    public background: string = '#1b2831';
     public info: Array<HeaderInfoItem> = [];
 }
 
