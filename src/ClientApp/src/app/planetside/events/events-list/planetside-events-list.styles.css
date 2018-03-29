@@ -6,13 +6,18 @@
     text-align: center;
 }
 
+.active-events,
+.past-events {
+    display: flex;
+    flex-flow: row wrap;
+}
+
 .event-row {
     position: relative;
     padding: 10px;
-    background: #3A4C58;
-    color: #fff;
-    display: flex;
-    justify-content: space-between
+    background: #19182b;
+    color: inherit;
+    width: 280px;
 }
 
     .event-row:not(:last-child) {
@@ -20,35 +25,35 @@
     }
 
     .event-row .event-link {
-        float: right;
-        font-size: 3em;
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        text-align: right;
-        line-height: 100%;
-        padding-top: 2px;
-        padding-right: 30px;
+        z-index: 100;
     }
 
     .event-row .event-name-block {
-        display: inline-block;
-        min-width: 350px;
+        min-height: 45px;
     }
 
-    .event-row .event-block {
-        display: inline-block;
-    }
+        .event-row .event-name-block .event-name {
+            font-weight: bold;
+        }
 
-    .event-row .event-info-block {
-        display: inline-block;
-        margin-right: 80px;
-    }
-
-    .event-row .event-description {
+    .event-row .event-date-block {
         font-size: 0.8em;
         opacity: 0.7;
-        margin-top: 5px;
+        line-height: 25px;
+    }
+
+    .event-row .title-spacer {
+        width: 100px;
+        height: 3px;
+        background: #b82601;
+        margin-bottom: 5px;
+    }
+
+    .event-row .event-location-block {
+        margin-bottom: 5px;
     }

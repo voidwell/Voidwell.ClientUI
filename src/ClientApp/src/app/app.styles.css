@@ -9,8 +9,8 @@
 
 body {
     margin: 0;
-    background: #161f20;
-    color: #fff;
+    background: #0E0B16;
+    color: #E7DFDD;
     text-size-adjust: 100%;
 }
 
@@ -21,13 +21,13 @@ html {
 vw-navbar {
     position: relative;
     z-index: 10;
-    color: #fff;
+    color: inherit;
 }
 
 vw-header {
     position: relative;
     z-index: 9;
-    color: #fff;
+    color: inherit;
 }
 
 
@@ -216,7 +216,7 @@ img.inverse-img {
 
 
 .table-filter {
-    background: #19282F;
+    background: #19182b;
     text-align: right;
     padding: 0 50px;
 }
@@ -301,25 +301,25 @@ mat-table {
     
 }
 
-mat-table.striped mat-row:nth-child(odd) {
-    background: #24313a;
-}
+    mat-table.striped mat-row:nth-child(odd) {
+        background: #0f0e1a;
+    }
 
-mat-table mat-row {
-    background: #1F2E32;
-    position: relative;
-}
+    mat-table mat-row {
+        background: #10101c;
+        position: relative;
+    }
 mat-table mat-row mat-cell.mat-cell {
-    color: #fff;
+    color: inherit;
 }
 
 mat-paginator.mat-paginator,
 mat-table mat-header-row {
-    background: #19282F;
+    background: #19182b;
 }
 mat-paginator.mat-paginator,
 mat-table mat-header-row mat-header-cell.mat-header-cell {
-    color: #fff;
+    color: inherit;
 }
 mat-paginator .mat-paginator-increment,
 mat-paginator .mat-paginator-decrement {
@@ -350,7 +350,8 @@ mat-card.mat-card {
     position: relative;
     margin: 8px;
     padding: 0;
-    background: #1F2E32;
+    background: #19182b;
+    color: #E7DFDD;
 }
 
 mat-card.inline,
@@ -359,9 +360,8 @@ mat-card.inline,
 }
 
 mat-card mat-card-header {
-    background: #3A4C58;
-    color: #fff;
-    font-size: initial;
+    background: #362f3f;
+    color: inherit;
     margin: 0;
     padding: 10px 10px 0 10px;
 }
@@ -375,7 +375,7 @@ mat-card mat-card-title {
 }
 
 mat-card mat-card-subtitle {
-    color: #fff;
+    color: initial;
     opacity: 0.5;
 }
 
@@ -383,7 +383,7 @@ mat-card mat-card-content {
     padding: 0;
     position: relative;
     font-size: initial;
-    color: #fff;
+    color: inherit;
     margin: 0;
     overflow: hidden;
 }
@@ -418,7 +418,7 @@ mat-card .info-rows .info-row .info-item {
     mat-card .info-rows .info-row .info-item .value,
     mat-card .info-rows .info-row .info-item .label {
         text-align: center;
-        color: #fff;
+        color: inherit;
     }
 
     mat-card .info-rows .info-row .info-item .label {
