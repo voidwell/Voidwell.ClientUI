@@ -11,31 +11,32 @@ export class PlanetsideEventsListComponent {
     errorMessage: string = null;
     isLoading: boolean;
 
-    private activeEvents = [];
-    private pastEvents = [];
+    private events = [];
 
     constructor(private api: VoidwellApi) {
         this.isLoading = true;
-        this.activeEvents = [];
-        this.pastEvents = [];
+        this.events = [];
 
         this.api.getCustomEventsByGame("ps2")
             .subscribe(events => {
-                for (let i = 0; i < events.length; i++) {
-                    if (events[i].endDate) {
-                        this.pastEvents.push(events[i]);
-                    } else {
-                        this.activeEvents.push(events[i]);
-                    }
-                }
+                this.events = events;
+                this.events.map(a => {
+                    a.startDate = new Date(a.startDate);
+                    a.endDate = a.endDate ? new Date(a.endDate) : null;
+                    return a;
+                });
 
                 this.isLoading = false;
             });
     }
 
-    private getEndDate(event: any): Date {
-        let startString = event.startDate;
-        let startMs = new Date(startString).getTime();
-        return new Date(startMs + 1000 * 60 * 90);
+    getActiveEvents() {
+        let now = new Date();
+        return this.events.filter(a => a.endDate > now);
+    }
+
+    getPastEvents() {
+        let now = new Date();
+        return this.events.filter(a => a.endDate <= now);
     }
 }

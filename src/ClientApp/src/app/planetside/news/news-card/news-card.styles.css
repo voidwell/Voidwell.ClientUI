@@ -6,7 +6,7 @@
 
 
 .blog-left {
-    background: #19182b;
+    background: #16232c;
     min-width: 300px;
     max-width: 300px;
     padding: 20px;
@@ -14,13 +14,12 @@
 }
 
 .blog-right {
-    background: #0a0a0a;
+    background: #0f1c25;
     position: relative;
 }
 
-.blog-right,
 .blog-link a {
-    color: rgba(255, 255, 255, 0.9);
+    color: inherit;
 }
 
 .blog-title {

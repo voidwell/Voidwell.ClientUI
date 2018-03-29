@@ -9,8 +9,8 @@
 
 body {
     margin: 0;
-    background: #0E0B16;
-    color: #E7DFDD;
+    background: #05121b;
+    color: #efefef;
     text-size-adjust: 100%;
 }
 
@@ -216,7 +216,7 @@ img.inverse-img {
 
 
 .table-filter {
-    background: #19182b;
+    background: #16232c;
     text-align: right;
     padding: 0 50px;
 }
@@ -302,11 +302,11 @@ mat-table {
 }
 
     mat-table.striped mat-row:nth-child(odd) {
-        background: #0f0e1a;
+        background: #14212a;
     }
 
     mat-table mat-row {
-        background: #10101c;
+        background: #1b2831;
         position: relative;
     }
 mat-table mat-row mat-cell.mat-cell {
@@ -315,7 +315,7 @@ mat-table mat-row mat-cell.mat-cell {
 
 mat-paginator.mat-paginator,
 mat-table mat-header-row {
-    background: #19182b;
+    background: #16232c;
 }
 mat-paginator.mat-paginator,
 mat-table mat-header-row mat-header-cell.mat-header-cell {
@@ -350,7 +350,7 @@ mat-card.mat-card {
     position: relative;
     margin: 8px;
     padding: 0;
-    background: #19182b;
+    background: #0f1c25;
     color: #E7DFDD;
 }
 
@@ -360,7 +360,7 @@ mat-card.inline,
 }
 
 mat-card mat-card-header {
-    background: #362f3f;
+    background: #16232c;
     color: inherit;
     margin: 0;
     padding: 10px 10px 0 10px;

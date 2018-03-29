@@ -11,31 +11,32 @@ export class PlanetsideAlertsListComponent {
     errorMessage: string = null;
     isLoading: boolean;
 
-    private activeAlerts = [];
-    private pastAlerts = [];
+    private alerts = [];
 
     constructor(private api: PlanetsideApi) {
         this.isLoading = true;
-        this.activeAlerts = [];
-        this.pastAlerts = [];
+        this.alerts = [];
 
         this.api.getAllAlerts()
             .subscribe(alerts => {
-                for (let i = 0; i < alerts.length; i++) {
-                    if (alerts[i].endDate) {
-                        this.pastAlerts.push(alerts[i]);
-                    } else {
-                        this.activeAlerts.push(alerts[i]);
-                    }
-                }
+                this.alerts = alerts;
+                this.alerts.map(a => {
+                    a.startDate = new Date(a.startDate);
+                    a.endDate = a.endDate ? new Date(a.endDate) : null;
+                    return a;
+                });
 
                 this.isLoading = false;
             });
     }
 
-    private getEndDate(alert: any): Date {
-        let startString = alert.startDate;
-        let startMs = new Date(startString).getTime();
-        return new Date(startMs + 1000 * 60 * 45);
+    getActiveAlerts() {
+        let now = new Date();
+        return this.alerts.filter(a => !a.endDate || a.endDate > now);
+    }
+
+    getPastAlerts() {
+        let now = new Date();
+        return this.alerts.filter(a => a.endDate && a.endDate <= now);
     }
 }

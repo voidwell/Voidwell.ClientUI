@@ -13,7 +13,7 @@
 }
 
 .auraxium-meter-fore {
-    background: #350c35;
+    background: #4c1f66;
     height: 100%;
 }
 
@@ -23,7 +23,7 @@
 
 .mat-column-name a {
     text-decoration: none;
-    color: #fff;
+    color: inherit;
 }
 
 .mat-column-name .mat-button {

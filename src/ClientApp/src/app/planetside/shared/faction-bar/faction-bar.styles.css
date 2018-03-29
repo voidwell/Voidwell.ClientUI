@@ -1,0 +1,16 @@
+﻿:host {
+    display: block;
+    white-space: nowrap;
+    height: 18px;
+    width: 100%;
+    overflow: hidden;
+}
+
+.faction-bar {
+    display: block;
+    font-size: 11px;
+    float: left;
+    height: 18px;
+    line-height: 18px;
+    text-align: center;
+}

@@ -1,0 +1,20 @@
+﻿<mat-card class="event-card">
+    <a mat-button class="event-link" routerLink="{{event.id}}"></a>
+    <div class="event-name-block">
+        <div class="event-name">{{event.name}}</div>
+        <div class="event-date-block">
+            <div *ngIf="isActiveEvent()">
+                <vw-countdown [end]="getEndDate(event)"></vw-countdown>
+            </div>
+            <div *ngIf="!isActiveEvent()">
+                <span class="started-time">{{event.startDate | date:'EEE dd MMM yyyy HH:mm'}}</span>
+                <span>-</span>
+                <span class="remaining-time">{{event.endDate | date:'HH:mm'}}</span>
+            </div>
+        </div>
+    </div>
+    <div class="title-spacer"></div>
+    <div class="event-location-block">
+        <span class="server-name">{{event.serverId | worldName}}</span> on <span class="map-name">{{event.mapId | zoneName}}</span>
+    </div>
+</mat-card>

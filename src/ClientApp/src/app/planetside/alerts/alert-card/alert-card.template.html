@@ -1,0 +1,17 @@
+﻿<mat-card class="alert-card">
+    <a mat-button class="alert-link" routerLink="{{alert.worldId}}/{{alert.metagameInstanceId}}"></a>
+    <small class="remaining-time">
+        <span *ngIf="isAlertActive()">
+            <vw-countdown [end]="getEndDate()"></vw-countdown>
+        </span>
+        <span *ngIf="!isAlertActive()">
+            {{alert.startDate | date:'EEE dd MMM yyyy HH:mm'}}
+        </span>
+    </small>
+    <div class="world-name">{{alert.worldId | worldName}}</div>
+    <div class="title-spacer"></div>
+    <div>
+        <small class="description">{{alert.metagameEvent.description}}</small>
+    </div>
+    <vw-faction-bar [vs]="alert.lastFactionVs" [nc]="alert.lastFactionNc" [tr]="alert.lastFactionTr"></vw-faction-bar>
+</mat-card>

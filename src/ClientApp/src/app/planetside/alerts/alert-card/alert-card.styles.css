@@ -1,0 +1,33 @@
+﻿.alert-card {
+    position: relative;
+    padding: 10px;
+    background: #0f1c25;
+    color: inherit;
+    width: 350px;
+    line-height: 30px;
+}
+
+.alert-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 100;
+}
+
+.world-name {
+    font-weight: bold
+}
+
+.title-spacer {
+    width: 100px;
+    height: 3px;
+    background: #b82601;
+    margin-bottom: 5px;
+}
+
+.remaining-time {
+    float: right;
+    vertical-align: middle;
+}
