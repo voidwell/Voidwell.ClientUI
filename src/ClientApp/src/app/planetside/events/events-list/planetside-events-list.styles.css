@@ -1,4 +1,4 @@
-﻿.events-list {
+﻿.events-list-container {
     margin-top: 10px;
 }
 
@@ -6,54 +6,11 @@
     text-align: center;
 }
 
-.active-events,
-.past-events {
+.events-list {
     display: flex;
+    flex-flow: column;
+}
+
+.events-list.in-progress {
     flex-flow: row wrap;
 }
-
-.event-row {
-    position: relative;
-    padding: 10px;
-    background: #19182b;
-    color: inherit;
-    width: 280px;
-}
-
-    .event-row:not(:last-child) {
-        margin-bottom: 10px;
-    }
-
-    .event-row .event-link {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 100;
-    }
-
-    .event-row .event-name-block {
-        min-height: 45px;
-    }
-
-        .event-row .event-name-block .event-name {
-            font-weight: bold;
-        }
-
-    .event-row .event-date-block {
-        font-size: 0.8em;
-        opacity: 0.7;
-        line-height: 25px;
-    }
-
-    .event-row .title-spacer {
-        width: 100px;
-        height: 3px;
-        background: #b82601;
-        margin-bottom: 5px;
-    }
-
-    .event-row .event-location-block {
-        margin-bottom: 5px;
-    }

@@ -1,4 +1,4 @@
-﻿.alerts-list {
+﻿.alerts-list-container {
     margin-top: 10px;
 }
 
@@ -6,63 +6,11 @@
     text-align: center;
 }
 
-.active-alerts,
-.past-alerts {
+.alerts-list {
     display: flex;
+    flex-flow: column;
+}
+
+.alerts-list.in-progress {
     flex-flow: row wrap;
-}
-
-.alert-row {
-    position: relative;
-    padding: 10px;
-    background: #19182b;
-    color: inherit;
-    width: 280px;
-    line-height: 30px;
-}
-
-    .alert-row:not(:last-child) {
-        margin-bottom: 10px;
-    }
-
-    .alert-row .world-name {
-        font-weight: bold
-    }
-
-    .alert-row .alert-link {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 100;
-    }
-
-    .alert-row .remaining-time {
-        float: right;
-        vertical-align: middle;
-    }
-
-.faction-bar-container {
-    display: block;
-    white-space: nowrap;
-    height: 18px;
-    width: 100%;
-    overflow: hidden;
-}
-
-    .faction-bar-container .faction-bar {
-        display: block;
-        font-size: 11px;
-        float: left;
-        height: 18px;
-        line-height: 18px;
-        text-align: center;
-    }
-
-.alert-row .title-spacer {
-    width: 100px;
-    height: 3px;
-    background: #b82601;
-    margin-bottom: 5px;
 }

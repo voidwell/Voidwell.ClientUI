@@ -1,6 +1,6 @@
 ﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
-import { PerformanceGrades } from './../performance-grades.service';
+import { PerformanceGrades } from './../../performance-grades.service';
 
 @Component({
     selector: 'vw-grade',
@@ -8,7 +8,7 @@ import { PerformanceGrades } from './../performance-grades.service';
     styleUrls: ['./vw-grade.styles.css']
 })
 
-export class VWGradeComponent implements OnInit, OnDestroy {
+export class GradeComponent implements OnInit, OnDestroy {
     @Input() delta: number;
 
     grade: string = '???';
