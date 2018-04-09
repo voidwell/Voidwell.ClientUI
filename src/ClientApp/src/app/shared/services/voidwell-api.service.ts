@@ -18,6 +18,7 @@ export class VoidwellApi {
     public eventsUrl = location.origin + '/api/events/';
     public accountUrl = location.origin + '/api/account/';
     public authAdminUrl = location.origin + '/api/authadmin/';
+    public oidcAdminUrl = location.origin + '/api/oidcadmin/';
     public ps2Url = location.origin + '/api/ps2/';
 
     public options;
@@ -307,6 +308,42 @@ export class VoidwellApi {
 
     getPSBAccountSessions() {
         return this.AuthGet(this.ps2Url + 'psb/sessions', this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getAllClients() {
+        return this.AuthGet(this.oidcAdminUrl + 'client', this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getClientById(clientId: string) {
+        return this.AuthGet(this.oidcAdminUrl + 'client/' + clientId, this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getAllApiResources() {
+        return this.AuthGet(this.oidcAdminUrl + 'resource', this.options)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
+    getApiResourceById(resourceId: string) {
+        return this.AuthGet(this.oidcAdminUrl + 'resource/' + resourceId, this.options)
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });

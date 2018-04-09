@@ -2,8 +2,7 @@
 
 @Component({
     selector: 'voidwell-admin-dashboard',
-    templateUrl: './dashboard.template.html',
-    styleUrls: ['../app.styles.css']
+    templateUrl: './dashboard.template.html'
 })
 
 export class DashboardComponent {

@@ -12,7 +12,7 @@ import 'rxjs/add/operator/distinctUntilChanged';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/fromEvent';
-import { VoidwellApi } from '../shared/services/voidwell-api.service';
+import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
 
 @Component({
