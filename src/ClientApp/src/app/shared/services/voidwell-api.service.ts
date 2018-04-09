@@ -306,6 +306,14 @@ export class VoidwellApi {
             });
     }
 
+    setupWorldZones(worldId: string) {
+        return this.AuthPost(this.ps2Url + 'worldstate/' + worldId + '/zone', null, this.options)
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return this.handleError(error);
+            });
+    }
+
     getPSBAccountSessions() {
         return this.AuthGet(this.ps2Url + 'psb/sessions', this.options)
             .map(resp => resp.json())

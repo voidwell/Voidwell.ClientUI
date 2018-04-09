@@ -18,15 +18,30 @@
 
 .world-state,
 .world-name,
-.online-players {
+.online-players,
+.world-zones,
+.world-zone {
     display: inline-block;
 }
 
 .world-button,
 .online-players {
     font-size: 1.5em;
+    vertical-align: middle;
 }
 
 .online-players .mat-icon {
     margin-right: 5px;
+}
+
+.world-zones {
+    margin-left: 25px;
+}
+
+.world-zone {
+    margin-right: 10px;
+}
+
+.world-zone .zone-offline {
+    color: #b60d0d;
 }

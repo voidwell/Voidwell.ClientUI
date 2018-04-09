@@ -13,5 +13,17 @@
             <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
             {{world.onlineCharacters}}
         </div>
+        <div class="world-zones">
+            <div class="world-zone" *ngFor="let zone of world.zoneStates">
+                <a mat-button routerLink="{{world.id}}/map/{{zone.id}}" [disabled]="!zone.isTracking" class="world-zone-button">
+                    <span>
+                        <mat-icon *ngIf="!zone.lockState && zone.isTracking" fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
+                        <mat-icon *ngIf="zone.lockState && zone.isTracking" [ngClass]="zone.lockState.triggeringFaction | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+                        <mat-icon class="zone-offline" *ngIf="!zone.isTracking" fontSet="mdi" fontIcon="mdi-earth-off"></mat-icon>
+                    </span>
+                    {{zone.name}}
+                </a>
+            </div>
+        </div>
     </div>
 </div>

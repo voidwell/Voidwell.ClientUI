@@ -335,6 +335,11 @@ mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
     background: #424150;
     text-transform: uppercase;
 }
+.mat-button[disabled],
+.mat-raised-button[disabled] {
+    color: rgba(255, 255, 255, 0.50) !important;
+}
+
 
 [mat-button], [mat-icon-button] {
     background: transparent;

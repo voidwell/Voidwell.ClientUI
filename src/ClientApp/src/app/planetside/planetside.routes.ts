@@ -25,6 +25,8 @@ import { PlanetsideEventComponent } from './events/event/planetside-event.compon
 import { PlanetsideWorldWrapperComponent } from './worlds/planetside-world-wrapper.component';
 import { PlanetsideWorldComponent } from './worlds/world/planetside-world.component';
 import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetside-world-players.component';
+import { PlanetsideWorldMapComponent } from './worlds/world/map/planetside-world-map.component';
+import { PlanetsideWorldZoneComponent } from './worlds/world/map/zone/planetside-world-zone.component';
 
 const planetsideRoutes: Routes = [
     {
@@ -90,7 +92,14 @@ const planetsideRoutes: Routes = [
                 component: PlanetsideWorldComponent,
                 children: [
                     { path: '', redirectTo: 'players', pathMatch: 'full' },
-                    { path: 'players', component: PlanetsideWorldPlayersComponent }
+                    { path: 'players', component: PlanetsideWorldPlayersComponent },
+                    {
+                        path: 'map',
+                        component: PlanetsideWorldMapComponent,
+                        children: [
+                            { path: ':zoneId', component: PlanetsideWorldZoneComponent }
+                        ]
+                    }
                 ]
             },
 
