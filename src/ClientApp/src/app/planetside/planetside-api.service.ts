@@ -170,6 +170,15 @@ export class PlanetsideApi {
             });
     }
 
+    getWorldZoneState(worldId: string, zoneId: string) {
+        return this.http.get(this.ps2Url + 'worldstate/' + worldId + '/zone/' + zoneId)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
     getGrades() {
         return this.http.get(this.ps2Url + 'grades')
             .map(resp => resp.json())

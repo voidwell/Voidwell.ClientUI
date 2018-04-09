@@ -12,10 +12,12 @@ import { WorldNamePipe } from './../../../shared/pipes/ps2/world-name.pipe';
 
 export class PlanetsideWorldComponent implements OnDestroy {
     private routeSub: Subscription;
-    private worldId: string = null;
+
+    worldId: string = null;
 
     navLinks = [
         { path: 'players', display: 'Online players' },
+        { path: 'map', display: 'Map' }
     ];
 
     constructor(private route: ActivatedRoute, private api: PlanetsideApi, private headerService: HeaderService, private worldName: WorldNamePipe) {
@@ -31,6 +33,10 @@ export class PlanetsideWorldComponent implements OnDestroy {
 
     getOnlinePlayers(): Observable<any> {
         return this.api.getOnlinePlayers(this.worldId);
+    }
+
+    getZoneState(zoneId: string): Observable<any> {
+        return this.api.getWorldZoneState(this.worldId, zoneId);
     }
 
     ngOnDestroy() {

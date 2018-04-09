@@ -6,6 +6,7 @@ import { D3Service } from 'd3-ng2-service';
 import { MaterialLib } from '../shared/materialLib.module';
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
 import { WorldNamePipe } from '../shared/pipes/ps2/world-name.pipe';
+import { ZoneNamePipe } from '../shared/pipes/ps2/zone-name.pipe';
 import { SharedComponentsModule } from '../shared/components/shared-components.module';
 import { routing } from './planetside.routes';
 import { PlanetsideApi } from './planetside-api.service';
@@ -42,6 +43,8 @@ import { PlanetsideEventComponent } from './events/event/planetside-event.compon
 import { PlanetsideWorldWrapperComponent } from './worlds/planetside-world-wrapper.component';
 import { PlanetsideWorldComponent } from './worlds/world/planetside-world.component';
 import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetside-world-players.component';
+import { PlanetsideWorldMapComponent } from './worlds/world/map/planetside-world-map.component';
+import { PlanetsideWorldZoneComponent } from './worlds/world/map/zone/planetside-world-zone.component';
 import { GradeComponent } from './shared/vw-grade/vw-grade.component';
 import { FactionBarComponent } from './shared/faction-bar/faction-bar.component';
 
@@ -80,7 +83,9 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         PlanetsideEventComponent,
         PlanetsideWorldWrapperComponent,
         PlanetsideWorldComponent,
-        PlanetsideWorldPlayersComponent
+        PlanetsideWorldPlayersComponent,
+        PlanetsideWorldMapComponent,
+        PlanetsideWorldZoneComponent
     ],
     imports: [
         FormsModule,
@@ -98,7 +103,8 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         DecimalPipe,
         DatePipe,
         D3Service,
-        WorldNamePipe
+        WorldNamePipe,
+        ZoneNamePipe
     ],
     entryComponents: [PlanetsideWrapperComponent]
 })
