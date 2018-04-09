@@ -1,5 +1,4 @@
 ﻿import { Component } from '@angular/core';
-import { PlanetsideApi } from './../../../planetside-api.service';
 import { PlanetsideWorldComponent } from './../planetside-world.component';
 
 @Component({
@@ -10,7 +9,7 @@ import { PlanetsideWorldComponent } from './../planetside-world.component';
 export class PlanetsideWorldPlayersComponent {
     players: any[] = [];
 
-    constructor(private api: PlanetsideApi, private parent: PlanetsideWorldComponent) {
+    constructor(private parent: PlanetsideWorldComponent) {
         this.parent.getOnlinePlayers()
             .subscribe(players => {
                 this.players = players;
