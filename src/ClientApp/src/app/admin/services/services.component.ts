@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material';
-import { VoidwellApi } from '../shared/services/voidwell-api.service';
+import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/operator/finally'

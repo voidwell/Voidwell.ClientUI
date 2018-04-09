@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { VoidwellApi } from '../shared/services/voidwell-api.service';
+import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch'
 import 'rxjs/add/operator/finally'
@@ -10,7 +10,6 @@ import 'rxjs/add/observable/throw';
 @Component({
     selector: 'voidwell-admin-roles',
     templateUrl: './roles.template.html',
-    styleUrls: ['../app.styles.css'],
     providers: [VoidwellApi]
 })
 

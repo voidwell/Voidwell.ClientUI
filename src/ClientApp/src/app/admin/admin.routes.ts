@@ -1,13 +1,17 @@
 ﻿import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
 import { AdminWrapperComponent } from './adminwrapper.component';
-import { DashboardComponent } from './dashboard.component';
-import { BlogComponent } from './blog.component';
-import { UsersComponent } from './users.component';
-import { RolesComponent } from './roles.component';
-import { EventsComponent } from './events.component';
-import { ServicesComponent } from './services.component';
-import { PsbComponent } from './psb.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { BlogComponent } from './blog/blog.component';
+import { UsersComponent } from './users/users.component';
+import { RolesComponent } from './roles/roles.component';
+import { EventsComponent } from './events/events.component';
+import { ServicesComponent } from './services/services.component';
+import { PsbComponent } from './psb/psb.component';
+import { OidcWrapperComponent } from './oidc/oidcwrapper.component';
+import { ClientsListComponent } from './oidc/clients/clients-list.component';
+import { ClientDetailsComponent } from './oidc/clients/client-details/client-details.component';
+import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-list.component';
 import { VoidwellAuthGuard } from '../shared/services/voidwell-authguard.service';
 
 const adminRoutes: Routes = [
@@ -20,39 +24,49 @@ const adminRoutes: Routes = [
             {
                 path: 'users',
                 component: UsersComponent,
-                data: { roles: ['Administrator', 'SuperAdmin'] }
+                data: { roles: ['Administrator'] }
             },
             {
                 path: 'roles',
                 component: RolesComponent,
-                data: { roles: ['Administrator', 'SuperAdmin'] }
+                data: { roles: ['Administrator'] }
             },
             {
                 path: 'blog',
                 component: BlogComponent,
                 canActivate: [VoidwellAuthGuard],
-                data: { roles: ['Administrator', 'SuperAdmin', 'Blog'] }
+                data: { roles: ['Administrator', 'Blog'] }
             },
             {
                 path: 'events',
                 component: EventsComponent,
                 canActivate: [VoidwellAuthGuard],
-                data: { roles: ['Administrator', 'SuperAdmin', 'Events'] }
+                data: { roles: ['Administrator', 'Events'] }
             },
             {
                 path: 'psb',
                 component: PsbComponent,
                 canActivate: [VoidwellAuthGuard],
-                data: { roles: ['Administrator', 'SuperAdmin', 'PSB'] }
+                data: { roles: ['Administrator', 'PSB'] }
             },
             {
                 path: 'services',
                 component: ServicesComponent,
-                data: { roles: ['Administrator', 'SuperAdmin'] }
+                data: { roles: ['Administrator'] }
+            },
+            {
+                path: 'oidc',
+                component: OidcWrapperComponent,
+                data: { roles: ['Administrator'] },
+                children: [
+                    { path: 'clients', component: ClientsListComponent },
+                    { path: 'clients/:clientId', component: ClientDetailsComponent },
+                    { path: 'resources', component: ApiResourcesListComponent }
+                ]
             }
         ],
         canActivate: [VoidwellAuthGuard],
-        data: { roles: ['Administrator', 'SuperAdmin', 'Blog', 'Events', 'PSB'] }
+        data: { roles: ['Administrator', 'Blog', 'Events', 'PSB'] }
     }
 ];
 
