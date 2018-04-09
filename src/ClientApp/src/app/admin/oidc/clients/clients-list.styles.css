@@ -1,0 +1,17 @@
+﻿.client-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.client-state {
+    color: #b60d0d;
+    margin-right: 3px;
+}
+
+.client-state .enabled {
+    color: #1b8f2f;
+}
+
+.mat-column-options {
+    text-align: right;
+}

@@ -1,0 +1,9 @@
+﻿.client-form {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+}
+
+.client-form > * {
+    width: 45%;
+}

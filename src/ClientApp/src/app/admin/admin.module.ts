@@ -7,13 +7,18 @@ import { SharedComponentsModule } from '../shared/components/shared-components.m
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
 import { routing } from './admin.routes';
 import { AdminWrapperComponent } from './adminwrapper.component';
-import { DashboardComponent } from './dashboard.component';
-import { BlogComponent, BlogEditorDialog } from './blog.component';
-import { UsersComponent, UserEditorDialog } from './users.component';
-import { RolesComponent } from './roles.component';
-import { EventsComponent, EventEditorDialog } from './events.component';
-import { ServicesComponent } from './services.component';
-import { PsbComponent } from './psb.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { BlogComponent, BlogEditorDialog } from './blog/blog.component';
+import { UsersComponent, UserEditorDialog } from './users/users.component';
+import { RolesComponent } from './roles/roles.component';
+import { EventsComponent, EventEditorDialog } from './events/events.component';
+import { ServicesComponent } from './services/services.component';
+import { PsbComponent } from './psb/psb.component';
+import { OidcWrapperComponent } from './oidc/oidcwrapper.component';
+import { ClientsListComponent } from './oidc/clients/clients-list.component';
+import { ClientDetailsComponent } from './oidc/clients/client-details/client-details.component';
+import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-list.component';
+
 
 @NgModule({
     declarations: [
@@ -25,6 +30,10 @@ import { PsbComponent } from './psb.component';
         EventsComponent,
         ServicesComponent,
         PsbComponent,
+        OidcWrapperComponent,
+        ClientsListComponent,
+        ClientDetailsComponent,
+        ApiResourcesListComponent,
         EventEditorDialog,
         UserEditorDialog,
         BlogEditorDialog

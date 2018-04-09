@@ -5,15 +5,14 @@
     <div *ngFor="let service of planetsideServices">
         <mat-card>
             <mat-card-header>
-                <mat-card-title>{{service.name}}</mat-card-title>
+                <mat-card-title>
+                    <mat-slide-toggle class="pull-right" [checked]="service.isEnabled" [disabled]="service.isLoading" (change)="onServiceUpdate(service, $event)"></mat-slide-toggle>
+                    {{service.name}}
+                </mat-card-title>
             </mat-card-header>
-            <mat-card-content class="layout-padding">
+            <mat-card-content class="layout-padding" *ngIf="service.details || service.errorMessage">
                 <vw-error-message [message]="service.errorMessage"></vw-error-message>
-                <mat-slide-toggle [checked]="service.isEnabled" [disabled]="service.isLoading" (change)="onServiceUpdate(service, $event)">
-                    Enable
-                </mat-slide-toggle>
                 <div *ngIf="service.details">
-                    <div>Details</div>
                     <pre>{{service.details | json}}</pre>
                 </div>
             </mat-card-content>
