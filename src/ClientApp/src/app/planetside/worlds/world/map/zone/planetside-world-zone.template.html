@@ -1,12 +1,49 @@
 ﻿<div class="content-container">
-    <div class="map-container">
-        <iframe [id]="frameId" [src]="mapUrl" style="border:none; overflow:hidden; min-width:100%; height:100%;"></iframe>
-    </div>
-    <!--
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
-    <div *ngIf="!isLoading && !errorMessage">
-        <pre>{{zone | json}}</pre>
+    <div class="zone-map" *ngIf="!isLoading && !errorMessage">
+        <div class="map-container">
+            <div class="map" leaflet [leafletOptions]="leafletOptions" [leafletFitBounds]="fitBounds" (leafletMapReady)="onMapReady($event)"></div>
+        </div>
+        <mat-card class="info-container">
+            <mat-card-content>
+                <div class="faction-bar-container">
+                    <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="zoneMap.score[1] + '%'">
+                        <span *ngIf="zoneMap.score[1] > 10">{{zoneMap.score[1] | number: '.0-0'}}%</span>
+                    </div>
+                    <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="zoneMap.score[2] + '%'">
+                        <span *ngIf="zoneMap.score[2] > 10">{{zoneMap.score[2] | number: '.0-0'}}%</span>
+                    </div>
+                    <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="zoneMap.score[3] + '%'">
+                        <span *ngIf="zoneMap.score[3] > 10">{{zoneMap.score[3] | number: '.0-0'}}%</span>
+                    </div>
+                    <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="zoneMap.score[0] + '%'"></div>
+                </div>
+                <div class="map-log">
+                    <div *ngIf="zoneMap.eventLog.length === 0">
+                        Waiting for activity...
+                    </div>
+                    <div *ngFor="let item of zoneMap.eventLog" class="zone-event">
+                        <span class="timestamp">{{item.timestamp | date:'mediumTime'}}</span>
+                        <span *ngIf="item.event === 'defend'">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-shield" [ngClass]="item.faction.id | factionColor"></mat-icon>
+                            <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> defended <span class="facility-name" (click)="focusFacility(item.facility)">{{item.facility.name}}</span>
+                        </span>
+                        <span *ngIf="item.event === 'capture'">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-sword-cross" [ngClass]="item.faction.id | factionColor"></mat-icon>
+                            <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> captured <span class="facility-name" (click)="focusFacility(item.facility)">{{item.facility.name}}</span>
+                        </span>
+                        <span *ngIf="item.event === 'continent_lock'">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-lock" [ngClass]="item.faction.id | factionColor"></mat-icon>
+                            <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> locked {{item.zone.name}}
+                        </span>
+                        <span *ngIf="item.event === 'continent_unlock'">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-lock-open"></mat-icon>
+                            <span>{{item.zone.name}} is unlocked</span>
+                        </span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
     </div>
-    -->
 </div>
