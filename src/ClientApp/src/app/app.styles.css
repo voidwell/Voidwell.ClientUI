@@ -297,9 +297,6 @@ img.inverse-img {
 
 
 
-mat-table {
-    
-}
 
     mat-table.striped mat-row:nth-child(odd) {
         background: #14212a;

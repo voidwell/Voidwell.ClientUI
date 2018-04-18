@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
 import { NgPipesModule } from 'ngx-pipes';
 import { D3Service } from 'd3-ng2-service';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MaterialLib } from '../shared/materialLib.module';
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
 import { WorldNamePipe } from '../shared/pipes/ps2/world-name.pipe';
@@ -95,7 +96,8 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         VoidwellPipesModule,
         SharedComponentsModule,
         routing,
-        NgPipesModule
+        NgPipesModule,
+        LeafletModule
     ],
     providers: [
         PlanetsideApi,

@@ -2,11 +2,11 @@
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <div *ngFor="let world of worlds | orderBy: 'name'">
-        <a mat-button routerLink="{{world.id}}" class="world-button">
-            <div class="world-state">
-                <mat-icon *ngIf="world.isOnline" fontSet="mdi" fontIcon="mdi-check-circle" class="online"></mat-icon>
-                <mat-icon *ngIf="!world.isOnline" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-            </div>
+        <div class="world-state">
+            <mat-icon *ngIf="world.isOnline" fontSet="mdi" fontIcon="mdi-check-circle" class="online"></mat-icon>
+            <mat-icon *ngIf="!world.isOnline" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+        </div>
+        <a mat-raised-button routerLink="{{world.id}}" [disabled]="!world.isOnline" class="world-button">
             <div class="world-name">{{world.name}}</div>
         </a>
         <div class="online-players">
@@ -15,7 +15,7 @@
         </div>
         <div class="world-zones">
             <div class="world-zone" *ngFor="let zone of world.zoneStates">
-                <a mat-button routerLink="{{world.id}}/map/{{zone.id}}" [disabled]="!zone.isTracking" class="world-zone-button">
+                <a mat-raised-button routerLink="{{world.id}}/map/{{zone.id}}" [disabled]="!zone.isTracking" class="world-zone-button">
                     <span>
                         <mat-icon *ngIf="!zone.lockState && zone.isTracking" fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
                         <mat-icon *ngIf="zone.lockState && zone.isTracking" [ngClass]="zone.lockState.triggeringFaction | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
