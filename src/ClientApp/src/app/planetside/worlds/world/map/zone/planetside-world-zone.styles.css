@@ -28,7 +28,8 @@
 .map-log {
     font-size: 14px;
     padding: 10px;
-    
+    height: 535px;
+    overflow-y: auto;
 }
 .map-log .timestamp {
     opacity: 0.8;
