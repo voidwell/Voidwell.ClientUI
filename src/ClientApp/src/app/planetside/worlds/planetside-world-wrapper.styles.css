@@ -25,9 +25,14 @@
 }
 
 .world-button,
+.world-state,
 .online-players {
     font-size: 1.5em;
     vertical-align: middle;
+}
+
+.online-players {
+    width: 4em;
 }
 
 .online-players .mat-icon {

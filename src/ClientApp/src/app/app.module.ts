@@ -7,6 +7,7 @@ import { NgReduxModule } from '@angular-redux/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconRegistry } from '@angular/material';
 import { NgPipesModule } from 'ngx-pipes';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { MaterialLib } from './shared/materialLib.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
@@ -35,7 +36,8 @@ import { AppComponent } from './app.component';
         HttpModule,
         FormsModule,
         NgReduxModule,
-        NgPipesModule
+        NgPipesModule,
+        LeafletModule.forRoot()
     ],
     providers: [
         MatIconRegistry,

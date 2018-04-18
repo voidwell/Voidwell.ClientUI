@@ -36,12 +36,21 @@
                     "glob": "**/*",
                     "input": "../node_modules/oidc-client/dist/",
                     "output": "./oidc/"
+                },
+                {
+                    "glob": "**/*",
+                    "input": "./assets",
+                    "output":  "./"
                 }
             ],
             "scripts": [
                 "../node_modules/jquery/dist/jquery.min.js",
                 "../node_modules/zone.js/dist/zone.js",
                 "../node_modules/oidc-client/lib/oidc-client.js"
+            ],
+            "styles": [
+                "../node_modules/mdi/css/materialdesignicons.css",
+                "../node_modules/leaflet/dist/leaflet.css"
             ],
             "showCircularDependencies": false
         }
