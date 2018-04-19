@@ -8,30 +8,30 @@
         <mat-card class="info-container">
             <mat-card-content>
                 <div class="faction-bar-container">
-                    <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="zoneMap.score[1] + '%'">
-                        <span *ngIf="zoneMap.score[1] > 10">{{zoneMap.score[1] | number: '.0-0'}}%</span>
+                    <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="score[1] + '%'">
+                        <span *ngIf="score[1] > 10">{{score[1] | number: '.0-0'}}%</span>
                     </div>
-                    <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="zoneMap.score[2] + '%'">
-                        <span *ngIf="zoneMap.score[2] > 10">{{zoneMap.score[2] | number: '.0-0'}}%</span>
+                    <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="score[2] + '%'">
+                        <span *ngIf="score[2] > 10">{{score[2] | number: '.0-0'}}%</span>
                     </div>
-                    <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="zoneMap.score[3] + '%'">
-                        <span *ngIf="zoneMap.score[3] > 10">{{zoneMap.score[3] | number: '.0-0'}}%</span>
+                    <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="score[3] + '%'">
+                        <span *ngIf="score[3] > 10">{{score[3] | number: '.0-0'}}%</span>
                     </div>
-                    <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="zoneMap.score[0] + '%'"></div>
+                    <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="score[0] + '%'"></div>
                 </div>
                 <div class="map-log">
-                    <div *ngIf="zoneMap.eventLog.length === 0">
+                    <div *ngIf="zoneLogs.length === 0">
                         Waiting for activity...
                     </div>
-                    <div *ngFor="let item of zoneMap.eventLog" class="zone-event">
+                    <div *ngFor="let item of zoneLogs" class="zone-event">
                         <span class="timestamp">{{item.timestamp | date:'mediumTime'}}</span>
                         <span *ngIf="item.event === 'defend'">
                             <mat-icon fontSet="mdi" fontIcon="mdi-shield" [ngClass]="item.faction.id | factionColor"></mat-icon>
-                            <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> defended <span class="facility-name" (click)="focusFacility(item.facility)">{{item.facility.name}}</span>
+                            <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> defended <span class="facility-name" (click)="focusFacility(item.facilityId)">{{getFacilityName(item.facilityId)}}</span>
                         </span>
                         <span *ngIf="item.event === 'capture'">
                             <mat-icon fontSet="mdi" fontIcon="mdi-sword-cross" [ngClass]="item.faction.id | factionColor"></mat-icon>
-                            <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> captured <span class="facility-name" (click)="focusFacility(item.facility)">{{item.facility.name}}</span>
+                            <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> captured <span class="facility-name" (click)="focusFacility(item.facilityId)">{{getFacilityName(item.facilityId)}}</span>
                         </span>
                         <span *ngIf="item.event === 'continent_lock'">
                             <mat-icon fontSet="mdi" fontIcon="mdi-lock" [ngClass]="item.faction.id | factionColor"></mat-icon>
