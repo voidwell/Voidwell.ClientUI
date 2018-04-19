@@ -4,12 +4,14 @@ import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/throw';
 import { PlanetsideWorldComponent } from './../../planetside-world.component';
-import { WorldNamePipe } from './../../../../../shared/pipes/ps2/world-name.pipe';
-import { ZoneNamePipe } from './../../../../../shared/pipes/ps2/zone-name.pipe';
+import { PlanetsideWorldMapComponent } from './../planetside-world-map.component';
 import {
     Map, tileLayer, latLng, MapOptions, latLngBounds, LatLngBounds, CRS, Layer, polygon, Polygon, PolylineOptions, LatLng,
     icon, IconOptions, marker, MarkerOptions, TooltipOptions, Marker, DivIcon, DivIconOptions, divIcon, Polyline, polyline
 } from 'leaflet';
+import { VertexPoint, VertexLine, ZoneRegion, ZoneFacility, LatticeLink } from './models';
+import { ZoneMap } from './../models';
+import { Zones, Factions, FacilityTypes } from './../../../../shared/configs';
 
 @Component({
     templateUrl: './planetside-world-zone.template.html',
@@ -21,24 +23,44 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
 
     isLoading: boolean = true;
     errorMessage: string;
-    zone: any;
+
+    zoneId: number;
+    map: Map;
+    warpgates: { [facilityId: string]: ZoneFacility } = {};
+    facilities: { [facilityId: string]: ZoneFacility } = {};
+    regions: { [regionId: string]: ZoneRegion } = {};
+    lattice: LatticeLink[] = [];
+    score = [0, 0, 0, 0];
+
+    zoneMap: ZoneMap;
+    zoneLogs: any[];
 
     leafletOptions: MapOptions;
     fitBounds: LatLngBounds;
 
-    socket: any;
-    zoneMap = ZoneMap;
+    ownershipSub: Subscription;
+    zoneMapSub: Subscription;
+    captureSub: Subscription;
+    defendSub: Subscription;
 
-    constructor(private worldNamePipe: WorldNamePipe, private zoneNamePipe: ZoneNamePipe, private route: ActivatedRoute, private parent: PlanetsideWorldComponent) {
+    constructor(private route: ActivatedRoute, private parent: PlanetsideWorldMapComponent) {
         this.routeSub = this.route.params.subscribe(params => {
-            ZoneMap.reset();
+            if (!params['zoneId']) {
+                return;
+            }
 
             this.isLoading = true;
+            this.map = null;
+            this.warpgates = {};
+            this.facilities = {};
+            this.regions = {};
+            this.lattice = [];
+            this.score = [0, 0, 0, 0];
 
-            ZoneMap.zoneId = params['zoneId'];
-            ZoneMap.worldId = this.parent.worldId;
+            this.zoneId = parseInt(params['zoneId']);
+            let zoneName = Zones[this.zoneId].name;
 
-            let zoneName = zoneNamePipe.transform(ZoneMap.zoneId);
+            this.zoneLogs = parent.worldMaps.zoneLogs[this.zoneId];
 
             this.leafletOptions = {
                 crs: CRS.Simple,
@@ -55,7 +77,7 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
                 attributionControl: false
             };
 
-            this.parent.getZoneState(ZoneMap.zoneId)
+            this.zoneMapSub = this.parent.getZoneMap(this.zoneId)
                 .catch(error => {
                     this.errorMessage = error._body
                     this.isLoading = false;
@@ -64,14 +86,51 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
                 .finally(() => {
                     this.isLoading = false;
                 })
-                .subscribe(zone => {
-                    this.zone = zone;
+                .subscribe(zoneMap => {
+                    this.zoneMap = zoneMap;
                 });
+        });
+
+        this.captureSub = this.parent.onFacilityCapture.subscribe(event => {
+            if (event.zoneId !== this.zoneId) {
+                return;
+            }
+
+            let faction = Factions[event.factionId];
+            let facilityId = event.facilityId;
+
+            if (!this.facilities[facilityId]) {
+                return;
+            }
+
+            this.facilities[facilityId].setFaction(faction.id);
+
+            for (let idx in this.facilities[facilityId].lattice) {
+                this.facilities[facilityId].lattice[idx].setFaction();
+            }
+
+            this.facilities[facilityId].region.setFaction(faction.id);
+
+            this.updateScore();
+        });
+
+        this.defendSub = this.parent.onFacilityDefend.subscribe(event => {
+            if (event.zoneId !== this.zoneId) {
+                return;
+            }
         });
     }
 
+    getFacilityName(facilityId: number): string {
+        if (!this.facilities[facilityId]) {
+            return facilityId.toString();
+        }
+
+        return this.facilities[facilityId].name;
+    }
+
     onMapReady(map: Map) {
-        ZoneMap.map = map;
+        this.map = map;
 
         map.createPane('regions');
         map.createPane('latticePane');
@@ -92,68 +151,25 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
         this.setupMapMarkers();
         this.setupMapRegions();
         this.setupMapLinks();
-        this.setupOwnership();
-        this.updateScore();
+
+        this.ownershipSub = this.parent.getZoneOwnership(this.zoneId)
+            .subscribe(data => {
+                this.setupOwnership(data);
+                this.updateScore();
+            });
 
         map.fitBounds(latLngBounds(latLng(-128, -128), latLng(128, 128)));
-
-        this.connectWebsocket();
     }
 
     setupMapMarkers() {
-        let facilityGroups = this.groupBy(this.zone.ownership, 'facilityType');
+        let facilityGroups = this.groupBy(this.zoneMap.regions, 'facilityTypeId');
 
-        for (let facilityType in facilityGroups) {
-            let options: DivIconOptions;
-
-            switch (facilityType) {
-                case 'amp_station':
-                case 'bio_lab':
-                case 'interlink_facility':
-                case 'tech_plant':
-                case 'warpgate':
-                    options = {
-                        className: 'svg-icon svg-icon-large',
-                        iconSize: [24, 24],
-                        iconAnchor: [12, 12],
-                        tooltipAnchor: [0, 0],
-                        html: ''
-                    };
-                    break;
-                case 'large_outpost':
-                    options = {
-                        className: 'svg-icon svg-icon-medium',
-                        iconSize: [20, 20],
-                        iconAnchor: [10, 10],
-                        tooltipAnchor: [0, 0],
-                        html: ''
-                    };
-                    break;
-                default:
-                    options = {
-                        className: 'svg-icon svg-icon-small',
-                        iconSize: [16, 16],
-                        iconAnchor: [8, 8],
-                        tooltipAnchor: [0, 0],
-                        html: ''
-                    };
-            }
-
-            ZoneMap.facilityIcons[facilityType] = {};
-            for (let id in Factions) {
-                let html = "<svg class='" + facilityType + " " + Factions[id].code + "'>";
-                html += "<use xlink:href='/img/ps2/map-sprites.svg#" + facilityType + "'/>";
-                html += "</svg>";
-                options.html = html;
-                ZoneMap.facilityIcons[facilityType][Factions[id].code] = divIcon(options);
-            }
-        }
-
-        for (let facilityType in facilityGroups) {
-            let facilities = this.groupBy(facilityGroups[facilityType], 'facilityId');
+        for (let facilityTypeId in facilityGroups) {
+            let facilities = this.groupBy(facilityGroups[facilityTypeId], 'facilityId');
+            let facilityType = FacilityTypes[facilityTypeId].code;
 
             let markerOptions: MarkerOptions = {
-                icon: ZoneMap.facilityIcons[facilityType].ns,
+                icon: this.parent.worldMaps.facilityIcons[facilityTypeId][0],
                 pane: 'markerPane'
             };
 
@@ -183,8 +199,8 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
                 let facility = facilities[facilityId][0];
 
                 let hasLinks = false;
-                for (var i = 0; i < this.zone.links.length; i++) {
-                    let link = this.zone.links[i];
+                for (var i = 0; i < this.zoneMap.links.length; i++) {
+                    let link = this.zoneMap.links[i];
                     if (link.facilityIdA == facilityId || link.facilityIdB == facilityId) {
                         hasLinks = true;
                         break;
@@ -202,18 +218,19 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
                     facilityLatLng = latLng(x, z);
                 }
 
-                let facilityMarker = new ZoneFacility(facilityLatLng, markerOptions);
+                let facilityMarker = new ZoneFacility(facilityLatLng, this.parent.worldMaps.facilityIcons, this.warpgates, markerOptions);
                 if (facility.facilityName) {
                     facilityMarker.bindTooltip(facility.facilityName, tooltipOptions);
                     facilityMarker.name = facility.facilityName;
                 }
                 facilityMarker.id = facilityId;
                 facilityMarker.facilityType = facility.facilityType;
+                facilityMarker.facilityTypeId = facility.facilityTypeId;
 
-                ZoneMap.facilities[facilityId] = facilityMarker;
+                this.facilities[facilityId] = facilityMarker;
 
                 if (facility.x && facility.z) {
-                    facilityMarker.addTo(ZoneMap.map);
+                    facilityMarker.addTo(this.map);
                 }
             }
         }
@@ -226,7 +243,7 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
         let c = b / Math.sqrt(3) * 2;
         let a = c / 2;
 
-        var regionHexs = this.groupBy(this.zone.hexs, 'mapRegionId');
+        var regionHexs = this.groupBy(this.zoneMap.hexs, 'mapRegionId');
         
         for (var regionId in regionHexs) {
             var hexs = regionHexs[regionId];
@@ -297,59 +314,59 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
 
             region.id = regionId;
 
-            if (ZoneMap.facilities[regionId]) {
-                region.name = ZoneMap.facilities[regionId].name;
-            }
+            region.addTo(this.map);
 
-            region.addTo(ZoneMap.map);
-
-            ZoneMap.regions[regionId] = region;
+            this.regions[regionId] = region;
         }
     }
 
     setupMapLinks() {
-        for (let linkIdx in this.zone.links) {
-            let link = this.zone.links[linkIdx];
-            let facilityA = ZoneMap.facilities[link.facilityIdA];
-            let facilityB = ZoneMap.facilities[link.facilityIdB];
+        for (let linkIdx in this.zoneMap.links) {
+            let link = this.zoneMap.links[linkIdx];
+            let facilityA = this.facilities[link.facilityIdA];
+            let facilityB = this.facilities[link.facilityIdB];
+
+            let latticeLink = new LatticeLink(facilityA, facilityB);
+            latticeLink.addTo(this.map);
             
-            ZoneMap.lattice.push(new LatticeLink(facilityA, facilityB));
+            this.lattice.push(latticeLink);
         }
 
-        for (let idx in this.zone.ownership) {
-            let region = this.zone.ownership[idx];
+        for (let idx in this.zoneMap.regions) {
+            let region = this.zoneMap.regions[idx];
 
-            if (ZoneMap.facilities[region.facilityId] && ZoneMap.regions[region.regionId]) {
-                ZoneMap.regions[region.regionId].facility = ZoneMap.facilities[region.facilityId];
-                ZoneMap.facilities[region.facilityId].region = ZoneMap.regions[region.regionId];
+            if (this.facilities[region.facilityId] && this.regions[region.regionId]) {
+                this.regions[region.regionId].facility = this.facilities[region.facilityId];
+                this.facilities[region.facilityId].region = this.regions[region.regionId];
             }
         }
 
-        for (let idx in ZoneMap.lattice) {
-            var link = ZoneMap.lattice[idx];
+        for (let idx in this.lattice) {
+            var link = this.lattice[idx];
 
             for (let id in link.facilities) {
                 let facility = link.facilities[id];
-                ZoneMap.facilities[id].lattice.push(link);
+                this.facilities[facility.id].lattice.push(link);
 
                 for (let linkedFacilityId in link.facilities) {
-                    let facility = link.facilities[linkedFacilityId];
-                    if (id !== linkedFacilityId) {
-                        ZoneMap.facilities[id].facilities.push(ZoneMap.facilities[linkedFacilityId]);
+                    let linkedFacility = link.facilities[linkedFacilityId];
+                    if (facility.id !== linkedFacility.id) {
+                        this.facilities[facility.id].links.push(this.facilities[linkedFacility.id]);
                     }
                 }
             }
         }
     }
 
-    setupOwnership() {
-        let regions = this.groupBy(this.zone.ownership, 'regionId');
+    setupOwnership(data: any) {
+        let regions = this.groupBy(data, 'regionId');
+
         let sameFaction = true;
         let prevFaction = null;
 
         for (let regionId in regions) {
             let region = regions[regionId][0];
-            let faction = Factions[region.factionId].code;
+            let faction = region.factionId;
 
             if (prevFaction === null) {
                 prevFaction = faction;
@@ -359,10 +376,10 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
                 sameFaction = false;
             }
 
-            if (ZoneMap.regions[regionId] && ZoneMap.regions[regionId].facility) {
-                ZoneMap.regions[regionId].facility.setFaction(faction);
-            } else if (ZoneMap.regions[regionId]) {
-                ZoneMap.regions[regionId].setFaction(faction);
+            if (this.regions[regionId] && this.regions[regionId].facility) {
+                this.regions[regionId].facility.setFaction(faction);
+            } else if (this.regions[regionId]) {
+                this.regions[regionId].setFaction(faction);
             }
         }
 
@@ -376,171 +393,24 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
             }
         }
 
-        let facilityGroup = this.groupBy(this.zone.ownership, 'facilityType')
-        for (let facilityType in facilityGroup) {
-            if (facilityType == 'warpgate') {
-                for (let idx in facilityGroup[facilityType]) {
-                    let facility = facilityGroup[facilityType][idx];
-                    ZoneMap.warpgates[Factions[facility.factionId].code] = ZoneMap.facilities[facility.facilityId];
-                }
+        for (let regionId in this.regions) {
+            let region = this.regions[regionId];
+            if (region.facility && region.facility.facilityTypeId === 7) {
+                let factionId = regions[regionId][0].factionId;
+                this.warpgates[factionId] = region.facility;
             }
         }
 
-        for (let i = 0; i < ZoneMap.lattice.length; i++) {
-            let link = ZoneMap.lattice[i];
+        for (let i = 0; i < this.lattice.length; i++) {
+            let link = this.lattice[i];
             link.setFaction();
         }
 
-        for (let id in ZoneMap.facilities) {
-            if (ZoneMap.facilities[id].region) {
-                ZoneMap.facilities[id].region.setFaction(ZoneMap.facilities[id].faction);
+        for (let facilityId in this.facilities) {
+            if (this.facilities[facilityId].region) {
+                this.facilities[facilityId].region.setFaction(this.facilities[facilityId].faction);
             }
         }
-    }
-
-    connectWebsocket() {
-        let self = this;
-
-        if (this.socket) {
-            return;
-        }
-
-        this.socket = new WebSocket('wss://push.planetside2.com/streaming?environment=ps2&service-id=s:LampjawScraper');
-
-        this.socket.onerror = function (e) {
-            console.error('Websocket Error:', e);
-            return true;
-        };
-
-        this.socket.onopen = function () {
-            let subscription = '{"service":"event","action":"subscribe","worlds":["' + ZoneMap.worldId + '"],"eventNames":["FacilityControl","ContinentLock","ContinentUnlock"]}';
-            this.send(subscription);
-            return true;
-        };
-
-        this.socket.onmessage = function (message) {
-            let data = JSON.parse(message.data);
-            switch (data.type) {
-                case "serviceMessage":
-                    if (!data.payload) {
-                        return false;
-                    }
-                    switch (data.payload.event_name) {
-                        case "FacilityControl":
-                            if (data.payload.new_faction_id === data.payload.old_faction_id) {
-                                self.facilityDefended({
-                                    zoneId: data.payload.zone_id,
-                                    facilityId: data.payload.facility_id,
-                                    factionId: data.payload.new_faction_id,
-                                    timestamp: data.payload.timestamp
-                                });
-                            } else {
-                                self.facilityCaptured({
-                                    zoneId: data.payload.zone_id,
-                                    facilityId: data.payload.facility_id,
-                                    factionId: data.payload.new_faction_id,
-                                    timestamp: data.payload.timestamp
-                                });
-                            }
-                            break;
-                        case "ContinentLock":
-                            self.continentLock({
-                                zoneId: data.payload.zone_id,
-                                factionId: data.payload.triggering_faction,
-                                timestamp: data.payload.timestamp
-                            });
-                            break;
-                        case "ContinentUnlock":
-                            self.continentUnlock({
-                                zoneId: data.payload.zone_id,
-                                timestamp: data.payload.timestamp
-                            });
-                    }
-            }
-        };
-    }
-
-    facilityDefended(payload: any) {
-        if (parseInt(payload.zoneId) !== parseInt(ZoneMap.zoneId)) {
-            return false;
-        }
-
-        let faction = Factions[payload.factionId].code;
-        let facilityId = payload.facilityId;
-
-        if (!ZoneMap.facilities[facilityId]) {
-            return false;
-        }
-
-        let logData = {
-            event: 'defend',
-            facility: ZoneMap.facilities[facilityId],
-            faction: Factions[payload.factionId],
-            timestamp: new Date(payload.timestamp * 1000)
-        };
-
-        ZoneMap.eventLog.unshift(logData);
-    }
-
-    facilityCaptured(payload: any) {
-        if (parseInt(payload.zoneId) !== parseInt(ZoneMap.zoneId)) {
-            return false;
-        }
-
-        let faction = Factions[payload.factionId].code;
-        let facilityId = payload.facilityId;
-
-        if (!ZoneMap.facilities[facilityId]) {
-            return false;
-        }
-
-        let logData = {
-            event: 'capture',
-            facility: ZoneMap.facilities[facilityId],
-            faction: Factions[payload.factionId],
-            timestamp: new Date(payload.timestamp * 1000)
-        };
-
-        ZoneMap.eventLog.unshift(logData);
-
-        ZoneMap.facilities[facilityId].setFaction(faction);
-
-        for (let latticeId in ZoneMap.facilities[facilityId].lattice) {
-            ZoneMap.facilities[facilityId].lattice[latticeId].setFaction();
-        }
-
-        ZoneMap.facilities[facilityId].region.setFaction(faction);
-
-        this.updateScore();
-    }
-
-    continentLock(payload: any) {
-        if (parseInt(payload.zoneId) !== parseInt(ZoneMap.zoneId)) {
-            return false;
-        }
-
-        let logData = {
-            event: 'continent_lock',
-            faction: Factions[payload.factionId],
-            zone: Zones[payload.zoneId],
-            timestamp: new Date(payload.timestamp * 1000)
-        };
-
-        ZoneMap.eventLog.unshift(logData);
-    }
-
-    continentUnlock(payload: any) {
-        if (parseInt(payload.zoneId) !== parseInt(ZoneMap.zoneId)) {
-            return false;
-        }
-
-        let logData = {
-            event: 'continent_unlock',
-            zone: Zones[payload.zoneId],
-            timestamp: new Date(payload.timestamp * 1000)
-        };
-
-        ZoneMap.eventLog.unshift(logData);
     }
 
     updateScore() {
@@ -551,10 +421,11 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
             nc: -1
         };
 
-        for (let facilityId in ZoneMap.facilities) {
-            let facility = ZoneMap.facilities[facilityId];
+        for (let facilityId in this.facilities) {
+            let facility = this.facilities[facilityId];
             if (facility.isLinked()) {
-                territories[facility.faction] += 1;
+                let faction = Factions[facility.faction].code;
+                territories[faction] += 1;
             } else {
                 territories.contested += 1;
             }
@@ -574,12 +445,11 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
 
         territories.contested = 100 - (territories.vs + territories.nc + territories.tr);
 
-        ZoneMap.score = [territories.contested, territories.vs, territories.nc, territories.tr];
+        this.score = [territories.contested, territories.vs, territories.nc, territories.tr];
     }
 
-    focusFacility(facility: ZoneFacility) {
-        let map: Map = ZoneMap.map;
-        map.setView(facility.getLatLng(), 5);
+    focusFacility(facilityId: string) {
+        this.map.setView(this.facilities[facilityId].getLatLng(), 5);
     }
 
     groupBy(xs, key) {
@@ -640,382 +510,9 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
     };
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
-
-        if (this.socket) {
-            this.socket.close();
-        }
+        if (this.zoneMapSub) this.zoneMapSub.unsubscribe();
+        if (this.ownershipSub) this.ownershipSub.unsubscribe();
+        if (this.captureSub) this.captureSub.unsubscribe();
+        if (this.defendSub) this.defendSub.unsubscribe();
     }
-}
-
-const ZoneMap = {
-    facilityIcons: {},
-    warpgates: {},
-    facilities: {},
-    regions: {},
-    map: null,
-    lattice: [],
-    worldId: null,
-    zoneId: null,
-    eventLog: [],
-    score: [0, 0, 0, 0],
-    reset: function () {
-        this.facilityIcons = {};
-        this.warpgates = {};
-        this.facilities = {};
-        this.regions = {};
-        this.map = null;
-        this.lattice = [];
-        this.worldId = null;
-        this.zoneId = null;
-        this.eventLog = [];
-        this.score = [0, 0, 0, 0];
-    }
-};
-
-const Factions = {
-    0: {
-        id: 0,
-        code: 'ns',
-        name: 'Nanite Systems'
-    },
-    1: {
-        id: 1,
-        code: 'vs',
-        name: 'Vanu Soverignty'
-    },
-    2: {
-        id: 2,
-        code: 'nc',
-        name: 'New Conglomerate'
-    },
-    3: {
-        id: 3,
-        code: 'tr',
-        name: 'Terran Republic'
-    }
-}
-
-const Zones = {
-    2: {
-        name: 'Indar'
-    },
-    4: {
-        name: 'Hossin'
-    },
-    6: {
-        name: 'Amerish'
-    },
-    8: {
-        name: 'Esamir'
-    }
-}
-
-const FactionColors = {
-    ns: {
-        'default': "#79e0e1",
-        'dark': "#249c9e"
-    },
-    nc: {
-        'default': "#33adff",
-        'dark': "#1a5780"
-    },
-    tr: {
-        'default': "#df2020",
-        'dark': "#701010"
-    },
-    vs: {
-        'default': "#9e52e0",
-        'dark': "#4f2970"
-    }
-}
-
-const RegionStyles = {
-    ns: {
-        "default": {
-            weight: 1.2,
-            color: '#000',
-            opacity: 1,
-            fillOpacity: 0,
-            pane: 'regions'
-        }
-    },
-    vs: {
-        "default": {
-            weight: 1.2,
-            fillColor: FactionColors.vs["default"],
-            fillOpacity: 0.4,
-            color: '#000'
-        },
-        dark: {
-            weight: 1.2,
-            fillColor: FactionColors.vs.dark,
-            fillOpacity: 0.7,
-            color: '#000'
-        }
-    },
-    nc: {
-        "default": {
-            weight: 1.2,
-            fillColor: FactionColors.nc["default"],
-            fillOpacity: 0.4,
-            color: '#000'
-        },
-        dark: {
-            weight: 1.2,
-            fillColor: FactionColors.nc.dark,
-            fillOpacity: 0.7,
-            color: '#000'
-        }
-    },
-    tr: {
-        "default": {
-            weight: 1.2,
-            fillColor: FactionColors.tr["default"],
-            fillOpacity: 0.4,
-            color: '#000'
-        },
-        dark: {
-            weight: 1.2,
-            fillColor: FactionColors.tr.dark,
-            fillOpacity: 0.7,
-            color: '#000'
-        }
-    }
-}
-
-class ZoneFacility extends Marker {
-    id: string;
-    name: string;
-    facilityType: string;
-    faction: string = 'ns';
-    region: any = null;
-    facilities: any = [];
-    lattice: any = [];
-
-    constructor(latLng: LatLng, options?: MarkerOptions) {
-        super(latLng, options);
-    }
-
-    isLinked(): boolean {
-        let linked = [];
-        let faction = this.faction;
-        let id = this.id;
-
-        let checkLinkedFacilities = function (facility): boolean {
-            linked.push(facility.id);
-
-            for (let i = 0; i < facility.facilities.length; i++) {
-                var f = facility.facilities[i];
-                if (f.id === id) {
-                    return true;
-                }
-
-                if (f.faction === faction && (linked.indexOf(f.id) < 0)) {
-                    if (checkLinkedFacilities(f)) {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        };
-
-        return checkLinkedFacilities(ZoneMap.warpgates[faction]);
-    }
-
-    setFaction(faction: string) {
-        this.faction = faction
-
-        if (!this.setIcon) {
-            return false;
-        }
-
-        return this.setIcon(ZoneMap.facilityIcons[this.facilityType][this.faction]);
-    }
-}
-
-class ZoneRegion extends Polygon {
-    id: string;
-    name: string;
-    faction: string = 'ns';
-    facility: ZoneFacility = null;
-    style: any = RegionStyles.ns['default'];
-
-    constructor(latLngs: LatLng[], options?: PolylineOptions) {
-        super(latLngs, options);
-    }
-
-    setFaction(faction: string) {
-        this.faction = faction;
-
-        if (this.facility && this.facility.isLinked()) {
-            this.style = RegionStyles[this.faction]["default"];
-        } else {
-            this.style = RegionStyles[this.faction].dark;
-        }
-
-        this.setStyle(this.style);
-    }
-}
-
-class VertexPoint {
-    x: number;
-    y: number;
-
-    constructor(x: number, y: number) {
-        this.y = Math.round(x * 1000) / 1000;
-        this.x = Math.round(y * 1000) / 1000;
-    }
-
-    equals(other: VertexPoint): boolean {
-        return this.x === other.x && this.y == other.y;
-    }
-
-    toLatLng(): LatLng {
-        return latLng(this.x, this.y);
-    }
-}
-
-class VertexLine {
-    v1: VertexPoint;
-    v2: VertexPoint;
-
-    constructor(v1: VertexPoint, v2: VertexPoint) {
-        this.v1 = v1;
-        this.v2 = v2;
-    }
-
-    equals(other: VertexLine): boolean {
-        return (this.v1.equals(other.v1) && this.v2.equals(other.v2)) || (this.v1.equals(other.v2) && this.v2.equals(other.v1))
-    }
-}
-
-class LatticeLink {
-    facilityA: ZoneFacility;
-    facilityB: ZoneFacility;
-    facilities = {};
-    faction: string = 'ns';
-
-    outline: Polyline;
-    line: Polyline;
-
-    constructor(facilityA: ZoneFacility, facilityB: ZoneFacility) {
-        this.facilityA = facilityA;
-        this.facilityB = facilityB;
-
-        this.facilities[facilityA.id] = facilityA;
-        this.facilities[facilityB.id] = facilityB;
-
-        if (this.facilityA.getLatLng() && this.facilityB.getLatLng()) {
-            let points = [this.facilityA.getLatLng(), this.facilityB.getLatLng()];
-            this.outline = polyline(points, this.colors.ns.outline).addTo(ZoneMap.map);
-            this.line = polyline(points, this.colors.ns.line).addTo(ZoneMap.map);
-        }
-    }
-
-    setFaction() {
-        if (this.facilityA.faction == this.facilityB.faction) {
-            this.faction = this.facilityA.faction;
-        } else {
-            this.faction = 'contested';
-        }
-
-        if (this.outline && this.line) {
-            this.outline.setStyle(this.colors[this.faction].outline);
-            this.line.setStyle(this.colors[this.faction].line);
-        }
-    }
-
-    options = {
-        pane: 'latticePane'
-    };
-
-    colors = {
-        ns: {
-            line: {
-                color: FactionColors.ns["default"],
-                pane: 'latticePane',
-                weight: 2,
-                clickable: false,
-                dashArray: null,
-                interactive: false
-            },
-            outline: {
-                color: '#FFF',
-                pane: 'latticePane',
-                weight: 4,
-                clickable: false,
-                interactive: false
-            }
-        },
-        nc: {
-            line: {
-                color: FactionColors.nc["default"],
-                pane: 'latticePane',
-                weight: 2,
-                clickable: false,
-                dashArray: null,
-                interactive: false
-            },
-            outline: {
-                color: '#FFF',
-                pane: 'latticePane',
-                weight: 4,
-                clickable: false,
-                interactive: false
-            }
-        },
-        tr: {
-            line: {
-                color: FactionColors.tr["default"],
-                pane: 'latticePane',
-                weight: 2,
-                clickable: false,
-                dashArray: null,
-                interactive: false
-            },
-            outline: {
-                color: '#FFF',
-                pane: 'latticePane',
-                weight: 4,
-                clickable: false,
-                interactive: false
-            }
-        },
-        vs: {
-            line: {
-                color: FactionColors.vs["default"],
-                pane: 'latticePane',
-                weight: 2,
-                clickable: false,
-                dashArray: null,
-                interactive: false
-            },
-            outline: {
-                color: '#FFF',
-                pane: 'latticePane',
-                weight: 4,
-                clickable: false,
-                interactive: false
-            }
-        },
-        contested: {
-            line: {
-                color: '#FFFF00',
-                pane: 'latticePane',
-                weight: 3,
-                clickable: false,
-                dashArray: [6],
-                interactive: false
-            },
-            outline: {
-                color: '#000',
-                pane: 'latticePane',
-                weight: 5,
-                clickable: false,
-                interactive: false
-            }
-        }
-    };
 }

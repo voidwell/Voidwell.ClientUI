@@ -161,7 +161,7 @@ export class PlanetsideApi {
             });
     }
 
-    getOnlinePlayers(worldId: string) {
+    getOnlinePlayers(worldId: number) {
         return this.http.get(this.ps2Url + 'worldstate/' + worldId + '/players')
             .map(resp => resp.json())
             .catch(error => {
@@ -170,8 +170,17 @@ export class PlanetsideApi {
             });
     }
 
-    getWorldZoneState(worldId: string, zoneId: string) {
-        return this.http.get(this.ps2Url + 'worldstate/' + worldId + '/zone/' + zoneId)
+    getZoneMap(zoneId: number) {
+        return this.http.get(this.ps2Url + 'map/' + zoneId)
+            .map(resp => resp.json())
+            .catch(error => {
+                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
+                return Observable.throw(error);
+            });
+    }
+
+    getZoneOwnership(worldId: number, zoneId: number) {
+        return this.http.get(this.ps2Url + 'worldstate/' + worldId + '/' + zoneId + '/map')
             .map(resp => resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
