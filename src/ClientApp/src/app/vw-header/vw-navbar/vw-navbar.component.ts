@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { HeaderService } from '../shared/services/header.service';
-import { VoidwellAuthService } from '../shared/services/voidwell-auth.service';
+import { HeaderService } from './../../shared/services/header.service';
+import { VoidwellAuthService } from './../../shared/services/voidwell-auth.service';
 import { Observable } from 'rxjs/Observable';
 import { NgRedux } from '@angular-redux/store';
-import { IAppState } from '../app.component';
+import { IAppState } from './../../app.component';
 
 @Component({
     selector: 'vw-navbar',

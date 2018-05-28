@@ -1,6 +1,6 @@
 ﻿import { LOAD_USER } from './reducers';
 
-const actionMaxLimit = 15;
+const actionMaxLimit = 30;
 
 export default {
     presentState: null,
@@ -15,19 +15,12 @@ export default {
             this.actions.shift();
         }
 
-        this.actions.push(this.stripPrivateInformation(action));
+        this.actions.push(this.stripInfo(action));
 
         this.setPresent(currentState);
     },
 
-    getLoggedInUserId() {
-        if (this.presentState.loggedInUser.user) {
-            return this.presentState.loggedInUser.user.profile.sub;
-        }
-        return null;
-    },
-
-    stripPrivateInformation(action) {
+    stripInfo(action) {
         switch (action.type) {
             case LOAD_USER:
                 return {

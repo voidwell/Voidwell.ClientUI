@@ -2,8 +2,6 @@
 import reducers from './app.reducers';
 import {
     IUserLoginState,
-    IBlogPostState,
-    IBlogPostListState,
     IRegistrationState
 } from './reducers';
 import { NgRedux } from '@angular-redux/store';
@@ -11,8 +9,6 @@ import { MatIconRegistry } from '@angular/material';
 
 export interface IAppState {
     loggedInUser: IUserLoginState;
-    blogPost: IBlogPostState;
-    blogPostList: IBlogPostListState;
     registration: IRegistrationState;
 };
 
@@ -33,8 +29,6 @@ export class AppComponent {
             reducers,
             {
                 loggedInUser: null,
-                blogPost: null,
-                blogPostList: null,
                 registration: null
             },
             null,

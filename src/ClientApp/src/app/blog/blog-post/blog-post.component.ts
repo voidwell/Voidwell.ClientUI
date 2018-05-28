@@ -1,14 +1,13 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs/Subscription';
-import { VoidwellApi } from '../shared/services/voidwell-api.service';
 import { Observable } from 'rxjs/Observable';
+import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
 @Component({
     selector: 'voidwell-blog-post',
     templateUrl: './blog-post.template.html',
-    styleUrls: ['./blog-post.styles.css'],
-    providers: [VoidwellApi]
+    styleUrls: ['./blog-post.styles.css']
 })
 
 export class BlogPostComponent {

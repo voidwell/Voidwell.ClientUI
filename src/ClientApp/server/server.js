@@ -2,17 +2,29 @@
 var path = require('path');
 
 var isProduction = process.env.NODE_ENV === 'production';
-var publicPath = path.resolve(__dirname, './dist');
 var port = 5000;
 
-if (isProduction) {
-    var app = express();
+var app = express();
 
-    app.use(express.static(publicPath));
+if (isProduction) {
+    var distPath = path.resolve(__dirname, './dist');
+    var publicPath = path.resolve(__dirname, './public');
+
+    app.use('/files', express.static(publicPath));
+
+    app.use(express.static(distPath));
 
     app.route('/*').get(function (req, res) {
-        return res.sendFile(path.join(publicPath, 'index.html'));
+        return res.sendFile(path.join(distPath, 'index.html'));
     });
+
+    app.listen(port, function () {
+        console.log('Server running on port ' + port);
+    });
+} else {
+    var publicPath = path.resolve(__dirname, '../assets');
+
+    app.use('/files', express.static(publicPath));
 
     app.listen(port, function () {
         console.log('Server running on port ' + port);
