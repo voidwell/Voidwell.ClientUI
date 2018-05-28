@@ -13,33 +13,28 @@ import { VoidwellApi } from './voidwell-api.service';
 @Injectable()
 export class VoidwellAuthService {
     mgr: UserManager;
-    private authHeaders: Headers;
     userRoleState: Observable<any>;
-    private api: any;
     rolesState: Observable<any>;
+
+    private api: any;
+    private authHeaders: Headers;
 
     constructor(private http: Http,
         private router: Router,
         private route: ActivatedRoute,
         private ngRedux: NgRedux<IAppState>,
         private injector: Injector) {
-
-        let authority: string;
-        let redirectUri: string;
-        let signInCallbackUri: string;
-        let silentCallbackUri: string;
         
-        authority = location.protocol + '//auth.' + location.host;
-        redirectUri = location.origin + '/';
-        signInCallbackUri = redirectUri + 'signInCallback.html';
-        silentCallbackUri = redirectUri + 'silentCallback.html';
+        let redirectUri = location.origin + '/';
+        let signInCallbackUri = redirectUri + 'signInCallback.html';
+        let silentCallbackUri = redirectUri + 'silentCallback.html';
 
         Log.logger = console;
         Log.level = Log.WARN;
 
         const settings: UserManagerSettings = {
             client_id: 'voidwell-clientui',
-            authority: authority,
+            authority: location.protocol + '//auth.' + location.host,
             response_type: 'id_token token',
             scope: 'openid email profile voidwell-api',
             redirect_uri: signInCallbackUri,
@@ -55,9 +50,7 @@ export class VoidwellAuthService {
         });
 
         this.route.url.subscribe(url => {
-
-            let currentRoute: string;
-            currentRoute = location.pathname;
+            let currentRoute = location.pathname;
 
             this.router.navigate([currentRoute]);
 
@@ -112,12 +105,8 @@ export class VoidwellAuthService {
         });
 
         this.mgr.events.addSilentRenewError((e) => {
-            this.ngRedux.dispatch({ type: RENEW_TOKEN_FAILED });
-            this.signOut();
-            throw new Error('Silent token renewal failed: ' + e.message);
+            this.checkSession();
         });
-
-        //this.checkSession();
     }
 
     signIn() {
@@ -147,8 +136,11 @@ export class VoidwellAuthService {
     }
 
     revokeSession() {
-        this.mgr.removeUser();
-        this.signIn();
+        this.mgr.removeUser().then(() => {
+            this.signIn();
+        }).catch(function (error) {
+            return Observable.throw(error);
+        });
     }
 
     hasRoles(routeRoles: string[]): Observable<boolean> {

@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "scripts": {
         "lint": "ng lint",
-        "start:dev": "npm rebuild node-sass | ng serve --hmr --disable-host-check",
+        "start:dev": "npm rebuild node-sass | ng serve --hmr --disable-host-check | node server.js",
         "start:prod": "npm rebuild node-sass | node server.js",
         "build:dev": "npm rebuild node-sass | ng build --dev",
         "build:prod": "npm rebuild node-sass | ng build --prod"
@@ -24,6 +24,7 @@
         "@angular/platform-browser-dynamic": "5.2.4",
         "@angular/platform-server": "5.2.4",
         "@angular/router": "5.2.4",
+        "@angular/flex-layout": "5.0.0-beta.14",
         "@mat-datetimepicker/core": "1.0.1",
         "@mat-datetimepicker/moment": "1.0.1",
         "@types/webpack-env": "1.13.0",

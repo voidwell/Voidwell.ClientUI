@@ -65,7 +65,7 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
             this.leafletOptions = {
                 crs: CRS.Simple,
                 layers: [
-                    tileLayer('/img/ps2/tiles/' + zoneName.toLowerCase() + '/zoom{z}/' + zoneName.toLowerCase() + '_{z}_{x}_{y}.jpg', {
+                    tileLayer('/files/img/ps2/tiles/' + zoneName.toLowerCase() + '/zoom{z}/' + zoneName.toLowerCase() + '_{z}_{x}_{y}.jpg', {
                         minZoom: 1,
                         maxZoom: 6,
                         maxNativeZoom: 5,

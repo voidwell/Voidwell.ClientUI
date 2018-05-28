@@ -7,6 +7,9 @@
         "serve": {
             "port": 5000,
             "host": "0.0.0.0"
+        },
+        "build": {
+            "showCircularDependencies": false
         }
     },
     "apps": [
@@ -36,11 +39,6 @@
                     "glob": "**/*",
                     "input": "../node_modules/oidc-client/dist/",
                     "output": "./oidc/"
-                },
-                {
-                    "glob": "**/*",
-                    "input": "./assets",
-                    "output":  "./"
                 }
             ],
             "scripts": [
@@ -51,8 +49,7 @@
             "styles": [
                 "../node_modules/mdi/css/materialdesignicons.css",
                 "../node_modules/leaflet/dist/leaflet.css"
-            ],
-            "showCircularDependencies": false
+            ]
         }
     ],
     "lint": [
