@@ -6,13 +6,14 @@ import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/throw';
 import { Http, RequestOptions, Response } from '@angular/http';
 import { NgRedux } from '@angular-redux/store';
-import { IAppState } from '../../app.component';
+import { IAppState } from './../../app.component';
 import { Injectable } from '@angular/core';
-import * as actionType from '../../reducers';
-import { VoidwellAuthService } from '../services/voidwell-auth.service';
+import * as actionType from './../../reducers';
+import { VoidwellAuthService } from './../services/voidwell-auth.service';
+import { ApiBase } from './api-base';
 
 @Injectable()
-export class VoidwellApi {
+export class VoidwellApi extends ApiBase {
     apiBaseUrl = 'app/';
     public blogUrl = location.origin + '/api/blog/';
     public eventsUrl = location.origin + '/api/events/';
@@ -21,376 +22,196 @@ export class VoidwellApi {
     public oidcAdminUrl = location.origin + '/api/oidcadmin/';
     public ps2Url = location.origin + '/api/ps2/';
 
-    public options;
-    private _requestTimeout = 30000;
-    private _requestTimeoutMessage = 'Request timed out';
-
     constructor(public authService: VoidwellAuthService,
         public http: Http,
         public ngRedux: NgRedux<IAppState>) {
-        this.options = new RequestOptions({ headers: this.authService.getAuthHeaders() });
+        super(authService, http);
     }
 
     getAllBlogPosts() {
-        return this.http.get(this.blogUrl, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Get(this.blogUrl)
+            .map(resp => resp.json());
     }
 
     getBlogPost(blogPostId: string) {
-        return this.http.get(this.blogUrl + blogPostId, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Get(this.blogUrl + blogPostId)
+            .map(resp => resp.json());
     }
 
     createBlogPost(blogPost: any) {
-        return this.AuthPost(this.blogUrl, blogPost, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.blogUrl, blogPost)
+            .map(resp => resp.json());
     }
 
     updateBlogPost(blogPostId: string, blogPost: any) {
-        return this.AuthPut(this.blogUrl + blogPostId, blogPost, this.options)
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPut(this.blogUrl + blogPostId, blogPost)
+            .map(resp => resp.json());
     }
 
     deleteBlogPost(blogPostId: string) {
-        return this.AuthDelete(this.blogUrl + blogPostId, this.options)
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthDelete(this.blogUrl + blogPostId);
     }
 
     accountRegister(registrationForm: any) {
         this.ngRedux.dispatch({ type: 'REGISTER_USER' });
 
-        return this.http.post(this.accountUrl + 'register', registrationForm, this.options)
+        return this.Post(this.accountUrl + 'register', registrationForm)
             .map(resp => resp.ok ? null : resp.json())
             .catch(error => {
                 this.ngRedux.dispatch({ type: 'REGISTRATION_FAIL', error });
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
+                return Observable.throw(error);
             })
             .map(payload => ({ type: 'REGISTER_USER_SUCCESS', payload }))
             .subscribe(action => this.ngRedux.dispatch(action));
     }
 
     getSecurityQuestions() {
-        return this.http.get(this.accountUrl + 'questions', this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'SECURITY_QUESTIONS_FAIL' });
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Get(this.accountUrl + 'questions')
+            .map(resp => resp.json());
     }
 
     getRoles() {
-        return this.AuthGet(this.accountUrl + 'roles/', this.options)
+        return this.AuthGet(this.accountUrl + 'roles/')
             .map(resp => resp.json())
-            .catch(res => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', res });
-                return this.handleError(res);
-            })
             .map(payload => ({ type: 'GET_USER_ROLES', payload }))
             .subscribe(action => this.ngRedux.dispatch(action));;
     }
 
     getUsers() {
-        return this.AuthGet(this.authAdminUrl + 'users', this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.authAdminUrl + 'users')
+            .map(resp => resp.json());
     }
 
     getUser(userId: string) {
-        return this.AuthGet(this.authAdminUrl + 'user/' + userId, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.authAdminUrl + 'user/' + userId)
+            .map(resp => resp.json());
     }
 
     updateUserRoles(userId: string, userForm: any) {
-        return this.AuthPut(this.authAdminUrl + 'user/' + userId + '/roles', userForm, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPut(this.authAdminUrl + 'user/' + userId + '/roles', userForm)
+            .map(resp => resp.json());
     }
 
     deleteUser(userId: string) {
-        return this.AuthDelete(this.authAdminUrl + 'user/' + userId, this.options)
-            .map(resp => resp.ok ? null :resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthDelete(this.authAdminUrl + 'user/' + userId)
+            .map(resp => resp.ok ? null : resp.json());
     }
 
     lockUser(userId: string, params: any) {
-        return this.AuthPost(this.authAdminUrl + 'user/' + userId + '/lock', params, this.options)
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.authAdminUrl + 'user/' + userId + '/lock', params);
     }
 
     unlockUser(userId: string) {
-        return this.AuthPost(this.authAdminUrl + 'user/' + userId + '/unlock', null, this.options)
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.authAdminUrl + 'user/' + userId + '/unlock', null);
     }
 
     getAllRoles() {
-        return this.AuthGet(this.authAdminUrl + 'roles', this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.authAdminUrl + 'roles')
+            .map(resp => resp.json());
     }
 
     addRole(roleName: string) {
         let roleData = {
             name: roleName
         };
-        return this.AuthPost(this.authAdminUrl + 'role', roleData, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.authAdminUrl + 'role', roleData)
+            .map(resp => resp.json());
     }
 
     deleteRole(roleId: string) {
-        return this.AuthDelete(this.authAdminUrl + 'role/' + roleId, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthDelete(this.authAdminUrl + 'role/' + roleId)
+            .map(resp => resp.json());
     }
 
     changePassword(changePasswordForm: any) {
-        return this.AuthPost(this.accountUrl + 'changepassword', changePasswordForm, this.options)
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.accountUrl + 'changepassword', changePasswordForm);
     }
 
     startResetPassword(passwordResetStartForm: any) {
-        return this.http.post(this.accountUrl + 'resetpasswordstart', passwordResetStartForm, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Post(this.accountUrl + 'resetpasswordstart', passwordResetStartForm)
+            .map(resp => resp.json());
     }
 
     resetPasswordQuestions(passwordResetQuestionsForm: any) {
-        return this.http.post(this.accountUrl + 'resetpasswordquestions', passwordResetQuestionsForm, this.options)
-            .map(resp => this.extractData(resp, 'result'))
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Post(this.accountUrl + 'resetpasswordquestions', passwordResetQuestionsForm)
+            .map(resp => this.extractData(resp, 'result'));
     }
 
     resetPassword(resetPasswordForm: any) {
-        return this.http.post(this.accountUrl + 'resetpassword', resetPasswordForm, this.options)
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Post(this.accountUrl + 'resetpassword', resetPasswordForm);
     }
 
     getCustomEvents() {
-        return this.http.get(this.eventsUrl, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Get(this.eventsUrl)
+            .map(resp => resp.json());
     }
 
     getCustomEventsByGame(gameId: any) {
-        return this.http.get(this.eventsUrl + 'game/' + gameId, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Get(this.eventsUrl + 'game/' + gameId)
+            .map(resp => resp.json());
     }
 
     getCustomEvent(eventId: any) {
-        return this.http.get(this.eventsUrl + eventId, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.Get(this.eventsUrl + eventId)
+            .map(resp => resp.json());
     }
 
     updateCustomEvent(eventId: string, event: any) {
-        return this.AuthPut(this.eventsUrl + eventId, event, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPut(this.eventsUrl + eventId, event)
+            .map(resp => resp.json());
     }
 
     createCustomEvent(event: any) {
-        return this.AuthPost(this.eventsUrl, event, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.eventsUrl, event)
+            .map(resp => resp.json());
     }
 
     getPS2AllServiceStatus() {
-        return this.AuthGet(this.ps2Url + 'services/status', this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.ps2Url + 'services/status')
+            .map(resp => resp.json());
     }
 
     getPS2ServiceStatus(service: string) {
-        return this.AuthGet(this.ps2Url + 'services/' + service + '/status', this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.ps2Url + 'services/' + service + '/status')
+            .map(resp => resp.json());
     }
 
     enablePS2Service(service: string) {
-        return this.AuthPost(this.ps2Url + 'services/' + service + '/enable', null, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.ps2Url + 'services/' + service + '/enable', null)
+            .map(resp => resp.json());
     }
 
     disablePS2Service(service: string) {
-        return this.AuthPost(this.ps2Url + 'services/' + service + '/disable', null, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.ps2Url + 'services/' + service + '/disable', null)
+            .map(resp => resp.json());
     }
 
     setupWorldZones(worldId: string) {
-        return this.AuthPost(this.ps2Url + 'worldstate/' + worldId + '/zone', null, this.options)
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthPost(this.ps2Url + 'worldstate/' + worldId + '/zone', null);
     }
 
     getPSBAccountSessions() {
-        return this.AuthGet(this.ps2Url + 'psb/sessions', this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.ps2Url + 'psb/sessions')
+            .map(resp => resp.json());
     }
 
     getAllClients() {
-        return this.AuthGet(this.oidcAdminUrl + 'client', this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.oidcAdminUrl + 'client')
+            .map(resp => resp.json());
     }
 
     getClientById(clientId: string) {
-        return this.AuthGet(this.oidcAdminUrl + 'client/' + clientId, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.oidcAdminUrl + 'client/' + clientId)
+            .map(resp => resp.json());
     }
 
     getAllApiResources() {
-        return this.AuthGet(this.oidcAdminUrl + 'resource', this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
+        return this.AuthGet(this.oidcAdminUrl + 'resource')
+            .map(resp => resp.json());
     }
 
     getApiResourceById(resourceId: string) {
-        return this.AuthGet(this.oidcAdminUrl + 'resource/' + resourceId, this.options)
-            .map(resp => resp.json())
-            .catch(error => {
-                this.ngRedux.dispatch({ type: 'LOG_ERROR_MESSAGE', error });
-                return this.handleError(error);
-            });
-    }
-
-    private handleError(error: any) {
-        this.checkAuthorization(error);
-        return Observable.throw(error);
-    }
-
-    private checkAuthorization(error: Response) {
-        if (error.status === 401) {
-            this.authService.checkSession();
-        }
-    }
-
-    AuthGet(url: string, options: RequestOptions): Observable<Response> {
-        return this.http.get(url, options).timeout(this._requestTimeout);
-    }
-
-    AuthPost(url: string, data: any, options: RequestOptions): Observable<Response> {
-        return this.http.post(url, data, options).timeout(this._requestTimeout);
-    }
-
-    AuthPut(url: string, data: any, options: RequestOptions): Observable<Response> {
-        return this.http.put(url, data, options).timeout(this._requestTimeout);
-    }
-
-    AuthDelete(url: string, options: RequestOptions): Observable<Response> {
-        return this.http.delete(url, options).timeout(this._requestTimeout);
-    }
-
-    private extractData(res: Response, key?: string) {
-        let body = res.json();
-        if (key) {
-            return body[key];
-        }
-        return body.data || {};
+        return this.AuthGet(this.oidcAdminUrl + 'resource/' + resourceId)
+            .map(resp => resp.json());
     }
 }

@@ -52,7 +52,7 @@ export class WorldMaps {
             this.facilityIcons[facilityTypeId] = {};
             for (let factionId in Factions) {
                 let html = "<svg class='" + facilityType.code + " " + Factions[factionId].code + "'>";
-                html += "<use xlink:href='/img/ps2/map-sprites.svg#" + facilityType.code + "'/>";
+                html += "<use xlink:href='/files/img/ps2/map-sprites.svg#" + facilityType.code + "'/>";
                 html += "</svg>";
                 options.html = html;
                 this.facilityIcons[facilityTypeId][factionId] = divIcon(options);
