@@ -63,3 +63,34 @@
 .mat-column-location {
     max-width: 60px;
 }
+
+.event-col {
+    display: inline-block;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+.clean-link {
+    text-decoration: none;
+}
+
+.player-vehicle-owner {
+    font-size: 12px;
+}
+
+.col-facility-state,
+.col-facility-name,
+.col-battle-rank-up,
+.col-session-state {
+    text-transform: uppercase;
+    font-weight: bold;
+}
+.col-facility-state {
+    width: 255px; 
+}
+.col-facility-state,
+.col-battle-rank-up,
+.col-session-state,
+.col-player-vehicle-wrapper {
+    margin-left: 15px;
+}
