@@ -14,6 +14,9 @@ export class ZoneNamePipe implements PipeTransform {
     };
 
     transform(zoneId: any): string {
+        if (!zoneId) {
+            return null;
+        }
         let id = zoneId.toString();
         return this.zones[id];
     }

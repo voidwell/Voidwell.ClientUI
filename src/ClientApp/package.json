@@ -4,7 +4,7 @@
     "version": "0.0.0",
     "scripts": {
         "lint": "ng lint",
-        "start:dev": "npm rebuild node-sass | ng serve --hmr --disable-host-check | node server.js",
+        "start:dev": "npm rebuild node-sass | ng serve --hmr --disable-host-check",
         "start:prod": "npm rebuild node-sass | node server.js",
         "build:dev": "npm rebuild node-sass | ng build --dev",
         "build:prod": "npm rebuild node-sass | ng build --prod"

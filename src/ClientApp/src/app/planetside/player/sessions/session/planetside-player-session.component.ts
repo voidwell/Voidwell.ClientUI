@@ -38,7 +38,9 @@ export class PlanetsidePlayerSessionComponent implements OnDestroy {
                 deaths: 0,
                 teamkills: 0,
                 suicides: 0,
-                headshots: 0
+                headshots: 0,
+                facilitiesCaptured: 0,
+                facilitiesDefended: 0
             };
 
             this.routeSub = this.route.params.subscribe(params => {
@@ -67,29 +69,41 @@ export class PlanetsidePlayerSessionComponent implements OnDestroy {
         for (let i = 0; i < events.length; i++) {
             let event = events[i];
 
-            if (event.attacker.id === this.playerData.id &&
-                event.attacker.id !== event.victim.id &&
-                event.attacker.factionId !== event.victim.factionId) {
-                this.sessionStats.kills++;
+            switch (event.eventType) {
+                case 'Death':
+                    if (event.attacker.id === this.playerData.id &&
+                        event.attacker.id !== event.victim.id &&
+                        event.attacker.factionId !== event.victim.factionId) {
+                        this.sessionStats.kills++;
 
-                if (event.isHeadshot) {
-                    this.sessionStats.headshots++;
-                }
-            }
+                        if (event.isHeadshot) {
+                            this.sessionStats.headshots++;
+                        }
+                    }
 
-            if (event.attacker.id === this.playerData.id &&
-                event.attacker.id !== event.victim.id &&
-                event.attacker.factionId === event.victim.factionId) {
-                this.sessionStats.teamkills++;
-            }
+                    if (event.attacker.id === this.playerData.id &&
+                        event.attacker.id !== event.victim.id &&
+                        event.attacker.factionId === event.victim.factionId) {
+                        this.sessionStats.teamkills++;
+                    }
 
-            if (event.victim.id === this.playerData.id) {
-                this.sessionStats.deaths++;
-            }
+                    if (event.victim.id === this.playerData.id) {
+                        this.sessionStats.deaths++;
+                    }
 
-            if (event.attacker.id === this.playerData.id &&
-                event.attacker.id === event.victim.id) {
-                this.sessionStats.suicides++;
+                    if (event.attacker.id === this.playerData.id &&
+                        event.attacker.id === event.victim.id) {
+                        this.sessionStats.suicides++;
+                    }
+                    break;
+
+                case 'FacilityCapture':
+                    this.sessionStats.facilitiesCaptured++;
+                    break;
+
+                case 'FacilityDefend':
+                    this.sessionStats.facilitiesDefended++;
+                    break;
             }
         }
     }
