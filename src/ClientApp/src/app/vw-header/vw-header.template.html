@@ -1,15 +1,17 @@
 <div class="vw-header" [ngStyle]="{ 'background-color': header.background }">
-  <vw-navbar></vw-navbar>
-  <div class="content-container">
-    <div class="page-header flexrow flexalignspacebetweenstretch">
-      <div class="header-title">{{header.title}}</div>
-      <div class="header-info flexrow flexalignstartcenter" >
-        <div class="header-info-item flexcolumn" *ngFor="let headerInfo of header.info">
-          <div class="header-info-item-value">{{headerInfo.value}}</div>
-          <div class="header-info-item-label">{{headerInfo.label}}</div>
+    <vw-navbar></vw-navbar>
+    <div fxLayout="row" fxLayoutAlign="center">
+        <div fxFlex="80">
+            <div class="page-header flexrow flexalignspacebetweenstretch">
+                <div class="header-title">{{header.title}}</div>
+                <div class="header-info flexrow flexalignstartcenter" >
+                    <div class="header-info-item flexcolumn" *ngFor="let headerInfo of header.info">
+                        <div class="header-info-item-value">{{headerInfo.value}}</div>
+                        <div class="header-info-item-label">{{headerInfo.label}}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="header-subtitle">{{header.subtitle}}</div>
         </div>
-      </div>
     </div>
-    <div class="header-subtitle">{{header.subtitle}}</div>
-  </div>
 </div>
