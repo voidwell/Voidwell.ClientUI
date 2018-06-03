@@ -1,13 +1,4 @@
-﻿.content-container {
-    width: 1300px;
-    /*padding-right: 15px;
-    padding-left: 15px;*/
-    margin-right: auto;
-    margin-left: auto;
-}
-
-
-body {
+﻿body {
     margin: 0;
     background: #05121b;
     color: #efefef;

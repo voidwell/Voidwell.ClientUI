@@ -1,7 +1,9 @@
-﻿<div class="content-container">
-    <vw-loader [loading]="isLoading"></vw-loader>
-    <vw-error-message [message]="errorMessage"></vw-error-message>
-    <div *ngIf="!isLoading && !errorMessage" class="blog-card-list">
-        <vw-blog-card *ngFor="let blogPost of blogPosts" [post]="blogPost"></vw-blog-card>
+﻿<div fxLayoutAlign="center" fxFlexLayout="row">
+    <div fxFlex="80">
+        <vw-loader [loading]="isLoading"></vw-loader>
+        <vw-error-message [message]="errorMessage"></vw-error-message>
+        <div *ngIf="!isLoading && !errorMessage" class="blog-card-list">
+            <vw-blog-card *ngFor="let blogPost of blogPosts" [post]="blogPost"></vw-blog-card>
+        </div>
     </div>
 </div>
