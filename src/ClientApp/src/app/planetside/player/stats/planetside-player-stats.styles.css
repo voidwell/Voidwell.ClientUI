@@ -51,7 +51,8 @@
 }
 
 .vw-character-kdr .kdr-data .label,
-.vw-character-weapons .weapon-data .label {
+.vw-character-weapons .weapon-data .label,
+.vw-character-ivi .ivi-data .label {
     opacity: 0.8;
     width: 120px;
     display: inline-block;
@@ -76,4 +77,20 @@
 }
 .value.negative {
     color: #FF5252;
+}
+
+.info-item vw-grade {
+    display: block;
+    text-align: center;
+}
+
+.ivi-data .ivi-score {
+    text-align: center;
+}
+.ivi-data .ivi-score .value {
+    font-size: 1.2em;
+}
+.ivi-data .ivi-score .label {
+    opacity: 0.5;
+    font-size: 0.8em;
 }

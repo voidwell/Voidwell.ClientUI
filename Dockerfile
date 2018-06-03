@@ -10,7 +10,7 @@ RUN npm install
 RUN npm run build:prod
 
 # Build runtime image
-FROM node:6.10.2-alpine
+FROM node:6.10.2
 WORKDIR /app
 
 RUN mkdir -p /opt && cd /opt && curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.3 && mv ~/.yarn /opt/yarn
