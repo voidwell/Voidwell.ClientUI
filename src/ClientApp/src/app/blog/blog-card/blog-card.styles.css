@@ -7,23 +7,14 @@
 
 .blog-left {
     background: #16232c;
-    max-width: 300px;
-    min-width: 300px;
-    padding: 40px;
-    position: relative;
 }
 
 .blog-right {
     background: #0f1c25;
-    position: relative;
 }
 
 .blog-link a {
     color: inherit;
-}
-
-.blog-title {
-    font-size: 2em;
 }
 
 .blog-title-spacer {
@@ -32,14 +23,8 @@
     background: #b82601;
 }
 
-.blog-author {
-    position: absolute;
-    bottom: 20px;
-}
-
 .blog-content {
     line-height: 25px;
-    padding: 40px 40px 30px 40px;
 }
 
 .blog-footer {

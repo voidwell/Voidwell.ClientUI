@@ -1,10 +1,15 @@
-<div class="vw-navbar" [style.background]="header.background">
-    <div class="content-container">
-        <nav>
-            <a mat-button routerLink="/">Voidwell</a>
-            <a mat-button routerLink="/blog">Blog</a>
-            <a mat-button routerLink="/ps2">Planetside 2</a>
-            <div class="pull-right">
+<div class="vw-navbar" [style.background]="header.background" fxLayout="row" fxLayoutAlign.gt-xs="center">
+    <button mat-button fxHide [fxShow.lt-sm]="true" matSuffix mat-icon-button (click)="snav.toggle()">
+        <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
+    </button>
+    <div fxFlex.gt-xs="80" [fxHide.lt-sm]="true">
+        <nav fxLayout="row" fxLayoutAlign="space-between">
+            <div fxLayout="row">
+                <a mat-button routerLink="/">Voidwell</a>
+                <a mat-button routerLink="/blog">Blog</a>
+                <a mat-button routerLink="/ps2">Planetside 2</a>
+            </div>
+            <div fxLayout="row">
                 <button *ngIf="isLoggedIn" mat-button [matMenuTriggerFor]="userMenu">{{userName}}</button>
                 <mat-menu #userMenu="matMenu">
                     <button mat-menu-item routerLink="/account/settings">Settings</button>
@@ -17,3 +22,18 @@
         </nav>
     </div>
 </div>
+<mat-sidenav-container class="vw-sidenav-container" [fxHide.gt-xs]="true">
+    <mat-sidenav #snav [mode]="over" [fixedInViewport]="true" [fixedTopGap]="50">
+        <mat-nav-list>
+            <a mat-list-item routerLink="/">Voidwell</a>
+            <a mat-list-item routerLink="/blog">Blog</a>
+            <a mat-list-item routerLink="/ps2">Planetside 2</a>
+            <mat-divider></mat-divider>
+            <a *ngIf="isLoggedIn" mat-list-item routerLink="/account/settings">Settings</a>
+            <a *ngIf="isLoggedIn && canAccessAdmin()" mat-list-item routerLink="/admin">Admin</a>
+            <a *ngIf="isLoggedIn" mat-list-item (click)="signOut()">Logout</a>
+            <a *ngIf="!isLoggedIn" mat-list-item (click)="signIn()">Login</a>
+            <a *ngIf="!isLoggedIn" mat-list-item routerLink="/account/register">Register</a>
+        </mat-nav-list>
+    </mat-sidenav>
+</mat-sidenav-container>

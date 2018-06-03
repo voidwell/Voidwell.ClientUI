@@ -8,7 +8,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconRegistry } from '@angular/material';
 import { NgPipesModule } from 'ngx-pipes';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
-import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MaterialLib } from './shared/materialLib.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
@@ -38,8 +37,7 @@ import { AppComponent } from './app.component';
         FormsModule,
         NgReduxModule,
         NgPipesModule,
-        LeafletModule.forRoot(),
-        FlexLayoutModule
+        LeafletModule.forRoot()
     ],
     providers: [
         MatIconRegistry,

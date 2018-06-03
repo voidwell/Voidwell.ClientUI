@@ -1,7 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgPipesModule } from 'ngx-pipes';
 import { D3Service } from 'd3-ng2-service';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
@@ -98,8 +97,7 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         SharedComponentsModule,
         routing,
         NgPipesModule,
-        LeafletModule,
-        FlexLayoutModule
+        LeafletModule
     ],
     providers: [
         PlanetsideApi,
