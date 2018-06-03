@@ -81,7 +81,7 @@
 
     <div class="card-row">
         <planetside-player-stats-siege-card class="siege-container" captured="{{playerData.lifetimeStats.facilityCaptureCount}}" defended="{{playerData.lifetimeStats.facilityDefendedCount}}"></planetside-player-stats-siege-card>
-        <mat-card class="vw-character-kdr inline">
+        <mat-card class="vw-character-kdr inline info-card">
             <mat-card-header>
                 <mat-card-title>Overall KD Performance</mat-card-title>
             </mat-card-header>
@@ -106,7 +106,7 @@
                     </div>
                 </div>
             </mat-card-content>
-            <mat-card-footer class="bottom">
+            <mat-card-footer>
                 <div class="info-rows">
                     <div class="info-row flexrow flexalignspacearoundstretch">
                         <div class="info-item flex">
@@ -131,7 +131,7 @@
                 </div>
             </mat-card-footer>
         </mat-card>
-        <mat-card class="vw-character-weapons inline">
+        <mat-card class="vw-character-weapons inline info-card">
             <mat-card-header>
                 <mat-card-title>Overall Weapon Performance</mat-card-title>
             </mat-card-header>
@@ -185,62 +185,60 @@
                 </div>
             </mat-card-footer>
         </mat-card>
+        <mat-card class="vw-character-ivi inline info-card">
+            <mat-card-header>
+                <mat-card-title>Infantry vs Infantry</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+                <div class="ivi-data">
+                    <div class="layout-margin">
+                        <div class="ivi-score">
+                            <div class="value">{{playerData.infantryStats.iviScore | number}}</div>
+                            <div class="label">IVI Score</div>
+                        </div>
+                        <div>
+                            <span class="label">KDR padding:</span>
+                            <span class="value">{{playerData.infantryStats.kdrPadding | number: '.2-2'}}</span>
+                        </div>
+                        <div>
+                            <span class="label">Sanctioned kills:</span>
+                            <span class="value">{{playerData.infantryStats.kills | number}}</span>
+                        </div>
+                        <div>
+                            <span class="label">Weapons:</span>
+                            <span class="value">{{playerData.infantryStats.weapons | number}} / {{playerData.infantryStats.unsanctionedWeapons | number}}</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+            <mat-card-footer>
+                <div class="info-rows">
+                    <div class="info-row flexrow flexalignspacearoundstretch">
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.infantryStats.accuracy * 100 | number: '.3-3'}}%</div>
+                            <vw-grade [delta]="playerData.infantryStats.accuracyDelta"></vw-grade>
+                            <div class="label">Accuracy</div>
+                        </div>
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.infantryStats.headshotRatio * 100 | number: '.3-3'}}%</div>
+                            <vw-grade [delta]="playerData.infantryStats.headshotRatioDelta"></vw-grade>
+                            <div class="label">HSR</div>
+                        </div>
+                    </div>
+                    <div class="info-row flexrow flexalignspacearoundstretch">
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.infantryStats.killDeathRatio | number: '.3-3'}}</div>
+                            <vw-grade [delta]="playerData.infantryStats.killDeathRatioDelta"></vw-grade>
+                            <div class="label">KDR</div>
+                        </div>
+                        <div class="info-item flex">
+                            <div class="value">{{playerData.infantryStats.killsPerMinute | number: '.3-3'}}</div>
+                            <vw-grade [delta]="playerData.infantryStats.killsPerMinuteDelta"></vw-grade>
+                            <div class="label">KpM</div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-footer>
+        </mat-card>
     </div>
-    <!--
-    <div class="vw-character-ivi">
-        <mat-card>
-          <mat-card-header>
-            <mat-card-title>
-                Infantry vs Infantry
-            </mat-card-title>
-          </mat-card-header>
-            <mat-card-content class="layout-padding">
-              <div class="flexrow">
-                  <div class="flexcolumn">
-                      <div>
-                          <span class="label">Rating:</span>
-                          <span class="value">{{stats.rating | number: '.2-2'}}</span>
-                      </div>
-                      <div>
-                          <span class="label">Kill/Death ratio:</span>
-                          <span class="value">{{stats.killDeathRatio | number: '.2-2'}}</span>
-                      </div>
-                      <div>
-                          <span class="label">Accuracy:</span>
-                          <span class="value">{{stats.accuracy * 100 | number: '.2-2'}}%</span>
-                      </div>
-                      <div>
-                          <span class="label">Headshot ratio:</span>
-                          <span class="value">{{stats.headshotRatio * 100 | number: '.2-2'}}%</span>
-                      </div>
-                      <div>
-                          <span class="label">Kills per hour:</span>
-                          <span class="value">{{stats.killsPerHour | number: '.2-2'}}</span>
-                      </div>
-                      <div>
-                          <span class="label">Shots per kill:</span>
-                          <span class="value">{{stats.shotsPerKill | number: '.2-2'}}</span>
-                      </div>
-                      <div>
-                          <span class="label">Landed per kill:</span>
-                          <span class="value">{{stats.landedPerKill | number: '.2-2'}}</span>
-                      </div>
-                      <div>
-                          <span class="label">Kills:</span>
-                          <span class="value">{{stats.kills | number}}</span>
-                      </div>
-                      <div>
-                          <span class="label">Deaths:</span>
-                          <span class="value">{{stats.deaths | number}}</span>
-                      </div>
-                      <div>
-                          <span class="label">Play time:</span>
-                          <span class="value">{{stats.playTime / 3600 | number: '.1-1'}} hours</span>
-                      </div>
-                  </div>
-              </div>
-              </mat-card-content>
-          </mat-card>
-      </div>
-      -->
 </div>

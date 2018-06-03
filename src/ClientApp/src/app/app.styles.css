@@ -457,6 +457,20 @@ mat-card .info-rows .info-row .info-item {
     }
 */
 
+mat-card.info-card {
+    display: flex;
+    flex-direction: column;
+}
+
+mat-card.info-card mat-card-content {
+    flex: 1;
+}
+
+mat-card mat-card-footer {
+    display: table-row;
+    vertical-align: bottom;
+}
+
 .mat-dialog-container,
 .mat-select-value {
     color: rgba(255,255,255,0.8);
