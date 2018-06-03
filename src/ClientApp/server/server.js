@@ -21,12 +21,4 @@ if (isProduction) {
     app.listen(port, function () {
         console.log('Server running on port ' + port);
     });
-} else {
-    var publicPath = path.resolve(__dirname, '../assets');
-
-    app.use('/files', express.static(publicPath));
-
-    app.listen(port, function () {
-        console.log('Server running on port ' + port);
-    });
 }

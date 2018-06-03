@@ -55,6 +55,14 @@
                         <strong>{{sessionStats.headshots | number}}</strong>
                         <span class="label">Headshots</span>
                     </div>
+                    <div class="data-block">
+                        <strong>{{sessionStats.facilitiesCaptured | number}}</strong>
+                        <span class="label">Captured</span>
+                    </div>
+                    <div class="data-block">
+                        <strong>{{sessionStats.facilitiesDefended | number}}</strong>
+                        <span class="label">Defended</span>
+                    </div>
                 </mat-card-content>
             </mat-card>
         </div>
@@ -69,37 +77,90 @@
                         <mat-cell *matCellDef="let event">{{event.timestamp | date: 'MMM d, h:mm:ss a'}}</mat-cell>
                     </ng-container>
 
-                    <ng-container matColumnDef="attacker">
-                        <mat-header-cell *matHeaderCellDef>Attacker</mat-header-cell>
+                    <ng-container matColumnDef="event">
+                        <mat-header-cell *matHeaderCellDef></mat-header-cell>
                         <mat-cell *matCellDef="let event">
-                            <a mat-button routerLink="/ps2/player/{{event.attacker.id}}">
-                                <span [class]="event.attacker.factionId | factionColor">{{event.attacker.name || event.attacker.id}}</span>
-                            </a>
-                        </mat-cell>
-                    </ng-container>
 
-                    <ng-container matColumnDef="weapon">
-                        <mat-header-cell *matHeaderCellDef>Weapon</mat-header-cell>
-                        <mat-cell *matCellDef="let event">
-                            <div class="weapon-image">
-                                <img [src]="event.weapon.imageId | dgcImageUrl" />
+                            <div *ngIf="event.eventType==='Login' || event.eventType==='Logout'">
+                                <div class="event-col col-session-state">
+                                    <div *ngIf="event.eventType==='Login'">Player logged in</div>
+                                    <div *ngIf="event.eventType==='Logout'">Player logged out</div>
+                                </div>
                             </div>
-                            <div class="weapon-details">
-                                <div>{{event.weapon.name}}</div>
-                                <strong *ngIf="event.isHeadshot">Headshot</strong>
-                            </div>
-                            <div class="weapon-headshot">
-                                <mat-icon *ngIf="event.isHeadshot" fontSet="mdi" fontIcon="mdi-target"></mat-icon>
-                            </div>
-                        </mat-cell>
-                    </ng-container>
 
-                    <ng-container matColumnDef="victim">
-                        <mat-header-cell *matHeaderCellDef>Victim</mat-header-cell>
-                        <mat-cell *matCellDef="let event">
-                            <a mat-button routerLink="/ps2/player/{{event.victim.id}}">
-                                <span [class]="event.victim.factionId | factionColor">{{event.victim.name || event.victim.id}}</span>
-                            </a>
+                            <div *ngIf="event.eventType==='BattleRankUp'" fxLayoutAlign="start stretch">
+                                <div class="event-col col-battle-rank-up">
+                                    <mat-icon fontSet="mdi" class="rank-up-icon" fontIcon="mdi-arrow-up-thick"></mat-icon> Ranked up to {{event.battleRank}}
+                                </div>
+                            </div>
+
+                            <div *ngIf="event.eventType==='Death'" fxLayoutAlign="space-between">
+                                <div class="event-col">
+                                    <a mat-button routerLink="/ps2/player/{{event.attacker.id}}">
+                                        <span [class]="event.attacker.factionId | factionColor">{{event.attacker.name || event.attacker.id}}</span>
+                                    </a>
+                                </div>
+                                <div class="event-col">
+                                    <div class="weapon-image">
+                                        <img [src]="event.weapon.imageId | dgcImageUrl" alt="" />
+                                    </div>
+                                    <div class="weapon-details">
+                                        <div>{{event.weapon.name}}</div>
+                                        <strong *ngIf="event.isHeadshot">Headshot</strong>
+                                    </div>
+                                    <div class="weapon-headshot">
+                                        <mat-icon *ngIf="event.isHeadshot" fontSet="mdi" fontIcon="mdi-target"></mat-icon>
+                                    </div>
+                                </div>
+                                <div class="event-col">
+                                    <a mat-button routerLink="/ps2/player/{{event.victim.id}}">
+                                        <span [class]="event.victim.factionId | factionColor">{{event.victim.name || event.victim.id}}</span>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div *ngIf="event.eventType==='VehicleDestroy'" fxLayoutAlign="space-between">
+                                <div class="event-col">
+                                    <a mat-button routerLink="/ps2/player/{{event.attacker.id}}">
+                                        <span [class]="event.attacker.factionId | factionColor">{{event.attacker.name || event.attacker.id}}</span>
+                                    </a>
+                                </div>
+                                <div class="event-col">
+                                    <div class="weapon-image">
+                                        <img [src]="event.weapon.imageId | dgcImageUrl" alt="" />
+                                    </div>
+                                    <div class="weapon-details">
+                                        <div>{{event.weapon.name}}</div>
+                                        <strong *ngIf="event.isHeadshot">Headshot</strong>
+                                    </div>
+                                </div>
+                                <div class="event-col col-player-vehicle">
+                                    <div class="col-player-vehicle-wrapper">
+                                        <div [class]="event.factionId | factionColor">{{event.victimVehicle.name}}</div>
+                                        <div class="player-vehicle-owner" *ngIf="event.victim && event.victim.id != 0">
+                                            Owned by
+                                            <a class="clean-link" routerLink="/ps2/player/{{event.victim.id}}">
+                                                <span [class]="event.victim.factionId | factionColor">{{event.victim.name || event.victim.id}}</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div *ngIf="event.eventType==='FacilityCapture' || event.eventType==='FacilityDefend'">
+                                <div class="event-col col-facility-state">
+                                    <div *ngIf="event.eventType==='FacilityCapture'">
+                                        <mat-icon fontSet="mdi" class="sword-icon" fontIcon="mdi-sword"></mat-icon> Captured
+                                    </div>
+                                    <div *ngIf="event.eventType==='FacilityDefend'">
+                                        <mat-icon fontSet="mdi" class="shield-icon" fontIcon="mdi-shield"></mat-icon> Defended
+                                    </div>
+                                </div>
+                                <div class="event-col col-facility-name">
+                                    {{event.facility.name}}
+                                </div>
+                            </div>
+
                         </mat-cell>
                     </ng-container>
 
@@ -108,8 +169,8 @@
                         <mat-cell *matCellDef="let event">{{event.zoneId | zoneName}}</mat-cell>
                     </ng-container>
 
-                    <mat-header-row *matHeaderRowDef="['time','attacker','weapon','victim','location']"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: ['time','attacker','weapon','victim','location'];"></mat-row>
+                    <mat-header-row *matHeaderRowDef="['time','event','location']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['time','event','location'];"></mat-row>
                 </mat-table>
             </mat-card>
         </div>
