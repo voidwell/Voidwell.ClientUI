@@ -1,33 +1,15 @@
-﻿<div fxLayout="row" fxLayout.lt-sm="column" fxFlex="1 1 auto">
-    <div class="blog-left"
-         fxFlex="300px"
-         fxFlex.xs="50px"
-         [ngStyle]="{'padding': '20px'}"
-         [ngStyle.xs]="{'padding': '5px'}"
-         fxLayout="column"
-         fxLayoutAlign="space-between">
-        <div>
-            <div class="blog-title" [innerHtml]="blogPost.title" [ngStyle]="{'font-size': '2em'}" [ngStyle.xs]="{'font-size': '1em'}"></div>
-            <div class="blog-title-spacer"></div>
-        </div>
-        <div class="blog-author" [ngStyle.xs]="{'font-size': '0.8em'}">{{blogPost.author}}</div>
-    </div>
-    <div class="blog-right" fxFlex="1 1 auto">
-        <div class="blog-content"
-             [innerHtml]="blogPost.content"
-             [ngStyle]="{'padding': '40px 40px 30px 40px'}"
-             [ngStyle.xs]="{'padding': '20px 20px 10px 20px'}"></div>
-        <div class="blog-footer">
-            <div class="blog-link pull-right">
-                <a [routerLink]="blogPost.id" target="_blank">
-                    <mat-icon fontSet="mdi" fontIcon="mdi-link-variant"></mat-icon>
-                </a>
-            </div>
-            <div class="blog-timestamp">
-                <div class="blog-date">{{blogPost.publishDate | date:'EEE dd MMM yyyy'}}</div>
-                <div class="blog-timestamp-spacer">-</div>
-                <div class="blog-time">{{blogPost.publishDate | date:'HH:mm'}}</div>
-            </div>
-        </div>
-    </div>
-</div>
+﻿<mat-card fxFlex="1 1 auto">
+    <mat-card-title>
+        <h1>
+            <a [routerLink]="blogPost.id" target="_blank">{{blogPost.title}}</a>
+        </h1>
+    </mat-card-title>
+    <mat-card-subtitle>
+        <span class="blog-date">{{blogPost.publishDate | date:'EEE dd MMM yyyy'}}</span>
+        <span class="blog-time">{{blogPost.publishDate | date:'HH:mm'}}</span>
+        <span>By {{blogPost.author}}</span>
+    </mat-card-subtitle>
+    <mat-card-content>
+        <div [innerHtml]="blogPost.content"></div>
+    </mat-card-content>
+</mat-card>
