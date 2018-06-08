@@ -1,8 +1,8 @@
-<div class="vw-navbar" [style.background]="header.background" fxLayout="row" fxLayoutAlign.gt-xs="center">
-    <button mat-button fxHide [fxShow.lt-sm]="true" matSuffix mat-icon-button (click)="snav.toggle()">
+<div class="vw-navbar" [style.background]="header.background" fxLayout="row" fxLayoutAlign="center" fxLayoutAlign.lt-lg="start">
+    <button mat-button fxHide [fxShow.lt-lg]="true" matSuffix mat-icon-button (click)="snav.toggle()">
         <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
     </button>
-    <div fxFlex.gt-xs="80" [fxHide.lt-sm]="true">
+    <div fxFlex="80" [fxHide.lt-lg]="true">
         <nav fxLayout="row" fxLayoutAlign="space-between">
             <div fxLayout="row">
                 <a mat-button routerLink="/">Voidwell</a>
@@ -22,7 +22,7 @@
         </nav>
     </div>
 </div>
-<mat-sidenav-container class="vw-sidenav-container" [fxHide.gt-xs]="true">
+<mat-sidenav-container class="vw-sidenav-container" [fxShow.lt-lg]="true">
     <mat-sidenav #snav [mode]="over" [fixedInViewport]="true" [fixedTopGap]="50">
         <mat-nav-list>
             <a mat-list-item routerLink="/">Voidwell</a>
