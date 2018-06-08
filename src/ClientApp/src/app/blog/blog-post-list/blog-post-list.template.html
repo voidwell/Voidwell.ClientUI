@@ -1,5 +1,5 @@
 ﻿<div fxLayoutAlign="center" fxFlexLayout="row">
-    <div fxFlex="80">
+    <div>
         <vw-loader [loading]="isLoading"></vw-loader>
         <vw-error-message [message]="errorMessage"></vw-error-message>
         <div *ngIf="!isLoading && !errorMessage" class="blog-card-list">
