@@ -13,10 +13,9 @@
     width: auto;
 }
 
-.card-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
+.card {
+    flex: 1 1 auto;
+    margin: 10px;
 }
 
 .card-row.card-row-stretch .mat-card {
@@ -63,10 +62,6 @@
   opacity: 0.8;
   width: 130px;
   display: inline-block;
-}
-
-.siege-container {
-    display: flex;
 }
 
 .value {

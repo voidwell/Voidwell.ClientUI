@@ -1,0 +1,80 @@
+﻿<div class="vw-navigation">
+    <mat-sidenav-container>
+        <mat-sidenav [mode]="mobileQuery.matches ? 'over' : 'side'"
+                     [fixedInViewport]="mobileQuery.matches"
+                     [opened]="sidenavState"
+                     [ngClass]="{'snapped': !mobileQuery.matches}"
+                     (closedStart)="closed()">
+            <mat-nav-list>
+                <div class="navigation-close nav-margin">
+                    <button mat-icon-button (click)="closed()">
+                        <mat-icon fontSet="mdi" fontIcon="mdi-arrow-left"></mat-icon>
+                    </button>
+                </div>
+                <div class="navigation-toggles">
+                    
+                </div>
+                <ul class="nav-list nav-margin">
+                    <li>
+                        <a routerLink="/"
+                           routerLinkActive #rla1="routerLinkActive"
+                           [ngClass]="{ 'active': rla1.isActive }"
+                           [routerLinkActiveOptions]="{ exact: true }">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-home"></mat-icon>
+                            Home
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/blog"
+                           routerLinkActive #rla2="routerLinkActive"
+                           [ngClass]="{ 'active': rla2.isActive }">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-message-text"></mat-icon>
+                            Blog
+                        </a>
+                    </li>
+                    <li>
+                        <a routerLink="/ps2"
+                           routerLinkActive #rla3="routerLinkActive"
+                           [ngClass]="{ 'active': rla3.isActive }">
+                            <mat-icon fontSet="mdi" fontIcon="mdi-gamepad-variant"></mat-icon>
+                            Planetside 2
+                        </a>
+                        <ul>
+                            <li>
+                                <a routerLink="/ps2/news"
+                                   routerLinkActive #rla3_1="routerLinkActive"
+                                   [ngClass]="{ 'active': rla3_1.isActive }">
+                                    News
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/ps2/alerts"
+                                   routerLinkActive #rla3_2="routerLinkActive"
+                                   [ngClass]="{ 'active': rla3_2.isActive }">
+                                    Alerts
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/ps2/events"
+                                   routerLinkActive #rla3_3="routerLinkActive"
+                                   [ngClass]="{ 'active': rla3_3.isActive }">
+                                    Events
+                                </a>
+                            </li>
+                            <li>
+                                <a routerLink="/ps2/worlds"
+                                   routerLinkActive #rla3_4="routerLinkActive"
+                                   [ngClass]="{ 'active': rla3_4.isActive }">
+                                    Worlds
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </mat-nav-list>
+        </mat-sidenav>
+        <mat-sidenav-content>
+            <ng-content></ng-content>
+        </mat-sidenav-content>
+    </mat-sidenav-container>
+</div>

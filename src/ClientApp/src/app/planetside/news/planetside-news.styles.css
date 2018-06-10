@@ -9,8 +9,13 @@
     vertical-align: top;
 }
 
+@media (max-width: 1279px) {
+    .updates-content {
+        display: none;
+    }
+}
 
-.news-content ::ng-deep a:not(.mat-icon-button) {
+.news-content ::ng-deep .mat-card-content a {
     text-decoration: none;
     color: #8c8c8c;
 }

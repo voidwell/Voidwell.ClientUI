@@ -1,11 +1,8 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Observable } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
 
 @Component({
     selector: 'voidwell-admin-roles',
@@ -36,7 +33,7 @@ export class RolesComponent implements OnInit, OnDestroy {
         this.errorMessage = null;
         this.isLoading = true;
         this.api.addRole(roleName)
-            .catch(error => {
+            .pipe<any>(catchError(error => {
                 try {
                     this.errorMessage = JSON.parse(error._body);
                 }
@@ -44,10 +41,10 @@ export class RolesComponent implements OnInit, OnDestroy {
                     this.errorMessage = error._body;
                 }
                 return Observable.throw(error);
-            })
-            .finally(() => {
+            }))
+            .pipe<any>(finalize(() => {
                 this.isLoading = false;
-            })
+            }))
             .subscribe(role => {
                 this.roles.push(role);
             });
@@ -57,7 +54,7 @@ export class RolesComponent implements OnInit, OnDestroy {
         this.errorMessage = null;
         this.isLoading = true;
         this.api.deleteRole(role.id)
-            .catch(error => {
+            .pipe<any>(catchError(error => {
                 try {
                     this.errorMessage = JSON.parse(error._body);
                 }
@@ -65,10 +62,10 @@ export class RolesComponent implements OnInit, OnDestroy {
                     this.errorMessage = error._body;
                 }
                 return Observable.throw(error);
-            })
-            .finally(() => {
+            }))
+            .pipe<any>(finalize(() => {
                 this.isLoading = false;
-            })
+            }))
             .subscribe(result => {
                 let idx = this.roles.indexOf(role);
                 this.roles.splice(idx, 1);

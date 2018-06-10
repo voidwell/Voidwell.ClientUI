@@ -1,12 +1,10 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsidePlayerComponent } from './../../planetside-player.component';
 import { PlanetsideApi } from './../../../planetside-api.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
 
 @Component({
     templateUrl: './planetside-player-session.template.html',
@@ -48,13 +46,13 @@ export class PlanetsidePlayerSessionComponent implements OnDestroy {
 
                 if (this.playerData !== null) {
                     this.api.getCharacterSession(this.playerData.id, sessionId)
-                        .catch(error => {
+                        .pipe<any>(catchError(error => {
                             this.errorMessage = error._body;
                             return Observable.throw(error);
-                        })
-                        .finally(() => {
+                        }))
+                        .pipe<any>(finalize(() => {
                             this.isLoading = false;
-                        })
+                        }))
                         .subscribe(data => {
                             this.session = data.session;
                             this.calculateSessionStats(data.events);
@@ -120,7 +118,7 @@ export class SessionDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        return Observable.of(this.data);
+        return of(this.data);
     }
 
     disconnect() { }

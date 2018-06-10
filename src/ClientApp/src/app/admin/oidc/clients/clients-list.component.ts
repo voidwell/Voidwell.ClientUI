@@ -1,11 +1,8 @@
 ﻿import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
+import { Observable, BehaviorSubject, of, merge, fromEvent } from 'rxjs';
+import { map, distinctUntilChanged, debounceTime, catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../../shared/services/voidwell-api.service';
 
 @Component({
@@ -33,21 +30,21 @@ export class ClientsListComponent implements OnInit {
         this.dataSource = new TableDataSource(this.clients, this.paginator);
 
         this.api.getAllClients()
-            .catch(error => {
+            .pipe<any>(catchError(error => {
                 this.errorMessage = error._body
                 return Observable.throw(error);
-            })
-            .finally(() => {
+            }))
+            .pipe<any>(finalize(() => {
                 this.isLoading = false;
-            })
+            }))
             .subscribe(clients => {
                 this.clients = clients;
                 this.dataSource = new TableDataSource(this.clients, this.paginator);
             });
 
-        Observable.fromEvent(this.filter.nativeElement, 'keyup')
-            .debounceTime(150)
-            .distinctUntilChanged()
+        fromEvent(this.filter.nativeElement, 'keyup')
+            .pipe(debounceTime(150))
+            .pipe(distinctUntilChanged())
             .subscribe(() => {
                 if (!this.dataSource) { return; }
                 this.dataSource.filter = this.filter.nativeElement.value;
@@ -65,8 +62,8 @@ export class TableDataSource extends DataSource<any> {
     set filter(filter: string) { this._filterChange.next(filter); }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.paginator.page, this._filterChange).map(() => {
+        let first = of(this.data);
+        return merge(first, this.paginator.page, this._filterChange).pipe(map(() => {
             if (this.data == null || this.data.length == 0) {
                 return [];
             }
@@ -80,7 +77,7 @@ export class TableDataSource extends DataSource<any> {
 
             let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
             return filteredData.splice(startIndex, this.paginator.pageSize);
-        });
+        }));
     }
 
     disconnect() { }

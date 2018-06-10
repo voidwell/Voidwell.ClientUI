@@ -2,13 +2,9 @@
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Observable, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
 
 @Component({
@@ -77,9 +73,9 @@ export class TableDataSource extends DataSource<any> {
 
     connect(): Observable<any[]> {
         let first = this.dataSubject;
-        return Observable.merge(first).map(() => {
+        return first.pipe(map(() => {
             return this.data.sort((a, b) => a.startDate < b.startDate ? 1 : -1);
-        });
+        }));
     }
 
     refresh() {

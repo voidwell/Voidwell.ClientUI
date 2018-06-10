@@ -1,17 +1,28 @@
-<div class="vw-header" [ngStyle]="{ 'background-color': header.background }">
-    <vw-navbar></vw-navbar>
-    <div fxLayout="row" fxLayoutAlign="center">
-        <div fxFlex="80">
-            <div class="page-header flexrow flexalignspacebetweenstretch">
-                <div class="header-title">{{header.title}}</div>
-                <div class="header-info flexrow flexalignstartcenter" >
-                    <div class="header-info-item flexcolumn" *ngFor="let headerInfo of header.info">
-                        <div class="header-info-item-value">{{headerInfo.value}}</div>
-                        <div class="header-info-item-label">{{headerInfo.label}}</div>
-                    </div>
-                </div>
-            </div>
-            <div class="header-subtitle">{{header.subtitle}}</div>
-        </div>
+<div class="vw-header">
+    <div class="logo">
+        <a routerLink="/" class="logo-button">Voidwell</a>
+        <a href="javascript:void(0);" class="menu-button" (click)="toggleNav()">
+            <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
+        </a>
     </div>
+    <ul class="top-menu">
+        <li class="top-menu_search">
+            <button mat-icon-button (click)="searchFocused=true">
+                <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+            </button>
+        </li>
+        <li class="top-menu_profile">
+            <button mat-icon-button [matMenuTriggerFor]="profilemenu">
+                <mat-icon fontSet="mdi" fontIcon="mdi-account-circle"></mat-icon>
+            </button>
+            <mat-menu #profilemenu="matMenu">
+                <button mat-menu-item>Register</button>
+                <button mat-menu-item>Login</button>
+            </mat-menu>
+        </li>
+    </ul>
+    <form class="top-search" [ngClass]="{'focus': searchFocused}">
+        <input class="top-search_input" placeholder="Search" (focus)="searchFocused=true" (blur)="searchFocused=false">
+        <i class="top-search_reset"></i>
+    </form>
 </div>

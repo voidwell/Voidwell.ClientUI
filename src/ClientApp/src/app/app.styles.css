@@ -1,34 +1,103 @@
-﻿body {
+﻿html {
+    font-size: 10px;
+    display: block;
+    font-family: sans-serif;
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background: #22313a;
+    color: #8a9ba1;
+    font-family: Roboto,sans-serif;
+    font-size: 13px;
+    line-height: 1.42857143;
     margin: 0;
-    background: #05121b;
-    color: #efefef;
-    font-family: Roboto,"Helvetica Neue",sans-serif;
 }
 
-@media (min-width: 81.25em) {
-    .content-container {
-        width: 75%;
-        padding: 0;
+    body:before {
+        content: '';
+        height: 266px;
+        width: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: #1e2a31;
+    }
+
+@media screen and (-webkit-min-device-pixel-ratio: 0) and (max-width: 767px) {
+    body:before {
+        height: 215px;
     }
 }
 
-@media (min-width: 43.75em) {
-    .content-container {
-        margin: 0 auto;
+@media screen and (-webkit-min-device-pixel-ratio: 0) {
+    body:before {
+        height: 265px;
     }
 }
 
-vw-navbar {
-    position: relative;
-    z-index: 10;
-    color: inherit;
+@media (max-width: 767px) {
+    body:before {
+        height: 216px;
+    }
 }
 
-vw-header {
-    position: relative;
-    z-index: 9;
-    color: inherit;
+* {
+    -webkit-font-smoothing: antialiased;
 }
+
+*, :after, :before {
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+*, :active, :hover {
+    outline: 0;
+}
+
+*, :active, :hover, html {
+    -webkit-tap-highlight-color: transparent;
+}
+
+.main-content {
+    position: relative;
+    display: block;
+}
+
+@media (min-width: 1280px) {
+    .main-content {
+        padding: 0 40px 30px 270px;
+        min-height: calc(100vh - 159px);
+    }
+}
+
+@media (max-width: 1279px) and (min-width: 768px) {
+    .main-content {
+        padding: 0 40px 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .main-content {
+        padding: 0 15px 30px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 .voidwell .tab-nav-bar,
@@ -40,21 +109,6 @@ vw-header {
 .voidwell mat-ink-bar {
     background: #3A4C58;
 }
-
-
-
-
-
-.voidwell a:not([mat-button]):not([mat-tab-link]) {
-    color: #48DCF6;
-    text-decoration: none;
-}
-
-.voidwell a:not([mat-button]):hover {
-    opacity: 0.5;
-}
-
-
 
 img.inverse-img {
     -webkit-filter: invert(100%);
@@ -120,67 +174,6 @@ img.inverse-img {
 
 
 
-
-
-
-
-
-
-.flex {
-    flex: 1 !important;
-    box-sizing: border-box !important;
-}
-
-.flexrow {
-    display: flex !important;
-    flex-direction: row !important;
-    box-sizing: border-box !important;
-}
-
-.flexcolumn {
-    display: flex !important;
-    flex-direction: column !important;
-    box-sizing: border-box !important;
-}
-
-.flexalignspacearoundstretch {
-    align-items: stretch;
-    align-content: stretch;
-    justify-content: space-around;
-}
-
-.flexalignspacebetweenstretch {
-    align-items: stretch;
-    align-content: stretch;
-    justify-content: space-between;
-}
-
-.flexalignstartcenter {
-    align-items: center;
-    align-content: center;
-    max-width: 100%;
-    justify-content: flex-start;
-}
-
-.layout-padding,
-.layout-padding > * {
-    padding: 8px;
-}
-
-.layout-margin,
-.layout-margin > * {
-    margin: 8px;
-}
-
-.layout-wrap {
-    flex-wrap: wrap;
-}
-
-
-
-
-
-
 /**
  * Progress bar animations
  */
@@ -237,13 +230,6 @@ img.inverse-img {
 .pull-left {
     float: left;
 }
-
-.large-width {
-    max-width: 500px;
-    width: 100%;
-}
-
-
 
 .mat-form-field-placeholder {
     color: #fff;
@@ -348,14 +334,24 @@ mat-icon[fonticon] {
 
 
 mat-card.mat-card {
-    background: #0f1c25;
-    color: #E7DFDD;
+    background: #2b3942;
+    color: inherit;
+    box-shadow: none !important;
+}
+
+mat-card .mat-card-title h1,
+mat-card .mat-card-title h2,
+mat-card .mat-card-title h3,
+mat-card .mat-card-title h4,
+mat-card .mat-card-title h5,
+mat-card .mat-card-title h6 {
+    margin: 0;
 }
 
 mat-card .mat-card-title {
     font-size: inherit;
     color: #fff;
-    opacity: 0.9;
+    opacity: 0.8;
 }
 mat-card .mat-card-title a {
     color: inherit;
@@ -365,8 +361,7 @@ mat-card .mat-card-title a {
 mat-card .mat-card-subtitle {
     color: #fff;
     opacity: 0.8;
-    font-size: 0.7em;
-    text-transform: uppercase;
+    font-size: 0.9em;
     line-height: 1.33333333em;
 }
 

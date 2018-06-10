@@ -22,7 +22,8 @@ import {
     MatNativeDateModule,
     MatSlideToggleModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatTreeModule
 } from '@angular/material';
 
 let modules = [
@@ -48,6 +49,7 @@ let modules = [
     MatSlideToggleModule,
     MatSidenavModule,
     MatListModule,
+    MatTreeModule,
     FlexLayoutModule
 ];
 

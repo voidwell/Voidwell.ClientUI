@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { NgRedux } from '@angular-redux/store';
+import { Observable } from 'rxjs';
 import { HeaderService } from './../../shared/services/header.service';
 import { VoidwellAuthService } from './../../shared/services/voidwell-auth.service';
-import { Observable } from 'rxjs/Observable';
-import { NgRedux } from '@angular-redux/store';
 import { IAppState } from './../../app.component';
 
 @Component({
