@@ -15,7 +15,7 @@ export interface IAppState {
 @Component({
     selector: 'app',
     templateUrl: './app.template.html',
-    styleUrls: ['./app-import.styles.scss', './app.styles.css', './modernscale.styles.css', './planetside.styles.css'],
+    styleUrls: ['./app-import.styles.scss', './app.styles.css', './planetside.styles.css'],
     encapsulation: ViewEncapsulation.None
 })
 

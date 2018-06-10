@@ -1,4 +1,4 @@
-﻿<div class="content-container">
+﻿<div>
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <vw-loader [loading]="isLoading"></vw-loader>
     <div class="main-news-container" *ngIf="!isLoading && !errorMessage">
@@ -8,12 +8,16 @@
             </div>
         </div>
         <div class="updates-content">
-            <div class="updates-title">Game Updates</div>
-            <ul *ngIf="!isUpdatesLoading">
-                <li *ngFor="let item of updateList">
-                    <a [href]="item.link" target="_blank">{{item.title}}</a>
-                </li>
-            </ul>
+            <mat-card>
+                <mat-card-title>Updates</mat-card-title>
+                <mat-card-content>
+                    <ul *ngIf="!isUpdatesLoading">
+                        <li *ngFor="let item of updateList">
+                            <a [href]="item.link" target="_blank">{{item.title}}</a>
+                        </li>
+                    </ul>
+                </mat-card-content>
+            </mat-card>
         </div>
     </div>
 </div>

@@ -1,8 +1,7 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
+import { Subscription, Observable } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsideWorldComponent } from './../../planetside-world.component';
 import { PlanetsideWorldMapComponent } from './../planetside-world-map.component';
 import {
@@ -78,14 +77,14 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
             };
 
             this.zoneMapSub = this.parent.getZoneMap(this.zoneId)
-                .catch(error => {
+                .pipe<any>(catchError(error => {
                     this.errorMessage = error._body
                     this.isLoading = false;
                     return Observable.throw(error);
-                })
-                .finally(() => {
+                }))
+                .pipe<any>(finalize(() => {
                     this.isLoading = false;
-                })
+                }))
                 .subscribe(zoneMap => {
                     this.zoneMap = zoneMap;
                 });

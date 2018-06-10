@@ -1,15 +1,8 @@
 ﻿import { Component, OnInit, ElementRef, ViewChild, Injector } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable, MatPaginator } from '@angular/material';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromEvent';
+import { Observable, BehaviorSubject, of, merge, fromEvent } from 'rxjs';
+import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
     templateUrl: './planetside-alert-players.template.html',
@@ -42,9 +35,9 @@ export class PlanetsideAlertPlayersComponent implements OnInit {
 
             this.dataSource = new TableDataSource(alert.log.stats.participants, this.sort, this.paginator);
 
-            Observable.fromEvent(this.filter.nativeElement, 'keyup')
-                .debounceTime(150)
-                .distinctUntilChanged()
+            fromEvent(this.filter.nativeElement, 'keyup')
+                .pipe(debounceTime(150))
+                .pipe(distinctUntilChanged())
                 .subscribe(() => {
                     if (!this.dataSource) { return; }
                     this.dataSource.filter = this.filter.nativeElement.value;
@@ -63,8 +56,8 @@ export class TableDataSource extends DataSource<any> {
     set filter(filter: string) { this._filterChange.next(filter); }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.sort.sortChange, this.paginator.page, this._filterChange).map(() => {
+        let first = of(this.data);
+        return merge(first, this.sort.sortChange, this.paginator.page, this._filterChange).pipe(map(() => {
             const data = this.data.slice();
 
             let sortedData = this.getSortedData(data);
@@ -76,7 +69,7 @@ export class TableDataSource extends DataSource<any> {
 
             let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
             return filteredData.splice(startIndex, this.paginator.pageSize);
-        });
+        }));
     }
 
     getSortedData(data: any) {

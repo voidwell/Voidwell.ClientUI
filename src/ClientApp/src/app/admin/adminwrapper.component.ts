@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { NgRedux } from '@angular-redux/store';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { IAppState } from './../app.component';
 import { VoidwellAuthService } from './../shared/services/voidwell-auth.service';
 

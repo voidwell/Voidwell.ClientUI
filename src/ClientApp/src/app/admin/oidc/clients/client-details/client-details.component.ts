@@ -1,11 +1,8 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
+import { Subscription, Observable } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../../../shared/services/voidwell-api.service';
 
 @Component({
@@ -41,13 +38,13 @@ export class ClientDetailsComponent implements OnDestroy {
             let clientId = params['clientId'];
 
             this.api.getClientById(clientId)
-                .catch(error => {
+                .pipe<any>(catchError(error => {
                     this.errorMessage = error._body
                     return Observable.throw(error);
-                })
-                .finally(() => {
+                }))
+                .pipe<any>(finalize(() => {
                     this.isLoading = false;
-                })
+                }))
                 .subscribe(client => {
                     this.client = client;
                 });

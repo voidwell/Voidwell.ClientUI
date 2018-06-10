@@ -4,8 +4,7 @@ import { D3Service, D3 } from 'd3-ng2-service';
 @Component({
     selector: 'planetside-player-stats-siege-card',
     templateUrl: './planetside-player-stats-siege-card.template.html',
-    styleUrls: ['./planetside-player-stats-siege-card.styles.css'],
-    encapsulation: ViewEncapsulation.None
+    styleUrls: ['./planetside-player-stats-siege-card.styles.css']
 })
 
 export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {

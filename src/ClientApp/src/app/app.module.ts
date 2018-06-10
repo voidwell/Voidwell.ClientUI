@@ -13,8 +13,11 @@ import { MaterialLib } from './shared/materialLib.module';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { VoidwellApi } from './shared/services/voidwell-api.service';
 import { HeaderService } from './shared/services/header.service';
+import { NavMenuService } from './shared/services/nav-menu.service';
 import { VWHeaderComponent } from './vw-header/vw-header.component';
 import { VWNavbarComponent } from './vw-header/vw-navbar/vw-navbar.component';
+import { VWNavigationComponent } from './vw-navigation/vw-navigation.component';
+import { VWFooterComponent } from './vw-footer/vw-footer.component';
 
 import { routing, appRouterProviders } from './app.routes';
 import { AppComponent } from './app.component';
@@ -24,7 +27,9 @@ import { AppComponent } from './app.component';
     declarations: [
         AppComponent,
         VWHeaderComponent,
-        VWNavbarComponent
+        VWNavbarComponent,
+        VWNavigationComponent,
+        VWFooterComponent
     ],
     imports: [
         SharedComponentsModule,
@@ -43,7 +48,8 @@ import { AppComponent } from './app.component';
         MatIconRegistry,
         appRouterProviders,
         VoidwellApi,
-        HeaderService
+        HeaderService,
+        NavMenuService
     ]
 })
 export class AppModule { }

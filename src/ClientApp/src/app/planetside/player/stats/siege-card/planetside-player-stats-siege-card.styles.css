@@ -1,5 +1,10 @@
+:host {
+    display: block;
+    position: relative;
+}
+
 .vw-siege {
-  overflow: hidden;
+    height: 100%;
 }
 
 .vw-siege #siege-gauge {
@@ -7,21 +12,21 @@
   margin-bottom: -5px;
 }
 
-.vw-siege #siege-gauge g.arc {
-  fill: steelblue;
-}
+    .vw-siege #siege-gauge ::ng-deep g.arc {
+        fill: steelblue;
+    }
 
-.vw-siege #siege-gauge g.pointer {
-  fill: #e85116;
-	stroke: #b64011;
-}
+    .vw-siege #siege-gauge ::ng-deep g.pointer {
+        fill: #e85116;
+        stroke: #b64011;
+    }
 
-.vw-siege #siege-gauge g.label text {
-  text-anchor: middle;
-	font-size: 0.7em;
-	font-weight: bold;
-	fill: #666;
-}
+    .vw-siege #siege-gauge ::ng-deep g.label text {
+        text-anchor: middle;
+        font-size: 0.7em;
+        font-weight: bold;
+        fill: #666;
+    }
 
 .vw-siege .gauge-icons {
   position: relative;

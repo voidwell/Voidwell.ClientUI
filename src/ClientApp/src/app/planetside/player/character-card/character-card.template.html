@@ -1,0 +1,38 @@
+﻿<mat-card class="character-card" *ngIf="playerData" [ngClass]="{'bg-vs': playerData.factionId===1, 'bg-nc': playerData.factionId===2, 'bg-tr': playerData.factionId===3}">
+    <mat-card-title>
+        <h1 class="player-name">{{playerData.name}}</h1>
+        <div class="stats pull-right">
+            <div>
+                {{playerData.battleRank}}
+                <label>Battle Rank</label>
+            </div>
+            <div>
+                {{playerData.lifetimeStats.score | number}}
+                <label>Score</label>
+            </div>
+            <div>
+                {{playerData.lifetimeStats.kills | number}}
+                <label>Kills</label>
+            </div>
+            <div>
+                {{playerData.lifetimeStats.playTime | number}} ({{playerData.times.minutesPlayed / 60 | number}})
+                <label>Hours Played</label>
+            </div>
+        </div>
+    </mat-card-title>
+    <mat-card-subtitle>
+        <div class="player-title">
+            {{playerData.title || 'Soldier'}} of the {{playerData.world}} {{playerData.faction}}
+        </div>
+        <div class="player-last-seen">
+            Last Seen on {{playerData.times.lastLoginDate | date:'MMM d, y h:mm:ss a'}}
+        </div>
+    </mat-card-subtitle>
+
+    <mat-card-content>
+        
+    </mat-card-content>
+    <mat-card-footer>
+        <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+    </mat-card-footer>
+</mat-card>

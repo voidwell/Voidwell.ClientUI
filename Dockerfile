@@ -1,4 +1,4 @@
-FROM pivotalpa/angular-cli:1.4.2 AS build-env
+FROM alexsuch/angular-cli:6.0.5 AS build-env
 WORKDIR /app
 
 # Copy and restore as distinct layers

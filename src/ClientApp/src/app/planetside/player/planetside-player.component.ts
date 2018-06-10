@@ -1,12 +1,10 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DecimalPipe } from '@angular/common';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { PlanetsideApi } from './../planetside-api.service';
 import { HeaderService, HeaderConfig, HeaderInfoItem } from './../../shared/services/header.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
 
 @Component({
     selector: 'planetside-player',
@@ -17,13 +15,6 @@ import { BehaviorSubject } from "rxjs/BehaviorSubject";
 export class PlanetsidePlayerComponent implements OnDestroy {
     isLoading: boolean;
     errorMessage: string = null;
-    navLinks = [
-        { path: 'stats', display: 'Stats' },
-        { path: 'classes', display: 'Classes' },
-        { path: 'vehicles', display: 'Vehicles' },
-        { path: 'weapons', display: 'Weapons' },
-        { path: 'sessions', display: 'Sessions' },
-    ];
     playerData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
     private routeSub: Subscription;
@@ -37,11 +28,11 @@ export class PlanetsidePlayerComponent implements OnDestroy {
             this.playerData.next(null);
 
             this.api.getCharacter(id)
-                .catch(error => {
+                .pipe<any>(catchError(error => {
                     this.errorMessage = error._body || error.statusText
                     this.isLoading = false;
                     return Observable.throw(error);
-                })
+                }))
                 .subscribe(data => {
                     this.playerData.next(data);
 

@@ -1,9 +1,9 @@
 ﻿import { Component, EventEmitter, OnDestroy } from '@angular/core';
+import { Observable } from 'rxjs';
 import { PlanetsideWorldComponent } from './../planetside-world.component';
 import { Zones, Factions } from './../../../shared/configs';
 import { WorldMaps, ZoneMap } from './models';
 import { PlanetsideApi } from './../../../planetside-api.service';
-import { Observable } from "rxjs/Observable";
 
 const SocketConfig = {
     Host: 'push.planetside2.com',

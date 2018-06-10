@@ -1,15 +1,8 @@
 ﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable, MatPaginator } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromEvent';
+import { Observable, Subscription, of, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { PlanetsideApi } from './../planetside-api.service';
 import { PlanetsideItemComponent } from './planetside-item.component';
 
@@ -67,8 +60,8 @@ export class TableDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.sort.sortChange, this.paginator.page).map(() => {
+        let first = of(this.data);
+        return merge(first, this.sort.sortChange, this.paginator.page).pipe(map(() => {
             if (this.data == null || this.data.length == 0) {
                 return [];
             }
@@ -79,7 +72,7 @@ export class TableDataSource extends DataSource<any> {
 
             let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
             return sortedData.splice(startIndex, this.paginator.pageSize);
-        });
+        }));
     }
 
     getSortedData(data: any) {

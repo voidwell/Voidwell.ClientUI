@@ -1,11 +1,9 @@
 ﻿import { Component } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
+import { Observable, of } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsidePlayerComponent } from './../../planetside-player.component';
 import { PlanetsideApi } from './../../../planetside-api.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
 
 @Component({
     templateUrl: './planetside-player-sessions-list.template.html',
@@ -32,13 +30,13 @@ export class PlanetsidePlayerSessionsListComponent {
 
             if (this.playerData !== null) {
                 this.api.getCharacterSessions(this.playerData.id)
-                    .catch(error => {
+                    .pipe<any>(catchError(error => {
                         this.errorMessage = error._body
                         return Observable.throw(error);
-                    })
-                    .finally(() => {
+                    }))
+                    .pipe<any>(finalize(() => {
                         this.isLoading = false;
-                    })
+                    }))
                     .subscribe(sessions => {
                         this.sessions = sessions.sort(this.sortSessions);
                         this.dataSource = new SessionsDataSource(this.sessions);
@@ -62,7 +60,7 @@ export class SessionsDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        return Observable.of(this.data);
+        return of(this.data);
     }
 
     disconnect() { }

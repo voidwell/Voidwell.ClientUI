@@ -1,9 +1,8 @@
-FROM pivotalpa/angular-cli:1.4.2
+FROM alexsuch/angular-cli:6.0.5
 
 ENV NODE_ENV=dev
 
 WORKDIR /app/src/ClientApp
-RUN npm install
 EXPOSE 5000
 
 ENTRYPOINT npm run start:dev

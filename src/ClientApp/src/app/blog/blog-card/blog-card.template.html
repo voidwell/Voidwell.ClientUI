@@ -5,9 +5,7 @@
         </h1>
     </mat-card-title>
     <mat-card-subtitle>
-        <span class="blog-date">{{blogPost.publishDate | date:'EEE dd MMM yyyy'}}</span>
-        <span class="blog-time">{{blogPost.publishDate | date:'HH:mm'}}</span>
-        <span>By {{blogPost.author}}</span>
+        {{blogPost.publishDate | date:'EEE dd MMM yyyy'}} at {{blogPost.publishDate | date:'HH:mm'}} - By {{blogPost.author}}
     </mat-card-subtitle>
     <mat-card-content>
         <div [innerHtml]="blogPost.content"></div>

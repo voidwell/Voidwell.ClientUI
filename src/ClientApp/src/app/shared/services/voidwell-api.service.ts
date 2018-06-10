@@ -1,9 +1,5 @@
-﻿import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/timeout';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+﻿import { Observable } from 'rxjs';
+import { map, timeout, catchError } from 'rxjs/operators';
 import { Http, RequestOptions, Response } from '@angular/http';
 import { NgRedux } from '@angular-redux/store';
 import { IAppState } from './../../app.component';
@@ -30,22 +26,22 @@ export class VoidwellApi extends ApiBase {
 
     getAllBlogPosts() {
         return this.Get(this.blogUrl)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getBlogPost(blogPostId: string) {
         return this.Get(this.blogUrl + blogPostId)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     createBlogPost(blogPost: any) {
         return this.AuthPost(this.blogUrl, blogPost)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     updateBlogPost(blogPostId: string, blogPost: any) {
         return this.AuthPut(this.blogUrl + blogPostId, blogPost)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     deleteBlogPost(blogPostId: string) {
@@ -56,45 +52,45 @@ export class VoidwellApi extends ApiBase {
         this.ngRedux.dispatch({ type: 'REGISTER_USER' });
 
         return this.Post(this.accountUrl + 'register', registrationForm)
-            .map(resp => resp.ok ? null : resp.json())
-            .catch(error => {
+            .pipe(map<Response, any>(resp => resp.ok ? null : resp.json()))
+            .pipe(catchError(error => {
                 this.ngRedux.dispatch({ type: 'REGISTRATION_FAIL', error });
                 return Observable.throw(error);
-            })
-            .map(payload => ({ type: 'REGISTER_USER_SUCCESS', payload }))
+            }))
+            .pipe(map(payload => ({ type: 'REGISTER_USER_SUCCESS', payload })))
             .subscribe(action => this.ngRedux.dispatch(action));
     }
 
     getSecurityQuestions() {
         return this.Get(this.accountUrl + 'questions')
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getRoles() {
         return this.AuthGet(this.accountUrl + 'roles/')
-            .map(resp => resp.json())
-            .map(payload => ({ type: 'GET_USER_ROLES', payload }))
-            .subscribe(action => this.ngRedux.dispatch(action));;
+            .pipe(map<Response, any>(resp => resp.json()))
+            .pipe(map(payload => ({ type: 'GET_USER_ROLES', payload })))
+            .subscribe(action => this.ngRedux.dispatch(action));
     }
 
     getUsers() {
         return this.AuthGet(this.authAdminUrl + 'users')
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getUser(userId: string) {
         return this.AuthGet(this.authAdminUrl + 'user/' + userId)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     updateUserRoles(userId: string, userForm: any) {
         return this.AuthPut(this.authAdminUrl + 'user/' + userId + '/roles', userForm)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     deleteUser(userId: string) {
         return this.AuthDelete(this.authAdminUrl + 'user/' + userId)
-            .map(resp => resp.ok ? null : resp.json());
+            .pipe(map<Response, any>(resp => resp.ok ? null : resp.json()));
     }
 
     lockUser(userId: string, params: any) {
@@ -107,7 +103,7 @@ export class VoidwellApi extends ApiBase {
 
     getAllRoles() {
         return this.AuthGet(this.authAdminUrl + 'roles')
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     addRole(roleName: string) {
@@ -115,12 +111,12 @@ export class VoidwellApi extends ApiBase {
             name: roleName
         };
         return this.AuthPost(this.authAdminUrl + 'role', roleData)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     deleteRole(roleId: string) {
         return this.AuthDelete(this.authAdminUrl + 'role/' + roleId)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     changePassword(changePasswordForm: any) {
@@ -129,12 +125,12 @@ export class VoidwellApi extends ApiBase {
 
     startResetPassword(passwordResetStartForm: any) {
         return this.Post(this.accountUrl + 'resetpasswordstart', passwordResetStartForm)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     resetPasswordQuestions(passwordResetQuestionsForm: any) {
         return this.Post(this.accountUrl + 'resetpasswordquestions', passwordResetQuestionsForm)
-            .map(resp => this.extractData(resp, 'result'));
+            .pipe(map<Response, any>(resp => this.extractData(resp, 'result')));
     }
 
     resetPassword(resetPasswordForm: any) {
@@ -143,47 +139,47 @@ export class VoidwellApi extends ApiBase {
 
     getCustomEvents() {
         return this.Get(this.eventsUrl)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getCustomEventsByGame(gameId: any) {
         return this.Get(this.eventsUrl + 'game/' + gameId)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getCustomEvent(eventId: any) {
         return this.Get(this.eventsUrl + eventId)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     updateCustomEvent(eventId: string, event: any) {
         return this.AuthPut(this.eventsUrl + eventId, event)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     createCustomEvent(event: any) {
         return this.AuthPost(this.eventsUrl, event)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getPS2AllServiceStatus() {
         return this.AuthGet(this.ps2Url + 'services/status')
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getPS2ServiceStatus(service: string) {
         return this.AuthGet(this.ps2Url + 'services/' + service + '/status')
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     enablePS2Service(service: string) {
         return this.AuthPost(this.ps2Url + 'services/' + service + '/enable', null)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     disablePS2Service(service: string) {
         return this.AuthPost(this.ps2Url + 'services/' + service + '/disable', null)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     setupWorldZones(worldId: string) {
@@ -192,26 +188,26 @@ export class VoidwellApi extends ApiBase {
 
     getPSBAccountSessions() {
         return this.AuthGet(this.ps2Url + 'psb/sessions')
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getAllClients() {
         return this.AuthGet(this.oidcAdminUrl + 'client')
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getClientById(clientId: string) {
         return this.AuthGet(this.oidcAdminUrl + 'client/' + clientId)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getAllApiResources() {
         return this.AuthGet(this.oidcAdminUrl + 'resource')
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getApiResourceById(resourceId: string) {
         return this.AuthGet(this.oidcAdminUrl + 'resource/' + resourceId)
-            .map(resp => resp.json());
+            .pipe(map<Response, any>(resp => resp.json()));
     }
 }
