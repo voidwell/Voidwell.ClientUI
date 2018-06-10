@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { HeaderService } from '../shared/services/header.service';
+import { NavMenuService } from './../shared/services/nav-menu.service';
 
 @Component({
     selector: 'vw-header',
@@ -8,12 +8,11 @@ import { HeaderService } from '../shared/services/header.service';
 })
 
 export class VWHeaderComponent {
-    public header;
+    constructor(public navMenuService: NavMenuService) {
+        
+    }
 
-    constructor(private headerService: HeaderService) {
-        this.headerService.activeHeader
-            .subscribe(header => {
-                this.header = header;
-            });
+    public toggleNav() {
+        this.navMenuService.toggle();
     }
 }

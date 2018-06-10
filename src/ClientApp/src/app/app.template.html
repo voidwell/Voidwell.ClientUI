@@ -1,10 +1,11 @@
 ﻿<main class="cd-main-content">
-    <vw-header></vw-header>
-
-    <div id="page">
-        <div class="content-container">
-            <router-outlet></router-outlet>
+    <vw-navigation>
+        <vw-header></vw-header>
+        <div class="main-content">
+            <div class="content">
+                <router-outlet></router-outlet>
+            </div>
+            <vw-footer></vw-footer>
         </div>
-    </div>
-
+    </vw-navigation>
 </main>

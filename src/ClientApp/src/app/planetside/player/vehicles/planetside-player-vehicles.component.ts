@@ -1,10 +1,9 @@
 import { Component, OnDestroy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
+import { Observable, of } from 'rxjs';
 import { PlanetsidePlayerComponent } from './../planetside-player.component';
 import { PlanetsideApi } from './../../planetside-api.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
 
 @Component({
     templateUrl: './planetside-player-vehicles.template.html',
@@ -112,7 +111,7 @@ export class VehiclesDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        return Observable.of(this.data);
+        return of(this.data);
     }
 
     disconnect() { }

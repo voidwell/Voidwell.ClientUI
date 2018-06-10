@@ -3,15 +3,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable } from '@angular/material';
 import { DatePipe } from '@angular/common';
-import { Subscription } from 'rxjs/Subscription';
+import { Observable, Observer, Subscriber, Subscription, of, merge } from 'rxjs';
+import { map, catchError, finalize } from 'rxjs/operators';
 import { PlanetsideApi } from './../planetside-api.service';
 import { HeaderService, HeaderConfig, HeaderInfoItem } from './../../shared/services/header.service';
-import { Observable } from 'rxjs/Observable';
-import { Observer } from "rxjs/Observer";
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
-import { Subscriber } from "rxjs/Subscriber";
 
 @Component({
     selector: 'planetside-outfit',
@@ -41,13 +36,13 @@ export class PlanetsideOutfitComponent implements OnDestroy {
             this.errorMessage = null;
 
             this.api.getOutfit(id)
-                .catch(error => {
+                .pipe<any>(catchError(error => {
                     this.errorMessage = error._body
                     return Observable.throw(error);
-                })
-                .finally(() => {
+                }))
+                .pipe<any>(finalize(() => {
                     this.isLoading = false;
-                })
+                }))
                 .subscribe(data => {
                     this.outfitData = data;
 
@@ -77,13 +72,13 @@ export class PlanetsideOutfitComponent implements OnDestroy {
                 });
 
             this.api.getOutfitMembers(id)
-                .catch(error => {
+                .pipe<any>(catchError(error => {
                     this.errorMessage = error._body
                     return Observable.throw(error);
-                })
-                .finally(() => {
+                }))
+                .pipe<any>(finalize(() => {
                     this.isLoadingMembers = false;
-                })
+                }))
                 .subscribe(data => {
                     this.members = data;
 
@@ -109,10 +104,10 @@ export class TableDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.sort.sortChange).map(() => {
+        let first = of(this.data);
+        return merge(first, this.sort.sortChange).pipe(map(() => {
             return this.getSortedData();
-        });
+        }));
     }
 
     getSortedData() {

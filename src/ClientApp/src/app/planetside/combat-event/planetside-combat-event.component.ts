@@ -1,5 +1,5 @@
 ﻿import { Component, OnDestroy, Inject } from '@angular/core';
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
+import { BehaviorSubject } from "rxjs";
 import { HeaderService, HeaderConfig } from '../../shared/services/header.service';
 
 @Component({

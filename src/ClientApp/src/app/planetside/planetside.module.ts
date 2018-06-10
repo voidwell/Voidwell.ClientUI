@@ -21,6 +21,7 @@ import { PlanetsideItemStatsComponent } from './item/planetside-item-stats.compo
 import { PlanetsideItemLeaderboardComponent } from './item/planetside-item-leaderboard.component';
 import { PlanetsideItemDamageCardComponent } from './item/damage-card/planetside-item-damage-card.component';
 import { PlanetsidePlayerComponent } from './player/planetside-player.component';
+import { CharacterCardComponent } from './player/character-card/character-card.component';
 import { PlanetsidePlayerStatsComponent } from './player/stats/planetside-player-stats.component';
 import { PlanetsidePlayerStatsSiegeCardComponent } from './player/stats/siege-card/planetside-player-stats-siege-card.component';
 import { PlanetsidePlayerClassesComponent } from './player/classes/planetside-player-classes.component';
@@ -62,6 +63,7 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         PlanetsideItemLeaderboardComponent,
         PlanetsideItemDamageCardComponent,
         PlanetsidePlayerComponent,
+        CharacterCardComponent,
         PlanetsidePlayerStatsComponent,
         PlanetsidePlayerStatsSiegeCardComponent,
         PlanetsidePlayerClassesComponent,

@@ -1,7 +1,6 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs';
 import { PlanetsideApi } from './../../planetside-api.service';
 import { HeaderService, HeaderConfig } from './../../../shared/services/header.service';
 import { WorldNamePipe } from './../../../shared/pipes/ps2/world-name.pipe';

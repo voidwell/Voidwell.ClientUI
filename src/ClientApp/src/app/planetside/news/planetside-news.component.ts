@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Observable, of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { PlanetsideApi } from './../planetside-api.service';
 
 @Component({
@@ -26,11 +26,11 @@ export class PlanetsideNewsComponent {
         this.isUpdatesLoading = true;
 
         this.api.getNews()
-            .catch(error => {
+            .pipe<any>(catchError(error => {
                 this.errorMessage = error._body;
                 this.isLoading = false;
-                return Observable.of(error);
-            })
+                return of(error);
+            }))
             .subscribe(newsList => {
                 this.newsList = newsList;
                 this.isNewsLoading = false;
@@ -38,11 +38,11 @@ export class PlanetsideNewsComponent {
             });
 
         this.api.getUpdates()
-            .catch(error => {
+            .pipe<any>(catchError(error => {
                 this.errorMessage = error._body;
                 this.isLoading = false;
-                return Observable.of(error);
-            })
+                return of(error);
+            }))
             .subscribe(updateList => {
                 this.updateList = updateList;
                 this.isUpdatesLoading = false;

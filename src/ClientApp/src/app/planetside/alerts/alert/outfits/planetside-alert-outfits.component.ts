@@ -1,9 +1,8 @@
 ﻿import { Component, OnInit, ViewChild, Injector } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable, MatPaginator } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
+import { Observable, of, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
     templateUrl: './planetside-alert-outfits.template.html',
@@ -44,15 +43,15 @@ export class TableDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.sort.sortChange, this.paginator.page).map(() => {
+        let first = of(this.data);
+        return merge(first, this.sort.sortChange, this.paginator.page).pipe(map(() => {
             const data = this.data.slice();
 
             let sortedData = this.getSortedData(data);
 
             let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
             return sortedData.splice(startIndex, this.paginator.pageSize);
-        });
+        }));
     }
 
     getSortedData(data: any) {

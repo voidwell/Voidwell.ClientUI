@@ -1,17 +1,6 @@
-<div class="content-container voidwell-character-stats" *ngIf="playerData">
-    <div class="stats-header flexrow">
-        <div class="header-left flex">
-            <span *ngIf="playerData.title" class="title">{{playerData.title}} of the</span>
-            <span *ngIf="!playerData.title">Soldier of the </span>
-            <span class="faction-name" [ngClass]="playerData.factionId | factionColor">{{playerData.faction}}</span>
-        </div>
-        <div class="header-right">
-            <div class="value">{{playerData.times.lastLoginDate | date:'MMM d, y h:mm:ss a'}}</div>
-            <div class="label">Last seen</div>
-        </div>
-    </div>
-    <div class="card-row card-row-stretch">
-        <mat-card class="vw-character-overview">
+<div class="voidwell-character-stats" *ngIf="playerData">
+    <div fxLayout="row wrap">
+        <mat-card class="vw-character-overview card">
             <mat-card-header>
                 <mat-card-title>General</mat-card-title>
             </mat-card-header>
@@ -44,7 +33,7 @@
                 </div>
             </mat-card-content>
         </mat-card>
-        <mat-card class="vw-character-outfit" *ngIf="playerData.outfit">
+        <mat-card class="vw-character-outfit card" *ngIf="playerData.outfit">
             <mat-card-header>
                 <mat-card-title>Outfit</mat-card-title>
             </mat-card-header>
@@ -77,11 +66,8 @@
                 </div>
             </mat-card-content>
         </mat-card>
-    </div>
-
-    <div class="card-row">
-        <planetside-player-stats-siege-card class="siege-container" captured="{{playerData.lifetimeStats.facilityCaptureCount}}" defended="{{playerData.lifetimeStats.facilityDefendedCount}}"></planetside-player-stats-siege-card>
-        <mat-card class="vw-character-kdr inline info-card">
+        <planetside-player-stats-siege-card class="siege-container card" captured="{{playerData.lifetimeStats.facilityCaptureCount}}" defended="{{playerData.lifetimeStats.facilityDefendedCount}}"></planetside-player-stats-siege-card>
+        <mat-card class="vw-character-kdr card">
             <mat-card-header>
                 <mat-card-title>Overall KD Performance</mat-card-title>
             </mat-card-header>
@@ -131,7 +117,7 @@
                 </div>
             </mat-card-footer>
         </mat-card>
-        <mat-card class="vw-character-weapons inline info-card">
+        <mat-card class="vw-character-weapons card">
             <mat-card-header>
                 <mat-card-title>Overall Weapon Performance</mat-card-title>
             </mat-card-header>
@@ -185,7 +171,7 @@
                 </div>
             </mat-card-footer>
         </mat-card>
-        <mat-card class="vw-character-ivi inline info-card">
+        <mat-card class="vw-character-ivi card">
             <mat-card-header>
                 <mat-card-title>Infantry vs Infantry</mat-card-title>
             </mat-card-header>

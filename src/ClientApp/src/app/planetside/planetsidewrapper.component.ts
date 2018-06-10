@@ -1,7 +1,7 @@
 ﻿import { Component, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { PlanetsideApi } from './planetside-api.service';
 import { HeaderService, HeaderConfig } from './../shared/services/header.service';
 

@@ -1,9 +1,8 @@
 ﻿import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable } from '@angular/material';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
+import { Observable, of, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'planetside-player-weapons-table',
@@ -39,10 +38,10 @@ export class TableDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.sort.sortChange).map(() => {
+        let first = of(this.data);
+        return merge(first, this.sort.sortChange).pipe(map(() => {
             return this.getSortedData();
-        });
+        }));
     }
 
     getSortedData() {

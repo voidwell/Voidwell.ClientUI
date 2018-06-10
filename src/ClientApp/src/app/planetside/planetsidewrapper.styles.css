@@ -3,29 +3,36 @@
     margin-right: 25px;
     margin-top: -8px;
 }
+
 .search-box,
 mat-progress-bar.mat-progress-bar {
     width: 300px;
 }
+
 .search-icon {
     position: absolute;
     top: 8px;
     left: 5px;
 }
+
 .search-input {
     padding: 0 0 0 28px !important;
 }
+
 mat-progress-bar.mat-progress-bar {
     position: absolute;
     bottom: 0px;
     height: 2px;
 }
+
 .search-box .mat-input-underline .mat-input-ripple {
     background: rgba(255, 255, 255, 0.6);
 }
+
 .search-box .mat-form-field-underline {
     background-color: rgba(255, 255, 255, 0.42);
 }
+
 .search-option.mat-option {
     border-bottom: 1px solid #ccc;
     padding-top: 8px;
@@ -42,6 +49,7 @@ mat-progress-bar.mat-progress-bar {
 .search-option.mat-option:last-child {
     border-bottom-width: 0;
 }
+
 .search-option.mat-option .mat-icon {
     margin: initial;
 }
@@ -52,8 +60,8 @@ mat-progress-bar.mat-progress-bar {
     line-height: 2;
 }
 
-.search-option .item-title .mat-icon {
-    height: 18px;
-    width: 18px;
-    font-size: 18px;
-}
+    .search-option .item-title .mat-icon {
+        height: 18px;
+        width: 18px;
+        font-size: 18px;
+    }

@@ -1,8 +1,8 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { HeaderService } from '../../../shared/services/header.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/throw';
 import { PlanetsideApi } from './../../planetside-api.service';
 import { PlanetsideCombatEventComponent } from './../../combat-event/planetside-combat-event.component';
 
@@ -39,11 +39,11 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
             this.event.next(null);
 
             this.api.getAlert(worldId, instanceId)
-                .catch(error => {
+                .pipe(catchError(error => {
                     this.errorMessage = error._body
                     this.isLoading = false;
                     return Observable.throw(error);
-                })
+                }))
                 .subscribe(data => this.setup(data));
         });
     }
