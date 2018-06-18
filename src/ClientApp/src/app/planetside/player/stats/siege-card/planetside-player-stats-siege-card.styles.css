@@ -24,8 +24,7 @@
     .vw-siege #siege-gauge ::ng-deep g.label text {
         text-anchor: middle;
         font-size: 0.7em;
-        font-weight: bold;
-        fill: #666;
+        fill: #8a9ba1;
     }
 
 .vw-siege .gauge-icons {
@@ -38,7 +37,7 @@
 .vw-siege .siege-level {
   position: absolute;
   font-size: 1.4em;
-  opacity: 0.8;
+  color: #b4bfc3;
 }
 .vw-siege .shield-icon {
   left: 24px;
@@ -50,4 +49,10 @@
   left: 0;
   right: 0;
   text-align: center;
+}
+
+.gauge-container {
+    width: 206px;
+    text-align: center;
+    margin: 0 auto;
 }

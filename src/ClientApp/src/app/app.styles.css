@@ -1,4 +1,12 @@
-﻿html {
+﻿h3 {
+    font-size: 23px;
+}
+
+small {
+    font-size: 92%;
+}
+
+html {
     font-size: 10px;
     display: block;
     font-family: sans-serif;
@@ -90,7 +98,19 @@ body {
 
 
 
+.info-item {
+    padding: 15px 30px;
+}
 
+    .info-item:nth-child(odd) {
+        background: rgba(255, 255, 255, 0.025);
+    }
+
+    .info-item h3 {
+        margin: 3px 0;
+        font-weight: 400;
+        color: #b4bfc3;
+    }
 
 
 

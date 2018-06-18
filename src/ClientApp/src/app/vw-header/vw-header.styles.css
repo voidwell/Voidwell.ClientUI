@@ -210,6 +210,15 @@ ul.top-menu {
         content: "\F04D";
     }
 
+.top-search_clear {
+    position: absolute;
+    right: 0;
+    line-height: 50px;
+    font-size: 20px;
+    width: 50px;
+    color: #22313a;
+}
+
 .top-menu_search {
     display: none !important;
 }
