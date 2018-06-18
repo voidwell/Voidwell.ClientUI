@@ -24,6 +24,7 @@ import { PlanetsidePlayerComponent } from './player/planetside-player.component'
 import { CharacterCardComponent } from './player/character-card/character-card.component';
 import { PlanetsidePlayerStatsComponent } from './player/stats/planetside-player-stats.component';
 import { PlanetsidePlayerStatsSiegeCardComponent } from './player/stats/siege-card/planetside-player-stats-siege-card.component';
+import { KdrHistoryCardComponent } from './player/stats/kdr-history-card/kdr-history-card.component';
 import { PlanetsidePlayerClassesComponent } from './player/classes/planetside-player-classes.component';
 import { PlanetsidePlayerVehiclesComponent } from './player/vehicles/planetside-player-vehicles.component';
 import { PlanetsidePlayerWeaponsComponent } from './player/weapons/planetside-player-weapons.component';
@@ -66,6 +67,7 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         CharacterCardComponent,
         PlanetsidePlayerStatsComponent,
         PlanetsidePlayerStatsSiegeCardComponent,
+        KdrHistoryCardComponent,
         PlanetsidePlayerClassesComponent,
         PlanetsidePlayerVehiclesComponent,
         PlanetsidePlayerWeaponsComponent,

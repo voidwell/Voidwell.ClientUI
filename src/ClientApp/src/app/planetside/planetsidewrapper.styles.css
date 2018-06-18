@@ -50,18 +50,8 @@ mat-progress-bar.mat-progress-bar {
     border-bottom-width: 0;
 }
 
-.search-option.mat-option .mat-icon {
-    margin: initial;
-}
-
 .search-option .item-title,
 .search-option .item-metadata {
     display: block;
     line-height: 2;
 }
-
-    .search-option .item-title .mat-icon {
-        height: 18px;
-        width: 18px;
-        font-size: 18px;
-    }

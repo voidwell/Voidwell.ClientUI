@@ -6,7 +6,7 @@
         </a>
     </div>
     <ul class="top-menu">
-        <li class="top-menu_search">
+        <li class="top-menu_search" *ngIf="searchService.isUsable">
             <button mat-icon-button (click)="searchFocused=true">
                 <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
             </button>
@@ -21,8 +21,36 @@
             </mat-menu>
         </li>
     </ul>
-    <form class="top-search" [ngClass]="{'focus': searchFocused}">
-        <input class="top-search_input" placeholder="Search" (focus)="searchFocused=true" (blur)="searchFocused=false">
+    <form class="top-search" [ngClass]="{'focus': searchFocused || searchService.control.dirty}" *ngIf="searchService.isUsable">
+        <button mat-icon-button *ngIf="searchService.control.dirty" class="top-search_clear" (click)="searchService.clearSearch()">
+            <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
+        </button>
+        <input class="top-search_input" type="text" matInput [matAutocomplete]="auto" [formControl]="searchService.control" [placeholder]="searchService.placeholder" (focus)="searchFocused=true" (blur)="searchFocused=false">
         <i class="top-search_reset"></i>
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let result of searchService.results" class="search-option" [value]="result.name" (click)="searchService.onClickResult.emit(result)">
+                <div class="item-title">
+                    <span *ngIf="result.alias">[{{result.alias}}]</span>
+                    <span>{{result.name}}</span>
+                    <div class="pull-right">
+                        <strong *ngIf="result.worldId">{{result.worldId | worldName}}</strong>
+                        <strong>{{result.category}}</strong>
+                    </div>
+                    <div class="pull-left">
+                        <mat-icon *ngIf="result.type === 'character'" fontSet="mdi" fontIcon="mdi-account" [ngClass]="result.factionId | factionColor"></mat-icon>
+                        <mat-icon *ngIf="result.type === 'item'" fontSet="mdi" fontIcon="mdi-target" [ngClass]="result.factionId | factionColor"></mat-icon>
+                        <mat-icon *ngIf="result.type === 'outfit'" fontSet="mdi" fontIcon="mdi-account-multiple" [ngClass]="result.factionId | factionColor"></mat-icon>
+                    </div>
+                </div>
+                <div class="item-metadata">
+                    <div *ngIf="result.type === 'character'">
+                        <span>Battle rank <strong>{{result.battleRank}}</strong></span>
+                    </div>
+                    <div *ngIf="result.type === 'outfit'">
+                        <span><strong>{{result.memberCount}}</strong> members</span>
+                    </div>
+                </div>
+            </mat-option>
+        </mat-autocomplete>
     </form>
 </div>
