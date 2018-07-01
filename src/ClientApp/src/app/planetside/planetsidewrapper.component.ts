@@ -1,9 +1,8 @@
-﻿import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
+﻿import { Component, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { PlanetsideApi } from './planetside-api.service';
-import { SearchService } from './../shared/services/search.service';
+import { SearchService, SearchState } from './../shared/services/search.service';
 
 @Component({
     selector: 'voidwell-planetside-wrapper',
@@ -13,20 +12,15 @@ import { SearchService } from './../shared/services/search.service';
 })
 
 export class PlanetsideWrapperComponent implements OnDestroy {
-    isSearching: boolean = false;
-
     private queryWait: any;
-    private filteredResults: Observable<any[]>;
     private activeSelection: any;
-
-    searchControl: FormControl;
 
     private searchSub: Subscription;
     private resultSub: Subscription;
 
     constructor(private api: PlanetsideApi, private router: Router, private searchService: SearchService) {
-        searchService.isUsable = true;
-        searchService.placeholder = "Search for players, outfits, and weapons";
+        let searchPlaceholder = 'Search for players, outfits, and weapons';
+        searchService.attach(searchPlaceholder);
 
         this.searchSub = searchService.onEntry.subscribe(query => {
             clearTimeout(this.queryWait);
@@ -40,12 +34,10 @@ export class PlanetsideWrapperComponent implements OnDestroy {
                     return;
                 }
 
-                this.isSearching = true;
-                this.searchService.results = [];
+                this.searchService.searchState.emit(new SearchState(true));
 
                 this.api.search(query).subscribe(data => {
-                    this.searchService.results = data;
-                    this.isSearching = false;
+                    this.searchService.searchState.emit(new SearchState(false, data));
                 });
             }, 1000);
         });
@@ -66,8 +58,7 @@ export class PlanetsideWrapperComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
-        this.searchService.clearSearch();
-        this.searchService.isUsable = false;
+        this.searchService.detach();
         this.searchSub.unsubscribe();
         this.resultSub.unsubscribe();
     }

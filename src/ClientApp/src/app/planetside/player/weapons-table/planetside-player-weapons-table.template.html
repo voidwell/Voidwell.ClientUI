@@ -27,72 +27,72 @@
     </ng-container>
 
     <ng-container matColumnDef="kdr">
-        <mat-header-cell *matHeaderCellDef>K/D Ratio</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>K/D Ratio</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.kills / item.stats.deaths | number: '.2-2'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="kdrDelta">
-        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
         <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.killDeathRatioDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="accuracy">
-        <mat-header-cell *matHeaderCellDef>Accuracy</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Accuracy</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.hitCount / item.stats.fireCount * 100 | number: '.1-1'}}%</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="accuracyDelta">
-        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
         <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.accuracyDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="hsr">
-        <mat-header-cell *matHeaderCellDef>HSR</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>HSR</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.headshots / item.stats.kills * 100 | number: '.1-1'}}%</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="hsrDelta">
-        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
         <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.hsrDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="kph">
-        <mat-header-cell *matHeaderCellDef>KPH</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>KPH</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.kills / (item.stats.playTime / 3600) | number: '.1-1'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="kphDelta">
-        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
         <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.kphDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="vehicleKph">
-        <mat-header-cell *matHeaderCellDef>V.KPH</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>V.KPH</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.vehicleKills / (item.stats.playTime / 3600) | number: '.1-1'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="vehicleKphDelta">
-        <mat-header-cell *matHeaderCellDef>Δ</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
         <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.vehicleKphDelta"></vw-grade></mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="spm">
-        <mat-header-cell *matHeaderCellDef>SPM</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>SPM</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.score / (item.stats.playTime / 60) | number: '.0-0'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="time">
-        <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>Time</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.playTime / 3600 | number: '.1-1'}}h</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="lpk">
-        <mat-header-cell *matHeaderCellDef>LPK</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>LPK</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.hitCount / item.stats.kills | number: '.1-1'}}</mat-cell>
     </ng-container>
 
     <ng-container matColumnDef="spk">
-        <mat-header-cell *matHeaderCellDef>SPK</mat-header-cell>
+        <mat-header-cell *matHeaderCellDef mat-sort-header>SPK</mat-header-cell>
         <mat-cell *matCellDef="let item">{{item.stats.fireCount / item.stats.kills | number: '.1-1'}}</mat-cell>
     </ng-container>
 

@@ -2,11 +2,9 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable } from '@angular/material';
-import { DatePipe } from '@angular/common';
 import { Observable, Observer, Subscriber, Subscription, of, merge } from 'rxjs';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { PlanetsideApi } from './../planetside-api.service';
-import { HeaderService, HeaderConfig, HeaderInfoItem } from './../../shared/services/header.service';
 
 @Component({
     selector: 'planetside-outfit',
@@ -26,7 +24,7 @@ export class PlanetsideOutfitComponent implements OnDestroy {
     private sort: MatSort = new MatSort();
     private dataSource: TableDataSource;
 
-    constructor(private api: PlanetsideApi, private route: ActivatedRoute, private router: Router, private headerService: HeaderService, private datePipe: DatePipe) {
+    constructor(private api: PlanetsideApi, private route: ActivatedRoute, private router: Router) {
         this.routeSub = this.route.params.subscribe(params => {
             let id = params['id'];
 
@@ -47,28 +45,6 @@ export class PlanetsideOutfitComponent implements OnDestroy {
                     this.outfitData = data;
 
                     let alias = data.alias ? '[' + data.alias + '] ' : '';
-
-                    let headerConfig = new HeaderConfig();
-                    headerConfig.title = alias + data.name;
-                    headerConfig.subtitle = data.worldName;
-
-                    if (data.factionId === 1) {
-                        headerConfig.background = '#321147';
-                    } else if (data.factionId === 2) {
-                        headerConfig.background = '#112447';
-                    } else if (data.factionId === 3) {
-                        headerConfig.background = '#471111';
-                    }
-
-                    let createdDate = this.datePipe.transform(data.createdDate, 'MMM d, y');
-
-                    headerConfig.info = [
-                        new HeaderInfoItem('Members', data.memberCount),
-                        new HeaderInfoItem('Created', createdDate),
-                        new HeaderInfoItem('Leader', data.leaderName)
-                    ];
-
-                    this.headerService.setHeaderConfig(headerConfig);
                 });
 
             this.api.getOutfitMembers(id)
@@ -94,7 +70,6 @@ export class PlanetsideOutfitComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.routeSub.unsubscribe();
-        this.headerService.reset();
     }
 }
 

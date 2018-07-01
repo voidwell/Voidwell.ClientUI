@@ -2,7 +2,7 @@
     margin-top: 15px;
 }
 .mat-column-sessionId {
-    max-width: 100px;
+    max-width: 120px;
 }
 
 .goto-button {
@@ -16,6 +16,18 @@
     padding-top: 5px;
 }
 
-.mat-column-gobutton .mdi:before {
-    font-weight: bold;
+.mat-column-gobutton {
+    max-width: 30px;
+}
+
+@media screen and (max-width: 620px) {
+    .mat-column-duration {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .mat-column-endDate {
+        display: none;
+    }
 }

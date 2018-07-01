@@ -2,7 +2,6 @@
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { HeaderService } from '../../../shared/services/header.service';
 import { PlanetsideApi } from './../../planetside-api.service';
 import { PlanetsideCombatEventComponent } from './../../combat-event/planetside-combat-event.component';
 
@@ -25,9 +24,8 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
         { path: 'map', display: 'Map' }
     ];
 
-    constructor(private api: PlanetsideApi, private route: ActivatedRoute, private headerService: HeaderService) {
-        super(headerService);
-
+    constructor(private api: PlanetsideApi, private route: ActivatedRoute) {
+        super();
         this.sub = this.route.params.subscribe(params => {
             let worldId = params['worldId'];
             let instanceId = params['instanceId'];
@@ -49,8 +47,6 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
     }
 
     private setup(data: any) {
-        this.setupHeader(data.metagameEvent.name, data.metagameEvent.description, data.mapId);
-
         this.event.next(data);
         this.activeEvent = data;
         this.isLoading = false;
@@ -64,6 +60,5 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
 
     ngOnDestroy() {
         this.sub.unsubscribe();
-        super.ngOnDestroy();
     }
 }
