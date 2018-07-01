@@ -10,8 +10,8 @@ import { NavMenuService } from './../shared/services/nav-menu.service';
 
 export class VWNavigationComponent implements OnDestroy {
     public sidenavState: boolean;
+    public mobileQuery: MediaQueryList;
 
-    private mobileQuery: MediaQueryList;
     private mobileQueryListener: (mql: MediaQueryList) => void;
 
     constructor(public navMenuService: NavMenuService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public zone: NgZone) {

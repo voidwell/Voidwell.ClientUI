@@ -115,7 +115,7 @@ export class StatsHistoryCardComponent implements OnInit, OnDestroy {
         }
     ];
 
-    private activeConfig: any;
+    public activeConfig: any;
     private activeData: any[];
 
     constructor(d3Service: D3Service) {
