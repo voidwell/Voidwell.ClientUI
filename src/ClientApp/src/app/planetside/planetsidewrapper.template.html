@@ -1,36 +1,3 @@
 ﻿<div>
-    <vw-tab-nav-bar [links]="navLinks">
-        <mat-form-field floatPlaceholder="never" class="search-box">
-            <mat-icon fontSet="mdi" fontIcon="mdi-magnify" class="search-icon"></mat-icon>
-            <mat-progress-bar mode="indeterminate" *ngIf="isSearching"></mat-progress-bar>
-            <input matInput [matAutocomplete]="auto" [formControl]="searchControl" class="search-input">
-            <button mat-button *ngIf="searchControl.dirty" matSuffix mat-icon-button (click)="clearSearch()">
-                <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
-            </button>
-            <mat-autocomplete #auto="matAutocomplete">
-                <mat-option *ngFor="let result of results" class="search-option" [value]="result.name" (click)="onClickSearchResult(result)">
-                    <div class="item-title">
-                        <div class="pull-right">
-                            <strong *ngIf="result.worldId">{{result.worldId | worldName}}</strong>
-                            <strong>{{result.category}}</strong>
-                        </div>
-                        <mat-icon *ngIf="result.type === 'character'" fontSet="mdi" fontIcon="mdi-account" [ngClass]="result.factionId | factionColor"></mat-icon>
-                        <mat-icon *ngIf="result.type === 'item'" fontSet="mdi" fontIcon="mdi-target" [ngClass]="result.factionId | factionColor"></mat-icon>
-                        <mat-icon *ngIf="result.type === 'outfit'" fontSet="mdi" fontIcon="mdi-account-multiple" [ngClass]="result.factionId | factionColor"></mat-icon>
-                        <span *ngIf="result.alias">[{{result.alias}}]</span>
-                        <span>{{result.name}}</span>
-                    </div>
-                    <div class="item-metadata">
-                        <div *ngIf="result.type === 'character'">
-                            <span>Battle rank <strong>{{result.battleRank}}</strong></span>
-                        </div>
-                        <div *ngIf="result.type === 'outfit'">
-                            <span><strong>{{result.memberCount}}</strong> members</span>
-                        </div>
-                    </div>
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-    </vw-tab-nav-bar>
     <router-outlet></router-outlet>
 </div>

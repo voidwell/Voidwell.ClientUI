@@ -1,13 +1,12 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/take';
+import { Subject, Observable } from 'rxjs';
+import { take } from 'rxjs/operators';
 import { NgRedux } from '@angular-redux/store';
+import { UserManager, UserManagerSettings, Log } from 'oidc-client';
 import { IAppState } from '../../app.component';
 import { LOAD_USER, UNLOAD_USER, RENEW_TOKEN, RENEW_TOKEN_FAILED, IS_ADMIN } from '../../reducers';
-import { UserManager, UserManagerSettings, Log } from 'oidc-client';
-import { Subject } from 'rxjs/Subject';
 import { VoidwellApi } from './voidwell-api.service';
 
 @Injectable()
@@ -157,7 +156,7 @@ export class VoidwellAuthService {
                     observer.next(found);
                 }
             });
-        }).take(1);
+        }).pipe(take(1));
     }
 
     getAuthHeaders() {

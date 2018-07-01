@@ -1,8 +1,11 @@
 ﻿<main class="cd-main-content">
-    <vw-header></vw-header>
-
-    <div>
-        <router-outlet></router-outlet>
-    </div>
-
+    <vw-navigation>
+        <vw-header></vw-header>
+        <div class="main-content">
+            <div class="content">
+                <router-outlet></router-outlet>
+            </div>
+            <vw-footer></vw-footer>
+        </div>
+    </vw-navigation>
 </main>

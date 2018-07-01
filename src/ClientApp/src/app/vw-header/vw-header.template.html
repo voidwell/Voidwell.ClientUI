@@ -1,15 +1,63 @@
-<div class="vw-header" [ngStyle]="{ 'background-color': header.background }">
-  <vw-navbar></vw-navbar>
-  <div class="content-container">
-    <div class="page-header flexrow flexalignspacebetweenstretch">
-      <div class="header-title">{{header.title}}</div>
-      <div class="header-info flexrow flexalignstartcenter" >
-        <div class="header-info-item flexcolumn" *ngFor="let headerInfo of header.info">
-          <div class="header-info-item-value">{{headerInfo.value}}</div>
-          <div class="header-info-item-label">{{headerInfo.label}}</div>
-        </div>
-      </div>
+<div class="vw-header">
+    <div class="logo">
+        <a routerLink="/" class="logo-button">
+            <img src="logo-text.png" alt="Voidwell"/>
+        </a>
+        <a href="javascript:void(0);" class="menu-button" (click)="toggleNav()">
+            <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
+        </a>
     </div>
-    <div class="header-subtitle">{{header.subtitle}}</div>
-  </div>
+    <ul class="top-menu">
+        <li class="top-menu_search" *ngIf="searchService.isUsable">
+            <button mat-icon-button (click)="searchFocused=true">
+                <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+            </button>
+        </li>
+        <li class="top-menu_profile">
+            <button mat-icon-button [matMenuTriggerFor]="profilemenu">
+                <mat-icon fontSet="mdi" fontIcon="mdi-account-circle"></mat-icon>
+            </button>
+            <mat-menu #profilemenu="matMenu">
+                <button mat-menu-item *ngIf="isLoggedIn" routerLink="/account/settings">{{userName}}</button>
+                <mat-divider *ngIf="isLoggedIn"></mat-divider>
+                <button mat-menu-item *ngIf="isLoggedIn && canAccessAdmin()" routerLink="/admin">Admin</button>
+                <button mat-menu-item *ngIf="isLoggedIn" (click)="signOut()">Logout</button>
+
+                <button mat-menu-item *ngIf="!isLoggedIn" routerLink="/account/register">Register</button>
+                <button mat-menu-item *ngIf="!isLoggedIn" (click)="signIn()">Login</button>
+            </mat-menu>
+        </li>
+    </ul>
+    <form class="top-search" [ngClass]="{'focus': searchFocused || searchService.control.dirty}" *ngIf="searchService.isUsable">
+        <button mat-icon-button *ngIf="searchService.control.dirty" class="top-search_clear" (click)="searchService.clearSearch()">
+            <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
+        </button>
+        <input class="top-search_input" type="text" matInput [matAutocomplete]="auto" [formControl]="searchService.control" [placeholder]="searchService.placeholder" (focus)="searchFocused=true" (blur)="searchFocused=false">
+        <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching}"></i>
+        <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let result of searchService.results" class="search-option" [value]="result.name" (click)="searchService.onClickResultEmitter.emit(result)">
+                <div class="item-title">
+                    <span *ngIf="result.alias">[{{result.alias}}]</span>
+                    <span>{{result.name}}</span>
+                    <div class="pull-right">
+                        <strong *ngIf="result.worldId">{{result.worldId | worldName}}</strong>
+                        <strong>{{result.category}}</strong>
+                    </div>
+                    <div class="pull-left">
+                        <mat-icon *ngIf="result.type === 'character'" fontSet="mdi" fontIcon="mdi-account" [ngClass]="result.factionId | factionColor"></mat-icon>
+                        <mat-icon *ngIf="result.type === 'item'" fontSet="mdi" fontIcon="mdi-target" [ngClass]="result.factionId | factionColor"></mat-icon>
+                        <mat-icon *ngIf="result.type === 'outfit'" fontSet="mdi" fontIcon="mdi-account-multiple" [ngClass]="result.factionId | factionColor"></mat-icon>
+                    </div>
+                </div>
+                <div class="item-metadata">
+                    <div *ngIf="result.type === 'character'">
+                        <span>Battle rank <strong>{{result.battleRank}}</strong></span>
+                    </div>
+                    <div *ngIf="result.type === 'outfit'">
+                        <span><strong>{{result.memberCount}}</strong> members</span>
+                    </div>
+                </div>
+            </mat-option>
+        </mat-autocomplete>
+    </form>
 </div>

@@ -1,5 +1,6 @@
 ﻿import { Component, Input, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
+import { Observable, interval } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'vw-countdown',
@@ -38,9 +39,9 @@ export class VWCountdownComponent implements OnInit {
         this.tock();
         this.remaining = this.hms();
 
-        let tick = Observable.interval(1000).map((x) => {
+        let tick = interval(1000).pipe(map((x) => {
             this.tock();
-        }).subscribe((x) => {
+        })).subscribe((x) => {
             this.remaining = this.hms();
 
             if (this.diff < 0) {

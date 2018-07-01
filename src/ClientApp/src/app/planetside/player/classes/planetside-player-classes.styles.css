@@ -3,19 +3,6 @@
     margin-top: 25px;
 }
 
-.profile-icon {
-    display: inline-block;
-    width: 40px;
-    height: 40px;
-    margin-right: 10px;
-    vertical-align: middle;
-    background-size: cover;
-    background-position: center;
-    border-radius: 3px;
-    -webkit-filter: invert(100%);
-    filter: progid:DXImageTransform.Microsoft.BasicImage(invert='1');
-}
-
 .kdr-block,
 .name-block {
     display: inline-block;
@@ -40,7 +27,14 @@
 
 .mat-column-name {
     text-align: left;
+    min-width: 200px;
     max-width: 200px;
+}
+
+@media screen and (max-width: 450px) {
+    .mat-column-time {
+        display: none;
+    }
 }
 
 .goto-button {
@@ -53,11 +47,37 @@
     padding-right: 15px;
     padding-top: 5px;
 }
-.mat-column-gobutton .mdi:before {
-    font-weight: bold;
+
+.mat-column-gobutton {
+    max-width: 30px;
 }
 
 .profile-data .label {
     min-width: 160px;
     display: inline-block;
 }
+
+.class-title img {
+    display: block;
+    margin-right: 10px;
+}
+
+.class-list .class-title img {
+    width: 40px;
+    height: 40px;
+    opacity: 0.5;
+}
+
+.single-class .class-title {
+    display: flex;
+    opacity: 0.7;
+}
+
+    .single-class .class-title img {
+        width: 64px;
+        height: 64px;
+    }
+
+    .single-class .class-title .class-name {
+        align-self: center;
+    }

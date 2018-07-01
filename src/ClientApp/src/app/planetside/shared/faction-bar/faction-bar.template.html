@@ -1,4 +1,4 @@
-﻿<div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="vsScore + '%'">{{vsScore | number: '.0-0'}}%</div>
-<div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="ncScore + '%'">{{ncScore | number: '.0-0'}}%</div>
-<div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="trScore + '%'">{{trScore | number: '.0-0'}}%</div>
+﻿<div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="getWidth(vsScore) + '%'">{{vsScore | number: '.0-0'}}</div>
+<div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="getWidth(ncScore) + '%'">{{ncScore | number: '.0-0'}}</div>
+<div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="getWidth(trScore) + '%'">{{trScore | number: '.0-0'}}</div>
 <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="getNeuturalScore() + '%'"></div>

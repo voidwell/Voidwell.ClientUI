@@ -1,16 +1,8 @@
 ﻿import { Component, ElementRef, ViewChild, Inject, OnInit, OnDestroy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable, MatPaginator } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromEvent';
+import { Subscription, Observable, BehaviorSubject, merge, fromEvent, of } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, map, catchError } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
 @Component({
@@ -41,9 +33,9 @@ export class PsbComponent implements OnInit, OnDestroy {
 
         this.dataSource = new TableDataSource([], this.sort, this.paginator);
 
-        Observable.fromEvent(this.filter.nativeElement, 'keyup')
-            .debounceTime(150)
-            .distinctUntilChanged()
+        fromEvent(this.filter.nativeElement, 'keyup')
+            .pipe(debounceTime(150))
+            .pipe(distinctUntilChanged())
             .subscribe(() => {
                 if (!this.dataSource) { return; }
                 this.dataSource.filter = this.filter.nativeElement.value;
@@ -54,11 +46,11 @@ export class PsbComponent implements OnInit, OnDestroy {
         this.isLoading = true;
 
         this.getSessionsRequest = this.api.getPSBAccountSessions()
-            .catch(error => {
+            .pipe<any>(catchError(error => {
                 this.errorMessage = error._body || error.statusText;
                 this.isLoading = false;
                 return Observable.throw(error);
-            })
+            }))
             .subscribe(sessions => {
                 this.sessions = sessions;
                 this.dataSource = new TableDataSource(this.sessions, this.sort, this.paginator);
@@ -83,8 +75,8 @@ export class TableDataSource extends DataSource<any> {
     set filter(filter: string) { this._filterChange.next(filter); }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.sort.sortChange, this.paginator.page, this._filterChange).map(() => {
+        let first = of(this.data);
+        return merge(first, this.sort.sortChange, this.paginator.page, this._filterChange).pipe(map(() => {
             const data = this.data.slice();
 
             let sortedData = this.getSortedData(data);
@@ -97,7 +89,7 @@ export class TableDataSource extends DataSource<any> {
 
             let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
             return filteredData.splice(startIndex, this.paginator.pageSize);
-        });
+        }));
     }
 
     getSortedData(data: any) {

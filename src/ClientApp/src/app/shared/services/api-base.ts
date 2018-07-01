@@ -1,9 +1,5 @@
-﻿import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/operator/timeout';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/throw';
+﻿import { Observable } from 'rxjs';
+import { timeout, catchError } from 'rxjs/operators';
 import { Http, RequestOptions, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { VoidwellAuthService } from './../services/voidwell-auth.service';
@@ -53,10 +49,10 @@ export class ApiBase {
 
     private requestWrapper(request: Observable<Response>): Observable<Response> {
         return request
-            .timeout(this._requestTimeout)
-            .catch(error => {
+            .pipe(timeout(this._requestTimeout))
+            .pipe(catchError(error => {
                 return this.handleError(error);
-            });
+            }));
     }
 
     private handleError(error: any) {

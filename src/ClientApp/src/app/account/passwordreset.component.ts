@@ -1,9 +1,8 @@
 ﻿import { Component } from '@angular/core';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, Observable } from 'rxjs';
 import { NgRedux } from '@angular-redux/store';
 import { VoidwellApi } from '../shared/services/voidwell-api.service';
 import { IAppState } from '../app.component';
-import { Observable } from 'rxjs/Observable';
 import { NgForm } from '@angular/forms';
 
 @Component({

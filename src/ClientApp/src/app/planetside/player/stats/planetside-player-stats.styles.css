@@ -1,3 +1,10 @@
+.siege-container,
+.vw-character-kdr,
+.vw-character-ivi,
+.vw-character-weapons {
+    max-width: 450px;
+}
+
 .voidwell-character-stats .stats-header {
     margin: 25px 10px 10px;
 }
@@ -13,19 +20,25 @@
     width: auto;
 }
 
-.card-row {
+.card-grid {
     display: flex;
-    flex-direction: row;
     flex-wrap: wrap;
+    margin: -15px;
+}
+
+.card {
+    flex: 1 1 auto;
+    margin: 15px;
 }
 
 .card-row.card-row-stretch .mat-card {
     flex: 1;
+    margin-bottom: 10px;
 }
 
 .vw-character-outfit .outfit-header {
     font-size: 1.3em;
-    padding-left: 5px;
+    margin-bottom: 15px;
 }
 
 .vw-character-outfit .link-text {
@@ -40,15 +53,23 @@
 }
 
 .vw-character-kdr,
-.vw-character-weapons {
+.vw-character-weapons,
+.vw-character-ivi {
     overflow: hidden;
 }
 
-.vw-character-kdr .kdr-data,
-.vw-character-weapons .weapon-data {
-    color: #fff;
-    margin-top: 15px;
-}
+    .vw-character-kdr .kdr-data,
+    .vw-character-weapons .weapon-data,
+    .vw-character-ivi .ivi-info,
+    .vw-character-ivi .ivi-score h3 {
+        color: #fff;
+    }
+
+    .vw-character-kdr .kdr-data,
+    .vw-character-weapons .weapon-data,
+    .vw-character-ivi .ivi-info {
+        margin-top: 15px;
+    }
 
 .vw-character-kdr .kdr-data .label,
 .vw-character-weapons .weapon-data .label,
@@ -65,10 +86,6 @@
   display: inline-block;
 }
 
-.siege-container {
-    display: flex;
-}
-
 .value {
   opacity: 1;
 }
@@ -78,19 +95,21 @@
 .value.negative {
     color: #FF5252;
 }
-
-.info-item vw-grade {
-    display: block;
-    text-align: center;
-}
-
 .ivi-data .ivi-score {
     text-align: center;
+    font-size: 13px;
 }
-.ivi-data .ivi-score .value {
-    font-size: 1.2em;
+
+    .ivi-data .ivi-score h3 {
+        margin: 3px 0;
+        font-weight: 400;
+    }
+
+.info-item .title {
+    width: 70px;
 }
-.ivi-data .ivi-score .label {
-    opacity: 0.5;
-    font-size: 0.8em;
+
+.info-item .value {
+    width: 60px;
+    text-align: right;
 }

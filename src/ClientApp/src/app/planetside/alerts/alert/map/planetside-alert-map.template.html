@@ -41,12 +41,7 @@
         <ng-container matColumnDef="mapper">
             <mat-header-cell *matHeaderCellDef>Map %</mat-header-cell>
             <mat-cell *matCellDef="let event">
-                <div class="faction-bar-container">
-                    <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="event.factionVs + '%'">{{event.factionVs | number: '.0-0'}}%</div>
-                    <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="event.factionNc + '%'">{{event.factionNc | number: '.0-0'}}%</div>
-                    <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="event.factionTr + '%'">{{event.factionTr | number: '.0-0'}}%</div>
-                    <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="100 - (event.factionVs + event.factionNc + event.factionTr) + '%'"></div>
-                </div>
+                <vw-faction-bar [vs]="event.factionVs" [nc]="event.factionNc" [tr]="event.factionTr"></vw-faction-bar>
             </mat-cell>
         </ng-container>
 

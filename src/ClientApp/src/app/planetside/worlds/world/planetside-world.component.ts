@@ -1,9 +1,7 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { Observable, Subscription } from 'rxjs';
 import { PlanetsideApi } from './../../planetside-api.service';
-import { HeaderService, HeaderConfig } from './../../../shared/services/header.service';
 import { WorldNamePipe } from './../../../shared/pipes/ps2/world-name.pipe';
 
 @Component({
@@ -20,17 +18,12 @@ export class PlanetsideWorldComponent implements OnDestroy {
         { path: 'map', display: 'Map' }
     ];
 
-    constructor(private route: ActivatedRoute, private api: PlanetsideApi, private headerService: HeaderService, private worldName: WorldNamePipe) {
+    constructor(private route: ActivatedRoute, private api: PlanetsideApi, private worldName: WorldNamePipe) {
         this.routeSub = this.route.params.subscribe(params => {
             if (!params['worldId']) {
                 return;
             }
             this.worldId = parseInt(params['worldId']);
-
-            var headerConfig = new HeaderConfig();
-            headerConfig.title = this.worldName.transform(this.worldId);
-
-            this.headerService.setHeaderConfig(headerConfig);
         });
     }
 
@@ -40,6 +33,5 @@ export class PlanetsideWorldComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.routeSub.unsubscribe();
-        this.headerService.reset();
     }
 }

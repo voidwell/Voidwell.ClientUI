@@ -14,17 +14,16 @@
     width: 100%;
 }
 
-.info-container .faction-bar-container {
-    white-space: nowrap;
-    margin-bottom: 30px;
+.info-container vw-faction-bar {
+    height: 30px;
 }
-    .info-container .faction-bar-container .faction-bar {
-        display: block;
-        float: left;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-    }
+
+.info-container vw-faction-bar ::ng-deep .faction-bar {
+    font-size: initial;
+    height: 30px;
+    line-height: 30px;
+}
+
 .map-log {
     font-size: 14px;
     padding: 10px;

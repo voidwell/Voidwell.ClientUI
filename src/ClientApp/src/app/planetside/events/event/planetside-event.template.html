@@ -2,12 +2,14 @@
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <div *ngIf="!isLoading && !errorMessage">
-        <div class="content-container">
-            <div class="event-info">
-                <div class="top-info">
-                    <div class="server-name">
-                        {{activeEvent.serverId | worldName}}
-                    </div>
+        <mat-card class="event-info" [style.background]="getBackgroundColor(activeEvent.mapId)">
+            <mat-card-content>
+                <div>
+                    <div class="server-name">{{activeEvent.serverId | worldName}}</div>
+                    <h1>{{activeEvent.name}}</h1>
+                    <div>{{activeEvent.description}}</div>
+                </div>
+                <div>
                     <div *ngIf="activeEvent.endDate" class="event-times">
                         <div class="time-start">
                             <div>{{activeEvent.startDate | date:'MMM d, y h:mm:ss a'}}</div>
@@ -26,30 +28,12 @@
                         Time left: <vw-countdown [end]="getEndDate(activeEvent)"></vw-countdown>
                     </div>
                 </div>
-                <div class="faction-bar-container">
-                    <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="activeEvent.score[1] + '%'">{{activeEvent.score[1] | number: '.0-0'}}%</div>
-                    <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="activeEvent.score[2] + '%'">{{activeEvent.score[2] | number: '.0-0'}}%</div>
-                    <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="activeEvent.score[3] + '%'">{{activeEvent.score[3] | number: '.0-0'}}%</div>
-                    <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="activeEvent.score[0] + '%'"></div>
-                </div>
-            </div>
-        </div>
-        <div class="content-container event-nav">
-            <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
-        </div>
-        <!--
-        <div class="content-container tab-nav-bar-background sub-bar">
-            <nav mat-tab-nav-bar>
-                <a mat-tab-link
-                   *ngFor="let link of navLinks"
-                   [routerLink]="link.path"
-                   routerLinkActive #rla="routerLinkActive"
-                   [active]="rla.isActive">
-                    {{link.display}}
-                </a>
-            </nav>
-        </div>
-            -->
-        <router-outlet></router-outlet>
+                <vw-faction-bar [vs]="activeEvent.score[1]" [nc]="activeEvent.score[2]" [tr]="activeEvent.score[3]"></vw-faction-bar>
+            </mat-card-content>
+            <mat-card-footer>
+                <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+            </mat-card-footer>
+        </mat-card>
     </div>
+    <router-outlet></router-outlet>
 </div>
