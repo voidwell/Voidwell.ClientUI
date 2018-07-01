@@ -1,10 +1,17 @@
-﻿.alert-info {
-    margin: 10px 0;
+﻿:host {
+    font-size: 16px;
 }
 
-    .alert-info .top-info {
-        overflow: hidden;
-    }
+.alert-info {
+    margin: 10px 0;
+    color: #edeff0;
+    margin-bottom: 30px;
+}
+
+.alert-info ::ng-deep .vw-tab-nav-sub-bar {
+    box-shadow: none;
+    font-size: initial;
+}
 
 .alert-times {
     margin-bottom: 5px;
@@ -16,49 +23,38 @@
 }
 
     .alert-times small {
-        font-size: 0.7em;
         opacity: 0.5;
-        text-transform: uppercase;
     }
 
 .world-name {
-    float: left;
-    text-align: center;
-    font-size: 2em;
-    padding: 10px 0;
+    float: right;
+    vertical-align: top;
+    font-size: 32px;
 }
 
 .time-start,
 .time-end,
 .map-display {
+    font-size: 16px;
     display: inline-block;
     padding: 10px;
 }
 
-.faction-bar-container {
-    display: block;
-    white-space: nowrap;
+vw-faction-bar {
     height: 30px;
 }
 
-    .faction-bar-container .faction-bar {
-        display: block;
-        float: left;
-        height: 30px;
-        line-height: 30px;
-        text-align: center;
-    }
+vw-faction-bar ::ng-deep .faction-bar {
+    font-size: initial;
+    line-height: 30px;
+    height: 30px;
+}
 
 .remaining-timer {
     display: block;
     text-align: center;
-    font-size: 1.5em;
     overflow: hidden;
     width: auto;
     padding: 10px;
     float: right;
-}
-
-.alert-nav ::ng-deep .vw-tab-nav-sub-bar {
-    background: #16232c;
 }

@@ -12,7 +12,7 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "poll": 1000,
-            "outputPath": "./dist",
+            "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "tsConfig": "src/../tsconfig.json",
@@ -37,6 +37,11 @@
                 "glob": "**/*",
                 "input": "node_modules/oidc-client/dist",
                 "output": "/oidc"
+              },
+              {
+                "glob": "**/*",
+                "input": "src/assets",
+                "output": "/"
               }
             ],
             "styles": [

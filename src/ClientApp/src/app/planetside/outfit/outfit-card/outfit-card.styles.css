@@ -1,0 +1,45 @@
+﻿.outfit-card {
+    color: #edeff0;
+    margin-bottom: 30px;
+}
+
+.outfit-card ::ng-deep .vw-tab-nav-sub-bar {
+    box-shadow: none;
+    font-size: initial;
+}
+
+.stats, .outfit-name {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.stats > div {
+    display: inline-block;
+    text-align: center;
+    text-align: right;
+    font-size: 1.2em;
+}
+
+.stats > div:not(:last-child) {
+    margin-right: 50px;
+}
+
+.stats label {
+    display: block;
+    font-size: 0.7em;
+    opacity: 0.5;
+    text-transform: uppercase;
+}
+
+
+.bg-vs {
+    background: #3f1f66;
+}
+
+.bg-nc {
+    background: #1f3866;
+}
+
+.bg-tr {
+    background: #661f20;
+}

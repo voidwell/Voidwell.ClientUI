@@ -11,6 +11,16 @@
     flex-flow: column;
 }
 
-.events-list.in-progress {
-    flex-flow: row wrap;
+    .events-list.in-progress {
+        flex-flow: row wrap;
+        margin: -7px;
+    }
+
+        .events-list.in-progress > vw-event-card {
+            flex: 1 0 auto;
+            margin: 7px;
+        }
+
+vw-event-card {
+    margin-bottom: 15px;
 }

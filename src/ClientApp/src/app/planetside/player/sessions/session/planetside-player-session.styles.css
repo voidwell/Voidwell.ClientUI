@@ -6,26 +6,17 @@
     overflow: hidden;
 }
 
-.session-info {
-    width: 195px;
-}
-
 .data-block strong {
     display: block;
 }
 
 .data-block .label {
-    text-transform: uppercase;
-    font-size: 0.8em;
+    font-size: 0.9em;
     opacity: 0.7;
 }
 
 .data-block:not(:last-child) {
     margin-bottom: 10px;
-}
-
-.session-info mat-card-content {
-    padding: 15px;
 }
 
 .weapon-image,
@@ -49,6 +40,10 @@
     line-height: 16px;
 }
 
+.emphasis {
+    font-weight: 700;
+}
+
 .weapon-headshot {
     width: 15px;
     font-size: 30px;
@@ -64,33 +59,126 @@
     max-width: 60px;
 }
 
+.mat-column-event {
+    display: block;
+    min-height: initial;
+}
+
 .event-col {
-    display: inline-block;
     flex-grow: 1;
     flex-basis: 0;
+    align-self: center;
+}
+
+.event-col a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 700;
 }
 
 .clean-link {
     text-decoration: none;
 }
 
-.player-vehicle-owner {
-    font-size: 12px;
-}
-
 .col-facility-state,
 .col-facility-name,
 .col-battle-rank-up,
 .col-session-state {
-    text-transform: uppercase;
     font-weight: bold;
 }
-.col-facility-state {
-    width: 255px; 
+
+.col-facility-state .mat-icon {
+    width: 12px;
 }
-.col-facility-state,
-.col-battle-rank-up,
-.col-session-state,
-.col-player-vehicle-wrapper {
-    margin-left: 15px;
+
+.session-overview .label {
+    display: block;
+}
+
+.session-overview .value {
+    font-weight: 400;
+    color: #b4bfc3;
+}
+
+.small-time {
+    display: none;
+}
+
+@media screen and (min-width: 950px) {
+    .session-info {
+        float: left;
+        width: 195px;
+        margin-right: 30px;
+    }
+    .session-info .info-item .value {
+        float: right;
+    }
+
+    .session-info > *:not(:last-child) {
+        margin-bottom: 15px;
+    }
+}
+
+@media screen and (max-width: 949px) {
+    .session-info > * {
+        margin-bottom: 15px;
+    }
+
+    .session-stats .stats-list {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    .session-stats .info-item {
+        display: inline-block;
+        flex: 1 1 33%;
+    }
+
+        .session-stats .info-item .label {
+            font-size: 92%;
+        }
+
+        .session-stats .info-item .value {
+            display: block;
+            font-weight: 400;
+            color: #b4bfc3;
+            font-size: 23px;
+        }
+}
+
+@media screen and (max-width: 1150px) {
+    .weapon-image,
+    .weapon-headshot {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .mat-column-time {
+        max-width: 110px;
+    }
+
+    .big-time {
+        display: none;
+    }
+
+    .small-time {
+        display: inline;
+    }
+}
+
+@media screen and (max-width: 800px) {
+    .session-log mat-table .mat-cell {
+        font-size: 10px;
+        line-height: 25px;
+        padding: 0 8px;
+    }
+
+    .col-player-vehicle-wrapper {
+        line-height: 12px;
+    }
+
+    .mat-column-time {
+        max-width: 70px;
+    }
 }

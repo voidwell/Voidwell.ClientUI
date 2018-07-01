@@ -1,5 +1,14 @@
-﻿h3 {
+﻿h1 {
+    font-size: 26px;
+    margin: 0;
+}
+
+h3 {
     font-size: 23px;
+}
+
+h4 {
+    font-size: 16px;
 }
 
 small {
@@ -93,8 +102,10 @@ body {
     }
 }
 
-
-
+.content {
+    max-width: 1300px;
+    margin: 0 auto;
+}
 
 
 
@@ -229,7 +240,6 @@ img.inverse-img {
 
 
 .table-filter {
-    background: #16232c;
     text-align: right;
     padding: 0 50px;
 }
@@ -304,26 +314,32 @@ img.inverse-img {
 
 
 
-    mat-table.striped mat-row:nth-child(odd) {
-        background: #14212a;
-    }
 
-    mat-table mat-row {
-        background: #1b2831;
-        position: relative;
-    }
+
+.mat-table,
+.mat-paginator,
+.table-filter {
+    background: #2b3942;
+}
+
+mat-table.striped mat-row:nth-child(even) {
+    background: rgba(255,255,255,.025);
+}
+
+mat-table mat-row {
+    position: relative;
+    border-bottom-color: rgba(255,255,255,.025);
+}
+
 mat-table mat-row mat-cell.mat-cell {
     color: inherit;
 }
-
-mat-paginator.mat-paginator,
-mat-table mat-header-row {
-    background: #16232c;
-}
-mat-paginator.mat-paginator,
-mat-table mat-header-row mat-header-cell.mat-header-cell {
-    color: inherit;
-}
+    mat-paginator.mat-paginator,
+    mat-table mat-header-row mat-header-cell.mat-header-cell {
+        border-bottom-width: 1px;
+        color: #b4bfc3;
+        font-weight: 500;
+    }
 mat-paginator .mat-paginator-increment,
 mat-paginator .mat-paginator-decrement {
     border-color: #fff;
@@ -336,7 +352,6 @@ mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
 [mat-button], [mat-raised-button] {
     color: #fff;
     background: #424150;
-    text-transform: uppercase;
 }
 .mat-button[disabled],
 .mat-raised-button[disabled] {

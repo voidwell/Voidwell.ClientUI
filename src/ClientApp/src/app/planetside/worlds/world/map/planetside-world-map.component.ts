@@ -20,7 +20,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
     worldId: number;
     socket: WebSocket;
 
-    worldMaps: WorldMaps = new WorldMaps();
+    zoneLogs: { [zoneId: number]: any[] } = {};
 
     onFacilityCapture: EventEmitter<any> = new EventEmitter();
     onFacilityDefend: EventEmitter<any> = new EventEmitter();
@@ -33,7 +33,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
         this.worldId = this.parent.worldId;
 
         for (let zoneId in Zones) {
-            this.worldMaps.zoneLogs[zoneId] = [];
+            this.zoneLogs[zoneId] = [];
 
             this.navLinks.push({
                 path: zoneId,
@@ -46,30 +46,6 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
 
     getZoneOwnership(zoneId: number): Observable<any> {
         return this.api.getZoneOwnership(this.worldId, zoneId);
-    }
-
-    getZoneMap(zoneId: number): Observable<ZoneMap> {
-        return new Observable<ZoneMap>(observer => {
-            if (this.worldMaps[zoneId]) {
-                setTimeout(() => {
-                    observer.next(this.worldMaps[zoneId]);
-                    observer.complete();
-                }, 10);
-            } else {
-                this.api.getZoneMap(zoneId)
-                    .subscribe(data => {
-                        var map = new ZoneMap();
-                        map.hexs = data.hexs;
-                        map.regions = data.regions;
-                        map.links = data.links;
-
-                        this.worldMaps[zoneId] = map;
-
-                        observer.next(this.worldMaps[zoneId]);
-                        observer.complete();
-                    });
-            }
-        });
     }
 
     connectWebsocket() {
@@ -148,7 +124,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
             timestamp: timestamp
         };
 
-        this.worldMaps.zoneLogs[zoneId].unshift(logData);
+        this.zoneLogs[zoneId].unshift(logData);
 
         this.onFacilityCapture.emit(defendData);
     }
@@ -171,7 +147,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
             faction: Factions[captureData.factionId],
             timestamp: timestamp
         };
-        this.worldMaps.zoneLogs[zoneId].unshift(logData);
+        this.zoneLogs[zoneId].unshift(logData);
 
         this.onFacilityDefend.emit(captureData);
     }
@@ -193,7 +169,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
             zone: Zones[zoneId],
             timestamp: timestamp
         };
-        this.worldMaps.zoneLogs[zoneId].unshift(logData);
+        this.zoneLogs[zoneId].unshift(logData);
 
         this.onContinentLock.emit(lockData);
     }
@@ -213,7 +189,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
             zone: Zones[zoneId],
             timestamp: timestamp
         };
-        this.worldMaps.zoneLogs[zoneId].unshift(logData);
+        this.zoneLogs[zoneId].unshift(logData);
 
         this.onContinentUnlock.emit(unlockData);
     }
