@@ -3,7 +3,7 @@
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <div [hidden]="isLoading">
         <mat-card>
-            <mat-card-content>
+            <mat-card-footer>
                 <mat-table #table [dataSource]="dataSource" class="striped" matSort>
                     <ng-container matColumnDef="idx">
                         <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
@@ -81,7 +81,7 @@
                 </mat-table>
 
                 <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
-            </mat-card-content>
+            </mat-card-footer>
         </mat-card>
     </div>
 </div>

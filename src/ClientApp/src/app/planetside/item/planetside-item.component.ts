@@ -1,9 +1,7 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from "rxjs/BehaviorSubject";
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, BehaviorSubject } from "rxjs";
 import { PlanetsideApi } from './../planetside-api.service';
-import { HeaderService, HeaderConfig } from './../../shared/services/header.service';
 
 @Component({
     templateUrl: './planetside-item.template.html',
@@ -17,12 +15,7 @@ export class PlanetsideItemComponent implements OnDestroy {
     routeSub: Subscription;
     weaponData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
-    navLinks = [
-        { path: 'stats', display: 'Stats' },
-        { path: 'leaderboard', display: 'Leaderboard' }
-    ];
-
-    constructor(private api: PlanetsideApi, private route: ActivatedRoute, private headerService: HeaderService) {
+    constructor(private api: PlanetsideApi, private route: ActivatedRoute) {
         this.routeSub = this.route.params.subscribe(params => {
             let id = params['id'];
             this.isLoading = true;
@@ -30,21 +23,6 @@ export class PlanetsideItemComponent implements OnDestroy {
             this.api.getWeaponInfo(id)
                 .subscribe(data => {
                     this.weaponData.next(data);
-
-                    let headerConfig = new HeaderConfig();
-                    headerConfig.title = data.name;
-                    headerConfig.subtitle = data.category;
-
-                    if (data.factionId === 1) {
-                        headerConfig.background = '#321147';
-                    } else if (data.factionId === 2) {
-                        headerConfig.background = '#112447';
-                    } else if (data.factionId === 3) {
-                        headerConfig.background = '#471111';
-                    }
-
-                    this.headerService.setHeaderConfig(headerConfig);
-
                     this.isLoading = false;
                 });
         });
@@ -52,7 +30,6 @@ export class PlanetsideItemComponent implements OnDestroy {
 
     ngOnDestroy() {
         this.routeSub.unsubscribe();
-        this.headerService.reset();
         this.weaponData.unsubscribe();
     }
 }

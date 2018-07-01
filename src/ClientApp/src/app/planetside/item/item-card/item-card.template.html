@@ -1,0 +1,18 @@
+﻿<mat-card class="item-card" *ngIf="itemData" [ngClass]="{'bg-vs': itemData.factionId===1, 'bg-nc': itemData.factionId===2, 'bg-tr': itemData.factionId===3}">
+    <mat-card-title>
+        <h1 class="item-name">{{itemData.name}}</h1>
+        <div class="stats pull-right">
+            <div>
+                {{itemData.category}}
+            </div>
+        </div>
+    </mat-card-title>
+    <mat-card-subtitle>
+        <div class="outfit-description">
+            {{itemData.description}}
+        </div>
+    </mat-card-subtitle>
+    <mat-card-footer>
+        <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+    </mat-card-footer>
+</mat-card>

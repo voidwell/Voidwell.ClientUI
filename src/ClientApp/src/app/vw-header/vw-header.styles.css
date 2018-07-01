@@ -1,48 +1,283 @@
 .vw-header {
-    color: #fff;
-    display: flex;
-    flex-direction: column;
+    user-select: none;
+    padding: 40px 45px;
+    margin-bottom: 20px;
+    display: block;
 
-    transition: background-color 0.5s ease;
+    -webkit-user-select: none;
 
-    margin-top: 53px;
-}
-
-.page-header {
-  color: #fff;
-  margin: 15px 0;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-touch-callout: none;
 }
 
-.header-title {
-  font-size: 2.5em;
+.vw-header, .top-search {
+    position: relative;
 }
 
-.header-subtitle {
-  margin-top: -10px;
-  margin-bottom: 10px;
-  opacity: 0.5;
-  color: #fff;
+.vw-header:after, .vw-header:before {
+    content: " ";
+    display: table;
 }
 
-.header-info-item {
-  padding-left: 40px;
-  padding-right: 40px;
-}
-.header-info-item:first-child {
-  padding-left: 0;
-}
-.header-info-item:last-child {
-  padding-right: 0;
+.vw-header:after {
+    clear: both;
 }
 
-.header-info-item .header-info-item-value {
-  font-size: 1.2em;
-  text-align: right;
+.logo {
+    line-height: 50px;
+    transition: all;
+    transition-duration: 0.3s;
 }
-.header-info-item .header-info-item-label {
-  margin-top: 5px;
-  font-size: 0.7em;
-  opacity: 0.5;
-  text-align: right;
-  text-transform: uppercase;
+    .logo img {
+        display: inline-block;
+        height: 16px;
+        position: relative;
+        margin-right: 5px;
+        vertical-align: middle;
+        line-height: 30px;
+        color: #edeff0;
+        font-weight: 700;
+        font-size: 23px;
+        opacity: 0.9;
+    }
+
+    .logo .logo-button {
+        display: inline-block;
+        text-decoration: none;
+    }
+
+@media (min-width: 767px) {
+    .logo {
+        width: 223px;
+        float: left;
+    }
+}
+
+@media (max-width: 1279px) {
+    .logo {
+        margin-right: 30px;
+    }
+}
+
+@media (max-width: 767px) {
+    .vw-header {
+        padding: 15px 25px;
+    }
+
+    .logo .logo-button {
+        display: none;
+    }
+}
+
+@media (min-width: 1280px) {
+    .logo .menu-button {
+        display: none;
+    }
+}
+
+@media (max-width: 1279px) {
+    .logo .menu-button {
+        font-size: 21px;
+        color: #edeff0;
+        float: left;
+        width: 45px;
+        height: 40px;
+        line-height: 52px;
+        cursor: pointer;
+        -webkit-transition: opacity;
+        -o-transition: opacity;
+        transition: opacity;
+        -webkit-transition-duration: .2s;
+        transition-duration: .2s;
+    }
+}
+
+.top-menu {
+    list-style: none;
+    padding: 0;
+    float: right;
+    margin-left: 20px;
+}
+
+ul.top-menu {
+    margin-top: 0;
+    margin-bottom: 9px;
+}
+
+.top-menu > li {
+    display: inline-block;
+    margin-top: 10px;
+    vertical-align: top;
+    min-width: 50px;
+}
+
+.top-menu > li > button {
+    font-size: 24px;
+    line-height: 36px;
+    color: #edeff0;
+    display: block;
+    text-align: center;
+    z-index: 1;
+    position: relative;
+}
+
+.top-search {
+    margin: 2px 0;
+    overflow: hidden;
+}
+
+    .top-search.focus .top-search_input {
+        background: #edeff0;
+    }
+
+    .top-search.focus .top-search_reset {
+        color: #edeff0;
+    }
+        .top-search.focus .top-search_reset:before {
+            transform: scale(0) rotate(180deg);
+        }
+        .top-search.focus .top-search_reset:after {
+            transform: scale(1) rotate(0);
+        }
+
+.top-search_input {
+    border: 0;
+    height: 50px;
+    padding: 10px 20px 10px 50px;
+    border-radius: 2px;
+    width: 100%;
+    background-color: #2b3942;
+    font-size: 15px;
+    color: #22313a;
+    font-family: inherit;
+    line-height: inherit;
+    margin: 0;
+}
+
+.top-search_input:-moz-placeholder {
+    color: #b4bfc3;
+    opacity: 1;
+}
+.top-search_input:-ms-input-placeholder {
+    color: #b4bfc3;
+}
+.top-search_input::-webkit-input-placeholder {
+    color: #b4bfc3;
+}
+
+.top-search.focus .top-search_input:-moz-placeholder {
+    color: #22313a;
+    opacity: 1;
+}
+
+.top-search.focus .top-search_input:-ms-input-placeholder {
+    color: #22313a;
+}
+
+.top-search.focus .top-search_input::-webkit-input-placeholder {
+    color: #22313a;
+}
+
+.top-search, .top-search_input, .top-search_reset:before, .top-search_reset:after {
+    transition: all;
+    transition-duration: 0.3s;
+}
+
+.top-search_reset {
+    left: 0;
+    font-size: 20px;
+    color: #b4bfc3;
+    top: 0;
+    position: absolute;
+    cursor: pointer;
+    width: 50px;
+    height: 100%;
+    display: inline-block;
+    font: normal normal normal 24px/1 "Material Design Icons";
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+
+    .top-search_reset:before, .top-search_reset:after {
+        position: absolute;
+        left: 13px;
+        top: 14px;
+    }
+
+    .top-search_reset:before {
+        content: "\F349";
+    }
+
+    .top-search_reset:after {
+        transform: scale(0) rotate(-180deg);
+        color: #22313a;
+        content: "\F04D";
+    }
+
+    .top-search_reset.loading:after {
+        animation: spin 0.5s infinite linear;
+        content: "\F771";
+    }
+
+.top-search_clear {
+    position: absolute;
+    right: 0;
+    line-height: 50px;
+    font-size: 20px;
+    width: 50px;
+    color: #22313a;
+}
+
+.top-menu .top-menu_search {
+    display: none;
+}
+
+@media (max-width: 991px) {
+    .top-search {
+        margin: 40px 40px 0;
+        position: absolute;
+        width: calc(100% - 80px);
+        left: 0;
+        top: 0;
+        background-color: #1e2a31;
+        z-index: 1;
+        opacity: 0;
+        -webkit-transform: translate3d(0,-65px,0);
+        transform: translate3d(0,-65px,0);
+    }
+
+    .top-search.focus {
+        opacity: 1;
+        filter: alpha(opacity=100);
+        -webkit-transform: translate3d(0, 0, 0);
+        transform: translate3d(0, 0, 0);
+    }
+
+    .top-menu .top-menu_search {
+        display: inline-block;
+    }
+}
+
+@media (max-width: 767px) {
+    .top-search {
+        margin: 20px 20px 0;
+        width: calc(100% - 40px);
+    }
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.top-menu .top-menu_profile button {
+    font-size: 45px;
+    line-height: 45px;
+    margin: -7px 0 0 5px;
 }

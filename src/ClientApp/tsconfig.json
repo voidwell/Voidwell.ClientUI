@@ -1,19 +1,19 @@
-﻿{
-  "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
-    "moduleResolution": "node",
-    "sourceMap": false,
-    "experimentalDecorators": true,
-    "emitDecoratorMetadata": true,
-    "skipDefaultLibCheck": true,
-    "skipLibCheck": true,
-    "lib": [ "es6", "dom" ],
-    "noImplicitAny": false,
-    "suppressImplicitAnyIndexErrors": true,
-    "outDir": "./out-tsc"
-  },
-  "exclude": [ "node_modules" ],
-  "compileOnSave": true,
-  "buildOnSave": true
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es5",
+        "moduleResolution": "node",
+        "sourceMap": false,
+        "experimentalDecorators": true,
+        "emitDecoratorMetadata": true,
+        "skipDefaultLibCheck": true,
+        "skipLibCheck": true,
+        "lib": [ "es6", "dom" ],
+        "noImplicitAny": false,
+        "suppressImplicitAnyIndexErrors": true,
+        "outDir": "./out-tsc"
+    },
+    "exclude": [ "node_modules" ],
+    "compileOnSave": true,
+    "buildOnSave": true
 }

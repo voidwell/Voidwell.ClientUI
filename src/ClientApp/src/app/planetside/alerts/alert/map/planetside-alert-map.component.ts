@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, Injector } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Observable, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
     templateUrl: './planetside-alert-map.template.html',
@@ -34,11 +34,11 @@ export class TableDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return first.map(() => {
+        let first = of(this.data);
+        return first.pipe(map(() => {
             const data = this.data.slice();
             return data;
-        });
+        }));
     }
 
     disconnect() { }

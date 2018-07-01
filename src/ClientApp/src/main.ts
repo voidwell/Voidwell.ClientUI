@@ -11,8 +11,10 @@ import { hmrBootstrap } from './hmr';
 const bootstrap = () => platformBrowserDynamic().bootstrapModule(AppModule);
 
 if (module.hot) {
+    console.log('HMR enabled');
     hmrBootstrap(module, bootstrap);
 } else {
+    console.log('HMR disabled');
     enableProdMode();
     bootstrap();
 }

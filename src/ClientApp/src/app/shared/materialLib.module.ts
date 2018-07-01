@@ -1,4 +1,5 @@
 ﻿import { NgModule } from '@angular/core';
+import { FlexLayoutModule } from '@angular/flex-layout';
 import {
     MatButtonModule,
     MatCheckboxModule,
@@ -19,7 +20,10 @@ import {
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSidenavModule,
+    MatListModule,
+    MatTreeModule
 } from '@angular/material';
 
 let modules = [
@@ -42,7 +46,11 @@ let modules = [
     MatDialogModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatSlideToggleModule
+    MatSlideToggleModule,
+    MatSidenavModule,
+    MatListModule,
+    MatTreeModule,
+    FlexLayoutModule
 ];
 
 @NgModule({
