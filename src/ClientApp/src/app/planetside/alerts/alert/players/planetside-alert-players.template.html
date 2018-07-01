@@ -76,5 +76,5 @@
         <mat-row *matRowDef="let row; columns: ['idx','name','outfit','kills','vehicleKills','deaths','kdr','tks','suicides','headshots','hsper'];"></mat-row>
     </mat-table>
 
-    <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+    <mat-paginator #paginator [length]="dataSource ? dataSource.data.length : 0" [pageIndex]="0" [pageSize]="50"></mat-paginator>
 </div>

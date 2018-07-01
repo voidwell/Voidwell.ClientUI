@@ -1,18 +1,4 @@
-﻿<div class="vw-tab-nav-bar" [ngStyle]="{ 'background-color': header.background }">
-    <!--
-    <nav mat-tab-nav-bar class="content-container">
-        <div class="pull-right">
-            <ng-content></ng-content>
-        </div>
-        <a mat-tab-link
-           *ngFor="let link of navLinks"
-           [routerLink]="link.path"
-           routerLinkActive #rla="routerLinkActive"
-           [active]="rla.isActive">
-            {{link.display}}
-        </a>
-    </nav>
-    -->
+﻿<div class="vw-tab-nav-bar">
     <nav class="vw-nav content-container">
         <div class="pull-right">
             <ng-content></ng-content>

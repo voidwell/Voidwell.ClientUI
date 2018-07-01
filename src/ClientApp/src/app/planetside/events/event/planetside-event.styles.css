@@ -1,10 +1,17 @@
-﻿.event-info {
-    margin: 10px 0;
+﻿:host {
+    font-size: 16px;
 }
 
-    .event-info .top-info {
-        overflow: hidden;
-    }
+.event-info {
+    margin: 10px 0;
+    color: #edeff0;
+    margin-bottom: 30px;
+}
+
+.event-info ::ng-deep .vw-tab-nav-sub-bar {
+    box-shadow: none;
+    font-size: initial;
+}
 
 .event-times {
     margin-bottom: 5px;
@@ -22,10 +29,9 @@
     }
 
 .server-name {
-    float: left;
-    text-align: center;
-    font-size: 2em;
-    padding: 10px 0;
+    float: right;
+    vertical-align: top;
+    font-size: 32px;
 }
 
 .time-start,

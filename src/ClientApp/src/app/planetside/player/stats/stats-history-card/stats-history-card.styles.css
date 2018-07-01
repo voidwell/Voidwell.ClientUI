@@ -15,15 +15,15 @@
     box-shadow: 0 2px 3px rgba(0,0,0,.1);
 }
 
-.kdr-history-card {
+.stats-history-card {
     height: 100%;
 }
 
-#kdr-lines {
+#graph-container {
     height: 200px;
 }
 
-    #kdr-lines ::ng-deep .svg-container {
+    #graph-container ::ng-deep .svg-container {
         display: inline-block;
         position: relative;
         width: 100%;
@@ -32,28 +32,28 @@
         overflow: hidden;
     }
 
-    #kdr-lines ::ng-deep .svg-content-responsive {
+    #graph-container ::ng-deep .svg-content-responsive {
         display: inline-block;
         position: absolute;
         top: 0px;
         left: 0px;
     }
 
-    #kdr-lines ::ng-deep .line {
+    #graph-container ::ng-deep .line {
         stroke: #757575;
         fill: none;
     }
 
-    #kdr-lines ::ng-deep .area-fore {
+    #graph-container ::ng-deep .area-fore {
         fill: #e9ebec;
         stroke: #e9ebec;
     }
 
-    #kdr-lines ::ng-deep .area-back {
+    #graph-container ::ng-deep .area-back {
         fill: #1e2a31;
         stroke: #1e2a31;
     }
 
-    #kdr-lines ::ng-deep .tt-focus {
+    #graph-container ::ng-deep .tt-focus {
         fill: transparent;
     }

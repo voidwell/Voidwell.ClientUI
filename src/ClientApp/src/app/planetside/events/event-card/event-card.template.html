@@ -1,20 +1,19 @@
-﻿<mat-card class="event-card">
-    <a mat-button class="event-link" routerLink="{{event.id}}"></a>
-    <div class="event-name-block">
-        <div class="event-name">{{event.name}}</div>
-        <div class="event-date-block">
-            <div *ngIf="isActiveEvent()">
-                <vw-countdown [end]="getEndDate(event)"></vw-countdown>
-            </div>
-            <div *ngIf="!isActiveEvent()">
-                <span class="started-time">{{event.startDate | date:'EEE dd MMM yyyy HH:mm'}}</span>
-                <span>-</span>
-                <span class="remaining-time">{{event.endDate | date:'HH:mm'}}</span>
-            </div>
-        </div>
-    </div>
-    <div class="title-spacer"></div>
-    <div class="event-location-block">
-        <span class="server-name">{{event.serverId | worldName}}</span> on <span class="map-name">{{event.mapId | zoneName}}</span>
-    </div>
+﻿<mat-card>
+    <mat-card-title>
+        <small class="pull-right">
+            <span *ngIf="isActiveEvent()">
+                <vw-countdown [end]="event.endDate"></vw-countdown>
+            </span>
+            <span *ngIf="!isActiveEvent()">
+                {{event.startDate | date:'EEE dd MMM yyyy HH:mm'}}
+            </span>
+        </small>
+        <h4>{{event.name}}</h4>
+    </mat-card-title>
+    <mat-card-subtitle>
+        {{event.description}}
+    </mat-card-subtitle>
+    <a mat-button routerLink="{{event.id}}" class="event-link">
+        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+    </a>
 </mat-card>

@@ -1,69 +1,77 @@
 <div class="voidwell-character-stats" *ngIf="playerData">
     <div class="card-grid">
-        <div fxFlex="1 1 auto">
-            <mat-card class="vw-character-overview card">
-                <mat-card-title>General</mat-card-title>
-                <mat-card-content>
-                    <div class="layout-margin">
-                        <div>
-                            <span class="label">Created on:</span>
-                            <span class="value">{{playerData.times.createdDate | date:'MMM d, y h:mm:ss a'}}</span>
-                        </div>
-                        <div>
-                            <span class="label">Certs:</span>
-                            <span class="value">{{playerData.certsEarned | number}}</span>
-                        </div>
-                        <div>
-                            <span class="label">Medal count:</span>
-                            <span class="value">{{playerData.lifetimeStats.medalCount | number}}</span>
-                        </div>
-                        <div>
-                            <span class="label">Dominations:</span>
-                            <span class="value">{{playerData.lifetimeStats.dominationCount | number}}</span>
-                        </div>
-                        <div>
-                            <span class="label">Revenge:</span>
-                            <span class="value">{{playerData.lifetimeStats.revengeCount | number}}</span>
-                        </div>
-                        <div>
-                            <span class="label">Vehicle kills:</span>
-                            <span class="value">{{playerData.lifetimeStats.vehicleKills | number}}</span>
-                        </div>
-                    </div>
-                </mat-card-content>
-            </mat-card>
-            <mat-card class="vw-character-outfit card" *ngIf="playerData.outfit">
-                <mat-card-title>Outfit</mat-card-title>
-                <mat-card-content class="layout-padding">
+        <mat-card class="vw-character-overview card">
+            <mat-card-title>General</mat-card-title>
+            <mat-card-content>
+                <div>
+                    <span class="label">Created on:</span>
+                    <span class="value">{{playerData.times.createdDate | date:'MMM d, y h:mm:ss a'}}</span>
+                </div>
+                <div>
+                    <span class="label">Certs:</span>
+                    <span class="value">{{playerData.certsEarned | number}}</span>
+                </div>
+                <div>
+                    <span class="label">Medal count:</span>
+                    <span class="value">{{playerData.lifetimeStats.medalCount | number}}</span>
+                </div>
+                <div>
+                    <span class="label">Dominations:</span>
+                    <span class="value">{{playerData.lifetimeStats.dominationCount | number}}</span>
+                </div>
+                <div>
+                    <span class="label">Revenge:</span>
+                    <span class="value">{{playerData.lifetimeStats.revengeCount | number}}</span>
+                </div>
+                <div>
+                    <span class="label">Vehicle kills:</span>
+                    <span class="value">{{playerData.lifetimeStats.vehicleKills | number}}</span>
+                </div>
+                <div>
+                    <span class="label">Score:</span>
+                    <span class="value">{{playerData.lifetimeStats.score | number}}</span>
+                </div>
+                <div>
+                    <span class="label">SPM:</span>
+                    <span class="value">{{playerData.lifetimeStats.score / playerData.times.minutesPlayed | number: '.1-1'}}</span>
+                </div>
+                <div>
+                    <span class="label">Hours Played</span>
+                    <span class="value">{{playerData.lifetimeStats.playTime / 3600 | number:'.1-1'}} ({{playerData.times.minutesPlayed / 60 | number:'.1-1'}})</span>
+                </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="vw-character-outfit card" *ngIf="playerData.outfit">
+            <mat-card-title>Outfit</mat-card-title>
+            <mat-card-content>
+                <div [ngClass]="playerData.factionId | factionColor" class="outfit-header">
+                    <a class="link-text" routerLink="/ps2/outfit/{{playerData.outfit.id}}">
+                        <span *ngIf="playerData.outfit.alias">[{{playerData.outfit.alias}}]</span>
+                        <span>{{playerData.outfit.name}}</span>
+                    </a>
+                </div>
+                <div>
                     <div>
-                        <div [ngClass]="playerData.factionId | factionColor" class="outfit-header">
-                            <a class="link-text" routerLink="/ps2/outfit/{{playerData.outfit.id}}">
-                                <span *ngIf="playerData.outfit.alias">[{{playerData.outfit.alias}}]</span>
-                                <span>{{playerData.outfit.name}}</span>
-                            </a>
-                        </div>
-                        <div class="layout-margin">
-                            <div>
-                                <span class="label">Rank:</span>
-                                <span class="value">{{playerData.outfit.rank}}</span>
-                            </div>
-                            <div>
-                                <span class="label">Member count:</span>
-                                <span class="value">{{playerData.outfit.memberCount}}</span>
-                            </div>
-                            <div>
-                                <span class="label">Joined:</span>
-                                <span class="value" title="{{playerData.outfit.memberSinceDate | date:'MMM d, y h:mm:ss a'}}">{{playerData.outfit.memberSinceDate | date:'MMM d, y h:mm:ss a':'UTC'}} UTC</span>
-                            </div>
-                            <div>
-                                <span class="label">Created:</span>
-                                <span class="value" title="{{playerData.outfit.createdDate | date:'MMM d, y h:mm:ss a'}}">{{playerData.outfit.createdDate | date:'MMM d, y h:mm:ss a':'UTC'}} UTC</span>
-                            </div>
-                        </div>
+                        <span class="label">Rank:</span>
+                        <span class="value">{{playerData.outfit.rank}}</span>
                     </div>
-                </mat-card-content>
-            </mat-card>
-        </div>
+                    <div>
+                        <span class="label">Member count:</span>
+                        <span class="value">{{playerData.outfit.memberCount}}</span>
+                    </div>
+                    <div>
+                        <span class="label">Joined:</span>
+                        <span class="value" title="{{playerData.outfit.memberSinceDate | date:'MMM d, y h:mm:ss a'}}">{{playerData.outfit.memberSinceDate | date:'MMM d, y h:mm:ss a':'UTC'}} UTC</span>
+                    </div>
+                    <div>
+                        <span class="label">Created:</span>
+                        <span class="value" title="{{playerData.outfit.createdDate | date:'MMM d, y h:mm:ss a'}}">{{playerData.outfit.createdDate | date:'MMM d, y h:mm:ss a':'UTC'}} UTC</span>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+    <div class="card-grid">
         <planetside-player-stats-siege-card class="siege-container card" captured="{{playerData.lifetimeStats.facilityCaptureCount}}" defended="{{playerData.lifetimeStats.facilityDefendedCount}}"></planetside-player-stats-siege-card>
         <mat-card class="vw-character-kdr card">
             <mat-card-title>Overall KD Performance</mat-card-title>
@@ -200,6 +208,15 @@
         </mat-card>
     </div>
     <div class="card-grid">
-        <kdr-history-card class="card" [kills]="(playerData.statsHistory | filterBy: ['statName']: 'kills')[0].day" [deaths]="(playerData.statsHistory | filterBy: ['statName']: 'deaths')[0].day"></kdr-history-card>
+        <stats-history-card class="card" type="kdr" period="day" [data]="playerData.statsHistory"></stats-history-card>
+    </div>
+    <div class="card-grid">
+        <stats-history-card class="card" type="siege" period="month" [data]="playerData.statsHistory"></stats-history-card>
+    </div>
+    <div class="card-grid">
+        <stats-history-card class="card" type="spm" period="month" [data]="playerData.statsHistory"></stats-history-card>
+    </div>
+    <div class="card-grid">
+        <stats-history-card class="card" type="kpm" period="month" [data]="playerData.statsHistory"></stats-history-card>
     </div>
 </div>

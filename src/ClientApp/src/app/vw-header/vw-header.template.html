@@ -1,6 +1,8 @@
 <div class="vw-header">
     <div class="logo">
-        <a routerLink="/" class="logo-button">Voidwell</a>
+        <a routerLink="/" class="logo-button">
+            <img src="logo-text.png" alt="Voidwell"/>
+        </a>
         <a href="javascript:void(0);" class="menu-button" (click)="toggleNav()">
             <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
         </a>
@@ -16,8 +18,13 @@
                 <mat-icon fontSet="mdi" fontIcon="mdi-account-circle"></mat-icon>
             </button>
             <mat-menu #profilemenu="matMenu">
-                <button mat-menu-item>Register</button>
-                <button mat-menu-item>Login</button>
+                <button mat-menu-item *ngIf="isLoggedIn" routerLink="/account/settings">{{userName}}</button>
+                <mat-divider *ngIf="isLoggedIn"></mat-divider>
+                <button mat-menu-item *ngIf="isLoggedIn && canAccessAdmin()" routerLink="/admin">Admin</button>
+                <button mat-menu-item *ngIf="isLoggedIn" (click)="signOut()">Logout</button>
+
+                <button mat-menu-item *ngIf="!isLoggedIn" routerLink="/account/register">Register</button>
+                <button mat-menu-item *ngIf="!isLoggedIn" (click)="signIn()">Login</button>
             </mat-menu>
         </li>
     </ul>
@@ -26,9 +33,9 @@
             <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
         </button>
         <input class="top-search_input" type="text" matInput [matAutocomplete]="auto" [formControl]="searchService.control" [placeholder]="searchService.placeholder" (focus)="searchFocused=true" (blur)="searchFocused=false">
-        <i class="top-search_reset"></i>
+        <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching}"></i>
         <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let result of searchService.results" class="search-option" [value]="result.name" (click)="searchService.onClickResult.emit(result)">
+            <mat-option *ngFor="let result of searchService.results" class="search-option" [value]="result.name" (click)="searchService.onClickResultEmitter.emit(result)">
                 <div class="item-title">
                     <span *ngIf="result.alias">[{{result.alias}}]</span>
                     <span>{{result.name}}</span>
