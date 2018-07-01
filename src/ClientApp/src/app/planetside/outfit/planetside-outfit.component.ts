@@ -15,10 +15,10 @@ import { PlanetsideApi } from './../planetside-api.service';
 export class PlanetsideOutfitComponent implements OnDestroy {
     isLoading: boolean;
     errorMessage: string = null;
+    public outfitData: any = null;
 
     private isLoadingMembers: boolean;
     private routeSub: Subscription;
-    private outfitData: any = null;
     private members: any[];
 
     private sort: MatSort = new MatSort();
