@@ -24,3 +24,8 @@
 .outfit-card-content {
     padding: 15px;
 }
+
+.character-name a {
+    text-decoration: none;
+    color: inherit;
+}

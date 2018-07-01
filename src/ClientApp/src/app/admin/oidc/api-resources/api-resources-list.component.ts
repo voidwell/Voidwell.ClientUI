@@ -1,10 +1,8 @@
 ﻿import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material';
+import { Observable } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../../shared/services/voidwell-api.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/catch'
-import 'rxjs/add/operator/finally'
-import 'rxjs/add/observable/throw';
 
 @Component({
     templateUrl: './api-resources-list.template.html'
@@ -20,13 +18,13 @@ export class ApiResourcesListComponent {
         this.errorMessage = null;
 
         this.api.getAllApiResources()
-            .catch(error => {
+            .pipe<any>(catchError(error => {
                 this.errorMessage = error._body
                 return Observable.throw(error);
-            })
-            .finally(() => {
+            }))
+            .pipe<any>(finalize(() => {
                 this.isLoading = false;
-            })
+            }))
             .subscribe(apiResources => {
                 this.apiResources = apiResources;
             });

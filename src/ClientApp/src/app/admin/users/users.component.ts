@@ -2,18 +2,9 @@
 import { NgForm } from '@angular/forms';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogRef, MatPaginator, MAT_DIALOG_DATA } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromEvent';
+import { Observable, BehaviorSubject, Subscription, of, merge, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, map, catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
-
 
 @Component({
     selector: 'voidwell-admin-users',
@@ -62,9 +53,9 @@ export class UsersComponent implements OnInit, OnDestroy {
 
         this.updateLoading();
 
-        Observable.fromEvent(this.filter.nativeElement, 'keyup')
-            .debounceTime(150)
-            .distinctUntilChanged()
+        fromEvent(this.filter.nativeElement, 'keyup')
+            .pipe(debounceTime(150))
+            .pipe(distinctUntilChanged())
             .subscribe(() => {
                 if (!this.dataSource) { return; }
                 this.dataSource.filter = this.filter.nativeElement.value;
@@ -108,8 +99,8 @@ export class TableDataSource extends DataSource<any> {
     set filter(filter: string) { this._filterChange.next(filter); }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.paginator.page, this._filterChange).map(() => {
+        let first = of(this.data);
+        return merge(first, this.paginator.page, this._filterChange).pipe(map(() => {
             if (this.data == null || this.data.length == 0) {
                 return [];
             }
@@ -123,7 +114,7 @@ export class TableDataSource extends DataSource<any> {
 
             let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
             return filteredData.splice(startIndex, this.paginator.pageSize);
-        });
+        }));
     }
 
     disconnect() { }
@@ -157,15 +148,15 @@ export class UserEditorDialog {
         this.errorMessage = null;
         user.isLocked = true;
         this.api.updateUserRoles(user.id, userRolesForm.value)
-            .catch(error => {
+            .pipe<any>(catchError(error => {
                 this.errorMessage = error._body;
                 userRolesForm.form.patchValue(user);
                 return Observable.throw(error);
-            })
-            .finally(() => {
+            }))
+            .pipe<any>(finalize(() => {
                 user.isLocked = false;
                 userRolesForm.form.markAsPristine();
-            })
+            }))
             .subscribe(updatedRoles => {
                 user.roles = updatedRoles;
             });

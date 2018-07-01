@@ -1,9 +1,8 @@
-﻿import { Component, ViewEncapsulation } from '@angular/core';
-import { FormControl } from '@angular/forms';
+﻿import { Component, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs';
 import { PlanetsideApi } from './planetside-api.service';
-import { HeaderService, HeaderConfig } from './../shared/services/header.service';
+import { SearchService, SearchState } from './../shared/services/search.service';
 
 @Component({
     selector: 'voidwell-planetside-wrapper',
@@ -12,78 +11,55 @@ import { HeaderService, HeaderConfig } from './../shared/services/header.service
     encapsulation: ViewEncapsulation.None
 })
 
-export class PlanetsideWrapperComponent {
-    isSearching: boolean = false;
-
+export class PlanetsideWrapperComponent implements OnDestroy {
     private queryWait: any;
-    private filteredResults: Observable<any[]>;
     private activeSelection: any;
 
-    results: any[];
-    searchControl: FormControl;
+    private searchSub: Subscription;
+    private resultSub: Subscription;
 
-    navLinks = [
-        { path: 'news', display: 'News' },
-        { path: 'alerts', display: 'Alerts' },
-        { path: 'events', display: 'Events' },
-        { path: 'worlds', display: 'Worlds' }
-    ];
+    constructor(private api: PlanetsideApi, private router: Router, private searchService: SearchService) {
+        let searchPlaceholder = 'Search for players, outfits, and weapons';
+        searchService.attach(searchPlaceholder);
 
-    constructor(private api: PlanetsideApi, private router: Router, private headerService: HeaderService) {
-        this.searchControl = new FormControl();
+        this.searchSub = searchService.onEntry.subscribe(query => {
+            clearTimeout(this.queryWait);
 
-        this.searchControl.valueChanges
-            .subscribe(query => {
-                this.getSearchResults(query);
-            });
-    }
-
-    onClickSearchResult(result: any) {
-        this.activeSelection = result;
-
-        if (result.type === 'character') {
-            this.router.navigateByUrl('ps2/player/' + result.id);
-        }
-        if (result.type === 'outfit') {
-            this.router.navigateByUrl('ps2/outfit/' + result.id);
-        }
-        if (result.type === 'item') {
-            this.router.navigateByUrl('ps2/item/' + result.id);
-        }
-    }
-
-    clearSearch() {
-        this.isSearching = false;
-
-        if (this.searchControl.dirty) {
-            this.searchControl.reset();
-            this.results = [];
-        }
-    }
-
-    getSearchResults(query: string) {
-        clearTimeout(this.queryWait);
-
-        if (!query || query.length === 0) {
-            this.clearSearch();
-        }
-
-        if (!query || query.length < 2) {
-            return;
-        }
-
-        this.queryWait = setTimeout(() => {
-            if (this.activeSelection && this.activeSelection.name === query) {
+            if (!query || query.length < 2) {
                 return;
             }
 
-            this.isSearching = true;
-            this.results = [];
+            this.queryWait = setTimeout(() => {
+                if (this.activeSelection && this.activeSelection.name === query) {
+                    return;
+                }
 
-            this.api.search(query).subscribe(data => {
-                this.results = data;
-                this.isSearching = false;
-            });
-        }, 1000);
+                this.searchService.searchState.emit(new SearchState(true));
+
+                this.api.search(query).subscribe(data => {
+                    this.searchService.searchState.emit(new SearchState(false, data));
+                });
+            }, 1000);
+        });
+
+        this.resultSub = searchService.onClickResult.subscribe(result => {
+            this.activeSelection = result;
+
+            if (result.type === 'character') {
+                this.router.navigateByUrl('ps2/player/' + result.id);
+            }
+            if (result.type === 'outfit') {
+                this.router.navigateByUrl('ps2/outfit/' + result.id);
+            }
+            if (result.type === 'item') {
+                this.router.navigateByUrl('ps2/item/' + result.id);
+            }
+        });
+    }
+
+    ngOnDestroy() {
+        this.searchService.detach();
+        this.searchSub.unsubscribe();
+        this.resultSub.unsubscribe();
     }
 }

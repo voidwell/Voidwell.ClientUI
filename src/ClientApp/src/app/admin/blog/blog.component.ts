@@ -2,16 +2,8 @@
 import { NgForm } from '@angular/forms';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogRef, MatPaginator, MAT_DIALOG_DATA } from '@angular/material';
-import { Subscription } from 'rxjs/Subscription';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
-import 'rxjs/add/observable/merge';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/observable/fromEvent';
+import { Subscription, Observable, BehaviorSubject, of, merge, fromEvent } from 'rxjs';
+import { debounceTime, distinctUntilChanged, startWith, map } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
 @Component({
@@ -75,8 +67,8 @@ export class TableDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        let first = Observable.of(this.data);
-        return Observable.merge(first, this.paginator.page).map(() => {
+        let first = of(this.data);
+        return merge(first, this.paginator.page).pipe(map(() => {
             if (this.data == null || this.data.length == 0) {
                 return [];
             }
@@ -85,7 +77,7 @@ export class TableDataSource extends DataSource<any> {
 
             let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
             return data.splice(startIndex, this.paginator.pageSize);
-        });
+        }));
     }
 
     disconnect() { }

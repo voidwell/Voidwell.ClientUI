@@ -1,4 +1,14 @@
-﻿.mat-column-name,
+﻿:host {
+    display: block;
+    overflow-x: auto;
+}
+
+mat-table {
+    min-width: 1100px;
+    overflow-x: auto;
+}
+
+.mat-column-name,
 .mat-column-name .mat-button,
 .auraxium-meter-back {
     min-width: 160px;

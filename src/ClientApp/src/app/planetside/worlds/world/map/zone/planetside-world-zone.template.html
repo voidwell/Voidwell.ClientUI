@@ -1,24 +1,13 @@
 ﻿<div class="content-container">
-    <vw-loader [loading]="isLoading"></vw-loader>
-    <vw-error-message [message]="errorMessage"></vw-error-message>
-    <div class="zone-map" *ngIf="!isLoading && !errorMessage">
+    <div class="zone-map">
         <div class="map-container">
-            <div class="map" leaflet [leafletOptions]="leafletOptions" [leafletFitBounds]="fitBounds" (leafletMapReady)="onMapReady($event)"></div>
+            <ps2-zone-map [zoneId]="zoneId" [ownershipStream]="ownershipSub" [captureStream]="captureSub" [defendStream]="defendSub" [focusFacility]="focusFacilityEmitter" (score)="onScoreChange($event)"></ps2-zone-map>
         </div>
         <mat-card class="info-container">
             <mat-card-content>
-                <div class="faction-bar-container">
-                    <div class="faction-bar" [ngClass]="1 | factionBackground" [style.width]="score[1] + '%'">
-                        <span *ngIf="score[1] > 10">{{score[1] | number: '.0-0'}}%</span>
-                    </div>
-                    <div class="faction-bar" [ngClass]="2 | factionBackground" [style.width]="score[2] + '%'">
-                        <span *ngIf="score[2] > 10">{{score[2] | number: '.0-0'}}%</span>
-                    </div>
-                    <div class="faction-bar" [ngClass]="3 | factionBackground" [style.width]="score[3] + '%'">
-                        <span *ngIf="score[3] > 10">{{score[3] | number: '.0-0'}}%</span>
-                    </div>
-                    <div class="faction-bar" [ngClass]="0 | factionBackground" [style.width]="score[0] + '%'"></div>
-                </div>
+                <vw-faction-bar [vs]="score[1]" [nc]="score[2]" [tr]="score[3]"></vw-faction-bar>
+            </mat-card-content>
+            <mat-card-footer>
                 <div class="map-log">
                     <div *ngIf="zoneLogs.length === 0">
                         Waiting for activity...
@@ -43,7 +32,7 @@
                         </span>
                     </div>
                 </div>
-            </mat-card-content>
+            </mat-card-footer>
         </mat-card>
     </div>
 </div>

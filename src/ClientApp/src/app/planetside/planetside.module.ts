@@ -1,7 +1,6 @@
 ﻿import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { NgPipesModule } from 'ngx-pipes';
 import { D3Service } from 'd3-ng2-service';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
@@ -18,12 +17,15 @@ import { PlanetsideCombatEventComponent } from './combat-event/planetside-combat
 import { PlanetsideNewsComponent } from './news/planetside-news.component';
 import { NewsCardComponent } from './news/news-card/news-card.component';
 import { PlanetsideItemComponent } from './item/planetside-item.component';
+import { ItemCardComponent } from './item/item-card/item-card.component';
 import { PlanetsideItemStatsComponent } from './item/planetside-item-stats.component';
 import { PlanetsideItemLeaderboardComponent } from './item/planetside-item-leaderboard.component';
 import { PlanetsideItemDamageCardComponent } from './item/damage-card/planetside-item-damage-card.component';
 import { PlanetsidePlayerComponent } from './player/planetside-player.component';
+import { CharacterCardComponent } from './player/character-card/character-card.component';
 import { PlanetsidePlayerStatsComponent } from './player/stats/planetside-player-stats.component';
 import { PlanetsidePlayerStatsSiegeCardComponent } from './player/stats/siege-card/planetside-player-stats-siege-card.component';
+import { StatsHistoryCardComponent } from './player/stats/stats-history-card/stats-history-card.component';
 import { PlanetsidePlayerClassesComponent } from './player/classes/planetside-player-classes.component';
 import { PlanetsidePlayerVehiclesComponent } from './player/vehicles/planetside-player-vehicles.component';
 import { PlanetsidePlayerWeaponsComponent } from './player/weapons/planetside-player-weapons.component';
@@ -31,6 +33,7 @@ import { PlanetsidePlayerWeaponsTableComponent } from './player/weapons-table/pl
 import { PlanetsidePlayerSessionsListComponent } from './player/sessions/sessions-list/planetside-player-sessions-list.component';
 import { PlanetsidePlayerSessionComponent } from './player/sessions/session/planetside-player-session.component';
 import { PlanetsideOutfitComponent } from './outfit/planetside-outfit.component';
+import { OutfitCardComponent } from './outfit/outfit-card/outfit-card.component';
 import { AlertCardComponent } from './alerts/alert-card/alert-card.component';
 import { PlanetsideAlertsListComponent } from './alerts/alerts-list/planetside-alerts-list.component';
 import { PlanetsideAlertComponent } from './alerts/alert/planetside-alert.component';
@@ -49,6 +52,8 @@ import { PlanetsideWorldMapComponent } from './worlds/world/map/planetside-world
 import { PlanetsideWorldZoneComponent } from './worlds/world/map/zone/planetside-world-zone.component';
 import { GradeComponent } from './shared/vw-grade/vw-grade.component';
 import { FactionBarComponent } from './shared/faction-bar/faction-bar.component';
+import { ZoneHelper } from './zone-helper.service';
+import { Ps2ZoneMapComponent } from './shared/ps2-zone-map/ps2-zone-map.component';
 
 @NgModule({
     declarations: [
@@ -59,12 +64,15 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         PlanetsideNewsComponent,
         NewsCardComponent,
         PlanetsideItemComponent,
+        ItemCardComponent,
         PlanetsideItemStatsComponent,
         PlanetsideItemLeaderboardComponent,
         PlanetsideItemDamageCardComponent,
         PlanetsidePlayerComponent,
+        CharacterCardComponent,
         PlanetsidePlayerStatsComponent,
         PlanetsidePlayerStatsSiegeCardComponent,
+        StatsHistoryCardComponent,
         PlanetsidePlayerClassesComponent,
         PlanetsidePlayerVehiclesComponent,
         PlanetsidePlayerWeaponsComponent,
@@ -72,6 +80,7 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         PlanetsidePlayerSessionsListComponent,
         PlanetsidePlayerSessionComponent,
         PlanetsideOutfitComponent,
+        OutfitCardComponent,
         AlertCardComponent,
         PlanetsideAlertsListComponent,
         PlanetsideAlertComponent,
@@ -87,7 +96,8 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         PlanetsideWorldComponent,
         PlanetsideWorldPlayersComponent,
         PlanetsideWorldMapComponent,
-        PlanetsideWorldZoneComponent
+        PlanetsideWorldZoneComponent,
+        Ps2ZoneMapComponent
     ],
     imports: [
         FormsModule,
@@ -98,8 +108,7 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         SharedComponentsModule,
         routing,
         NgPipesModule,
-        LeafletModule,
-        FlexLayoutModule
+        LeafletModule
     ],
     providers: [
         PlanetsideApi,
@@ -108,7 +117,8 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
         DatePipe,
         D3Service,
         WorldNamePipe,
-        ZoneNamePipe
+        ZoneNamePipe,
+        ZoneHelper
     ],
     entryComponents: [PlanetsideWrapperComponent]
 })

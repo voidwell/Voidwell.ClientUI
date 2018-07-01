@@ -3,8 +3,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { PlanetsidePlayerComponent } from './../planetside-player.component';
 import { PlanetsideApi } from './../../planetside-api.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { Observable, of } from 'rxjs';
 
 @Component({
     templateUrl: './planetside-player-classes.template.html',
@@ -160,7 +159,7 @@ export class ProfilesDataSource extends DataSource<any> {
     }
 
     connect(): Observable<any[]> {
-        return Observable.of(this.data);
+        return of(this.data);
     }
 
     disconnect() { }
