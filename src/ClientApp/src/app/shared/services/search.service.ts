@@ -7,9 +7,9 @@ export class SearchService {
     public searchState: EventEmitter<SearchState> = new EventEmitter();
     public onEntry: Observable<any>;
     public onClickResult: Observable<any>;
+    public isUsable: boolean = false;
 
     private control: FormControl;
-    private isUsable: boolean = false;
     private isSearching: boolean = false;
     private results: any[];
     private placeholder: string = '';

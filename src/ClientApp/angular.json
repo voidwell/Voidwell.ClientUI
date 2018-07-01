@@ -10,51 +10,51 @@
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
-          "options": {
-            "poll": 1000,
-            "outputPath": "dist",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "tsConfig": "src/../tsconfig.json",
-            "showCircularDependencies": false,
-            "assets": [
-              {
-                "glob": "signInCallback.html",
-                "input": "src",
-                "output": "/"
-              },
-              {
-                "glob": "silentCallback.html",
-                "input": "src",
-                "output": "/"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/@mdi/font/fonts",
-                "output": "/fonts"
-              },
-              {
-                "glob": "**/*",
-                "input": "node_modules/oidc-client/dist",
-                "output": "/oidc"
-              },
-              {
-                "glob": "**/*",
-                "input": "src/assets",
-                "output": "/"
-              }
-            ],
-            "styles": [
-              "node_modules/@mdi/font/css/materialdesignicons.css",
-              "node_modules/leaflet/dist/leaflet.css"
-            ],
-            "scripts": [
-              "node_modules/jquery/dist/jquery.min.js",
-              "node_modules/zone.js/dist/zone.js",
-              "node_modules/oidc-client/lib/oidc-client.js"
-            ]
-          },
-          "configurations": {}
+            "options": {
+                "poll": 1000,
+                "outputPath": "dist",
+                "index": "src/index.html",
+                "main": "src/main.ts",
+                "tsConfig": "src/../tsconfig.json",
+                "showCircularDependencies": false,
+                "assets": [
+                    {
+                        "glob": "signInCallback.html",
+                        "input": "src",
+                        "output": "/"
+                    },
+                    {
+                        "glob": "silentCallback.html",
+                        "input": "src",
+                        "output": "/"
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "node_modules/@mdi/font/fonts",
+                        "output": "/fonts"
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "node_modules/oidc-client/dist",
+                        "output": "/oidc"
+                    },
+                    {
+                        "glob": "**/*",
+                        "input": "src/assets",
+                        "output": "/"
+                    }
+                ],
+                "styles": [
+                    "node_modules/@mdi/font/css/materialdesignicons.css",
+                    "node_modules/leaflet/dist/leaflet.css"
+                ],
+                "scripts": [
+                    "node_modules/jquery/dist/jquery.min.js",
+                    "node_modules/zone.js/dist/zone.js",
+                    "node_modules/oidc-client/lib/oidc-client.js"
+                ]
+            },
+            "configurations": {}
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
