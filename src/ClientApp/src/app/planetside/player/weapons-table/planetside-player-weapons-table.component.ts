@@ -27,7 +27,7 @@ export class PlanetsidePlayerWeaponsTableComponent implements OnInit {
     }
 
     private getPercentToAurax(kills: number) {
-        let percent = kills / 1200 * 100;
+        let percent = kills / 1160 * 100;
         return (percent > 100 ? 100 : percent) + '%';
     }
 }
