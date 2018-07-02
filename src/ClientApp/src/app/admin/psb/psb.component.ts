@@ -1,7 +1,7 @@
 ﻿import { Component, ElementRef, ViewChild, Inject, OnInit, OnDestroy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable, MatPaginator } from '@angular/material';
-import { Subscription, Observable, BehaviorSubject, merge, fromEvent, of } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject, merge, fromEvent, of, throwError } from 'rxjs';
 import { debounceTime, distinctUntilChanged, startWith, map, catchError } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
@@ -49,7 +49,7 @@ export class PsbComponent implements OnInit, OnDestroy {
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body || error.statusText;
                 this.isLoading = false;
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .subscribe(sessions => {
                 this.sessions = sessions;

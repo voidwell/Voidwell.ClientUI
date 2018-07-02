@@ -1,6 +1,6 @@
 ﻿import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
@@ -40,7 +40,7 @@ export class RolesComponent implements OnInit, OnDestroy {
                 catch (ex) {
                     this.errorMessage = error._body;
                 }
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .pipe<any>(finalize(() => {
                 this.isLoading = false;
@@ -61,7 +61,7 @@ export class RolesComponent implements OnInit, OnDestroy {
                 catch (ex) {
                     this.errorMessage = error._body;
                 }
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .pipe<any>(finalize(() => {
                 this.isLoading = false;

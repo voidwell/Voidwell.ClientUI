@@ -1,7 +1,7 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsidePlayerComponent } from './../../planetside-player.component';
 import { PlanetsideApi } from './../../../planetside-api.service';
@@ -48,7 +48,7 @@ export class PlanetsidePlayerSessionComponent implements OnDestroy {
                     this.api.getCharacterSession(this.playerData.id, sessionId)
                         .pipe<any>(catchError(error => {
                             this.errorMessage = error._body;
-                            return Observable.throw(error);
+                            return throwError(error);
                         }))
                         .pipe<any>(finalize(() => {
                             this.isLoading = false;

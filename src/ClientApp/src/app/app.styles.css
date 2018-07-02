@@ -78,6 +78,10 @@ body {
     -webkit-tap-highlight-color: transparent;
 }
 
+.error-text {
+    color: #ff4f4f;
+}
+
 .main-content {
     position: relative;
     display: block;
@@ -261,19 +265,41 @@ img.inverse-img {
     float: left;
 }
 
-.mat-form-field-placeholder {
-    color: #fff;
-    opacity: 0.8;
+.mat-tab-group .mat-tab-label,
+.mat-form-field .mat-input-element {
+    color: #b4bfc3;
 }
-.mat-focused .mat-form-field-placeholder {
-    color: #fff;
+.mat-tab-group .mat-tab-label.mat-tab-disabled {
+    opacity: 0.2;
+}
+
+.mat-form-field .mat-input-element {
+    caret-color: #b4bfc3;
+}
+
+.mat-form-field .mat-form-field-placeholder,
+.mat-form-field .mat-form-field-label,
+.mat-form-field.mat-focused .mat-form-field-placeholder,
+.mat-form-field.mat-focused .mat-form-field-label {
+    color: rgba(177,188,192,.47);
+}
+
+.mat-form-field .mat-form-field-underline,
+.mat-form-field .mat-form-field-ripple {
+    background-color: #31424b;
+}
+.mat-form-field .mat-form-field-ripple {
+    height: 1px !important;
+}
+.mat-form-field.mat-focused .mat-form-field-ripple {
+    background-color: #edeff0;
 }
 .mat-form-field-invalid .mat-form-field-placeholder {
     color: #ca1406;
 }
 
 .mat-tab-link,
-.mat-tab-label {
+.mat-tab-label, {
     color: #fff;
 }
 .mat-ink-bar {
@@ -349,13 +375,16 @@ mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
     border-color: #585858;
 }
 
-[mat-button], [mat-raised-button] {
-    color: #fff;
-    background: #424150;
+[mat-button].mat-button,
+[mat-raised-button].mat-raised-button {
+    color: #b4bfc3;
+    background-color: #394650;
+    box-shadow: none !important;
 }
-.mat-button[disabled],
-.mat-raised-button[disabled] {
-    color: rgba(255, 255, 255, 0.50) !important;
+[mat-button].mat-button[disabled],
+[mat-raised-button].mat-raised-button[disabled] {
+    color: #b4bfc3;
+    opacity: 0.65;
 }
 
 

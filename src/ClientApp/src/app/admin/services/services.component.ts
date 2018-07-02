@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
@@ -20,7 +20,7 @@ export class ServicesComponent {
         this.api.getPS2AllServiceStatus()
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .pipe<any>(finalize(() => {
                 this.isLoading = false;
@@ -46,7 +46,7 @@ export class ServicesComponent {
             .pipe<any>(catchError(error => {
                 service.errorMessage = error._body
                 event.source.checked = !event.checked;
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .pipe<any>(finalize(() => {
                 service.isLoading = false;

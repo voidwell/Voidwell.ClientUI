@@ -1,4 +1,8 @@
-﻿.world-button {
+﻿.world-list {
+    min-height: 100px;
+}
+
+.world-button {
     margin: 5px;
 }
 

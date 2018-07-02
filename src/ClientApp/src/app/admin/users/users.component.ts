@@ -2,7 +2,7 @@
 import { NgForm } from '@angular/forms';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogRef, MatPaginator, MAT_DIALOG_DATA } from '@angular/material';
-import { Observable, BehaviorSubject, Subscription, of, merge, fromEvent } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription, of, merge, fromEvent, throwError } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
@@ -151,7 +151,7 @@ export class UserEditorDialog {
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body;
                 userRolesForm.form.patchValue(user);
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .pipe<any>(finalize(() => {
                 user.isLocked = false;

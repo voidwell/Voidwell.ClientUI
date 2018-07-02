@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material';
-import { Observable, BehaviorSubject, of, merge, fromEvent } from 'rxjs';
+import { Observable, BehaviorSubject, of, merge, fromEvent, throwError } from 'rxjs';
 import { map, distinctUntilChanged, debounceTime, catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../../shared/services/voidwell-api.service';
 
@@ -32,7 +32,7 @@ export class ClientsListComponent implements OnInit {
         this.api.getAllClients()
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .pipe<any>(finalize(() => {
                 this.isLoading = false;
