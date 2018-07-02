@@ -378,8 +378,10 @@ mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
 [mat-button].mat-button,
 [mat-raised-button].mat-raised-button {
     color: #b4bfc3;
-    background-color: #394650;
     box-shadow: none !important;
+}
+[mat-raised-button].mat-raised-button {
+    background-color: #394650;
 }
 [mat-button].mat-button[disabled],
 [mat-raised-button].mat-raised-button[disabled] {
