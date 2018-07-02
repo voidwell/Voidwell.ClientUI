@@ -23,7 +23,8 @@ import {
     MatSlideToggleModule,
     MatSidenavModule,
     MatListModule,
-    MatTreeModule
+    MatTreeModule,
+    MatStepperModule
 } from '@angular/material';
 
 let modules = [
@@ -50,6 +51,7 @@ let modules = [
     MatSidenavModule,
     MatListModule,
     MatTreeModule,
+    MatStepperModule,
     FlexLayoutModule
 ];
 

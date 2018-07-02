@@ -1,6 +1,6 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription, BehaviorSubject } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { PlanetsideApi } from './../planetside-api.service';
 
@@ -29,7 +29,7 @@ export class PlanetsidePlayerComponent implements OnDestroy {
                 .pipe<any>(catchError(error => {
                     this.errorMessage = error._body || error.statusText
                     this.isLoading = false;
-                    return Observable.throw(error);
+                    return throwError(error);
                 }))
                 .subscribe(data => {
                     this.playerData.next(data);

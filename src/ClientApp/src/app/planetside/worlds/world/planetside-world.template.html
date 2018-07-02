@@ -1,4 +1,11 @@
-﻿<vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
-<div class="content-container">
+﻿<mat-card class="world-card">
+    <mat-card-content>
+        <h1>{{worldId | worldName}}</h1>
+    </mat-card-content>
+    <mat-card-footer>
+        <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+    </mat-card-footer>
+</mat-card>
+<div>
     <router-outlet></router-outlet>
 </div>

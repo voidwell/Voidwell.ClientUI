@@ -1,7 +1,7 @@
 ﻿import { Injectable, Injector } from '@angular/core';
 import { Http, Headers } from '@angular/http';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, Observable } from 'rxjs';
+import { Subject, Observable, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { NgRedux } from '@angular-redux/store';
 import { UserManager, UserManagerSettings, Log } from 'oidc-client';
@@ -111,7 +111,7 @@ export class VoidwellAuthService {
     signIn() {
         this.mgr.signinRedirect().then(function () {
         }).catch(function (error) {
-            return Observable.throw(error);
+            return throwError(error);
         });
     }
 
@@ -121,7 +121,7 @@ export class VoidwellAuthService {
         this.ngRedux.dispatch({ type: UNLOAD_USER });
         this.mgr.signoutRedirect().then(function () {
         }).catch(function (error) {
-            return Observable.throw(error);
+            return throwError(error);
         });
     };
 
@@ -138,7 +138,7 @@ export class VoidwellAuthService {
         this.mgr.removeUser().then(() => {
             this.signIn();
         }).catch(function (error) {
-            return Observable.throw(error);
+            return throwError(error);
         });
     }
 

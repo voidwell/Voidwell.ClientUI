@@ -2,7 +2,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable } from '@angular/material';
-import { Observable, Observer, Subscriber, Subscription, of, merge } from 'rxjs';
+import { Observable, Observer, Subscriber, Subscription, of, merge, throwError } from 'rxjs';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { PlanetsideApi } from './../planetside-api.service';
 
@@ -36,7 +36,7 @@ export class PlanetsideOutfitComponent implements OnDestroy {
             this.api.getOutfit(id)
                 .pipe<any>(catchError(error => {
                     this.errorMessage = error._body
-                    return Observable.throw(error);
+                    return throwError(error);
                 }))
                 .pipe<any>(finalize(() => {
                     this.isLoading = false;
@@ -50,7 +50,7 @@ export class PlanetsideOutfitComponent implements OnDestroy {
             this.api.getOutfitMembers(id)
                 .pipe<any>(catchError(error => {
                     this.errorMessage = error._body
-                    return Observable.throw(error);
+                    return throwError(error);
                 }))
                 .pipe<any>(finalize(() => {
                     this.isLoadingMembers = false;

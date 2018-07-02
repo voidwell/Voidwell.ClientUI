@@ -12,7 +12,8 @@ const SocketConfig = {
 }
 
 @Component({
-    templateUrl: './planetside-world-map.template.html'
+    templateUrl: './planetside-world-map.template.html',
+    styleUrls: ['./planetside-world-map.styles.css']
 })
 
 export class PlanetsideWorldMapComponent implements OnDestroy {
