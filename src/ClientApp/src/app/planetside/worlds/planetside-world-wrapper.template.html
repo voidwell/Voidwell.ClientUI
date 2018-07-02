@@ -1,29 +1,34 @@
-﻿<div class="content-container">
-    <vw-loader [loading]="isLoading"></vw-loader>
-    <vw-error-message [message]="errorMessage"></vw-error-message>
-    <div *ngFor="let world of worlds | orderBy: 'name'">
-        <div class="world-state">
-            <mat-icon *ngIf="world.isOnline" fontSet="mdi" fontIcon="mdi-check-circle" class="online"></mat-icon>
-            <mat-icon *ngIf="!world.isOnline" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-        </div>
-        <a mat-raised-button routerLink="{{world.id}}" [disabled]="!world.isOnline" class="world-button">
-            <div class="world-name">{{world.name}}</div>
-        </a>
-        <div class="online-players">
-            <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
-            {{world.onlineCharacters}}
-        </div>
-        <div class="world-zones">
-            <div class="world-zone" *ngFor="let zone of world.zoneStates">
-                <a mat-raised-button routerLink="{{world.id}}/map/{{zone.id}}" [disabled]="!zone.isTracking" class="world-zone-button">
-                    <span>
-                        <mat-icon *ngIf="!zone.lockState && zone.isTracking" fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
-                        <mat-icon *ngIf="zone.lockState && zone.isTracking" [ngClass]="zone.lockState.triggeringFaction | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
-                        <mat-icon class="zone-offline" *ngIf="!zone.isTracking" fontSet="mdi" fontIcon="mdi-earth-off"></mat-icon>
-                    </span>
-                    {{zone.name}}
+﻿<mat-card>
+    <mat-card-content class="world-list">
+        <vw-loader [loading]="isLoading"></vw-loader>
+        <vw-error-message [message]="errorMessage"></vw-error-message>
+        <div *ngIf="!isLoading && !errorMessage">
+            <div *ngIf="!worlds || worlds.length === 0">No servers are being tracked.</div>
+            <div *ngFor="let world of worlds | orderBy: 'name'">
+                <div class="world-state">
+                    <mat-icon *ngIf="world.isOnline" fontSet="mdi" fontIcon="mdi-check-circle" class="online"></mat-icon>
+                    <mat-icon *ngIf="!world.isOnline" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                </div>
+                <a mat-raised-button routerLink="{{world.id}}" [disabled]="!world.isOnline" class="world-button">
+                    <div class="world-name">{{world.name}}</div>
                 </a>
+                <div class="online-players">
+                    <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
+                    {{world.onlineCharacters}}
+                </div>
+                <div class="world-zones">
+                    <div class="world-zone" *ngFor="let zone of world.zoneStates">
+                        <a mat-raised-button routerLink="{{world.id}}/map/{{zone.id}}" [disabled]="!zone.isTracking" class="world-zone-button">
+                            <span>
+                                <mat-icon *ngIf="!zone.lockState && zone.isTracking" fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
+                                <mat-icon *ngIf="zone.lockState && zone.isTracking" [ngClass]="zone.lockState.triggeringFaction | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+                                <mat-icon class="zone-offline" *ngIf="!zone.isTracking" fontSet="mdi" fontIcon="mdi-earth-off"></mat-icon>
+                            </span>
+                            {{zone.name}}
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </mat-card-content>
+</mat-card>

@@ -1,4 +1,4 @@
-﻿import { Observable } from 'rxjs';
+﻿import { Observable, throwError } from 'rxjs';
 import { timeout, catchError } from 'rxjs/operators';
 import { Http, RequestOptions, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
@@ -60,7 +60,7 @@ export class ApiBase {
             this.authService.checkSession();
         }
 
-        return Observable.throw(error);
+        return throwError(error);
     }
 
     protected extractData(res: Response, key?: string) {

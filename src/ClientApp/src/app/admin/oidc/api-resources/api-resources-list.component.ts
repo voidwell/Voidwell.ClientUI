@@ -1,6 +1,6 @@
 ﻿import { Component } from '@angular/core';
 import { MatSlideToggleChange } from '@angular/material';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../../shared/services/voidwell-api.service';
 
@@ -20,7 +20,7 @@ export class ApiResourcesListComponent {
         this.api.getAllApiResources()
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .pipe<any>(finalize(() => {
                 this.isLoading = false;

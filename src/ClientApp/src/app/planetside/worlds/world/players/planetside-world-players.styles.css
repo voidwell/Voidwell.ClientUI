@@ -9,9 +9,9 @@
 }
 
 .header-row {
-    margin-bottom: 3px;
-    font-weight: bold;
-    background: #19282F;
+    border-bottom-width: 1px;
+    color: #b4bfc3;
+    font-weight: 500;
 }
 
 .online-players {
@@ -20,12 +20,13 @@
 
 .player-row {
     padding: 1px;
-    background: #1b2831;
+    background: #2b3942;
+    border-bottom-color: rgba(255,255,255,.025);
 }
 
-.player-row:nth-child(odd) {
-    background: #14212a;
-}
+    .player-row:nth-child(even) {
+        background: rgba(255,255,255,.025);
+    }
 
 .player-totals {
     margin-bottom: 25px;

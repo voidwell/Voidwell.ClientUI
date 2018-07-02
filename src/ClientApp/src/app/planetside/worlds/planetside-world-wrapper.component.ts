@@ -1,5 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { PlanetsideApi } from './../planetside-api.service';
 
@@ -21,7 +21,7 @@ export class PlanetsideWorldWrapperComponent {
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body
                 this.isLoading = false;
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .subscribe(worlds => {
                 this.worlds = worlds;

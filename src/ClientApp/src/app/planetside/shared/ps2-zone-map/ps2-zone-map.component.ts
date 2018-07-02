@@ -1,5 +1,5 @@
 ﻿import { Component, Input, Output, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import {
     Map, tileLayer, latLng, MapOptions, latLngBounds, LatLngBounds, CRS, Layer, polygon, Polygon, PolylineOptions, LatLng,
@@ -95,7 +95,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body
                 this.isLoading = false;
-                return Observable.throw(error);
+                return throwError(error);
             }))
             .pipe<any>(finalize(() => {
                 this.isLoading = false;

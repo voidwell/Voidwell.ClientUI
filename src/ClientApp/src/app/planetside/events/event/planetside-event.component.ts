@@ -1,6 +1,6 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { VoidwellApi } from './../../../shared/services/voidwell-api.service';
 import { PlanetsideCombatEventComponent } from './../../combat-event/planetside-combat-event.component';
@@ -38,7 +38,7 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent imp
                 .pipe<any>(catchError(error => {
                     this.errorMessage = error._body
                     this.isLoading = false;
-                    return Observable.throw(error);
+                    return throwError(error);
                 }))
                 .subscribe(data => this.setup(data));
         });
