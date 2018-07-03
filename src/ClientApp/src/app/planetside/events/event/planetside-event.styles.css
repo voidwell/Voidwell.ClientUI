@@ -62,7 +62,7 @@
     overflow: hidden;
     width: auto;
     padding: 10px;
-    float: right;
+    font-size: 18px;
 }
 
 .event-nav ::ng-deep .vw-tab-nav-sub-bar {

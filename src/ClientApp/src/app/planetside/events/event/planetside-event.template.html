@@ -2,7 +2,7 @@
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <div *ngIf="!isLoading && !errorMessage">
-        <mat-card class="event-info" [style.background]="getBackgroundColor(activeEvent.mapId)">
+        <mat-card class="event-info">
             <mat-card-content>
                 <div>
                     <div class="server-name">{{activeEvent.serverId | worldName}}</div>
@@ -10,7 +10,10 @@
                     <div>{{activeEvent.description}}</div>
                 </div>
                 <div>
-                    <div *ngIf="activeEvent.endDate" class="event-times">
+                    <div *ngIf="!activeEvent.endDate" class="remaining-timer">
+                        <vw-countdown [end]="getEndDate(activeEvent)"></vw-countdown> Remaining
+                    </div>
+                    <div class="event-times">
                         <div class="time-start">
                             <div>{{activeEvent.startDate | date:'MMM d, y h:mm:ss a'}}</div>
                             <div><small>Start</small></div>
@@ -23,9 +26,6 @@
                             <div>{{activeEvent.mapId | zoneName}}</div>
                             <div><small>Map</small></div>
                         </div>
-                    </div>
-                    <div *ngIf="!activeEvent.endDate" class="remaining-timer">
-                        Time left: <vw-countdown [end]="getEndDate(activeEvent)"></vw-countdown>
                     </div>
                 </div>
                 <vw-faction-bar [vs]="activeEvent.score[1]" [nc]="activeEvent.score[2]" [tr]="activeEvent.score[3]"></vw-faction-bar>

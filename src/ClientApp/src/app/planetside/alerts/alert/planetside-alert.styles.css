@@ -2,13 +2,16 @@
     font-size: 16px;
 }
 
-.alert-info {
+.alert-header {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
     margin: 10px 0;
     color: #edeff0;
     margin-bottom: 30px;
 }
 
-.alert-info ::ng-deep .vw-tab-nav-sub-bar {
+::ng-deep .vw-tab-nav-sub-bar {
     box-shadow: none;
     font-size: initial;
 }
@@ -52,9 +55,52 @@ vw-faction-bar ::ng-deep .faction-bar {
 
 .remaining-timer {
     display: block;
-    text-align: center;
-    overflow: hidden;
-    width: auto;
-    padding: 10px;
+}
+
+.date-info {
+    text-align: right;
     float: right;
+}
+
+.side-img {
+    display: flex;
+    flex: 0 0 auto;
+    width: 160px;
+    min-height: 160px;
+    max-height: 315px;
+}
+
+    .side-img.amerish {
+        background-image: url("/Amerish-160.jpg");
+        background-position: center top;
+    }
+
+    .side-img.esamir {
+        background-image: url("/Esamir-160.jpg");
+        background-position: center top;
+    }
+
+    .side-img.hossin {
+        background-image: url("/Hossin-160.jpg");
+        background-position: center center;
+    }
+
+    .side-img.indar {
+        background-image: url("/Indar-160.jpg");
+        background-position: center center;
+    }
+
+.card-info {
+    display: flex;
+    flex-grow: 1;
+    position: relative;
+    min-height: 230px;
+}
+
+    .card-info .mat-card {
+        display: block;
+    }
+
+.location-spacer {
+    width: 14px;
 }

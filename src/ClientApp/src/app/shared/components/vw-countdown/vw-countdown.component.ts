@@ -28,7 +28,17 @@ export class VWCountdownComponent implements OnInit {
 
         let seconds = t % 60;
 
-        return [hours + ' Hours', minutes + ' Minutes', seconds + ' Seconds'].join(' ');
+        let returnTime = [];
+        if (hours > 0) {
+            returnTime.push(hours + ' Hours');
+        }
+        if (minutes > 0) {
+            returnTime.push(minutes + ' Minutes');
+        }
+
+        returnTime.push(seconds + ' Seconds');
+
+        return returnTime.join(' ');
     }
 
     private tock() {
