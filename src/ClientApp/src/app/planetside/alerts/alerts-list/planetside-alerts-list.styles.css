@@ -11,16 +11,6 @@
     flex-flow: column;
 }
 
-.alerts-list.in-progress {
-    flex-flow: row wrap;
-    margin: -7px;
-}
-
-    .alerts-list.in-progress > vw-alert-card {
-        flex: 1 0 auto;
-        margin: 7px;
-    }
-
 vw-alert-card {
     margin-bottom: 15px;
 }

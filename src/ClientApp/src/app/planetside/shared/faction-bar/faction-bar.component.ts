@@ -12,6 +12,10 @@ export class FactionBarComponent {
     @Input('tr') trScore: number;
 
     getWidth(value: number): number {
+        let scoreSum = this.vsScore + this.ncScore + this.trScore;
+        if (scoreSum === 0) {
+            return 100 / 3;
+        }
         return value / (this.vsScore + this.ncScore + this.trScore + this.getNeuturalScore()) * 100;
     }
 

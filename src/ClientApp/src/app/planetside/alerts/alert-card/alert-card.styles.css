@@ -1,6 +1,13 @@
-﻿mat-card {
-    padding-right: 42px;
+﻿.alert-card {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
     min-width: 400px;
+}
+
+.title-container {
+    position: relative;
+    overflow: hidden;
 }
 
 .alert-link {
@@ -22,6 +29,57 @@
         font-size: 16px;
     }
 
-.world-name {
-    font-weight: bold
+.server-name {
+    display: inline-block;
+    font-size: 35px;
+    line-height: 35px;
+    font-weight: 700;
+    margin-right: 10px;
 }
+
+.event-name {
+    display: inline-block;
+    margin-top: 2px;
+}
+
+    .event-name div {
+        line-height: 15px;
+    }
+
+.side-img {
+    display: flex;
+    flex: 0 0 auto;
+    height: 160px;
+    width: 160px;
+}
+
+    .side-img.amerish {
+        background-image: url("/Amerish-160.jpg");
+        background-position: center top;
+    }
+
+    .side-img.esamir {
+        background-image: url("/Esamir-160.jpg");
+        background-position: center top;
+    }
+
+    .side-img.hossin {
+        background-image: url("/Hossin-160.jpg");
+        background-position: center center;
+    }
+
+    .side-img.indar {
+        background-image: url("/Indar-160.jpg");
+        background-position: center center;
+    }
+
+.card-info {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+    .card-info .mat-card {
+        width: 100%;
+        padding-right: 42px;
+    }

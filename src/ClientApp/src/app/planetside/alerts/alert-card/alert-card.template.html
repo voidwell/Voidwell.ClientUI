@@ -1,20 +1,33 @@
-﻿<mat-card>
-    <mat-card-title>
-        <small class="pull-right">
-            <span *ngIf="isAlertActive()">
-                <vw-countdown [end]="getEndDate()"></vw-countdown>
-            </span>
-            <span *ngIf="!isAlertActive()">
-                {{alert.startDate | date:'EEE dd MMM yyyy HH:mm'}}
-            </span>
-        </small>
-        <h4>{{alert.worldId | worldName}}</h4>
-    </mat-card-title>
-    <mat-card-subtitle>
-        {{alert.metagameEvent.description}}
-    </mat-card-subtitle>
-    <vw-faction-bar [vs]="alert.lastFactionVs" [nc]="alert.lastFactionNc" [tr]="alert.lastFactionTr"></vw-faction-bar>
+﻿<div class="alert-card">
+    <div class="side-img" [ngClass]="{'indar': alert.zoneId == 2, 'hossin': alert.zoneId == 4, 'amerish': alert.zoneId == 6, 'esamir': alert.zoneId == 8}"></div>
+    <div class="card-info">
+        <mat-card>
+            <mat-card-title>
+                <div class="title-container">
+                    <div class="pull-right">
+                        <span *ngIf="isAlertActive()">
+                            <vw-countdown [end]="getEndDate()"></vw-countdown> Remaining
+                        </span>
+                        <span *ngIf="!isAlertActive()">
+                            {{alert.startDate | date:'EEE dd MMM yyyy HH:mm'}}
+                        </span>
+                    </div>
+                    <div class="pull-left">
+                        <div class="server-name">{{alert.worldId | worldName}}</div>
+                        <div class="event-name">
+                            <div>{{alert.metagameEvent.name}}</div>
+                            <div>{{alert.zoneId | zoneName}}</div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-subtitle>
+                {{alert.metagameEvent.description}}
+            </mat-card-subtitle>
+            <vw-faction-bar [vs]="alert.lastFactionVs" [nc]="alert.lastFactionNc" [tr]="alert.lastFactionTr"></vw-faction-bar>
+        </mat-card>
+    </div>
     <a mat-button routerLink="{{alert.worldId}}/{{alert.metagameInstanceId}}" class="alert-link">
         <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
     </a>
-</mat-card>
+</div>
