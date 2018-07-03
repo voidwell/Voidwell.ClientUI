@@ -61,7 +61,6 @@ export class SearchService {
     }
 }
 
-@Injectable()
 export class SearchState {
     public isSearching: boolean = false;
     public data: any[] = [];
