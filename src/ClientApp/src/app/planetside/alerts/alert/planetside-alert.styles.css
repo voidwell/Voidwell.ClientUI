@@ -16,33 +16,6 @@
     font-size: initial;
 }
 
-.alert-times {
-    margin-bottom: 5px;
-    text-align: center;
-    overflow: hidden;
-    width: auto;
-    display: flex;
-    justify-content: space-around;
-}
-
-    .alert-times small {
-        opacity: 0.5;
-    }
-
-.world-name {
-    float: right;
-    vertical-align: top;
-    font-size: 32px;
-}
-
-.time-start,
-.time-end,
-.map-display {
-    font-size: 16px;
-    display: inline-block;
-    padding: 10px;
-}
-
 vw-faction-bar {
     height: 30px;
 }
@@ -90,6 +63,16 @@ vw-faction-bar ::ng-deep .faction-bar {
         background-position: center center;
     }
 
+@media screen and (max-width: 450px) {
+    .side-img {
+        display: none;
+    }
+
+    .event-name {
+        clear: right;
+    }
+}
+
 .card-info {
     display: flex;
     flex-grow: 1;
@@ -101,6 +84,15 @@ vw-faction-bar ::ng-deep .faction-bar {
         display: block;
     }
 
+.event-name {
+    display: block;
+    float: left;
+}
+
 .location-spacer {
     width: 14px;
+}
+
+.title {
+    overflow: hidden;
 }

@@ -1,6 +1,10 @@
-﻿.mat-table {
+﻿.table-container {
+    overflow-x: auto;
+}
+
+.mat-table {
     max-height: 800px;
-    overflow: auto;
+    min-width: 550px;
 }
 
     .mat-table .mat-row {
@@ -24,5 +28,5 @@
 .mat-column-kills,
 .mat-column-deaths,
 .mat-column-tks {
-    max-width: 130px;
+    max-width: 80px;
 }

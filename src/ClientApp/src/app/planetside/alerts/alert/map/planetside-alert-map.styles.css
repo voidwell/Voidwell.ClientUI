@@ -1,4 +1,13 @@
-﻿.mat-table .mat-row {
+﻿.table-container {
+    overflow-x: auto;
+}
+
+.mat-table {
+    max-height: 800px;
+    min-width: 800px;
+}
+
+.mat-table .mat-row {
     min-height: 25px;
 }
 
