@@ -1,0 +1,27 @@
+﻿#line-graph {
+    height: 500px;
+}
+
+    #line-graph ::ng-deep .domain,
+    #line-graph ::ng-deep .tick line {
+        stroke: #8a9ba1;
+    }
+
+    #line-graph ::ng-deep .tick text {
+        fill: #8a9ba1;
+    }
+
+    #line-graph ::ng-deep .line1 {
+        stroke: #de3535;
+        fill: none;
+    }
+
+    #line-graph ::ng-deep .line2 {
+        stroke: #359ade;
+        fill: none;
+    }
+
+    #line-graph ::ng-deep .line3 {
+        stroke: #6c35de;
+        fill: none;
+    }

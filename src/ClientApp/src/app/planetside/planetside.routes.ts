@@ -27,6 +27,7 @@ import { PlanetsideWorldComponent } from './worlds/world/planetside-world.compon
 import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetside-world-players.component';
 import { PlanetsideWorldMapComponent } from './worlds/world/map/planetside-world-map.component';
 import { PlanetsideWorldZoneComponent } from './worlds/world/map/zone/planetside-world-zone.component';
+import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.component';
 
 const planetsideRoutes: Routes = [
     {
@@ -102,7 +103,7 @@ const planetsideRoutes: Routes = [
                     }
                 ]
             },
-
+            { path: 'oracle', component: WeaponTrackerComponent }
         ]
     }
 ];
