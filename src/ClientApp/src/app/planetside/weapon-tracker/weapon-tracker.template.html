@@ -1,0 +1,62 @@
+﻿<div>
+    <mat-card>
+        <mat-card-title>
+            <h1>Weapon Stat Tracker</h1>
+        </mat-card-title>
+        <mat-card-subtitle>
+            Note: May be slow to load. If it fails wait a few seconds and try again.
+        </mat-card-subtitle>
+        <mat-card-content>
+            <div *ngIf="errorMessage" class="error-text">{{errorMessage}}</div>
+            <div>
+                <!--
+                <mat-form-field>
+                    <mat-select placeholder="Stat" [formControl]="selectedStat" [disabled]="isLoading">
+                        <mat-option *ngFor="let stat of statOptions" [value]="stat.id">
+                            {{stat.display}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                    -->
+                <mat-form-field>
+                    <mat-select placeholder="Category" [formControl]="selectedCategory" (selectionChange)="onCategoryChange($event)" [disabled]="isLoading">
+                        <mat-option *ngFor="let category of categoryOptions" [value]="category.id">
+                            {{category.display}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div *ngIf="weapons && weapons.length > 0">
+                    <mat-form-field>
+                        <mat-select placeholder="Weapon" [formControl]="selectedWeapon1" [disabled]="isLoading">
+                            <mat-option [value]="null">Weapon 1</mat-option>
+                            <mat-option *ngFor="let weapon of weapons" [value]="weapon.id">
+                                {{weapon.id}} - {{weapon.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Weapon" [formControl]="selectedWeapon2" [disabled]="isLoading">
+                            <mat-option [value]="null">Weapon 2</mat-option>
+                            <mat-option *ngFor="let weapon of weapons" [value]="weapon.id">
+                                {{weapon.id}} - {{weapon.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-select placeholder="Weapon" [formControl]="selectedWeapon3" [disabled]="isLoading">
+                            <mat-option [value]="null">Weapon 3</mat-option>
+                            <mat-option *ngFor="let weapon of weapons" [value]="weapon.id">
+                                {{weapon.id}} - {{weapon.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <button mat-raised-button (click)="onSubmit()" [disabled]="isLoading">Submit</button>
+                </div>
+            </div>
+            <div>
+                <vw-loader [loading]="isLoading"></vw-loader>
+                <div #linegraph id="line-graph"></div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

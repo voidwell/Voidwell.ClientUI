@@ -1,6 +1,10 @@
-﻿.mat-table {
+﻿.table-container {
+    overflow-x: auto;
+}
+
+.mat-table {
     max-height: 800px;
-    overflow: auto;
+    min-width: 550px;
 }
 
     .mat-table .mat-row {
@@ -30,5 +34,5 @@
 .mat-column-tks,
 .mat-column-headshots,
 .mat-column-hsper {
-    max-width: 130px;
+    max-width: 80px;
 }

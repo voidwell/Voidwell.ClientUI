@@ -12,10 +12,7 @@ export class AlertCardComponent {
     defaultAlertLengthMinutes = 45;
 
     isAlertActive(): boolean {
-        let now = new Date();
-        let endDate = this.getEndDate();
-
-        return endDate > now;
+        return this.getEndDate() > new Date();
     }
 
     getEndDate(): Date {

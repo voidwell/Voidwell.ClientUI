@@ -1,6 +1,10 @@
-﻿.mat-table {
+﻿.table-container {
+    overflow-x: auto;
+}
+
+.mat-table {
     max-height: 800px;
-    overflow: auto;
+    min-width: 1100px;
 }
 
     .mat-table .mat-row {

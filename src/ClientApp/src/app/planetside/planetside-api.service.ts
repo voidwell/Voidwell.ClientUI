@@ -112,4 +112,14 @@ export class PlanetsideApi extends ApiBase {
         return this.Get(this.ps2Url + 'grades')
             .pipe(map<Response, any>(resp => resp.json()));
     }
+
+    getOracleWeapons(categoryId: string) {
+        return this.Get(this.ps2Url + 'oracle/category/' + categoryId)
+            .pipe(map<Response, any>(resp => resp.json()));
+    }
+
+    getOracleData(statId: string, weaponIds: number[]) {
+        return this.Get(this.ps2Url + 'oracle/stats/' + statId + '/?q=' + weaponIds.join(','))
+            .pipe(map<Response, any>(resp => resp.json()));
+    }
 }

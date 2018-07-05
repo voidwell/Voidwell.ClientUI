@@ -54,6 +54,7 @@ import { GradeComponent } from './shared/vw-grade/vw-grade.component';
 import { FactionBarComponent } from './shared/faction-bar/faction-bar.component';
 import { ZoneHelper } from './zone-helper.service';
 import { Ps2ZoneMapComponent } from './shared/ps2-zone-map/ps2-zone-map.component';
+import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.component';
 
 @NgModule({
     declarations: [
@@ -97,7 +98,8 @@ import { Ps2ZoneMapComponent } from './shared/ps2-zone-map/ps2-zone-map.componen
         PlanetsideWorldPlayersComponent,
         PlanetsideWorldMapComponent,
         PlanetsideWorldZoneComponent,
-        Ps2ZoneMapComponent
+        Ps2ZoneMapComponent,
+        WeaponTrackerComponent
     ],
     imports: [
         FormsModule,

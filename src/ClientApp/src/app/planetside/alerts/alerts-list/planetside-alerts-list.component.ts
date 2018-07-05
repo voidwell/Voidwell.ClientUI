@@ -32,11 +32,21 @@ export class PlanetsideAlertsListComponent {
 
     getActiveAlerts() {
         let now = new Date();
-        return this.alerts.filter(a => !a.endDate || a.endDate > now);
+        return this.alerts.filter(alert => this.getEndDate(alert) > now);
     }
 
     getPastAlerts() {
         let now = new Date();
-        return this.alerts.filter(a => a.endDate && a.endDate <= now);
+        return this.alerts.filter(alert => this.getEndDate(alert) <= now);
+    }
+
+    private getEndDate(alert: any): Date {
+        if (alert.endDate) {
+            return new Date(alert.endDate);
+        }
+
+        let startString = alert.startDate;
+        let startMs = new Date(startString).getTime();
+        return new Date(startMs + 1000 * 60 * 45);
     }
 }
