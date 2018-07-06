@@ -21,13 +21,22 @@ export class WeaponTrackerComponent implements OnInit {
         { id: 'kills', display: 'Kills' },
         { id: 'uniques', display: 'Uniques' },
         { id: 'kpu', display: 'KPU' },
-        { id: 'vkpu', display: 'Vehicle KPU' },
-        { id: 'akpu', display: 'Aircraft KPU' },
-        { id: 'kph', display: 'KPH' },
-        { id: 'vkph', display: 'Vehicle KPH' },
-        { id: 'akph', display: 'Aircraft KPH' },
+        //{ id: 'vkpu', display: 'Vehicle KPU' },
+        //{ id: 'akpu', display: 'Aircraft KPU' },
+        //{ id: 'kph', display: 'KPH' },
+        //{ id: 'vkph', display: 'Vehicle KPH' },
+        //{ id: 'akph', display: 'Aircraft KPH' },
+        { id: 'avg-br', display: 'Average BR' },
         { id: 'hkills', display: 'Headshot Kills' },
-        { id: 'headshot-percent', display: 'Headshot %' }
+        { id: 'headshot-percent', display: 'Headshot %' },
+        { id: 'q4-kills', display: 'Q4 Kills' },
+        { id: 'q4-uniques', display: 'Q4 Uniques' },
+        { id: 'q4-kpu', display: 'Q4 KPU' },
+        { id: 'q4-headshots', display: 'Q4 Headshot Kills' },
+        { id: 'q4-headshots-percent', display: 'Q4 Headshot %' },
+        { id: 'q1-kpu', display: 'Q1 KPU' },
+        { id: 'q2-kpu', display: 'Q2 KPU' },
+        { id: 'q3-kpu', display: 'Q3 KPU' }
     ];
 
     categoryOptions = [
@@ -161,7 +170,7 @@ export class WeaponTrackerComponent implements OnInit {
         let height = svgHeight - margin.top - margin.bottom
 
         let x = d3.scaleTime()
-            .domain(d3.extent(data1, function(d) { return new Date(d.date); }))
+            .domain(d3.extent(data1, function(d) { return new Date(d.period); }))
             .range([0, width]);
 
         let maxValues = [];
@@ -183,7 +192,7 @@ export class WeaponTrackerComponent implements OnInit {
 
         let line = d3.line<any>()
             .defined(function(d) { return d; })
-            .x(function(d) { return x(new Date(d.date)); })
+            .x(function(d) { return x(new Date(d.period)); })
             .y(function(d) { return y(d.value); });
 
         var xAxis = d3.axisBottom(x)
