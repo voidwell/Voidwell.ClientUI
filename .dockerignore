@@ -1,1 +1,10 @@
-node_modules/
+.git
+.vs
+.gitignore
+.gitattributes
+Dockerfile
+Dockerfile.debug
+/src/ClientApp/node_modules
+/src/ClientApp/dist
+/src/ClientApp/out-tsc
+/src/ClientApp/assets
