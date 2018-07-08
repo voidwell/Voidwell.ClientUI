@@ -11,17 +11,47 @@
         fill: #8a9ba1;
     }
 
-    #line-graph ::ng-deep .line1 {
-        stroke: #de3535;
-        fill: none;
-    }
+.graph-controls {
+    line-height: 45px;
+    overflow: hidden;
+}
 
-    #line-graph ::ng-deep .line2 {
-        stroke: #359ade;
-        fill: none;
-    }
+.zoom-controls,
+.date-controls {
+    display: inline-block;
+}
 
-    #line-graph ::ng-deep .line3 {
-        stroke: #6c35de;
-        fill: none;
+.zoom-controls {
+    font-size: 11px;
+}
+
+.zoom-controls ul {
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    margin-right: 5px;
+    padding: 3px 5px;
+}
+
+.zoom-controls li {
+    color: rgba(177, 188, 192, 0.47);
+    display: inline-block;
+    background: #22313a;
+    margin-right: 7px;
+    padding: 3px 10px;
+    line-height: initial;
+    cursor: pointer;
+}
+
+.date-controls > *:not(:last-child) {
+    margin-right: 5px;
+}
+
+.date-controls .input-date {
+    max-width: 100px;
+}
+
+    .date-controls .input-date ::ng-deep .mat-datepicker-toggle-default-icon {
+        fill: rgba(177, 188, 192, 0.87);
     }
