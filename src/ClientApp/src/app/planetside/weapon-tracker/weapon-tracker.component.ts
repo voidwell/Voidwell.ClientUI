@@ -2,7 +2,7 @@
 import { FormControl } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { D3Service, D3 } from 'd3-ng2-service';
+import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime } from 'd3-ng2-service';
 import { PlanetsideApi } from './../planetside-api.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class WeaponTrackerComponent implements OnInit {
 
     isLoading: boolean;
     errorMessage: string = null;
-    d3: D3;
+    lineColors = ['#de3535', '#359ade', '#6c35de'];
 
     statOptions = [
         { id: 'kills', display: 'Kills' },
@@ -78,27 +78,46 @@ export class WeaponTrackerComponent implements OnInit {
     selectedWeapon1 = new FormControl();
     selectedWeapon2 = new FormControl();
     selectedWeapon3 = new FormControl();
+    selectedStartDate = new FormControl();
+    selectedEndDate = new FormControl();
+
     weapons: any[] = [];
     stats: any[] = [];
-    svg: any;
+
+    svg: Selection<BaseType, {}, HTMLElement, any>;
+    d3: D3;
+    svgMargin = { top: 0, right: 0, bottom: 30, left: 0 };
+
+    graphHeight: any;
+    graphWidth: any;
+    zoom: ZoomBehavior<Element, {}>;
+    zoomRect: Selection<BaseType, {}, HTMLElement, any>;
+    xExtent: [Date, Date];
+    x: ScaleTime<number, number>;
 
     constructor(private api: PlanetsideApi, element: ElementRef, d3Service: D3Service) {
         this.d3 = d3Service.getD3();
     }
 
     ngOnInit() {
-        let d3 = this.d3;
         let element = this.graphElement.nativeElement;
 
         let svgHeight = element.offsetHeight;
         let svgWidth = element.offsetWidth;
-        let margin = { top: 20, right: 20, bottom: 30, left: 50 };
+        this.graphWidth = element.offsetWidth - this.svgMargin.left - this.svgMargin.right;
+        this.graphHeight = element.offsetHeight - this.svgMargin.top - this.svgMargin.bottom
 
-        this.svg = this.d3.select(element)
+        this.svg= this.d3.select(element)
             .append('svg:svg')
             .attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight)
             .append("g")
-            .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+            .attr("transform", "translate(" + this.svgMargin.left + "," + this.svgMargin.top + ")");
+
+        this.svg.append('clipPath')
+            .attr('id', 'clip')
+            .append('rect')
+            .attr('width', this.graphWidth)
+            .attr('height', this.graphHeight);
     }
 
     onCategoryChange(event) {
@@ -126,9 +145,6 @@ export class WeaponTrackerComponent implements OnInit {
         this.svg.selectAll('*').remove();
 
         let statId = this.selectedStat.value;
-        let weaponId1 = this.selectedWeapon1.value;
-        let weaponId2 = this.selectedWeapon2.value;
-        let weaponId3 = this.selectedWeapon3.value;
 
         let weaponIds = [];
         if (this.selectedWeapon1.value) {
@@ -155,79 +171,143 @@ export class WeaponTrackerComponent implements OnInit {
             });
     }
 
+    onZoom(zoomLevel) {
+        let start: Date = new Date(this.xExtent[1]);
+        let end: Date = new Date(this.xExtent[1]);
+
+        switch (zoomLevel) {
+            case '1m':
+                start.setMonth(this.xExtent[1].getMonth() - 1);
+                break;
+            case '3m':
+                start.setMonth(this.xExtent[1].getMonth() - 3);
+                break;
+            case '6m':
+                start.setMonth(this.xExtent[1].getMonth() - 6);
+                break;
+            case 'ytd':
+                start.setDate(1);
+                start.setMonth(0);
+                break;
+            case '1y':
+                start.setFullYear(this.xExtent[1].getFullYear() - 1);
+                break;
+            default:
+                start = this.xExtent[0];
+                end = this.xExtent[1];
+                break;
+        }
+
+        this.selectedStartDate.setValue(start);
+        this.selectedEndDate.setValue(end);
+        this.zoomBetween(start, end);
+    }
+
+    onDateChange(event) {
+        let start = this.selectedStartDate.value;
+        let end = this.selectedEndDate.value;
+        this.zoomBetween(start, end);
+    }
+
     renderGraph() {
         let d3 = this.d3;
-        let element = this.graphElement.nativeElement;
+        let self = this;
+
         let data1: any[] = this.stats[this.selectedWeapon1.value];
         let data2: any[] = this.stats[this.selectedWeapon2.value];
         let data3: any[] = this.stats[this.selectedWeapon3.value];
 
-        let svgHeight = element.offsetHeight;
-        let svgWidth = element.offsetWidth;
-
-        let margin = { top: 20, right: 20, bottom: 30, left: 50 };
-        let width = svgWidth - margin.left - margin.right;
-        let height = svgHeight - margin.top - margin.bottom
-
-        let x = d3.scaleTime()
-            .domain(d3.extent(data1, function(d) { return new Date(d.period); }))
-            .range([0, width]);
-
-        let maxValues = [];
-        if (data1) {
-            maxValues.push(d3.max(data1, function(d) { return d.value; }));
-        }
-        if (data2) {
-            maxValues.push(d3.max(data2, function(d) { return d.value; }));
-        }
-        if (data3) {
-            maxValues.push(d3.max(data3, function(d) { return d.value; }));
+        let series: OracleStat[][] = [];
+        for (let k in this.stats) {
+            let stats = this.stats[k].map(function (d) {
+                return {
+                    period: new Date(d.period),
+                    value: d.value
+                };
+            });
+            series.push(stats);
         }
 
-        let maxY = Math.max(...maxValues);
+        this.xExtent = d3.extent(data1, function (d) { return new Date(d.period); });
+
+        this.selectedStartDate.setValue(this.xExtent[0]);
+        this.selectedEndDate.setValue(this.xExtent[1]);
+
+        this.x = d3.scaleTime()
+            .domain(this.xExtent)
+            .range([0, this.graphWidth]);
+
+        let maxY = d3.max(series, function (s) { return d3.max(s, function (d) { return d.value; }) });
 
         let y = d3.scaleLinear()
             .domain([0, maxY])
-            .rangeRound([height, 0]);
+            .rangeRound([this.graphHeight, 0]);
 
         let line = d3.line<any>()
-            .defined(function(d) { return d; })
-            .x(function(d) { return x(new Date(d.period)); })
+            .defined(function(d) { return d.value; })
             .y(function(d) { return y(d.value); });
 
-        var xAxis = d3.axisBottom(x)
-            .tickFormat(d3.timeFormat("%b %e"));
+        let xAxis = d3.axisBottom(this.x)
+            .tickFormat(d3.timeFormat('%e. %b'));
+        let xGroup = this.svg.append('g')
+            .attr('transform', 'translate(0,' + this.graphHeight + ')');
+        xGroup.call(xAxis);
+        xGroup.select('.domain').remove();
 
-        this.svg.append("g")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
+        let yAxis = d3.axisRight(y)
+            .tickSize(this.graphWidth);
+        let yGroup = this.svg.append("g");
+        yGroup.call(yAxis);
+        yGroup.select('.domain').remove();
+        yGroup.selectAll('text')
+            .attr('x', this.graphWidth)
+            .attr('dy', -4)
+            .attr('text-anchor', 'end');
 
-        this.svg.append("g")
-            .call(d3.axisLeft(y))
-            .append("text")
-            .attr("fill", "#fff")
-            .attr("transform", "rotate(-90)")
-            .attr("y", 6)
-            .attr("dy", "0.71em")
-            .attr("text-anchor", "end");
+        let seriesGroup = this.svg.append('g');
+        seriesGroup.selectAll('.line')
+            .data(series)
+            .enter()
+            .append('path')
+            .attr('clip-path', 'url(#clip)')
+            .attr('fill', 'none')
+            .attr('class', 'line')
+            .attr('stroke', (d, i) => this.lineColors[i])
+            .attr('d', line);
 
-        if (data1) {
-            this.svg.append('g').append('path')
-                .datum(data1)
-                .attr('class', 'line1')
-                .attr('d', line);
-        }
-        if (data2) {
-            this.svg.append('g').append('path')
-                .datum(data2)
-                .attr('class', 'line2')
-                .attr('d', line);
-        }
-        if (data3) {
-            this.svg.append('g').append('path')
-                .datum(data3)
-                .attr('class', 'line3')
-                .attr('d', line);
+        this.zoom = this.d3.zoom()
+            .scaleExtent([1, 32])
+            .translateExtent([[-this.graphWidth, -Infinity], [2 * this.graphWidth, Infinity]])
+            .on('zoom', zoomed);
+
+        this.zoomRect = this.svg.append('rect')
+            .attr('width', this.graphWidth)
+            .attr('height', this.graphHeight)
+            .attr('fill', 'none')
+            .attr('pointer-events', 'all')
+            .call(this.zoom);
+
+        this.zoom.translateExtent([[this.x(this.xExtent[0]), -Infinity], [this.x(this.xExtent[1]), Infinity]]);
+
+        this.zoomBetween(this.xExtent[0], this.xExtent[1]);
+
+        function zoomed() {
+            let xz = d3.event.transform.rescaleX(self.x);
+            xGroup.call(xAxis.scale(xz)).select('.domain').remove();
+            seriesGroup.selectAll('.line').attr('d', line.x(function (d) {
+                return xz(d.period);
+            }));
         }
     }
+
+    private zoomBetween(start: Date, end: Date) {
+        let zoomScale = this.graphWidth / (this.x(end) - this.x(start));
+        let zoomTranslate = -this.x(start);
+        this.zoomRect.call(this.zoom.transform, this.d3.zoomIdentity.scale(zoomScale).translate(zoomTranslate, 0));
+    }
+}
+
+interface OracleStat {
+    period: Date;
+    value: number;
 }
