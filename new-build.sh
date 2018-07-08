@@ -11,4 +11,4 @@ docker.exe build -t ${REGISTRY}/${REPOSITORY}:${BUILDTAG} -t ${REGISTRY}/${REPOS
 docker.exe push ${REGISTRY}/${REPOSITORY}:${BUILDTAG}
 docker.exe push ${REGISTRY}/${REPOSITORY}:latest
 
-echo "Completed ${REGISTRY}/${REPOSITORY}:${BUILDTAG}"
+echo -e "\nCompleted ${REGISTRY}/${REPOSITORY}:${BUILDTAG}"
