@@ -2,7 +2,7 @@
 import { FormControl } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime } from 'd3-ng2-service';
+import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale } from 'd3-ng2-service';
 import { PlanetsideApi } from './../planetside-api.service';
 
 @Component({
@@ -148,13 +148,13 @@ export class WeaponTrackerComponent implements OnInit {
 
         let weaponIds = [];
         if (this.selectedWeapon1.value) {
-            weaponIds.push(this.selectedWeapon1.value);
+            weaponIds.push(this.selectedWeapon1.value.id);
         }
         if (this.selectedWeapon2.value) {
-            weaponIds.push(this.selectedWeapon2.value);
+            weaponIds.push(this.selectedWeapon2.value.id);
         }
         if (this.selectedWeapon3.value) {
-            weaponIds.push(this.selectedWeapon3.value);
+            weaponIds.push(this.selectedWeapon3.value.id);
         }
 
         this.api.getOracleData(statId, weaponIds)
@@ -198,8 +198,6 @@ export class WeaponTrackerComponent implements OnInit {
                 break;
         }
 
-        this.selectedStartDate.setValue(start);
-        this.selectedEndDate.setValue(end);
         this.zoomBetween(start, end);
     }
 
@@ -213,9 +211,9 @@ export class WeaponTrackerComponent implements OnInit {
         let d3 = this.d3;
         let self = this;
 
-        let data1: any[] = this.stats[this.selectedWeapon1.value];
-        let data2: any[] = this.stats[this.selectedWeapon2.value];
-        let data3: any[] = this.stats[this.selectedWeapon3.value];
+        let data1: any[] = this.stats[this.selectedWeapon1.value.id];
+
+        let selectedTypes = [this.selectedWeapon1.value, this.selectedWeapon2.value, this.selectedWeapon3.value];
 
         let series: OracleStat[][] = [];
         for (let k in this.stats) {
@@ -244,8 +242,25 @@ export class WeaponTrackerComponent implements OnInit {
             .rangeRound([this.graphHeight, 0]);
 
         let line = d3.line<any>()
-            .defined(function(d) { return d.value; })
-            .y(function(d) { return y(d.value); });
+            .defined(function (d) { return d.value; })
+            .x(function (d) { return self.x(d.period); })
+            .y(function (d) { return y(d.value); });
+
+        this.zoom = this.d3.zoom()
+            .scaleExtent([1, 32])
+            .translateExtent([[-this.graphWidth, -Infinity], [2 * this.graphWidth, Infinity]])
+            .on('zoom', zoomed);
+
+        let zoomRect = this.svg.append('rect')
+            .attr('width', this.graphWidth)
+            .attr('height', this.graphHeight)
+            .attr('fill', 'none')
+            .attr('pointer-events', 'all')
+            .on('mousemove', drawTooltip)
+            .on('mouseout', removeTooltip);
+
+        this.zoomRect = zoomRect.call(this.zoom);
+            
 
         let xAxis = d3.axisBottom(this.x)
             .tickFormat(d3.timeFormat('%e. %b'));
@@ -275,17 +290,8 @@ export class WeaponTrackerComponent implements OnInit {
             .attr('stroke', (d, i) => this.lineColors[i])
             .attr('d', line);
 
-        this.zoom = this.d3.zoom()
-            .scaleExtent([1, 32])
-            .translateExtent([[-this.graphWidth, -Infinity], [2 * this.graphWidth, Infinity]])
-            .on('zoom', zoomed);
-
-        this.zoomRect = this.svg.append('rect')
-            .attr('width', this.graphWidth)
-            .attr('height', this.graphHeight)
-            .attr('fill', 'none')
-            .attr('pointer-events', 'all')
-            .call(this.zoom);
+        const tooltip = d3.select('#tooltip');
+        const tooltipLine = this.svg.append('line').attr('class', 'tooltip-line');
 
         this.zoom.translateExtent([[this.x(this.xExtent[0]), -Infinity], [this.x(this.xExtent[1]), Infinity]]);
 
@@ -297,6 +303,51 @@ export class WeaponTrackerComponent implements OnInit {
             seriesGroup.selectAll('.line').attr('d', line.x(function (d) {
                 return xz(d.period);
             }));
+
+            let domainXMin: Date = xAxis.scale<AxisScale<Date>>().domain()[0];
+            let domainXMax: Date = xAxis.scale<AxisScale<Date>>().domain()[1];
+            self.selectedStartDate.setValue(domainXMin);
+            self.selectedEndDate.setValue(domainXMax);
+        }
+
+        function removeTooltip() {
+            if (tooltip) tooltip.style('display', 'none');
+            if (tooltipLine) tooltipLine.style('display', 'none');
+        }
+
+        function drawTooltip() {
+            let tipElement: HTMLElement = zoomRect.node() as HTMLElement;
+            let mousePos = d3.mouse(tipElement);
+            let dayMs = 1000 * 60 * 60 * 24;
+
+            let zoomScale = d3.scaleTime().domain(xAxis.scale().domain()).range([0, self.graphWidth]);;
+            let postDate = Math.round(zoomScale.invert(mousePos[0]).getTime() / dayMs) * dayMs + dayMs;
+
+            let matchingDate = new Date(postDate);
+            let displayDate = new Date(postDate);
+            displayDate.setHours(0);
+
+            tooltipLine
+                .style('display', 'inline')
+                .attr('x1', zoomScale(displayDate))
+                .attr('x2', zoomScale(displayDate))
+                .attr('y1', 0)
+                .attr('y2', self.graphHeight);
+
+            tooltip
+                .html(displayDate.toDateString())
+                .style('display', 'block')
+                .style('left', mousePos[0] - 150 + 'px')
+                .style('top', mousePos[1] - 20 + 'px')
+                .selectAll()
+                .data(series).enter()
+                .append('div')
+                .style('color', (d, i) => self.lineColors[i])
+                .html((d, i) => {
+                    let match = d.find(h => h.period.getTime() === matchingDate.getTime());
+                    let matchValue = match ? match.value : 0;
+                    return selectedTypes[i].id + ' - ' + selectedTypes[i].name + ': ' + matchValue;
+                });
         }
     }
 
