@@ -3,8 +3,15 @@
 }
 
     #line-graph ::ng-deep .domain,
-    #line-graph ::ng-deep .tick line {
-        stroke: #8a9ba1;
+    #line-graph ::ng-deep line {
+        stroke: rgba(138, 155, 161, 0.3);
+    }
+
+    #tooltip,
+    #line-graph ::ng-deep line,
+    #line-graph ::ng-deep .line,
+    #line-graph ::ng-deep .tick {
+        pointer-events: none;
     }
 
     #line-graph ::ng-deep .tick text {
@@ -55,3 +62,14 @@
     .date-controls .input-date ::ng-deep .mat-datepicker-toggle-default-icon {
         fill: rgba(177, 188, 192, 0.87);
     }
+
+.graph-container {
+    position: relative;
+}
+
+#tooltip {
+    position: absolute;
+    padding: 2px;
+    background: rgba(34, 49, 58, 0.8);
+    border: 1px solid #1e2a31;
+}
