@@ -194,3 +194,95 @@
         .map ::ng-deep svg.marker-icon.tr polygon {
             fill: #fff;
         }
+
+    .map ::ng-deep .region {
+        fill: #79e0e1;
+        fill-opacity: 0.4;
+        z-index: -1;
+    }
+
+    .map ::ng-deep .region.unconnected {
+        fill: #249c9e;
+        fill-opacity: 0.7;
+    }
+
+    .map ::ng-deep .region.vs {
+        fill: #9e52e0;
+    }
+    .map ::ng-deep .region.vs.capture-flash {
+        animation: map-region-vs 1s linear;
+    }
+    .map ::ng-deep .region.unconnected.vs {
+        fill: #4f2970;
+    }
+
+    .map ::ng-deep .region.nc {
+        fill: #33adff;
+    }
+    .map ::ng-deep .region.nc.capture-flash {
+        animation: map-region-nc 1s linear;
+    }
+    .map ::ng-deep .region.unconnected.nc {
+        fill: #1a5780;
+    }
+
+    .map ::ng-deep .region.tr {
+        fill: #df2020;
+    }
+    .map ::ng-deep .region.tr.capture-flash {
+        animation: map-region-tr 1s linear;
+    }
+    .map ::ng-deep .region.unconnected.tr {
+        fill: #701010;
+    }
+
+    .map ::ng-deep .lattice-line {
+        stroke: #79e0e1;
+        stroke-width: 2;
+    }
+
+    .map ::ng-deep .lattice-outline {
+        stroke: #FFF;
+        stroke-width: 4;
+    }
+
+    .map ::ng-deep .lattice-line.vs {
+        stroke: #9e52e0;
+    }
+
+    .map ::ng-deep .lattice-line.nc {
+        stroke: #33adff;
+    }
+
+    .map ::ng-deep .lattice-line.tr {
+        stroke: #df2020;
+    }
+
+    .map ::ng-deep .lattice-line.contested {
+        stroke: #FFFF00;
+        stroke-width: 3;
+        stroke-dasharray: 6;
+    }
+
+    .map ::ng-deep .lattice-outline.contested {
+        stroke: #000;
+        stroke-width: 5;
+    }
+
+@keyframes map-region-vs {
+    0% { fill: #fff; }
+    50% { fill: #fff; }
+    100% { fill: #9e52e0; }
+}
+
+@keyframes map-region-nc {
+    0% { fill: #fff; }
+    50% { fill: #fff; }
+    100% { fill: #33adff; }
+}
+
+@keyframes map-region-tr {
+    0% { fill: #fff; }
+    50% { fill: #fff; }
+    100% { fill: #df2020; }
+}

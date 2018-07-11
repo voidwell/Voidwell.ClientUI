@@ -1,5 +1,6 @@
 ﻿import { Component, EventEmitter, OnDestroy } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Observable, Subscription } from 'rxjs';
 import { PlanetsideWorldComponent } from './../planetside-world.component';
 import { Zones, Factions } from './../../../shared/configs';
 import { WorldMaps, ZoneMap } from './models';
@@ -17,6 +18,7 @@ const SocketConfig = {
 })
 
 export class PlanetsideWorldMapComponent implements OnDestroy {
+    private routeSub: Subscription;
     navLinks = [];
     worldId: number;
     socket: WebSocket;
@@ -30,7 +32,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
 
     playableZones: number[] = Object.keys(Zones).map(function (z) { return parseInt(z); });
 
-    constructor(private parent: PlanetsideWorldComponent, private api: PlanetsideApi) {
+    constructor(private router: Router, private route: ActivatedRoute, private parent: PlanetsideWorldComponent, private api: PlanetsideApi) {
         this.worldId = this.parent.worldId;
 
         for (let zoneId in Zones) {
@@ -41,6 +43,12 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
                 display: Zones[zoneId].name
             });
         }
+
+        this.routeSub = this.route.params.subscribe(params => {
+            if (!params['zoneId']) {
+                this.router.navigate(['./', this.navLinks[0].path], { relativeTo: this.route });
+            }
+        });
 
         this.connectWebsocket();
     }
@@ -196,6 +204,8 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
+        this.routeSub.unsubscribe();
+
         if (this.socket) {
             this.socket.close();
         }

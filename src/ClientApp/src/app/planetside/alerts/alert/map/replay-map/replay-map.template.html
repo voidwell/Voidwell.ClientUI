@@ -20,6 +20,9 @@
                 <vw-faction-bar [vs]="replayScore[1]" [nc]="replayScore[2]" [tr]="replayScore[3]"></vw-faction-bar>
             </div>
         </div>
-        <div class="replay-time">{{replayTime | date:'H:mm:ss'}} (+{{getElapsed()}})</div>
+        <div class="progress-bar">
+            <div class="replay-time">{{replayTime | date:'H:mm:ss'}} (+{{getElapsed()}})</div>
+            <div class="progress" [style.width.%]="getProgress()"></div>
+        </div>
     </div>
 </div>

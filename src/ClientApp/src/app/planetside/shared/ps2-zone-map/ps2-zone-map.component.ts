@@ -165,12 +165,15 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
         this.setupMapRegions();
         this.setupMapLinks();
 
+        let self = this;
         this.ownershipSub = this.ownershipStream
             .subscribe(data => {
                 if (!data) return;
 
-                this.setupOwnership(data);
-                this.updateScore();
+                setTimeout(function (d) {
+                    self.setupOwnership(data);
+                    self.updateScore();
+                }, 50);
             });
 
         map.fitBounds(latLngBounds(latLng(-128, -128), latLng(128, 128)));
@@ -315,19 +318,19 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                 pane: 'regions'
             };
 
-            let region = new ZoneRegion(latLngVerts, options)
+            let region = new ZoneRegion(regionId, latLngVerts, options)
                 .on('mouseover', function (e) {
                     return e.target.bringToFront().setStyle({
                         weight: 3,
-                        color: '#FFF',
-                        fillColor: this.style.fillColor
+                        color: '#FFF'
                     });
                 })
                 .on('mouseout', function (e) {
-                    return e.target.setStyle(e.target.style);
+                    return e.target.setStyle({
+                        weight: 1.2,
+                        color: '#000'
+                    });
                 });
-
-            region.id = regionId;
 
             region.addTo(this.map);
 
@@ -395,16 +398,6 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                 this.regions[regionId].facility.setFaction(faction);
             } else if (this.regions[regionId]) {
                 this.regions[regionId].setFaction(faction);
-            }
-        }
-
-        if (sameFaction === true) {
-            var elem = document.getElementsByClassName('territory-control');
-            if (elem && elem.length > 0) {
-                for (var e in elem) {
-                    elem[e].classList.remove('vs', 'nc', 'tr');
-                    elem[e].classList.add(prevFaction);
-                }
             }
         }
 
