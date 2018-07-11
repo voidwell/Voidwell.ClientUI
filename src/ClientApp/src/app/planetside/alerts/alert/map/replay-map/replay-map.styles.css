@@ -24,7 +24,7 @@
 
 .score-box {
     position: absolute;
-    top: 5px;
+    top: 25px;
     left: 0;
     right: 0;
     z-index: 999;
@@ -48,11 +48,23 @@ vw-faction-bar {
 .replay-time {
     color: rgba(255, 255, 255, 0.8);
     text-align: center;
-    background: rgba(30, 42, 49, 1);
-    width: 150px;
-    padding: 5px;
+    float: right;
+    padding-right: 10px;
+}
+
+.progress-bar {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: rgba(34, 49, 58, 0.4);
     z-index: 999;
+    overflow: hidden;
+    height: 22px;
+}
+
+.progress-bar .progress {
+    height: 100%;
+    background: rgba(34, 49, 58, 0.8);
+    color: white;
 }
