@@ -5,6 +5,8 @@
 
 .map-container {
     display: flex;
+    min-width: 800px;
+    height: 600px;
 }
 
 .info-container {
@@ -40,7 +42,7 @@
 }
 
 .map-log .facility-name {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
     cursor: pointer;
 }
 

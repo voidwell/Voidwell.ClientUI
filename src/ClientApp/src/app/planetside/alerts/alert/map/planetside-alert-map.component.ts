@@ -1,6 +1,6 @@
-﻿import { Component, OnInit, Injector } from '@angular/core';
+﻿import { Component, OnInit, Injector, EventEmitter } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { Observable, of } from 'rxjs';
+import { Observable, of, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -9,6 +9,9 @@ import { map } from 'rxjs/operators';
 })
 
 export class PlanetsideAlertMapComponent implements OnInit {
+    ownershipSub: BehaviorSubject<any> = new BehaviorSubject(null);
+    focusFacilityEmitter: EventEmitter<any> = new EventEmitter<any>();
+    alert: any;
     dataSource: TableDataSource;
 
     constructor(private injector: Injector) {
@@ -23,8 +26,14 @@ export class PlanetsideAlertMapComponent implements OnInit {
                 return;
             }
 
+            this.alert = alert;
+            this.ownershipSub.next(alert.zoneSnapshot);
             this.dataSource = new TableDataSource(alert.log.captureLog);
         });
+    }
+
+    onFocusFacility(mapRegionId) {
+        this.focusFacilityEmitter.emit(mapRegionId);
     }
 }
 

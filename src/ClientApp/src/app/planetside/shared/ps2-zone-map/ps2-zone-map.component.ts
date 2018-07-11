@@ -70,7 +70,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         this.isLoading = true;
-        this.setupMap();;
+        this.setupMap();
     }
 
     setupMap() {

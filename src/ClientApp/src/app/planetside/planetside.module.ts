@@ -42,6 +42,7 @@ import { PlanetsideAlertOutfitsComponent } from './alerts/alert/outfits/planetsi
 import { PlanetsideAlertWeaponsComponent } from './alerts/alert/weapons/planetside-alert-weapons.component';
 import { PlanetsideAlertVehiclesComponent } from './alerts/alert/vehicles/planetside-alert-vehicles.component';
 import { PlanetsideAlertMapComponent } from './alerts/alert/map/planetside-alert-map.component';
+import { ReplayMapComponent } from './alerts/alert/map/replay-map/replay-map.component';
 import { EventCardComponent } from './events/event-card/event-card.component';
 import { PlanetsideEventsListComponent } from './events/events-list/planetside-events-list.component';
 import { PlanetsideEventComponent } from './events/event/planetside-event.component';
@@ -90,6 +91,7 @@ import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.componen
         PlanetsideAlertWeaponsComponent,
         PlanetsideAlertVehiclesComponent,
         PlanetsideAlertMapComponent,
+        ReplayMapComponent,
         EventCardComponent,
         PlanetsideEventsListComponent,
         PlanetsideEventComponent,
