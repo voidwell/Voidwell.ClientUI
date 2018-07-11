@@ -45,3 +45,8 @@ a.outfit-name {
     color: #fff;
     text-decoration: none;
 }
+
+.mat-column-facility .facility-name {
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+}

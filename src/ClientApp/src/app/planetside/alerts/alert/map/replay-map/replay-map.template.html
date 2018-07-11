@@ -1,0 +1,25 @@
+﻿<div *ngIf="zoneId && timeline">
+    <div class="map-container">
+        <ps2-zone-map [zoneId]="zoneId" [ownershipStream]="ownershipSub" [captureStream]="replayCaptureSub" [defendStream]="replayDefendSub" [focusFacility]="focusFacility" (score)="onScoreChange($event)"></ps2-zone-map>
+        <div class="replay-controls-container">
+            <div class="replay-controls">
+                <button mat-raised-button (click)="skipBackward()">
+                    <mat-icon fontSet="mdi" fontIcon="mdi-skip-backward"></mat-icon>
+                </button>
+                <button mat-raised-button (click)="togglePlaying()">
+                    <mat-icon *ngIf="isPlaying" fontSet="mdi" fontIcon="mdi-pause"></mat-icon>
+                    <mat-icon *ngIf="!isPlaying" fontSet="mdi" fontIcon="mdi-play"></mat-icon>
+                </button>
+                <button mat-raised-button (click)="skipForward()">
+                    <mat-icon fontSet="mdi" fontIcon="mdi-skip-forward"></mat-icon>
+                </button>
+            </div>
+        </div>
+        <div class="score-box">
+            <div class="bars-container">
+                <vw-faction-bar [vs]="replayScore[1]" [nc]="replayScore[2]" [tr]="replayScore[3]"></vw-faction-bar>
+            </div>
+        </div>
+        <div class="replay-time">{{replayTime | date:'H:mm:ss'}} (+{{getElapsed()}})</div>
+    </div>
+</div>
