@@ -211,22 +211,21 @@ export class WeaponTrackerComponent implements OnInit {
         let d3 = this.d3;
         let self = this;
 
-        let data1: any[] = this.stats[this.selectedWeapon1.value.id];
-
         let selectedTypes = [this.selectedWeapon1.value, this.selectedWeapon2.value, this.selectedWeapon3.value];
 
         let series: OracleStat[][] = [];
         for (let k in this.stats) {
             let stats = this.stats[k].map(function (d) {
+                let date = new Date(d.period);
                 return {
-                    period: new Date(d.period),
+                    period: new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
                     value: d.value
                 };
             });
             series.push(stats);
         }
 
-        this.xExtent = d3.extent(data1, function (d) { return new Date(d.period); });
+        this.xExtent = d3.extent(series[0], function (d) { return new Date(d.period); });
 
         this.selectedStartDate.setValue(this.xExtent[0]);
         this.selectedEndDate.setValue(this.xExtent[1]);
@@ -324,20 +323,19 @@ export class WeaponTrackerComponent implements OnInit {
             let postDate = Math.round(zoomScale.invert(mousePos[0]).getTime() / dayMs) * dayMs + dayMs;
 
             let matchingDate = new Date(postDate);
-            let displayDate = new Date(postDate);
-            displayDate.setHours(0);
+            matchingDate.setHours(0);
 
             tooltipLine
                 .style('display', 'inline')
-                .attr('x1', zoomScale(displayDate))
-                .attr('x2', zoomScale(displayDate))
+                .attr('x1', zoomScale(matchingDate))
+                .attr('x2', zoomScale(matchingDate))
                 .attr('y1', 0)
                 .attr('y2', self.graphHeight);
 
             tooltip
-                .html(displayDate.toDateString())
+                .html(matchingDate.toDateString())
                 .style('display', 'block')
-                .style('left', mousePos[0] - 150 + 'px')
+                .style('right', (self.graphWidth - mousePos[0] + 10) + 'px')
                 .style('top', mousePos[1] - 20 + 'px')
                 .selectAll()
                 .data(series).enter()
@@ -346,7 +344,7 @@ export class WeaponTrackerComponent implements OnInit {
                 .html((d, i) => {
                     let match = d.find(h => h.period.getTime() === matchingDate.getTime());
                     let matchValue = match ? match.value : 0;
-                    return selectedTypes[i].id + ' - ' + selectedTypes[i].name + ': ' + matchValue;
+                    return selectedTypes[i].id + ' - ' + selectedTypes[i].name + ': ' + (matchValue ? matchValue.toLocaleString() : '-');
                 });
         }
     }

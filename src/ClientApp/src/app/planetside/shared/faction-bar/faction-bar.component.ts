@@ -16,7 +16,7 @@ export class FactionBarComponent {
         if (scoreSum === 0) {
             return 100 / 3;
         }
-        return value / (this.vsScore + this.ncScore + this.trScore + this.getNeuturalScore()) * 100;
+        return value / (scoreSum + this.getNeuturalScore()) * 100;
     }
 
     getNeuturalScore(): number {

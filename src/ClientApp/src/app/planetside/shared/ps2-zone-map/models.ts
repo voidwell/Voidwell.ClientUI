@@ -1,6 +1,5 @@
 ﻿import { latLng, polyline, Map, LatLng, Polygon, Polyline, Marker, PolylineOptions, MarkerOptions, PathOptions } from 'leaflet';
 import { Factions } from './../configs';
-import { RegionStyles, LatticeStyles, FactionColors } from './zone-configs';
 
 export class ZoneMap {
     links: any[] = [];
@@ -44,24 +43,54 @@ export class ZoneRegion extends Polygon {
     id: string;
     faction: number = 0;
     facility: ZoneFacility = null;
-    style: any;
 
-    constructor(latLngs: LatLng[], options?: PolylineOptions) {
+    constructor(regionId:string, latLngs: LatLng[], options?: PolylineOptions) {
         super(latLngs, options);
 
-        this.style = RegionStyles[0].default;
+        this.id = regionId;
+
+        this.setStyle({ 'className': 'region region-' + this.id });
     }
 
     setFaction(faction: number) {
         this.faction = faction;
 
-        if (this.faction > 0 && this.facility && this.facility.isLinked()) {
-            this.style = RegionStyles[this.faction].default;
-        } else if (this.faction > 0) {
-            this.style = RegionStyles[this.faction].dark;
+        let elem = document.getElementsByClassName('region-' + this.id);
+        if (elem.length === 0) {
+            return;
         }
 
-        this.setStyle(this.style);
+        elem[0].classList.remove('vs', 'nc', 'tr');
+
+        let factionCode = Factions[this.faction].code
+        elem[0].classList.add(factionCode);
+        elem[0].classList.add('capture-flash');
+
+        setTimeout(function () {
+            elem[0].classList.remove('capture-flash');
+        }, 1000);
+    }
+
+    setLinkedState(isLinked: boolean) {
+        let elem = document.getElementsByClassName('region-' + this.id);
+        if (elem.length === 0) {
+            return;
+        }
+
+        if (isLinked) {
+            elem[0].classList.remove('unconnected');
+        } else {
+            elem[0].classList.add('unconnected');
+        }
+    }
+
+    private hexToRgb(hex) {
+        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+        return result ? {
+            r: parseInt(result[1], 16),
+            g: parseInt(result[2], 16),
+            b: parseInt(result[3], 16)
+        } : null;
     }
 }
 
@@ -112,7 +141,11 @@ export class ZoneFacility extends Marker {
             return false;
         }
 
-        return checkLinkedFacilities(this.warpgates[faction]);
+        let isLinked = checkLinkedFacilities(this.warpgates[faction]);
+
+        this.region.setLinkedState(isLinked);
+
+        return isLinked;
     }
 
     setFaction(faction: number) {
@@ -138,25 +171,42 @@ export class LatticeLink {
 
         let points = [facilityA.getLatLng(), facilityB.getLatLng()];
         if (points[0] && points[1]) {
-            this.outline = polyline(points, LatticeStyles.ns.outline);
-            this.line = polyline(points, LatticeStyles.ns.line);
+            this.outline = polyline(points, {
+                className: 'lattice-outline lattice-outline_' + facilityA.id + '-' + facilityB.id,
+                pane: 'latticePane',
+                interactive: false
+            });
+            this.line = polyline(points, {
+                className: 'lattice-line lattice-line_' + facilityA.id + '-' + facilityB.id,
+                pane: 'latticePane',
+                dashArray: null,
+                interactive: false
+            });
         }
     }
 
     setFaction() {
+        let outlineElem = document.getElementsByClassName('lattice-outline_' + this.facilities[0].id + '-' + this.facilities[1].id);
+        let lineElem = document.getElementsByClassName('lattice-line_' + this.facilities[0].id + '-' + this.facilities[1].id);
+        if (outlineElem.length === 0 || lineElem.length === 0) {
+            return;
+        }
+
+        lineElem[0].classList.remove('vs', 'nc', 'tr', 'contested');
+        outlineElem[0].classList.remove('contested');        
+
         let faction;
 
         if (this.facilities[0].faction === this.facilities[1].faction) {
             this.faction = this.facilities[0].faction;
-            faction = Factions[this.faction].code;
+            let factionCode = Factions[this.faction].code;
+            lineElem[0].classList.add(factionCode);
         } else {
             this.faction = null;
-            faction = 'contested';
-        }
 
-        if (this.outline && this.line) {
-            this.outline.setStyle(LatticeStyles[faction].outline);
-            this.line.setStyle(LatticeStyles[faction].line);
+            faction = 'contested';
+            outlineElem[0].classList.add('contested');
+            lineElem[0].classList.add('contested');
         }
     }
 

@@ -96,6 +96,16 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
         return minutes + ':' + ("00" + seconds).substr(-2, 2);
     }
 
+    getProgress() {
+        if (this.replayTime.getTime() >= this.end.getTime()) {
+            return 100;
+        }
+
+        let duration = this.end.getTime() - this.start.getTime();
+        let elapsed = this.end.getTime() - this.replayTime.getTime()
+        return 100 - (elapsed / duration * 100);
+    }
+
     private tock() {
         let newTime = new Date(this.replayTime.getTime() + this.tickInterval);
         if (this.replayTime.getTime() >= this.end.getTime()) {
