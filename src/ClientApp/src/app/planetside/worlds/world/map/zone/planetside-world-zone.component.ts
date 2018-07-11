@@ -1,6 +1,6 @@
 ﻿import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, Observable } from 'rxjs';
+import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { PlanetsideWorldComponent } from './../../planetside-world.component';
 import { PlanetsideWorldMapComponent } from './../planetside-world-map.component';
 import { ZoneHelper } from './../../../../zone-helper.service';
@@ -18,7 +18,7 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
     zoneLogs: any[];
     score: [0, 0, 0, 0];
 
-    ownershipSub: Observable<any>;
+    ownershipSub: BehaviorSubject<any> = new BehaviorSubject(null);
     captureSub: Observable<any>;
     defendSub: Observable<any>;
     focusFacilityEmitter: EventEmitter<string> = new EventEmitter<string>();
@@ -26,9 +26,6 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
     constructor(private route: ActivatedRoute, private parent: PlanetsideWorldMapComponent, private zoneHelper: ZoneHelper) {
         this.captureSub = this.parent.onFacilityCapture.asObservable();
         this.defendSub = this.parent.onFacilityDefend.asObservable();
-
-        let ownershipEmitter = new EventEmitter<any>();
-        this.ownershipSub = ownershipEmitter.asObservable();
 
         this.routeSub = this.route.params.subscribe(params => {
             if (!params['zoneId']) {
@@ -41,7 +38,7 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
 
             this.parent.getZoneOwnership(this.zoneId)
                 .subscribe(data => {
-                    ownershipEmitter.emit(data);
+                    this.ownershipSub.next(data);
                 });
         });
     }

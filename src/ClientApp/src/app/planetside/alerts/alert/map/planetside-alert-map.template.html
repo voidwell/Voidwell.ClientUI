@@ -1,4 +1,7 @@
 ﻿<div>
+    <div *ngIf="alert && alert.zoneSnapshot">
+        <zone-replay-map [zoneId]="alert.zoneId" [ownershipStream]="ownershipSub" [focusFacility]="focusFacilityEmitter" [timeline]="alert.log.captureLog" [start]="alert.startDate" [end]="alert.endDate"></zone-replay-map>
+    </div>
     <div class="table-container">
         <mat-table #table [dataSource]="dataSource" class="striped" matSort>
             <ng-container matColumnDef="time">
@@ -9,7 +12,7 @@
             <ng-container matColumnDef="facility">
                 <mat-header-cell *matHeaderCellDef>Facility</mat-header-cell>
                 <mat-cell *matCellDef="let event">
-                    <span [ngClass]="event.newFactionId | factionColor">
+                    <span class="facility-name" [ngClass]="event.newFactionId | factionColor" (click)="onFocusFacility(event.mapRegion.id)">
                         {{event.mapRegion.facilityName}}
                     </span>
                 </mat-cell>

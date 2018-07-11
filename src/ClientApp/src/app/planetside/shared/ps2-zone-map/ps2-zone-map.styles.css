@@ -1,7 +1,13 @@
-﻿.map {
-    height: 600px;
-    width: 800px;
-    background-color: #051111;
+﻿:host {
+    display: block;
+    height: 100%;
+    width: 100%;
+}
+
+.map {
+    height: 100%;
+    width: 100%;
+    background-color: #2b3942;
 }
 
     .map ::ng-deep .svg-icon {

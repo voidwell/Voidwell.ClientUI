@@ -1,0 +1,58 @@
+﻿:host {
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.map-container {
+    height: 600px;
+}
+
+.replay-controls-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 999;
+    padding: 5px 0 15px 0;
+}
+
+.replay-controls > * {
+    margin: 0 10px;
+}
+
+.score-box {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.bars-container {
+    width: 350px;
+    margin: 0 auto;
+}
+
+vw-faction-bar {
+    height: 20px;
+}
+
+.bars-container ::ng-deep .faction-bar {
+    line-height: 20px;
+    height: 20px;
+    font-size: 15px;
+}
+
+.replay-time {
+    color: rgba(255, 255, 255, 0.8);
+    text-align: center;
+    background: rgba(30, 42, 49, 1);
+    width: 150px;
+    padding: 5px;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 999;
+}
