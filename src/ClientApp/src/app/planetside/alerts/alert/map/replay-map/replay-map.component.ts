@@ -105,6 +105,22 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
         return 100 - (elapsed / duration * 100);
     }
 
+    onSeek(event) {
+        let xPos = event.offsetX;
+        let width = event.path[0].offsetWidth;
+
+        this.ownershipSub.next(this.originalOwnership);
+
+        let seekTime = (this.end.getTime() - this.start.getTime()) * (xPos / width);
+
+        this.replayTime = new Date(this.start.getTime() + seekTime);
+
+        let self = this;
+        setTimeout(function () {
+            self.updateMapForTime(self.start, self.replayTime);
+        }, 50);
+    }
+
     private tock() {
         let newTime = new Date(this.replayTime.getTime() + (this.tickSpeed * this.tickMultiplier));
         if (this.replayTime.getTime() >= this.end.getTime()) {
