@@ -49,48 +49,34 @@ export class ZoneRegion extends Polygon {
 
         this.id = regionId;
 
-        this.setStyle({ 'className': 'region region-' + this.id });
+        this.setStyle({ 'className': 'region' });
     }
 
     setFaction(faction: number) {
         this.faction = faction;
 
-        let elem = document.getElementsByClassName('region-' + this.id);
-        if (elem.length === 0) {
-            return;
-        }
+        let elem = this.getElement();
+        if (!elem) return;
 
-        elem[0].classList.remove('vs', 'nc', 'tr');
+        elem.classList.remove('vs', 'nc', 'tr');
 
         let factionCode = Factions[this.faction].code
-        elem[0].classList.add(factionCode);
-        elem[0].classList.add('capture-flash');
+        elem.classList.add(factionCode, 'capture-flash');
 
         setTimeout(function () {
-            elem[0].classList.remove('capture-flash');
+            if (elem) elem.classList.remove('capture-flash');
         }, 1000);
     }
 
     setLinkedState(isLinked: boolean) {
-        let elem = document.getElementsByClassName('region-' + this.id);
-        if (elem.length === 0) {
-            return;
-        }
+        let elem = this.getElement();
+        if (!elem) return;
 
         if (isLinked) {
-            elem[0].classList.remove('unconnected');
+            elem.classList.remove('unconnected');
         } else {
-            elem[0].classList.add('unconnected');
+            elem.classList.add('unconnected');
         }
-    }
-
-    private hexToRgb(hex) {
-        let result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-        return result ? {
-            r: parseInt(result[1], 16),
-            g: parseInt(result[2], 16),
-            b: parseInt(result[3], 16)
-        } : null;
     }
 }
 
@@ -172,12 +158,12 @@ export class LatticeLink {
         let points = [facilityA.getLatLng(), facilityB.getLatLng()];
         if (points[0] && points[1]) {
             this.outline = polyline(points, {
-                className: 'lattice-outline lattice-outline_' + facilityA.id + '-' + facilityB.id,
+                className: 'lattice-outline',
                 pane: 'latticePane',
                 interactive: false
             });
             this.line = polyline(points, {
-                className: 'lattice-line lattice-line_' + facilityA.id + '-' + facilityB.id,
+                className: 'lattice-line',
                 pane: 'latticePane',
                 dashArray: null,
                 interactive: false
@@ -186,27 +172,27 @@ export class LatticeLink {
     }
 
     setFaction() {
-        let outlineElem = document.getElementsByClassName('lattice-outline_' + this.facilities[0].id + '-' + this.facilities[1].id);
-        let lineElem = document.getElementsByClassName('lattice-line_' + this.facilities[0].id + '-' + this.facilities[1].id);
-        if (outlineElem.length === 0 || lineElem.length === 0) {
+        if (this.facilities[0].faction === this.facilities[1].faction) {
+            this.faction = this.facilities[0].faction;
+        } else {
+            this.faction = null;
+        }
+
+        let outlineElem = this.outline.getElement();
+        let lineElem = this.line.getElement();
+        if (!outlineElem || !lineElem) {
             return;
         }
 
-        lineElem[0].classList.remove('vs', 'nc', 'tr', 'contested');
-        outlineElem[0].classList.remove('contested');        
+        lineElem.classList.remove('vs', 'nc', 'tr', 'contested');
+        outlineElem.classList.remove('contested');
 
-        let faction;
-
-        if (this.facilities[0].faction === this.facilities[1].faction) {
-            this.faction = this.facilities[0].faction;
+        if (this.faction) {
             let factionCode = Factions[this.faction].code;
-            lineElem[0].classList.add(factionCode);
+            lineElem.classList.add(factionCode);
         } else {
-            this.faction = null;
-
-            faction = 'contested';
-            outlineElem[0].classList.add('contested');
-            lineElem[0].classList.add('contested');
+            lineElem.classList.add('contested');
+            outlineElem.classList.add('contested');
         }
     }
 

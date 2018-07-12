@@ -52,6 +52,15 @@ vw-faction-bar {
     padding-right: 10px;
 }
 
+.options-menu {
+    float: right;
+}
+
+.options-menu .options-menu-button {
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.8);
+}
+
 .progress-bar {
     position: absolute;
     top: 0;

@@ -54,3 +54,7 @@
 .world-zone .zone-offline {
     color: #b60d0d;
 }
+
+.world-zone-button {
+    width: 112px;
+}

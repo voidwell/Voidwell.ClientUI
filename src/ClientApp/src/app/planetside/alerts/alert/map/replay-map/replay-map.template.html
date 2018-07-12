@@ -21,6 +21,14 @@
             </div>
         </div>
         <div class="progress-bar">
+            <div class="options-menu">
+                <div class="options-menu-button" [matMenuTriggerFor]="optionsMenu">
+                    <mat-icon fontSet="mdi" fontIcon="mdi-settings"></mat-icon>
+                </div>
+                <mat-menu #optionsMenu="matMenu">
+                    <button mat-menu-item *ngFor="let mult of multipliers" [class.active]="tickMultiplier === mult" (click)="tickMultiplier = mult">{{mult}}x</button>
+                </mat-menu>
+            </div>
             <div class="replay-time">{{replayTime | date:'H:mm:ss'}} (+{{getElapsed()}})</div>
             <div class="progress" [style.width.%]="getProgress()"></div>
         </div>
