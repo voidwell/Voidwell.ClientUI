@@ -43,6 +43,7 @@ export class ZoneRegion extends Polygon {
     id: string;
     faction: number = 0;
     facility: ZoneFacility = null;
+    flashTimeout = null;
 
     constructor(regionId:string, latLngs: LatLng[], options?: PolylineOptions) {
         super(latLngs, options);
@@ -52,20 +53,28 @@ export class ZoneRegion extends Polygon {
         this.setStyle({ 'className': 'region' });
     }
 
-    setFaction(faction: number) {
+    setFaction(faction: number, settingUp: boolean = false) {
         this.faction = faction;
 
         let elem = this.getElement();
         if (!elem) return;
 
+        if (this.flashTimeout) {
+            clearTimeout(this.flashTimeout);
+            elem.classList.remove('capture-flash');
+        }
+
         elem.classList.remove('vs', 'nc', 'tr');
 
         let factionCode = Factions[this.faction].code
-        elem.classList.add(factionCode, 'capture-flash');
+        elem.classList.add(factionCode);
 
-        setTimeout(function () {
-            if (elem) elem.classList.remove('capture-flash');
-        }, 1000);
+        if (!settingUp) {
+            elem.classList.add('capture-flash');
+            this.flashTimeout = setTimeout(function () {
+                if (elem) elem.classList.remove('capture-flash');
+            }, 1000);
+        }
     }
 
     setLinkedState(isLinked: boolean) {
