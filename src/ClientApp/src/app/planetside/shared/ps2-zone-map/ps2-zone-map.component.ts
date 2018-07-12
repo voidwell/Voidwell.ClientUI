@@ -170,10 +170,10 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             .subscribe(data => {
                 if (!data) return;
 
-                setTimeout(function (d) {
+                setTimeout(function () {
                     self.setupOwnership(data);
                     self.updateScore();
-                }, 50);
+                }, 10);
             });
 
         map.fitBounds(latLngBounds(latLng(-128, -128), latLng(128, 128)));
@@ -397,7 +397,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             if (this.regions[regionId] && this.regions[regionId].facility) {
                 this.regions[regionId].facility.setFaction(faction);
             } else if (this.regions[regionId]) {
-                this.regions[regionId].setFaction(faction);
+                this.regions[regionId].setFaction(faction, true);
             }
         }
 
@@ -416,7 +416,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
 
         for (let facilityId in this.facilities) {
             if (this.facilities[facilityId].region) {
-                this.facilities[facilityId].region.setFaction(this.facilities[facilityId].faction);
+                this.facilities[facilityId].region.setFaction(this.facilities[facilityId].faction, true);
             }
         }
     }
