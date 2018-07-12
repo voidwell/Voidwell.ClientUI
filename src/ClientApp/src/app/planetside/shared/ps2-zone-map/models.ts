@@ -69,6 +69,8 @@ export class ZoneRegion extends Polygon {
     }
 
     setLinkedState(isLinked: boolean) {
+        if (this.facility.facilityTypeId === 7) return;
+
         let elem = this.getElement();
         if (!elem) return;
 
@@ -177,6 +179,8 @@ export class LatticeLink {
         } else {
             this.faction = null;
         }
+
+        if (!this.outline || !this.line) return;
 
         let outlineElem = this.outline.getElement();
         let lineElem = this.line.getElement();
