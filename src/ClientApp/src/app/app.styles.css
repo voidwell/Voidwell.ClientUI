@@ -446,3 +446,7 @@ mat-card .mat-card-subtitle {
 mat-checkbox.mat-checkbox.mat-checkbox-checked .mat-checkbox-background {
     background-color: #525252;
 }
+
+.mat-menu-item.active {
+    font-weight: bold;
+}
