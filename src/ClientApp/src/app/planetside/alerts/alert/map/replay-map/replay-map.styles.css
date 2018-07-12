@@ -10,12 +10,11 @@
 
 .replay-controls-container {
     position: absolute;
-    bottom: 0;
+    bottom: 30px;
     left: 0;
     right: 0;
     text-align: center;
     z-index: 999;
-    padding: 5px 0 15px 0;
 }
 
 .replay-controls > * {
@@ -24,7 +23,7 @@
 
 .score-box {
     position: absolute;
-    top: 25px;
+    top: 5px;
     left: 0;
     right: 0;
     z-index: 999;
@@ -45,35 +44,52 @@ vw-faction-bar {
     font-size: 15px;
 }
 
-.replay-time {
-    color: rgba(255, 255, 255, 0.8);
-    text-align: center;
-    float: right;
-    padding-right: 10px;
+.time-settings {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    z-index: 999;
+    pointer-events: none;
 }
 
-.options-menu {
-    float: right;
-}
+    .time-settings .replay-time {
+        color: rgba(255, 255, 255, 0.8);
+        text-align: center;
+        float: right;
+        padding-right: 10px;
+    }
 
-.options-menu .options-menu-button {
-    cursor: pointer;
-    color: rgba(255, 255, 255, 0.8);
-}
+    .time-settings .options-menu {
+        float: right;
+        pointer-events: all;
+    }
+
+        .time-settings .options-menu .options-menu-button {
+            cursor: pointer;
+            color: rgba(255, 255, 255, 0.8);
+        }
 
 .progress-bar {
     position: absolute;
-    top: 0;
     left: 0;
     right: 0;
+    bottom: 0;
     background: rgba(34, 49, 58, 0.4);
-    z-index: 999;
     overflow: hidden;
     height: 22px;
+    z-index: 900;
 }
 
-.progress-bar .progress {
-    height: 100%;
-    background: rgba(34, 49, 58, 0.8);
-    color: white;
-}
+    .progress-bar .progress {
+        height: 100%;
+        background: rgba(34, 49, 58, 0.8);
+        color: white;
+    }
+
+    .progress-bar .seek-bar {
+        height: 100%;
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+    }

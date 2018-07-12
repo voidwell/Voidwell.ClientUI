@@ -21,6 +21,10 @@
             </div>
         </div>
         <div class="progress-bar">
+            <div class="progress" [style.width.%]="getProgress()"></div>
+            <div class="seek-bar" (click)="onSeek($event)"></div>
+        </div>
+        <div class="time-settings">
             <div class="options-menu">
                 <div class="options-menu-button" [matMenuTriggerFor]="optionsMenu">
                     <mat-icon fontSet="mdi" fontIcon="mdi-settings"></mat-icon>
@@ -30,7 +34,6 @@
                 </mat-menu>
             </div>
             <div class="replay-time">{{replayTime | date:'H:mm:ss'}} (+{{getElapsed()}})</div>
-            <div class="progress" [style.width.%]="getProgress()"></div>
         </div>
     </div>
 </div>
