@@ -23,12 +23,12 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
     replayCaptureSub: EventEmitter<any> = new EventEmitter<any>();
     replayDefendSub: EventEmitter<any> = new EventEmitter<any>()
     ownershipSub: BehaviorSubject<any> = new BehaviorSubject(null);
+    ownershipStreamSub: Subscription;
 
     tickSub: Subscription;
-    tickInterval: number;
     tickSpeed: number = 100;
-
-    ownershipStreamSub: Subscription;
+    tickMultiplier: number = 100;
+    multipliers = [50, 100, 200];
 
     ngOnInit() {
         if (this.ownershipStream) {
@@ -44,7 +44,6 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
             this.start = new Date(this.start);
             this.end = new Date(this.end);
             this.replayTime = this.start;
-            this.tickInterval = (this.end.getTime() - this.start.getTime()) / 300;
         }
     }
 
@@ -107,7 +106,7 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
     }
 
     private tock() {
-        let newTime = new Date(this.replayTime.getTime() + this.tickInterval);
+        let newTime = new Date(this.replayTime.getTime() + (this.tickSpeed * this.tickMultiplier));
         if (this.replayTime.getTime() >= this.end.getTime()) {
             this.tickSub.unsubscribe();
             this.replayTime = this.end;
@@ -141,5 +140,6 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
 
     ngOnDestroy() {
         if (this.ownershipStreamSub) this.ownershipStreamSub.unsubscribe();
+        if (this.tickSub) this.tickSub.unsubscribe();
     }
 }
