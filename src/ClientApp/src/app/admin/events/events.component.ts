@@ -218,6 +218,7 @@ export class EventEditorDialog implements OnInit, OnChanges {
         eventModel.teams.forEach(function (team) {
             if (team.enabled) {
                 var eventTeam = {
+                    customEventId: eventModel.id,
                     teamId: team.teamId,
                     name: team.name
                 };
