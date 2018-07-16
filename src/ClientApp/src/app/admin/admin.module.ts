@@ -2,7 +2,7 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { MaterialLib } from '../shared/materialLib.module';
-//import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimepicker/core'
+import { MatDatetimepickerModule, MatNativeDatetimeModule } from '@mat-datetimepicker/core'
 import { SharedComponentsModule } from '../shared/components/shared-components.module';
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
 import { routing } from './admin.routes';
@@ -46,8 +46,8 @@ import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-li
         VoidwellPipesModule,
         routing,
         SharedComponentsModule,
-        //MatNativeDatetimeModule,
-        //MatDatetimepickerModule
+        MatNativeDatetimeModule,
+        MatDatetimepickerModule
     ],
     entryComponents: [
         AdminWrapperComponent,
