@@ -1,19 +1,32 @@
-﻿<mat-card>
-    <mat-card-title>
-        <small class="pull-right">
-            <span *ngIf="isActiveEvent()">
-                <vw-countdown [end]="event.endDate"></vw-countdown>
-            </span>
-            <span *ngIf="!isActiveEvent()">
-                {{event.startDate | date:'EEE dd MMM yyyy HH:mm'}}
-            </span>
-        </small>
-        <h4>{{event.name}}</h4>
-    </mat-card-title>
-    <mat-card-subtitle>
-        {{event.description}}
-    </mat-card-subtitle>
-    <a mat-button routerLink="{{event.id}}" class="event-link">
-        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
-    </a>
-</mat-card>
+﻿<div class="event-card">
+    <div class="side-img" [ngClass]="{'planetside2': event.gameId === 'ps2'}"></div>
+    <div class="card-info">
+        <mat-card>
+            <mat-card-title>
+                <div class="title-container">
+                    <div class="pull-right">
+                        <span *ngIf="isActiveEvent()">
+                            <vw-countdown [end]="event.endDate"></vw-countdown> Remaining
+                        </span>
+                        <span *ngIf="!isActiveEvent()">
+                            {{event.startDate | date:'EEE dd MMM yyyy HH:mm'}}
+                        </span>
+                    </div>
+                    <div class="pull-left">
+                        <div class="title-text">{{event.name}}</div>
+                        <div class="title-subtext">
+                            <div>{{event.mapId | zoneName}}</div>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-title>
+            <mat-card-subtitle>
+                {{event.description}}
+            </mat-card-subtitle>
+            <div class="teams">
+                <span *ngFor="let team of event.teams | orderBy: 'teamId'" class="event-team">{{team.name}}</span>
+            </div>
+        </mat-card>
+    </div>
+    <a mat-button routerLink="{{event.id}}" class="card-link"></a>
+</div>

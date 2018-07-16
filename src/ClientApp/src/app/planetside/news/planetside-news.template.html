@@ -13,7 +13,7 @@
                 <mat-card-content>
                     <ul *ngIf="!isUpdatesLoading">
                         <li *ngFor="let item of updateList">
-                            <a [href]="item.link" target="_blank">{{item.title}}</a>
+                            <a [href]="item.link" target="_blank" [title]="item.title">{{item.title}}</a>
                         </li>
                     </ul>
                 </mat-card-content>

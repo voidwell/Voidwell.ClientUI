@@ -13,8 +13,8 @@
                         </span>
                     </div>
                     <div class="pull-left">
-                        <div class="server-name">{{alert.worldId | worldName}}</div>
-                        <div class="event-name">
+                        <div class="title-text">{{alert.worldId | worldName}}</div>
+                        <div class="title-subtext">
                             <div>{{alert.metagameEvent.name}}</div>
                             <div>{{alert.zoneId | zoneName}}</div>
                         </div>
@@ -27,5 +27,5 @@
             <vw-faction-bar [vs]="alert.lastFactionVs" [nc]="alert.lastFactionNc" [tr]="alert.lastFactionTr"></vw-faction-bar>
         </mat-card>
     </div>
-    <a mat-button routerLink="{{alert.worldId}}/{{alert.metagameInstanceId}}" class="alert-link"></a>
+    <a mat-button routerLink="{{alert.worldId}}/{{alert.metagameInstanceId}}" class="card-link"></a>
 </div>

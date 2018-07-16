@@ -106,6 +106,15 @@ body {
     }
 }
 
+a {
+    color: #6dbbff;
+    text-decoration: none;
+}
+    a:focus, a:hover {
+        color: #3aa3ff;
+        text-decoration: none;
+    }
+
 .content {
     max-width: 1300px;
     margin: 0 auto;
