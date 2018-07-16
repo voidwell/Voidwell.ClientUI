@@ -10,7 +10,7 @@
     overflow: hidden;
 }
 
-.alert-link {
+.card-link {
     position: absolute;
     top: 0;
     right: 0;
@@ -22,7 +22,7 @@
     z-index: 100;
 }
 
-.server-name {
+.title-text {
     display: inline-block;
     font-size: 35px;
     line-height: 40px;
@@ -30,12 +30,12 @@
     margin-right: 10px;
 }
 
-.event-name {
+.title-subtext {
     display: inline-block;
     min-width: 150px;
 }
 
-    .event-name div {
+    .title-subtext div {
         line-height: 15px;
     }
 

@@ -1,9 +1,16 @@
-﻿mat-card {
-    padding-right: 42px;
+﻿.event-card {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
     min-width: 400px;
 }
 
-.event-link {
+.title-container {
+    position: relative;
+    overflow: hidden;
+}
+
+.card-link {
     position: absolute;
     top: 0;
     right: 0;
@@ -15,9 +22,60 @@
     z-index: 100;
 }
 
-    .event-link mat-icon {
-        position: relative;
-        top: 50%;
-        transform: translateY(-50%);
-        font-size: 16px;
+.title-text {
+    display: inline-block;
+    font-size: 25px;
+    line-height: 30px;
+    font-weight: 700;
+    margin-right: 10px;
+}
+
+.title-subtext {
+    display: inline-block;
+    min-width: 150px;
+}
+
+    .title-subtext div {
+        line-height: 15px;
     }
+
+.side-img {
+    display: flex;
+    flex: 0 0 auto;
+    width: 160px;
+    min-height: 160px;
+    max-height: 315px;
+}
+
+    .side-img.planetside2 {
+        background-image: url("/planetside2-160.jpg");
+        background-position: center top;
+    }
+
+@media screen and (max-width: 450px) {
+    .side-img {
+        display: none;
+    }
+}
+
+.card-info {
+    display: flex;
+    flex: 1;
+    position: relative;
+}
+
+    .card-info .mat-card {
+        width: 100%;
+    }
+
+.teams .event-team {
+    display: inline-block;
+    font-weight: 700;
+}
+
+.teams .event-team:not(:last-child):after {
+    content: "vs";
+    display: inline-block;
+    font-weight: initial;
+    margin: 0 5px;
+}

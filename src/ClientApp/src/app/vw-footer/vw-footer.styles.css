@@ -6,3 +6,12 @@
     text-align: center;
     display: block;
 }
+
+a {
+    color: rgba(177,188,192,.47);
+    transition: color;
+    transition-duration: .3s;
+}
+    a:hover {
+        color: #edeff0;
+    }

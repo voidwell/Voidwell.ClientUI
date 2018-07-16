@@ -15,10 +15,6 @@
     }
 }
 
-.news-content ::ng-deep .mat-card-content a {
-    text-decoration: none;
-    color: #8c8c8c;
-}
 
 .main-news-container ::ng-deep img {
     max-width: 100%;
@@ -49,8 +45,4 @@
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
-}
-.updates-content a {
-    color: inherit;
-    text-decoration: none;
 }
