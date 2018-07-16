@@ -35,7 +35,7 @@
                 <mat-header-row *matHeaderRowDef="['published','title','author','options']"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: ['published','title','author','options'];"></mat-row>
             </mat-table>
-            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
+            <mat-paginator #paginator [length]="dataSource.data ? dataSource.data.length : 0" [pageIndex]="0" [pageSize]="50"></mat-paginator>
         </div>
     </div>
 </div>

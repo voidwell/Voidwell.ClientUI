@@ -32,7 +32,7 @@ export class BlogComponent implements OnInit {
 
         this.getBlogPostsRequest = this.api.getAllBlogPosts()
             .subscribe(blogPosts => {
-                this.blogPosts = blogPosts;
+                this.blogPosts = blogPosts || [];
                 this.dataSource = new TableDataSource(this.blogPosts, this.paginator);
 
                 this.isLoading = false;
