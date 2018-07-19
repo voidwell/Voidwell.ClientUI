@@ -10,10 +10,10 @@ import { PlanetsideApi } from './../../planetside-api.service';
 export class PlanetsideAlertsListComponent {
     errorMessage: string = null;
     isLoading: boolean;
+    pageNumber = 0;
 
     private alerts = [];
     private firstPageAlerts = [];
-    private pageNumber = 0;
     private pageWorldId;
 
     constructor(private api: PlanetsideApi) {
