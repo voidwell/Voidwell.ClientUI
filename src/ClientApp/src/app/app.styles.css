@@ -385,9 +385,20 @@ mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
 }
 
 [mat-button].mat-button,
-[mat-raised-button].mat-raised-button {
-    color: #b4bfc3;
+[mat-raised-button].mat-raised-button,
+.mat-button-toggle,
+.mat-button-toggle-group {
     box-shadow: none !important;
+    color: #b4bfc3;
+}
+
+.mat-button-toggle {
+    opacity: 0.4;
+    color: #b4bfc3;
+    background-color: #394650;
+}
+.mat-button-toggle.mat-button-toggle-checked {
+    opacity: 1;
 }
 [mat-raised-button].mat-raised-button {
     background-color: #394650;
