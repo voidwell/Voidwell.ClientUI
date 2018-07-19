@@ -3,13 +3,15 @@
 }
 
 .alert-header {
-    position: relative;
-    display: flex;
-    flex-wrap: nowrap;
-    margin: 10px 0;
-    color: #edeff0;
-    margin-bottom: 30px;
+    margin: 10px 0 30px 0;
 }
+
+    .alert-header .alert-header-content {
+        position: relative;
+        display: flex;
+        flex-wrap: nowrap;
+        color: #edeff0;
+    }
 
 ::ng-deep .vw-tab-nav-sub-bar {
     box-shadow: none;

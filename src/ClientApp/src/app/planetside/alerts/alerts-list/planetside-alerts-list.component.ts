@@ -12,13 +12,60 @@ export class PlanetsideAlertsListComponent {
     isLoading: boolean;
 
     private alerts = [];
+    private firstPageAlerts = [];
+    private pageNumber = 0;
+    private pageWorldId;
 
     constructor(private api: PlanetsideApi) {
-        this.isLoading = true;
         this.alerts = [];
+        this.firstPageAlerts = [];
 
-        this.api.getAllAlerts()
-            .subscribe(alerts => {
+        this.loadAlertsPage();
+    }
+
+    getActiveAlerts() {
+        let now = new Date();
+        return this.firstPageAlerts.filter(alert => this.getEndDate(alert) > now);
+    }
+
+    getPastAlerts() {
+        let now = new Date();
+        return this.alerts.filter(alert => this.getEndDate(alert) <= now);
+    }
+
+    nextAlerts() {
+        this.pageNumber++;
+        this.loadAlertsPage();
+    }
+
+    previousAlerts() {
+        this.pageNumber--;
+        this.loadAlertsPage();
+    }
+
+    onFilterChange(event) {
+        this.pageNumber = 0;
+
+        if (!event.value) {
+            this.pageWorldId = null;
+        } else {
+            this.pageWorldId = parseInt(event.value);
+        }
+
+        this.loadAlertsPage();
+    }
+
+    private loadAlertsPage() {
+        this.isLoading = true;
+
+        let alertsReq;
+        if (this.pageWorldId) {
+            alertsReq = this.api.getAlertsByWorldId(this.pageNumber, this.pageWorldId);
+        } else {
+            alertsReq = this.api.getAlerts(this.pageNumber);
+        }
+
+        alertsReq.subscribe(alerts => {
                 this.alerts = alerts;
                 this.alerts.map(a => {
                     a.startDate = new Date(a.startDate);
@@ -26,18 +73,12 @@ export class PlanetsideAlertsListComponent {
                     return a;
                 });
 
+                if (this.pageNumber === 0 && !this.pageWorldId) {
+                    this.firstPageAlerts = this.alerts.slice();
+                }
+
                 this.isLoading = false;
             });
-    }
-
-    getActiveAlerts() {
-        let now = new Date();
-        return this.alerts.filter(alert => this.getEndDate(alert) > now);
-    }
-
-    getPastAlerts() {
-        let now = new Date();
-        return this.alerts.filter(alert => this.getEndDate(alert) <= now);
     }
 
     private getEndDate(alert: any): Date {

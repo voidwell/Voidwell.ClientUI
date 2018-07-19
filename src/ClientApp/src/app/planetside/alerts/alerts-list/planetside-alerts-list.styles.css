@@ -14,3 +14,16 @@
 vw-alert-card {
     margin-bottom: 15px;
 }
+
+.paging-buttons {
+    margin-bottom: 10px;
+    position: relative;
+}
+
+    .paging-buttons .filters {
+        display: inline-block;
+        position: absolute;
+        text-align: center;
+        left: 0;
+        right: 0;
+    }

@@ -73,13 +73,13 @@ export class PlanetsideApi extends ApiBase {
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
-    getAllAlerts() {
-        return this.Get(this.ps2Url + 'alert')
+    getAlerts(pageNumber: number) {
+        return this.Get(this.ps2Url + 'alert/alerts/' + pageNumber)
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
-    getAllAlertsByWorldId(worldId: string) {
-        return this.Get(this.ps2Url + 'alert/' + worldId)
+    getAlertsByWorldId(pageNumber: number, worldId: number) {
+        return this.Get(this.ps2Url + 'alert/alerts/' + pageNumber + '?worldId=' + worldId)
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
