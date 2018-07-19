@@ -74,7 +74,7 @@ vw-faction-bar {
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(34, 49, 58, 0.4);
+    background: rgba(30, 42, 49, 0.9);
     overflow: hidden;
     height: 22px;
     z-index: 900;
@@ -82,14 +82,23 @@ vw-faction-bar {
 
     .progress-bar .progress {
         height: 100%;
-        background: rgba(34, 49, 58, 0.8);
+        background: rgba(84, 84, 84, 1);
         color: white;
+        pointer-events: none;
     }
 
     .progress-bar .seek-bar {
+        display: none;
         height: 100%;
         position: absolute;
+        background: rgba(84, 84, 84, 0.3);
         left: 0;
         right: 0;
         top: 0;
+        pointer-events: none;
+        z-index: -1;
+    }
+
+    .progress-bar:hover .seek-bar {
+        display: block;
     }

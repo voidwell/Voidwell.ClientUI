@@ -1,8 +1,6 @@
 ﻿<div class="content-container">
     <div class="alerts-list-container">
-        <vw-loader [loading]="isLoading"></vw-loader>
-        <vw-error-message [message]="errorMessage"></vw-error-message>
-        <div *ngIf="!isLoading">
+        <div>
             <h3>Active Alerts</h3>
             <div *ngIf="getActiveAlerts().length === 0" class="no-alerts">
                 <strong>No alerts in progress</strong>
@@ -11,8 +9,39 @@
                 <vw-alert-card [alert]="alert" *ngFor="let alert of getActiveAlerts() | orderBy: 'startDate'"></vw-alert-card>
             </div>
             <h3>Past Alerts</h3>
+            <vw-error-message [message]="errorMessage"></vw-error-message>
             <div class="alerts-list">
+                <div class="paging-buttons">
+                    <div class="filters">
+                        <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onFilterChange($event)">
+                            <mat-button-toggle [checked]="true">All</mat-button-toggle>
+                            <mat-button-toggle value="1">Connery</mat-button-toggle>
+                            <mat-button-toggle value="10">Miller</mat-button-toggle>
+                            <mat-button-toggle value="13">Cobalt</mat-button-toggle>
+                            <mat-button-toggle value="17">Emerald</mat-button-toggle>
+                            <mat-button-toggle value="25">Briggs</mat-button-toggle>
+                        </mat-button-toggle-group>
+                    </div>
+                    <button mat-raised-button class="pull-left" *ngIf="pageNumber > 0" (click)="previousAlerts()">
+                        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+                        <span>Page {{pageNumber}}</span>
+                    </button>
+                    <button mat-raised-button class="pull-right" (click)="nextAlerts()">
+                        <span>Page {{pageNumber + 2}}</span>
+                        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+                    </button>
+                </div>
                 <vw-alert-card [alert]="alert" *ngFor="let alert of getPastAlerts() | orderBy: '-startDate'"></vw-alert-card>
+                <div class="paging-buttons">
+                    <button mat-raised-button *ngIf="pageNumber > 0" (click)="previousAlerts()">
+                        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+                        <span>Page {{pageNumber}}</span>
+                    </button>
+                    <button mat-raised-button class="pull-right" (click)="nextAlerts()">
+                        <span>Page {{pageNumber + 2}}</span>
+                        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+                    </button>
+                </div>
             </div>
         </div>
     </div>

@@ -3,14 +3,14 @@
         <ps2-zone-map [zoneId]="zoneId" [ownershipStream]="ownershipSub" [captureStream]="replayCaptureSub" [defendStream]="replayDefendSub" [focusFacility]="focusFacility" (score)="onScoreChange($event)"></ps2-zone-map>
         <div class="replay-controls-container">
             <div class="replay-controls">
-                <button mat-raised-button (click)="skipBackward()">
+                <button mat-raised-button (click)="seekToTime(start)">
                     <mat-icon fontSet="mdi" fontIcon="mdi-skip-backward"></mat-icon>
                 </button>
                 <button mat-raised-button (click)="togglePlaying()">
                     <mat-icon *ngIf="isPlaying" fontSet="mdi" fontIcon="mdi-pause"></mat-icon>
                     <mat-icon *ngIf="!isPlaying" fontSet="mdi" fontIcon="mdi-play"></mat-icon>
                 </button>
-                <button mat-raised-button (click)="skipForward()">
+                <button mat-raised-button (click)="seekToTime(end)">
                     <mat-icon fontSet="mdi" fontIcon="mdi-skip-forward"></mat-icon>
                 </button>
             </div>
@@ -20,9 +20,9 @@
                 <vw-faction-bar [vs]="replayScore[1]" [nc]="replayScore[2]" [tr]="replayScore[3]"></vw-faction-bar>
             </div>
         </div>
-        <div class="progress-bar">
-            <div class="progress" [style.width.%]="getProgress()"></div>
-            <div class="seek-bar" (click)="onSeek($event)"></div>
+        <div class="progress-bar" (click)="onSeekClick($event)" (mousemove)="onSeekHover($event)">
+            <div class="seek-bar" [style.width.%]="seekHoverWidth"></div>
+            <div class="progress" [style.width.%]="progressWidth"></div>
         </div>
         <div class="time-settings">
             <div class="options-menu">
@@ -33,7 +33,7 @@
                     <button mat-menu-item *ngFor="let mult of multipliers" [class.active]="tickMultiplier === mult" (click)="tickMultiplier = mult">{{mult}}x</button>
                 </mat-menu>
             </div>
-            <div class="replay-time">{{replayTime | date:'H:mm:ss'}} (+{{getElapsed()}})</div>
+            <div class="replay-time">{{replayTime | date:'H:mm:ss'}} ({{getElapsed()}} / {{getDuration()}})</div>
         </div>
     </div>
 </div>

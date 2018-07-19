@@ -44,11 +44,13 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
             });
         }
 
+        /*
         this.routeSub = this.route.params.subscribe(params => {
             if (!params['zoneId']) {
                 this.router.navigate(['./', this.navLinks[0].path], { relativeTo: this.route });
             }
         });
+        */
 
         this.connectWebsocket();
     }
@@ -204,8 +206,9 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
     }
 
     ngOnDestroy() {
-        this.routeSub.unsubscribe();
-
+        if (this.routeSub) {
+            this.routeSub.unsubscribe();
+        }
         if (this.socket) {
             this.socket.close();
         }
