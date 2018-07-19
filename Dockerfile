@@ -1,15 +1,15 @@
 FROM alexsuch/angular-cli:6.0.5 AS build-env
 WORKDIR /app
 
-# Copy and restore as distinct layers
-COPY ./src/ClientApp/src /app/src
+COPY ./src/ClientApp/package.json /app/package.json
+RUN npm install
 
 COPY ./src/ClientApp/*.json /app/
-RUN npm install
+
+COPY ./src/ClientApp/src /app/src
 
 RUN npm run build:prod
 
-# Build runtime image
 FROM node:6.10.2
 WORKDIR /app
 
