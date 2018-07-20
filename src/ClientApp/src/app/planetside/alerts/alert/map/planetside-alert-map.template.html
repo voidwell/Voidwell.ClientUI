@@ -74,8 +74,15 @@
                     </mat-cell>
                 </ng-container>
 
-                <mat-header-row *matHeaderRowDef="['time','facility','winner','loser','outfit','mapper']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['time','facility','winner','loser','outfit','mapper'];"></mat-row>
+                <ng-container matColumnDef="zonepop">
+                    <mat-header-cell *matHeaderCellDef>Zone Population %</mat-header-cell>
+                    <mat-cell *matCellDef="let event">
+                        <vw-faction-bar [vs]="event.zonePopVs" [nc]="event.zonePopNc" [tr]="event.zonePopTr" [neutural]="false"></vw-faction-bar>
+                    </mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="['time','facility','winner','loser','outfit','mapper','zonepop']"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: ['time','facility','winner','loser','outfit','mapper','zonepop'];"></mat-row>
             </mat-table>
         </div>
     </div>

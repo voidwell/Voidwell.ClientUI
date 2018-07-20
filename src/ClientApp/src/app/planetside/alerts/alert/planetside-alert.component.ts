@@ -1,7 +1,7 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsideApi } from './../../planetside-api.service';
 import { PlanetsideCombatEventComponent } from './../../combat-event/planetside-combat-event.component';
 
@@ -37,19 +37,23 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
             this.event.next(null);
 
             this.api.getAlert(worldId, instanceId)
-                .pipe(catchError(error => {
+                .pipe<any>(catchError(error => {
                     this.errorMessage = error._body
-                    this.isLoading = false;
                     return throwError(error);
                 }))
-                .subscribe(data => this.setup(data));
-        });
-    }
+                .pipe<any>(finalize(() => {
+                    this.isLoading = false;
+                }))
+                .subscribe(data => {
+                    data.startDate = new Date(data.startDate);
+                    if (data.endDate) {
+                        data.endDate = new Date(data.endDate);
+                    }
 
-    private setup(data: any) {
-        this.event.next(data);
-        this.activeEvent = data;
-        this.isLoading = false;
+                    this.event.next(data);
+                    this.activeEvent = data;
+                });
+        });
     }
 
     private getEndDate(alert: any): Date {
