@@ -5,12 +5,15 @@
             <mat-card-title>
                 <div class="title-container">
                     <div class="pull-right">
-                        <span *ngIf="isAlertActive()">
-                            <vw-countdown [end]="getEndDate()"></vw-countdown> Remaining
-                        </span>
-                        <span *ngIf="!isAlertActive()">
-                            {{alert.startDate | date:'EEE dd MMM yyyy HH:mm'}}
-                        </span>
+                        <div>
+                            <span *ngIf="isAlertActive()">
+                                <vw-countdown [end]="getEndDate()"></vw-countdown> Remaining
+                            </span>
+                            <span *ngIf="!isAlertActive()">
+                                {{alert.startDate | date:'EEE dd MMM yyyy HH:mm'}}
+                            </span>
+                        </div>
+                        <div class="duration">Duration: {{(alert.endDate.getTime() - alert.startDate.getTime()) / 60000 | number:'.0-0'}} Minutes</div>
                     </div>
                     <div class="pull-left">
                         <div class="title-text">{{alert.worldId | worldName}}</div>

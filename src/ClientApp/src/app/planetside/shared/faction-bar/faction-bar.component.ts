@@ -10,6 +10,7 @@ export class FactionBarComponent {
     @Input('vs') vsScore: number;
     @Input('nc') ncScore: number;
     @Input('tr') trScore: number;
+    @Input() neutural: boolean = true;
 
     getWidth(value: number): number {
         let scoreSum = this.vsScore + this.ncScore + this.trScore;
@@ -20,6 +21,10 @@ export class FactionBarComponent {
     }
 
     getNeuturalScore(): number {
+        if (!this.neutural) {
+            return 0;
+        }
+
         let scoreSum = this.vsScore + this.ncScore + this.trScore;
         if (scoreSum < 10 || scoreSum > 100) {
             return 0;
