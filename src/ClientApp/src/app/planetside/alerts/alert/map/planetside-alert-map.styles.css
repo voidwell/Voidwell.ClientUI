@@ -40,8 +40,13 @@
     max-width: 80px;
 }
 
-.mat-column-mapper {
+.mat-column-mapper,
+.mat-column-zonepop {
     width: 450px;
+}
+
+.mat-column-zonepop {
+    margin-left: 15px;
 }
 
 a.outfit-name {
@@ -60,4 +65,8 @@ a.outfit-name {
 }
 .map-events .filters .mat-button-toggle:not(:last-of-type) {
     margin-right: 5px;
+}
+
+small {
+    font-size: 80%;
 }
