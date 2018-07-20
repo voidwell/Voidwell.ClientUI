@@ -82,3 +82,7 @@
     .card-info .mat-card {
         width: 100%;
     }
+
+.duration {
+    text-align: right;
+}

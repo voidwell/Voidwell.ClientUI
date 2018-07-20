@@ -98,3 +98,7 @@ vw-faction-bar ::ng-deep .faction-bar {
 .title {
     overflow: hidden;
 }
+
+.duration {
+    text-align: right;
+}

@@ -14,6 +14,7 @@
                                     <small *ngIf="isActive(activeEvent)" class="remaining-timer">
                                         <vw-countdown [end]="getEndDate(activeEvent)"></vw-countdown> Remaining
                                     </small>
+                                    <div class="duration">Duration: {{(getEndDate(activeEvent).getTime() - activeEvent.startDate.getTime()) / 60000 | number:'.0-0'}} Minutes</div>
                                 </div>
                                 <div class="event-name">
                                     <h1>{{activeEvent.metagameEvent.name}}</h1>
