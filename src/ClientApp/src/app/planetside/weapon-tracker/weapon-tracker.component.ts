@@ -1,9 +1,10 @@
 ﻿import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, throwError } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
-import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale } from 'd3-ng2-service';
+import { catchError, finalize, startWith, map } from 'rxjs/operators';
+import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale, ScaleOrdinal } from 'd3-ng2-service';
 import { PlanetsideApi } from './../planetside-api.service';
+import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
     templateUrl: './weapon-tracker.template.html',
@@ -12,10 +13,10 @@ import { PlanetsideApi } from './../planetside-api.service';
 
 export class WeaponTrackerComponent implements OnInit {
     @ViewChild('linegraph') graphElement: ElementRef;
+    @ViewChild('weaponInput') weaponInput: ElementRef;
 
     isLoading: boolean;
     errorMessage: string = null;
-    lineColors = ['#de3535', '#359ade', '#6c35de'];
 
     statOptions = [
         { id: 'kills', display: 'Kills' },
@@ -75,18 +76,21 @@ export class WeaponTrackerComponent implements OnInit {
 
     selectedStat = new FormControl('kills');
     selectedCategory = new FormControl();
-    selectedWeapon1 = new FormControl();
-    selectedWeapon2 = new FormControl();
-    selectedWeapon3 = new FormControl();
+    selectedWeaponControl = new FormControl();
     selectedStartDate = new FormControl();
     selectedEndDate = new FormControl();
 
+    filteredWeapons: Observable<any[]>;
+
     weapons: any[] = [];
     stats: any[] = [];
+    selectedWeapons: any[] = [];
+    graphWeapons: any[] = [];
 
     svg: Selection<BaseType, {}, HTMLElement, any>;
     d3: D3;
     svgMargin = { top: 0, right: 0, bottom: 30, left: 0 };
+    lineColors: ScaleOrdinal<string, string> = null;
 
     graphHeight: any;
     graphWidth: any;
@@ -97,6 +101,10 @@ export class WeaponTrackerComponent implements OnInit {
 
     constructor(private api: PlanetsideApi, element: ElementRef, d3Service: D3Service) {
         this.d3 = d3Service.getD3();
+        this.lineColors = this.d3.scaleOrdinal(this.d3.schemeCategory10);
+
+        this.filteredWeapons = this.selectedWeaponControl.valueChanges.pipe(
+            startWith(null), map((weapon: string | null) => weapon ? this._filterSearch(weapon) : this._filterUnselected()));
     }
 
     ngOnInit() {
@@ -138,24 +146,27 @@ export class WeaponTrackerComponent implements OnInit {
             });
     }
 
+    weaponSelected(event: MatAutocompleteSelectedEvent) {
+        this.selectedWeapons.push(event.option.value);
+        this.weaponInput.nativeElement.value = '';
+        this.selectedWeaponControl.setValue(null);
+    }
+
+    removeSelectedWeapon(weapon) {
+        let idx = this.selectedWeapons.indexOf(weapon);
+        this.selectedWeapons.splice(idx, 1);
+    }
+
     onSubmit() {
         this.errorMessage = '';
         this.isLoading = true;
         this.stats = [];
+        this.graphWeapons = [];
         this.svg.selectAll('*').remove();
 
         let statId = this.selectedStat.value;
 
-        let weaponIds = [];
-        if (this.selectedWeapon1.value) {
-            weaponIds.push(this.selectedWeapon1.value.id);
-        }
-        if (this.selectedWeapon2.value) {
-            weaponIds.push(this.selectedWeapon2.value.id);
-        }
-        if (this.selectedWeapon3.value) {
-            weaponIds.push(this.selectedWeapon3.value.id);
-        }
+        let weaponIds = this.selectedWeapons.map(a => a.id);
 
         this.api.getOracleData(statId, weaponIds)
             .pipe<any>(catchError(error => {
@@ -167,6 +178,7 @@ export class WeaponTrackerComponent implements OnInit {
             }))
             .subscribe(data => {
                 this.stats = data;
+                this.graphWeapons = this.selectedWeapons.slice();
                 this.renderGraph();
             });
     }
@@ -207,14 +219,18 @@ export class WeaponTrackerComponent implements OnInit {
         this.zoomBetween(start, end);
     }
 
+    getLegendColor(index: string): string {
+        return this.lineColors(index);
+    }
+
     renderGraph() {
         let d3 = this.d3;
         let self = this;
 
-        let selectedTypes = [this.selectedWeapon1.value, this.selectedWeapon2.value, this.selectedWeapon3.value];
-
-        let series: OracleStat[][] = [];
+        let series: OracleStat[][] = [...Array(this.graphWeapons.length)];
         for (let k in this.stats) {
+            let statId = parseInt(k);
+            let idx = this.graphWeapons.findIndex(a => a.id == statId);
             let stats = this.stats[k].map(function (d) {
                 let date = new Date(d.period);
                 return {
@@ -222,7 +238,7 @@ export class WeaponTrackerComponent implements OnInit {
                     value: d.value
                 };
             });
-            series.push(stats);
+            series[idx] = stats;
         }
 
         this.xExtent = d3.extent(series[0], function (d) { return new Date(d.period); });
@@ -286,7 +302,7 @@ export class WeaponTrackerComponent implements OnInit {
             .attr('clip-path', 'url(#clip)')
             .attr('fill', 'none')
             .attr('class', 'line')
-            .attr('stroke', (d, i) => this.lineColors[i])
+            .attr('stroke', (d, i) => this.lineColors(i.toString()))
             .attr('d', line);
 
         const tooltip = d3.select('#tooltip');
@@ -340,11 +356,11 @@ export class WeaponTrackerComponent implements OnInit {
                 .selectAll()
                 .data(series).enter()
                 .append('div')
-                .style('color', (d, i) => self.lineColors[i])
+                .style('color', (d, i) => self.lineColors(i.toString()))
                 .html((d, i) => {
                     let match = d.find(h => h.period.getTime() === matchingDate.getTime());
                     let matchValue = match ? match.value : 0;
-                    return selectedTypes[i].id + ' - ' + selectedTypes[i].name + ': ' + (matchValue ? matchValue.toLocaleString() : '-');
+                    return self.graphWeapons[i].id + ' - ' + self.graphWeapons[i].name + ': ' + (matchValue ? matchValue.toLocaleString() : '-');
                 });
         }
     }
@@ -353,6 +369,19 @@ export class WeaponTrackerComponent implements OnInit {
         let zoomScale = this.graphWidth / (this.x(end) - this.x(start));
         let zoomTranslate = -this.x(start);
         this.zoomRect.call(this.zoom.transform, this.d3.zoomIdentity.scale(zoomScale).translate(zoomTranslate, 0));
+    }
+
+    private _filterUnselected(): any[] {
+        return this.weapons.filter(weapon => this.selectedWeapons.indexOf(weapon) === -1);
+    }
+
+    private _filterSearch(value: string): any[] {
+        if (typeof value !== 'string') {
+            return this._filterUnselected();
+        }
+
+        const filterValue = value.toLowerCase();
+        return this._filterUnselected().filter(weapon => weapon.name && weapon.name.toLowerCase().indexOf(filterValue) === 0);
     }
 }
 

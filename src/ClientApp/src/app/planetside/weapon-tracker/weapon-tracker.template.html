@@ -21,31 +21,26 @@
                     </mat-select>
                 </mat-form-field>
                 <div *ngIf="weapons && weapons.length > 0">
-                    <mat-form-field>
-                        <mat-select placeholder="Weapon" [formControl]="selectedWeapon1" [attr.disabled]="isLoading">
-                            <mat-option [value]="null">Weapon 1</mat-option>
-                            <mat-option *ngFor="let weapon of weapons" [value]="weapon">
+                    <mat-form-field class="weapon-chips-list">
+                        <mat-chip-list #weaponChips>
+                            <mat-chip *ngFor="let selectedWeapon of selectedWeapons"
+                                      (removed)="removeSelectedWeapon(selectedWeapon)">
+                                {{selectedWeapon.id}} - {{selectedWeapon.name}}
+                                <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" matChipRemove></mat-icon>
+                            </mat-chip>
+                            <input placeholder="Weapons"
+                                   #weaponInput
+                                   [formControl]="selectedWeaponControl"
+                                   [matAutocomplete]="auto"
+                                   [matChipInputFor]="weaponChips">
+                        </mat-chip-list>
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="weaponSelected($event)">
+                            <mat-option *ngFor="let weapon of filteredWeapons | async" [value]="weapon">
                                 {{weapon.id}} - {{weapon.name}}
                             </mat-option>
-                        </mat-select>
+                        </mat-autocomplete>
                     </mat-form-field>
-                    <mat-form-field>
-                        <mat-select placeholder="Weapon" [formControl]="selectedWeapon2" [attr.disabled]="isLoading">
-                            <mat-option [value]="null">Weapon 2</mat-option>
-                            <mat-option *ngFor="let weapon of weapons" [value]="weapon">
-                                {{weapon.id}} - {{weapon.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <mat-form-field>
-                        <mat-select placeholder="Weapon" [formControl]="selectedWeapon3" [attr.disabled]="isLoading">
-                            <mat-option [value]="null">Weapon 3</mat-option>
-                            <mat-option *ngFor="let weapon of weapons" [value]="weapon">
-                                {{weapon.id}} - {{weapon.name}}
-                            </mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <button mat-raised-button (click)="onSubmit()" [disabled]="isLoading">Submit</button>
+                    <button mat-raised-button (click)="onSubmit()" [disabled]="isLoading || selectedWeapons.length === 0">Submit</button>
                 </div>
             </div>
             <div>
@@ -80,6 +75,12 @@
                 <div class="graph-container">
                     <div #linegraph id="line-graph"></div>
                     <div id="tooltip"></div>
+                    <div class="legend">
+                        <span *ngFor="let weapon of graphWeapons; let i = index" [attr.data-index]="i">
+                            <mat-icon class="legend-color" fontSet="mdi" fontIcon="mdi-square" [style.color]="getLegendColor(i)"></mat-icon>
+                            <span>{{weapon.id}} - {{weapon.name}}</span>
+                        </span>
+                    </div>
                 </div>
             </div>
         </mat-card-content>
