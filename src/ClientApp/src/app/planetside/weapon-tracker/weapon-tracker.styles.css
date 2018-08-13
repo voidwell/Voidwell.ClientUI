@@ -18,6 +18,10 @@
         fill: #8a9ba1;
     }
 
+#tooltip {
+    display: none;
+}
+
 .graph-controls {
     line-height: 45px;
     overflow: hidden;
@@ -72,4 +76,17 @@
     padding: 2px;
     background: rgba(34, 49, 58, 0.8);
     border: 1px solid #1e2a31;
+}
+
+.weapon-chips-list {
+    width: 100%;
+}
+
+.legend > *:not(:first-child) {
+    margin-left: 10px;
+}
+
+.legend .legend-color {
+    width: 15px;
+    line-height: 12px;
 }

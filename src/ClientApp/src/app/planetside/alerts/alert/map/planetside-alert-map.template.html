@@ -75,7 +75,7 @@
                 </ng-container>
 
                 <ng-container matColumnDef="zonepop">
-                    <mat-header-cell *matHeaderCellDef>Zone Population % *</mat-header-cell>
+                    <mat-header-cell *matHeaderCellDef>Continent Population % *</mat-header-cell>
                     <mat-cell *matCellDef="let event">
                         <vw-faction-bar [vs]="event.zonePopVs" [nc]="event.zonePopNc" [tr]="event.zonePopTr" [neutural]="false"></vw-faction-bar>
                     </mat-cell>
@@ -85,7 +85,7 @@
                 <mat-row *matRowDef="let row; columns: ['time','facility','winner','loser','outfit','mapper','zonepop'];"></mat-row>
             </mat-table>
             <br />
-            <small>*Zone population calculated as all characters that performed an action (i.e kill, death, revive, healed, capture base, defend base, etc) within the last 10 minutes in that zone. If population tracking was initiated recently relative to the event starting then population values will be unreliable.</small>
+            <small>*Population calculated as all characters that performed an action (i.e kill, death, revive, healed, capture base, defend base, etc) within the last 10 minutes on that continent. If population tracking was initiated recently relative to the event starting then population values will be unreliable.</small>
         </div>
     </div>
 </div>

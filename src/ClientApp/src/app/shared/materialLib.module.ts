@@ -25,7 +25,8 @@ import {
     MatListModule,
     MatTreeModule,
     MatStepperModule,
-    MatButtonToggleModule
+    MatButtonToggleModule,
+    MatChipsModule
 } from '@angular/material';
 
 let modules = [
@@ -54,6 +55,7 @@ let modules = [
     MatTreeModule,
     MatStepperModule,
     MatButtonToggleModule,
+    MatChipsModule,
     FlexLayoutModule
 ];
 
