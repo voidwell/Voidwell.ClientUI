@@ -58,3 +58,24 @@
 .world-zone-button {
     width: 112px;
 }
+
+.zone-alert-icon {
+    animation-name: flashred;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes flashred {
+    0% {
+        color: #ea1010;
+    }
+
+    50% {
+        color: #b60d0d;
+    }
+
+    100% {
+        color: #ea1010;
+    }
+}
