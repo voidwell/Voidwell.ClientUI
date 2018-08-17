@@ -25,11 +25,6 @@ export class FactionBarComponent {
             return 0;
         }
 
-        let scoreSum = this.vsScore + this.ncScore + this.trScore;
-        if (scoreSum < 10 || scoreSum > 100) {
-            return 0;
-        }
-
-        return 100 - scoreSum;
+        return 100 - (this.vsScore + this.ncScore + this.trScore);
     }
 }
