@@ -71,6 +71,15 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent imp
         return endDate > new Date();
     }
 
+    private isNeuturalMetagame(alert): boolean {
+        if (!alert || !alert.metagameEvent) {
+            return true;
+        }
+
+        let type = alert.metagameEvent.type;
+        return type === 1 || type === 8 || type === 9;
+    }
+
     ngOnDestroy() {
         this.sub.unsubscribe();
     }
