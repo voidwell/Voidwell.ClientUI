@@ -24,7 +24,7 @@
                         </mat-card-title>
                         <mat-card-subtitle>{{activeEvent.metagameEvent.description}}</mat-card-subtitle>
                         <mat-card-content>
-                            <vw-faction-bar [vs]="activeEvent.lastFactionVS" [nc]="activeEvent.lastFactionNC" [tr]="activeEvent.lastFactionTR"></vw-faction-bar>
+                            <vw-faction-bar [vs]="activeEvent.lastFactionVS" [nc]="activeEvent.lastFactionNC" [tr]="activeEvent.lastFactionTR" [neutural]="isNeuturalMetagame(activeEvent)"></vw-faction-bar>
                         </mat-card-content>
                     </mat-card>
                 </div>

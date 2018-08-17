@@ -24,4 +24,13 @@ export class AlertCardComponent {
         let startMs = new Date(startString).getTime();
         return new Date(startMs + 1000 * 60 * this.defaultAlertLengthMinutes);
     }
+
+    isNeuturalMetagame(alert): boolean {
+        if (!alert || !alert.metagameEvent) {
+            return true;
+        }
+
+        let type = alert.metagameEvent.type;
+        return type === 1 || type === 8 || type === 9;
+    }
 }
