@@ -21,7 +21,8 @@
                         <a mat-raised-button routerLink="{{world.id}}/map/{{zone.id}}" [disabled]="!zone.isTracking" class="world-zone-button">
                             <span>
                                 <mat-icon *ngIf="!zone.lockState && zone.isTracking" fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
-                                <mat-icon *ngIf="zone.lockState && zone.isTracking" [ngClass]="zone.lockState.triggeringFaction | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+                                <mat-icon *ngIf="zone.lockState" [ngClass]="zone.lockState.triggeringFaction | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+                                <mat-icon *ngIf="zone.alertState" class="zone-alert-icon" fontSet="mdi" fontIcon="mdi-alarm-light"></mat-icon>
                                 <mat-icon class="zone-offline" *ngIf="!zone.isTracking" fontSet="mdi" fontIcon="mdi-earth-off"></mat-icon>
                             </span>
                             {{zone.name}}
