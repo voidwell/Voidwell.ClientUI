@@ -56,6 +56,7 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
 import { ZoneHelper } from './zone-helper.service';
 import { Ps2ZoneMapComponent } from './shared/ps2-zone-map/ps2-zone-map.component';
 import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.component';
+import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
 
 @NgModule({
     declarations: [
@@ -101,7 +102,8 @@ import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.componen
         PlanetsideWorldMapComponent,
         PlanetsideWorldZoneComponent,
         Ps2ZoneMapComponent,
-        WeaponTrackerComponent
+        WeaponTrackerComponent,
+        PlayerRanksComponent
     ],
     imports: [
         FormsModule,

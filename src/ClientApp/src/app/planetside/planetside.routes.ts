@@ -28,6 +28,7 @@ import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetsi
 import { PlanetsideWorldMapComponent } from './worlds/world/map/planetside-world-map.component';
 import { PlanetsideWorldZoneComponent } from './worlds/world/map/zone/planetside-world-zone.component';
 import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.component';
+import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
 
 const planetsideRoutes: Routes = [
     {
@@ -103,7 +104,8 @@ const planetsideRoutes: Routes = [
                     }
                 ]
             },
-            { path: 'oracle', component: WeaponTrackerComponent }
+            { path: 'oracle', component: WeaponTrackerComponent },
+            { path: 'ranks', component: PlayerRanksComponent }
         ]
     }
 ];
