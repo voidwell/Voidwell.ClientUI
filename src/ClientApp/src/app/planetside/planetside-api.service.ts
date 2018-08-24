@@ -122,4 +122,9 @@ export class PlanetsideApi extends ApiBase {
         return this.Get(this.ps2Url + 'oracle/stats/' + statId + '/?q=' + weaponIds.join(','))
             .pipe(map<Response, any>(resp => resp.json()));
     }
+
+    getPlayerRanks() {
+        return this.Get(this.ps2Url + 'ranks')
+            .pipe(map<Response, any>(resp => resp.json()));
+    }
 }

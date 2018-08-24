@@ -1,0 +1,54 @@
+﻿<div>
+    <mat-card>
+        <mat-card-title>
+            <h1>Top 1000</h1>
+        </mat-card-title>
+        <mat-card-content>
+            This page was inspired by <a href="http://melbalabs.com/ps2ranks">http://melbalabs.com/ps2ranks</a>!
+        </mat-card-content>
+        <mat-card-footer>
+            <vw-loader [loading]="isLoading"></vw-loader>
+            <div *ngIf="errorMessage" class="error-text">{{errorMessage}}</div>
+            <div *ngIf="!isLoading && playerRankings">
+                <mat-table #table [dataSource]="dataSource" class="striped rank-table">
+                    <ng-container matColumnDef="idx">
+                        <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
+                        <mat-cell *matCellDef="let idx = index">{{idx + 1 | number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="name">
+                        <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
+                        <mat-cell *matCellDef="let item">
+                            <a routerLink="/ps2/player/{{item.characterId}}" [ngClass]="item.factionId | factionColor">
+                                <div class="name">{{item.name}}</div>
+                            </a>
+                        </mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="rating">
+                        <mat-header-cell *matHeaderCellDef>Rating</mat-header-cell>
+                        <mat-cell *matCellDef="let item">{{item.rating | number:'.0-0'}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="deviation">
+                        <mat-header-cell *matHeaderCellDef>Deviation</mat-header-cell>
+                        <mat-cell *matCellDef="let item">{{item.deviation | number:'.0-0'}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="battlerank">
+                        <mat-header-cell *matHeaderCellDef>Battle Rank</mat-header-cell>
+                        <mat-cell *matCellDef="let item">{{item.battleRank | number}}</mat-cell>
+                    </ng-container>
+
+                    <ng-container matColumnDef="world">
+                        <mat-header-cell *matHeaderCellDef>Server</mat-header-cell>
+                        <mat-cell *matCellDef="let item">{{item.worldId | worldName}}</mat-cell>
+                    </ng-container>
+
+                    <mat-header-row *matHeaderRowDef="['idx','name','rating','deviation','battlerank','world']"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: ['idx','name','rating','deviation','battlerank','world'];"></mat-row>
+                </mat-table>
+            </div>
+        </mat-card-footer>
+    </mat-card>
+</div>
