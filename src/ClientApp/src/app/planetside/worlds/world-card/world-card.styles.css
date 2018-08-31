@@ -1,0 +1,78 @@
+﻿.world-card {
+    margin-bottom: 15px;
+}
+
+.world-state {
+    color: #1b8f2f;
+    margin-right: 3px;
+}
+
+.world-name {
+    font-size: 1.5em;
+    vertical-align: middle;
+    width: 100px;
+}
+
+.world-state,
+.world-name,
+.online-players {
+    display: inline-block;
+}
+
+.world-state,
+.online-players {
+    font-size: 1.5em;
+    vertical-align: middle;
+}
+
+.online-players {
+    width: 4em;
+}
+
+    .online-players .mat-icon {
+        margin-right: 5px;
+    }
+
+.offline {
+    color: #e63734;
+}
+
+.zone-state .zone-state-icon,
+.zone-state .zone-name,
+.zone-state .zone-population {
+    display: inline-block;
+    line-height: 24px;
+}
+
+.zone-state .zone-state-icon {
+    width: 24px;
+    line-height: 24px;
+}
+
+.zone-state .zone-name {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1em;
+    vertical-align: middle;
+    width: 80px;
+}
+
+.zone-alert-icon {
+    animation-name: flashred;
+    animation-duration: 2s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+}
+
+@keyframes flashred {
+    0% {
+        color: #e08484;
+    }
+
+    50% {
+        color: #e63734;
+    }
+
+    100% {
+        color: #e08484;
+    }
+}
