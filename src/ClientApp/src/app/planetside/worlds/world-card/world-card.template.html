@@ -1,0 +1,44 @@
+﻿<mat-card class="world-card">
+    <mat-card-title>
+        <div class="world-state">
+            <mat-icon *ngIf="world.isOnline" fontSet="mdi" fontIcon="mdi-check-circle"></mat-icon>
+            <mat-icon *ngIf="!world.isOnline" fontSet="mdi" fontIcon="mdi-close-circle" class="offline"></mat-icon>
+        </div>
+        <a class="world-name" routerLink="{{world.id}}">{{world.name}}</a>
+        <div class="online-players">
+            <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
+            {{world.onlineCharacters}}
+        </div>
+    </mat-card-title>
+    <mat-card-content>
+        <div class="zone-state" *ngFor="let zone of world.zoneStates">
+            <span class="zone-state-icon">
+                <mat-icon *ngIf="zone.isTracking" fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
+                <mat-icon *ngIf="!zone.isTracking" fontSet="mdi" fontIcon="mdi-earth-off" class="offline"></mat-icon>
+            </span>
+            <a class="zone-name" routerLink="{{world.id}}/map/{{zone.id}}">{{zone.name}}</a>
+            <span class="zone-state-icon">
+                <mat-icon *ngIf="zone.lockState" [ngClass]="zone.lockState.triggeringFaction | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+                <mat-icon *ngIf="zone.alertState" class="zone-alert-icon" fontSet="mdi" fontIcon="mdi-alarm-light"></mat-icon>
+            </span>
+            <div class="zone-population">
+                <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
+                <span>{{zone.population.vs + zone.population.nc + zone.population.tr}}</span>
+                |
+                <span [ngClass]="1 | factionColor">{{zone.population.vs}}</span>
+                /
+                <span [ngClass]="2 | factionColor">{{zone.population.vs}}</span>
+                /
+                <span [ngClass]="3 | factionColor">{{zone.population.vs}}</span>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-footer>
+        <a mat-button routerLink="{{world.id}}/map/2">
+            <mat-icon fontSet="mdi" fontIcon="mdi-map"></mat-icon> Map
+        </a>
+        <a mat-button routerLink="{{world.id}}/players">
+            <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon> Online Players
+        </a>
+    </mat-card-footer>
+</mat-card>
