@@ -99,9 +99,12 @@ export class WeaponTrackerComponent implements OnInit {
     xExtent: [Date, Date];
     x: ScaleTime<number, number>;
 
+    schemeCategory20 = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5",
+        "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
+
     constructor(private api: PlanetsideApi, element: ElementRef, d3Service: D3Service) {
         this.d3 = d3Service.getD3();
-        this.lineColors = this.d3.scaleOrdinal(this.d3.schemeCategory10);
+        this.lineColors = this.d3.scaleOrdinal(this.schemeCategory20);
 
         this.filteredWeapons = this.selectedWeaponControl.valueChanges.pipe(
             startWith(null), map((weapon: string | null) => weapon ? this._filterSearch(weapon) : this._filterUnselected()));
@@ -381,7 +384,7 @@ export class WeaponTrackerComponent implements OnInit {
         }
 
         const filterValue = value.toLowerCase();
-        return this._filterUnselected().filter(weapon => weapon.name && weapon.name.toLowerCase().indexOf(filterValue) === 0);
+        return this._filterUnselected().filter(weapon => weapon.name && weapon.name.toLowerCase().indexOf(filterValue) > -1);
     }
 }
 
