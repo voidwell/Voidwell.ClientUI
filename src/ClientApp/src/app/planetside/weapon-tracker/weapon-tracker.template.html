@@ -5,7 +5,7 @@
             <div *ngIf="errorMessage" class="error-text">{{errorMessage}}</div>
             <div>
                 <mat-form-field>
-                    <mat-select placeholder="Stat" [formControl]="selectedStat" [attr.disabled]="isLoading">
+                    <mat-select placeholder="Stat" [formControl]="selectedStat" (selectionChange)="onStatChange($event)" [attr.disabled]="isLoading">
                         <mat-option *ngFor="let stat of statOptions" [value]="stat.id">
                             {{stat.display}}
                         </mat-option>
@@ -22,7 +22,7 @@
                     <mat-form-field class="weapon-chips-list">
                         <mat-chip-list #weaponChips>
                             <mat-chip *ngFor="let selectedWeapon of selectedWeapons"
-                                      (removed)="removeSelectedWeapon(selectedWeapon)">
+                                      (removed)="onRemoveSelectedWeapon(selectedWeapon)">
                                 {{selectedWeapon.id}} - {{selectedWeapon.name}}
                                 <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" matChipRemove></mat-icon>
                             </mat-chip>
@@ -32,7 +32,7 @@
                                    [matAutocomplete]="auto"
                                    [matChipInputFor]="weaponChips">
                         </mat-chip-list>
-                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="weaponSelected($event)">
+                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onWeaponSelected($event)">
                             <mat-option *ngFor="let weapon of filteredWeapons | async" [value]="weapon">
                                 {{weapon.id}} - {{weapon.name}}
                             </mat-option>

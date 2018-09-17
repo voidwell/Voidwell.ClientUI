@@ -51,8 +51,6 @@ export class VoidwellAuthService {
         this.route.url.subscribe(url => {
             let currentRoute = location.pathname;
 
-            this.router.navigate([currentRoute]);
-
             this.mgr.getUser()
                 .then((user) => {
 
@@ -79,7 +77,7 @@ export class VoidwellAuthService {
                             this.api.getRoles();
                         }
 
-                        this.router.navigate([currentRoute]);
+                        this.router.navigate([currentRoute], { queryParams: route.snapshot.queryParams });
                     }
                 })
                 .catch((err) => {
