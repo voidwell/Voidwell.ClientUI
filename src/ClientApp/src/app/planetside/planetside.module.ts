@@ -5,6 +5,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { D3Service } from 'd3-ng2-service';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MaterialLib } from '../shared/materialLib.module';
+import { RequestCache } from '../shared/services/request-cache.service';
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
 import { WorldNamePipe } from '../shared/pipes/ps2/world-name.pipe';
 import { ZoneNamePipe } from '../shared/pipes/ps2/zone-name.pipe';
@@ -119,6 +120,7 @@ import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
         LeafletModule
     ],
     providers: [
+        RequestCache,
         PlanetsideApi,
         PerformanceGrades,
         DecimalPipe,

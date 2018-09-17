@@ -10,6 +10,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
 import { MaterialLib } from './shared/materialLib.module';
+import { RequestCache } from './shared/services/request-cache.service';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
 import { VoidwellApi } from './shared/services/voidwell-api.service';
 import { SearchService } from './shared/services/search.service';
@@ -46,6 +47,7 @@ import { AppComponent } from './app.component';
         VoidwellPipesModule
     ],
     providers: [
+        RequestCache,
         MatIconRegistry,
         appRouterProviders,
         VoidwellApi,
