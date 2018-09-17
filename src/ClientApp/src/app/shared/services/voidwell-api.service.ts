@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 import * as actionType from './../../reducers';
 import { VoidwellAuthService } from './../services/voidwell-auth.service';
 import { ApiBase } from './api-base';
+import { RequestCache } from './../services/request-cache.service';
 
 @Injectable()
 export class VoidwellApi extends ApiBase {
@@ -20,8 +21,9 @@ export class VoidwellApi extends ApiBase {
 
     constructor(public authService: VoidwellAuthService,
         public http: Http,
+        public cache: RequestCache,
         public ngRedux: NgRedux<IAppState>) {
-        super(authService, http);
+        super(authService, http, cache);
     }
 
     getAllBlogPosts() {

@@ -1,16 +1,17 @@
 ﻿import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, tap } from 'rxjs/operators';
 import { Http, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
 import { VoidwellAuthService } from './../shared/services/voidwell-auth.service';
+import { RequestCache } from './../shared/services/request-cache.service';
 import { ApiBase } from './../shared/services/api-base';
 
 @Injectable()
 export class PlanetsideApi extends ApiBase {
     public ps2Url = location.origin + '/api/ps2/';
 
-    constructor(public authService: VoidwellAuthService, public http: Http) {
-        super(authService, http);
+    constructor(public authService: VoidwellAuthService, public http: Http, public cache: RequestCache) {
+        super(authService, http, cache);
     }
 
     getNews() {
@@ -54,12 +55,12 @@ export class PlanetsideApi extends ApiBase {
     }
 
     getAllProfiles() {
-        return this.Get(this.ps2Url + 'profile')
+        return this.Get(this.ps2Url + 'profile', true)
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getAllVehicles() {
-        return this.Get(this.ps2Url + 'vehicle')
+        return this.Get(this.ps2Url + 'vehicle', true)
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
@@ -99,7 +100,7 @@ export class PlanetsideApi extends ApiBase {
     }
 
     getZoneMap(zoneId: number) {
-        return this.Get(this.ps2Url + 'map/' + zoneId)
+        return this.Get(this.ps2Url + 'map/' + zoneId, true)
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
@@ -109,12 +110,12 @@ export class PlanetsideApi extends ApiBase {
     }
 
     getGrades() {
-        return this.Get(this.ps2Url + 'grades')
+        return this.Get(this.ps2Url + 'grades', true)
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
     getOracleWeapons(categoryId: string) {
-        return this.Get(this.ps2Url + 'oracle/category/' + categoryId)
+        return this.Get(this.ps2Url + 'oracle/category/' + categoryId, true)
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
