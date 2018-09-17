@@ -18,7 +18,7 @@
             </span>
             <a class="zone-name" routerLink="{{world.id}}/map/{{zone.id}}">{{zone.name}}</a>
             <span class="zone-state-icon">
-                <mat-icon *ngIf="zone.lockState" [ngClass]="zone.lockState.triggeringFaction | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+                <mat-icon *ngIf="zone.lockState" [ngClass]="zone.lockState.triggeringFaction | factionColor" [title]="zone.lockState.timestamp | date" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
                 <mat-icon *ngIf="zone.alertState" class="zone-alert-icon" fontSet="mdi" fontIcon="mdi-alarm-light"></mat-icon>
             </span>
             <div class="zone-population">
