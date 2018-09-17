@@ -1,10 +1,11 @@
 ﻿import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { Observable, throwError } from 'rxjs';
-import { catchError, finalize, startWith, map } from 'rxjs/operators';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material';
+import { Observable, Subscription, throwError, of } from 'rxjs';
+import { catchError, finalize, startWith, map, tap } from 'rxjs/operators';
 import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale, ScaleOrdinal } from 'd3-ng2-service';
 import { PlanetsideApi } from './../planetside-api.service';
-import { MatAutocompleteSelectedEvent } from '@angular/material';
 
 @Component({
     templateUrl: './weapon-tracker.template.html',
@@ -14,6 +15,7 @@ import { MatAutocompleteSelectedEvent } from '@angular/material';
 export class WeaponTrackerComponent implements OnInit {
     @ViewChild('linegraph') graphElement: ElementRef;
     @ViewChild('weaponInput') weaponInput: ElementRef;
+    @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger;
 
     isLoading: boolean;
     errorMessage: string = null;
@@ -99,10 +101,16 @@ export class WeaponTrackerComponent implements OnInit {
     xExtent: [Date, Date];
     x: ScaleTime<number, number>;
 
+    queryParams: {
+        [key: string]: any
+    };
+
     schemeCategory20 = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5",
         "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
 
-    constructor(private api: PlanetsideApi, element: ElementRef, d3Service: D3Service) {
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private api: PlanetsideApi, element: ElementRef, d3Service: D3Service) {
+        this.queryParams = Object.assign({}, activatedRoute.snapshot.queryParams);
+
         this.d3 = d3Service.getD3();
         this.lineColors = this.d3.scaleOrdinal(this.schemeCategory20);
 
@@ -129,35 +137,39 @@ export class WeaponTrackerComponent implements OnInit {
             .append('rect')
             .attr('width', this.graphWidth)
             .attr('height', this.graphHeight);
+
+        this.setupFromQueryParams();
+    }
+
+    onStatChange(event) {
+        this.setQueryParam("stat", event.value);
+        this.setStat(event.value);
     }
 
     onCategoryChange(event) {
-        this.errorMessage = '';
-        this.isLoading = true;
-        this.weapons = [];
-
-        this.api.getOracleWeapons(event.value)
-            .pipe<any>(catchError(error => {
-                this.errorMessage = error._body || error.statusText
-                return throwError(error);
-            }))
-            .pipe<any>(finalize(() => {
-                this.isLoading = false;
-            }))
-            .subscribe(data => {
-                this.weapons = data;
-            });
+        this.setQueryParam("category", event.value);
+        this.setCategory(event.value).subscribe();
     }
 
-    weaponSelected(event: MatAutocompleteSelectedEvent) {
+    onWeaponSelected(event: MatAutocompleteSelectedEvent) {
         this.selectedWeapons.push(event.option.value);
-        this.weaponInput.nativeElement.value = '';
         this.selectedWeaponControl.setValue(null);
+        this.selectedWeaponControl.setValue(this.weaponInput.nativeElement.value);
+        this.onSelectedWeaponChange();
+
+        const self = this;
+        setTimeout(function () {
+            self.autoTrigger.openPanel();
+        }, 1);
     }
 
-    removeSelectedWeapon(weapon) {
+    onRemoveSelectedWeapon(weapon) {
         let idx = this.selectedWeapons.indexOf(weapon);
         this.selectedWeapons.splice(idx, 1);
+        this.onSelectedWeaponChange();
+
+        this.selectedWeaponControl.setValue(null);
+        this.selectedWeaponControl.setValue(this.weaponInput.nativeElement.value);
     }
 
     onSubmit() {
@@ -246,8 +258,12 @@ export class WeaponTrackerComponent implements OnInit {
 
         this.xExtent = d3.extent(series[0], function (d) { return new Date(d.period); });
 
-        this.selectedStartDate.setValue(this.xExtent[0]);
-        this.selectedEndDate.setValue(this.xExtent[1]);
+        if (!this.selectedStartDate.value) {
+            this.selectedStartDate.setValue(this.xExtent[0]);
+        }
+        if (!this.selectedEndDate.value) {
+            this.selectedEndDate.setValue(this.xExtent[1]);
+        }
 
         this.x = d3.scaleTime()
             .domain(this.xExtent)
@@ -267,7 +283,11 @@ export class WeaponTrackerComponent implements OnInit {
         this.zoom = this.d3.zoom()
             .scaleExtent([1, 32])
             .translateExtent([[-this.graphWidth, -Infinity], [2 * this.graphWidth, Infinity]])
-            .on('zoom', zoomed);
+            .on('zoom', zoomed)
+            .on('end', function () {
+                self.setQueryParam("startDate", self.selectedStartDate.value);
+                self.setQueryParam("endDate", self.selectedEndDate.value);
+            });
 
         let zoomRect = this.svg.append('rect')
             .attr('width', this.graphWidth)
@@ -313,7 +333,7 @@ export class WeaponTrackerComponent implements OnInit {
 
         this.zoom.translateExtent([[this.x(this.xExtent[0]), -Infinity], [this.x(this.xExtent[1]), Infinity]]);
 
-        this.zoomBetween(this.xExtent[0], this.xExtent[1]);
+        this.zoomBetween(this.selectedStartDate.value, this.selectedEndDate.value);
 
         function zoomed() {
             let xz = d3.event.transform.rescaleX(self.x);
@@ -368,10 +388,90 @@ export class WeaponTrackerComponent implements OnInit {
         }
     }
 
+    private setupFromQueryParams() {
+        if (this.queryParams['stat']) {
+            this.setStat(this.queryParams['stat']);
+        } else {
+            this.setQueryParam('stat', 'kills');
+        }
+
+        if (this.queryParams['category']) {
+            this.setCategory(this.queryParams['category'])
+                .subscribe(() => {
+                    if (this.queryParams['startDate']) {
+                        let startDate = new Date(this.queryParams['startDate']);
+                        this.selectedStartDate.setValue(startDate);
+                    }
+
+                    if (this.queryParams['endDate']) {
+                        let endDate = new Date(this.queryParams['endDate']);
+                        this.selectedEndDate.setValue(endDate);
+                    }
+
+                    if (this.queryParams['weapons']) {
+                        let weaponIds = this.queryParams['weapons'].split(',').map(a => parseInt(a));
+                        weaponIds.forEach(weaponId => {
+                            let weapon = this.weapons.find(a => a.id === weaponId);
+                            if (weapon) {
+                                this.selectedWeapons.push(weapon);
+                            }
+                        });
+
+                        this.onSubmit();
+                    }
+                });
+        }
+    }
+
+    private setStat(stat: string) {
+        if (this.selectedStat.value !== stat) {
+            this.selectedStat.setValue(stat);
+        }
+    }
+
+    private setCategory(category: string): Observable<any> {
+        this.errorMessage = '';
+        this.isLoading = true;
+        this.weapons = [];
+
+        if (this.selectedCategory.value !== category) {
+            this.selectedCategory.setValue(category);
+        }
+
+        return this.api.getOracleWeapons(category)
+            .pipe<any, any, any>(
+                catchError(error => {
+                    this.errorMessage = error._body || error.statusText
+                    return throwError(error);
+                }),
+                tap(weapons => {
+                    this.weapons = weapons;
+                }),
+                finalize(() => {
+                    this.isLoading = false;
+                }));
+    }
+
+    private onSelectedWeaponChange() {
+        this.setQueryParam("weapons", this.selectedWeapons.map(a => a.id));
+    }
+
+    private setSelectedWeapons(weaponIds: any[]) {
+        for (let id in weaponIds) {
+            let weapon = this.weapons.find(a => a.id === id);
+            if (weapon) {
+                this.selectedWeapons.push(weapon);
+            }
+        }
+    }
+
     private zoomBetween(start: Date, end: Date) {
         let zoomScale = this.graphWidth / (this.x(end) - this.x(start));
         let zoomTranslate = -this.x(start);
         this.zoomRect.call(this.zoom.transform, this.d3.zoomIdentity.scale(zoomScale).translate(zoomTranslate, 0));
+
+        this.setQueryParam("startDate", start);
+        this.setQueryParam("endDate", end);
     }
 
     private _filterUnselected(): any[] {
@@ -385,6 +485,26 @@ export class WeaponTrackerComponent implements OnInit {
 
         const filterValue = value.toLowerCase();
         return this._filterUnselected().filter(weapon => weapon.name && weapon.name.toLowerCase().indexOf(filterValue) > -1);
+    }
+
+    private setQueryParam(key: string, value: any) {
+        let sVal: string;
+
+        if (value instanceof Array) {
+            sVal = value.join(',');
+        } else if (value instanceof Date) {
+            sVal = this.toDateString(value);
+        } else {
+            sVal = value;
+        }
+
+        this.queryParams[key] = sVal;
+
+        this.router.navigate([], { relativeTo: this.activatedRoute, queryParams: this.queryParams, replaceUrl: true });
+    }
+
+    private toDateString(d: Date): string {
+        return d.getUTCFullYear() + "-" + ("0" + (d.getUTCMonth() + 1)).slice(-2) + "-" + ("0" + d.getUTCDate()).slice(-2);
     }
 }
 
