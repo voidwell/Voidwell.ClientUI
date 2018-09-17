@@ -7,6 +7,62 @@ import { catchError, finalize, startWith, map, tap } from 'rxjs/operators';
 import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale, ScaleOrdinal } from 'd3-ng2-service';
 import { PlanetsideApi } from './../planetside-api.service';
 
+const statOptions = [
+    { id: 'kills', display: 'Kills' },
+    { id: 'uniques', display: 'Uniques' },
+    { id: 'kpu', display: 'KPU' },
+    { id: 'vkpu', display: 'Vehicle KPU' },
+    { id: 'akpu', display: 'Aircraft KPU' },
+    { id: 'kph', display: 'KPH' },
+    { id: 'vkph', display: 'Vehicle KPH' },
+    { id: 'akph', display: 'Aircraft KPH' },
+    { id: 'avg-br', display: 'Average BR' },
+    { id: 'hkills', display: 'Headshot Kills' },
+    { id: 'headshot-percent', display: 'Headshot %' },
+    { id: 'q4-kills', display: 'Q4 Kills' },
+    { id: 'q4-uniques', display: 'Q4 Uniques' },
+    { id: 'q4-kpu', display: 'Q4 KPU' },
+    { id: 'q4-headshots', display: 'Q4 Headshot Kills' },
+    { id: 'q4-headshots-percent', display: 'Q4 Headshot %' },
+    { id: 'q1-kpu', display: 'Q1 KPU' },
+    { id: 'q2-kpu', display: 'Q2 KPU' },
+    { id: 'q3-kpu', display: 'Q3 KPU' }
+];
+
+const categoryOptions = [
+    { id: 'all', display: 'Choose From All Weapons' },
+    { id: 'melee', display: 'Melee' },
+    { id: 'sidearms', display: 'Sidearms' },
+    { id: 'shotguns', display: 'Shotguns' },
+    { id: 'smg', display: 'SMG' },
+    { id: 'lmg', display: 'LMG' },
+    { id: 'assault-rifles', display: 'Assault Rifles' },
+    { id: 'carbines', display: 'Carbines' },
+    { id: 'sniper-rifles', display: 'Sniper Rifles' },
+    { id: 'scout-rifles', display: 'Scout Rifles' },
+    { id: 'battle-rifles', display: 'Battle Rifles' },
+    { id: 'rocket-launchers', display: 'Rocket Launchers' },
+    { id: 'es-heavy-gun', display: 'ES Heavy Gun' },
+    { id: 'av-max', display: 'AV Max' },
+    { id: 'ai-max', display: 'AI Max' },
+    { id: 'aa-max', display: 'AA Max' },
+    { id: 'grenades', display: 'Grenades' },
+    { id: 'explosives', display: 'Explosives' },
+    { id: 'harasser', display: 'Harasser Weapons' },
+    { id: 'liberator', display: 'Liberator Weapons' },
+    { id: 'lightning', display: 'Lightning Weapons' },
+    { id: 'mbt-primary', display: 'MBT Primary Weapons' },
+    { id: 'mbt-secondary', display: 'MBT Secondary Weapons' },
+    { id: 'esf', display: 'ESF Weapons' },
+    { id: 'turrets', display: 'Turrets' },
+    { id: 'flash', display: 'Flash Weapons' },
+    { id: 'sunderer', display: 'Sunderer Weapons' },
+    { id: 'sunderer', display: 'Sunderer Weapons' },
+    { id: 'galaxy', display: 'Galaxy Weapons' },
+    { id: 'valkyrie', display: 'Valkyrie Weapons' },
+    { id: 'ant', display: 'ANT Weapons' }
+];
+
 @Component({
     templateUrl: './weapon-tracker.template.html',
     styleUrls: ['./weapon-tracker.styles.css']
@@ -20,61 +76,8 @@ export class WeaponTrackerComponent implements OnInit {
     isLoading: boolean;
     errorMessage: string = null;
 
-    statOptions = [
-        { id: 'kills', display: 'Kills' },
-        { id: 'uniques', display: 'Uniques' },
-        { id: 'kpu', display: 'KPU' },
-        { id: 'vkpu', display: 'Vehicle KPU' },
-        { id: 'akpu', display: 'Aircraft KPU' },
-        { id: 'kph', display: 'KPH' },
-        { id: 'vkph', display: 'Vehicle KPH' },
-        { id: 'akph', display: 'Aircraft KPH' },
-        { id: 'avg-br', display: 'Average BR' },
-        { id: 'hkills', display: 'Headshot Kills' },
-        { id: 'headshot-percent', display: 'Headshot %' },
-        { id: 'q4-kills', display: 'Q4 Kills' },
-        { id: 'q4-uniques', display: 'Q4 Uniques' },
-        { id: 'q4-kpu', display: 'Q4 KPU' },
-        { id: 'q4-headshots', display: 'Q4 Headshot Kills' },
-        { id: 'q4-headshots-percent', display: 'Q4 Headshot %' },
-        { id: 'q1-kpu', display: 'Q1 KPU' },
-        { id: 'q2-kpu', display: 'Q2 KPU' },
-        { id: 'q3-kpu', display: 'Q3 KPU' }
-    ];
-
-    categoryOptions = [
-        { id: 'all', display: 'Choose From All Weapons' },
-        { id: 'melee', display: 'Melee' },
-        { id: 'sidearms', display: 'Sidearms' },
-        { id: 'shotguns', display: 'Shotguns' },
-        { id: 'smg', display: 'SMG' },
-        { id: 'lmg', display: 'LMG' },
-        { id: 'assault-rifles', display: 'Assault Rifles' },
-        { id: 'carbines', display: 'Carbines' },
-        { id: 'sniper-rifles', display: 'Sniper Rifles' },
-        { id: 'scout-rifles', display: 'Scout Rifles' },
-        { id: 'battle-rifles', display: 'Battle Rifles' },
-        { id: 'rocket-launchers', display: 'Rocket Launchers' },
-        { id: 'es-heavy-gun', display: 'ES Heavy Gun' },
-        { id: 'av-max', display: 'AV Max' },
-        { id: 'ai-max', display: 'AI Max' },
-        { id: 'aa-max', display: 'AA Max' },
-        { id: 'grenades', display: 'Grenades' },
-        { id: 'explosives', display: 'Explosives' },
-        { id: 'harasser', display: 'Harasser Weapons' },
-        { id: 'liberator', display: 'Liberator Weapons' },
-        { id: 'lightning', display: 'Lightning Weapons' },
-        { id: 'mbt-primary', display: 'MBT Primary Weapons' },
-        { id: 'mbt-secondary', display: 'MBT Secondary Weapons' },
-        { id: 'esf', display: 'ESF Weapons' },
-        { id: 'turrets', display: 'Turrets' },
-        { id: 'flash', display: 'Flash Weapons' },
-        { id: 'sunderer', display: 'Sunderer Weapons' },
-        { id: 'sunderer', display: 'Sunderer Weapons' },
-        { id: 'galaxy', display: 'Galaxy Weapons' },
-        { id: 'valkyrie', display: 'Valkyrie Weapons' },
-        { id: 'ant', display: 'ANT Weapons' }
-    ];
+    statOptions = statOptions;
+    categoryOptions = categoryOptions;
 
     selectedStat = new FormControl('kills');
     selectedCategory = new FormControl();
