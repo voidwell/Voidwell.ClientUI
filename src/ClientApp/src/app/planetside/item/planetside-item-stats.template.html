@@ -27,7 +27,15 @@
                 </div>
                 <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
                     <span class="label">Damage</span>
-                    <span class="value">{{weaponData.maxDamage}} / {{weaponData.maxDamageRange}}m / {{weaponData.minDamage}} / {{weaponData.MinDamageRange}}m</span>
+                    <span class="value">{{weaponData.maxDamage}} / {{weaponData.maxDamageRange}}m / {{weaponData.minDamage}} / {{weaponData.minDamageRange}}m</span>
+                </div>
+                <div class="info-row" *ngIf="!weaponData.isVehicleWeapon && weaponData.indirectMaxDamage">
+                    <span class="label">Indirect damage</span>
+                    <span class="value">{{weaponData.indirectMaxDamage}} / {{weaponData.indirectMaxDamageRange}}m / {{weaponData.indirectMinDamage}} / {{weaponData.indirectMinDamageRange}}m</span>
+                </div>
+                <div class="info-row" *ngIf="weaponData.damageRadius">
+                    <span class="label">Damage radius</span>
+                    <span class="value">{{weaponData.damageRadius}}</span>
                 </div>
                 <div class="info-row">
                     <span class="label">Muzzle velocity</span>
@@ -49,7 +57,7 @@
                     <span class="label">Aim accuracy</span>
                     <span class="value">{{weaponData.aimAcc.crouching}} / {{weaponData.aimAcc.crouchWalking}} / {{weaponData.aimAcc.standing}} / {{weaponData.aimAcc.running}} / {{weaponData.aimAcc.cof}}</span>
                 </div>
-                <div class="info-row">
+                <div class="info-row" *ngIf="weaponData.ironSightZoom">
                     <span class="label">Iron sight zoom</span>
                     <span class="value">{{weaponData.ironSightZoom}}x</span>
                 </div>
