@@ -41,11 +41,11 @@
                     <span class="label">Ammunition</span>
                     <span class="value">{{weaponData.clipSize}} / {{weaponData.capacity}}</span>
                 </div>
-                <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
+                <div class="info-row" *ngIf="!weaponData.isVehicleWeapon && weaponData.hipAcc">
                     <span class="label">Hip accuracy</span>
                     <span class="value">{{weaponData.hipAcc.crouching}} / {{weaponData.hipAcc.crouchWalking}} / {{weaponData.hipAcc.standing}} / {{weaponData.hipAcc.running}} / {{weaponData.hipAcc.cof}}</span>
                 </div>
-                <div class="info-row" *ngIf="!weaponData.isVehicleWeapon">
+                <div class="info-row" *ngIf="!weaponData.isVehicleWeapon && weaponData.aimAcc">
                     <span class="label">Aim accuracy</span>
                     <span class="value">{{weaponData.aimAcc.crouching}} / {{weaponData.aimAcc.crouchWalking}} / {{weaponData.aimAcc.standing}} / {{weaponData.aimAcc.running}} / {{weaponData.aimAcc.cof}}</span>
                 </div>
