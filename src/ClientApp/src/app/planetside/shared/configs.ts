@@ -83,6 +83,10 @@ export const Worlds = {
     25: {
         id: 25,
         name: 'Briggs'
+    },
+    40: {
+        id: 40,
+        name: 'SolTech'
     }
 };
 
