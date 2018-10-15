@@ -99,7 +99,8 @@ export class EventEditorDialog implements OnInit, OnChanges {
         { id: "13", name: "Cobalt" },
         { id: "17", name: "Emerald" },
         { id: "19", name: "Jaeger" },
-        { id: "25", name: "Briggs" }
+        { id: "25", name: "Briggs" },
+        { id: "40", name: "SolTech" }
     ];
 
     maps = [

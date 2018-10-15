@@ -9,7 +9,8 @@ export class WorldNamePipe implements PipeTransform {
         13: 'Cobalt',
         17: 'Emerald',
         19: 'Jaeger',
-        25: 'Briggs'
+        25: 'Briggs',
+        40: 'SolTech'
     };
 
     transform(worldId: any): string {

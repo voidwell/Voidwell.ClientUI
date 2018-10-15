@@ -54,6 +54,11 @@ export class PlanetsideApi extends ApiBase {
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
+    getCharacterOnlineState(characterId: string) {
+        return this.Get(this.ps2Url + 'character/' + characterId + '/state')
+            .pipe(map<Response, any>(resp => resp.json()));
+    }
+
     getAllProfiles() {
         return this.Get(this.ps2Url + 'profile', true)
             .pipe(map<Response, any>(resp => resp.json()));
