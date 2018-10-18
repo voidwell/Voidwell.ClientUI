@@ -9,7 +9,7 @@
             </mat-card-content>
             <mat-card-footer>
                 <div class="map-log">
-                    <div *ngIf="zoneLogs.length === 0">
+                    <div *ngIf="!zoneLogs || zoneLogs.length === 0">
                         Waiting for activity...
                     </div>
                     <div *ngFor="let item of zoneLogs" class="zone-event">

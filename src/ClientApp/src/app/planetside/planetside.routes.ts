@@ -29,8 +29,14 @@ import { PlanetsideWorldMapComponent } from './worlds/world/map/planetside-world
 import { PlanetsideWorldZoneComponent } from './worlds/world/map/zone/planetside-world-zone.component';
 import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.component';
 import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
+import { PlanetsideSearchComponent } from './search/planetside-search.component';
 
 const planetsideRoutes: Routes = [
+    {
+        path: '',
+        component: PlanetsideSearchComponent,
+        outlet: 'search'
+    },
     {
         path: '',
         component: PlanetsideWrapperComponent,

@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { divIcon, DivIcon, DivIconOptions } from 'leaflet';
-import { FacilityTypes, Factions } from './shared/configs';
+import { FacilityTypes, Factions } from './../configs';
 import { PlanetsideApi } from './planetside-api.service';
 
 @Injectable()

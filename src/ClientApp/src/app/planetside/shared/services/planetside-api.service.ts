@@ -2,9 +2,9 @@
 import { map, tap } from 'rxjs/operators';
 import { Http, Response } from '@angular/http';
 import { Injectable } from '@angular/core';
-import { VoidwellAuthService } from './../shared/services/voidwell-auth.service';
-import { RequestCache } from './../shared/services/request-cache.service';
-import { ApiBase } from './../shared/services/api-base';
+import { VoidwellAuthService } from './../../../shared/services/voidwell-auth.service';
+import { RequestCache } from './../../../shared/services/request-cache.service';
+import { ApiBase } from './../../../shared/services/api-base';
 
 @Injectable()
 export class PlanetsideApi extends ApiBase {
@@ -66,6 +66,16 @@ export class PlanetsideApi extends ApiBase {
 
     getAllVehicles() {
         return this.Get(this.ps2Url + 'vehicle', true)
+            .pipe(map<Response, any>(resp => resp.json()));
+    }
+
+    getAllWorlds() {
+        return this.Get(this.ps2Url + 'world', true)
+            .pipe(map<Response, any>(resp => resp.json()));
+    }
+
+    getAllZones() {
+        return this.Get(this.ps2Url + 'zone', true)
             .pipe(map<Response, any>(resp => resp.json()));
     }
 

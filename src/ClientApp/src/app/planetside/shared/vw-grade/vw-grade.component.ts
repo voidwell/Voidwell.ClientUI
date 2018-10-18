@@ -1,6 +1,6 @@
 ﻿import { Component, Input, OnInit, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { PerformanceGrades } from './../../performance-grades.service';
+import { PerformanceGrades } from './../services/performance-grades.service';
 
 @Component({
     selector: 'vw-grade',

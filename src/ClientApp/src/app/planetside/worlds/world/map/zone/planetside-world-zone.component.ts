@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { PlanetsideWorldComponent } from './../../planetside-world.component';
 import { PlanetsideWorldMapComponent } from './../planetside-world-map.component';
-import { ZoneHelper } from './../../../../zone-helper.service';
+import { ZoneHelper } from './../../../../shared/services/zone-helper.service';
 
 @Component({
     templateUrl: './planetside-world-zone.template.html',

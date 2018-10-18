@@ -1,7 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PlanetsideApi } from './../planetside-api.service';
+import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
 @Component({
     templateUrl: './planetside-world-wrapper.template.html',

@@ -4,7 +4,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable } from '@angular/material';
 import { Observable, Observer, Subscriber, Subscription, of, merge, throwError } from 'rxjs';
 import { map, catchError, finalize } from 'rxjs/operators';
-import { PlanetsideApi } from './../planetside-api.service';
+import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
 @Component({
     selector: 'planetside-outfit',

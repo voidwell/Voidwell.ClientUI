@@ -3,7 +3,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, of } from 'rxjs';
 import { PlanetsidePlayerComponent } from './../planetside-player.component';
-import { PlanetsideApi } from './../../planetside-api.service';
+import { PlanetsideApi } from './../../shared/services/planetside-api.service';
 
 @Component({
     templateUrl: './planetside-player-vehicles.template.html',

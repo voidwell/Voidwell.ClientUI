@@ -15,12 +15,7 @@
                     <div class="filters">
                         <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onFilterChange($event)">
                             <mat-button-toggle [checked]="true">All</mat-button-toggle>
-                            <mat-button-toggle value="1">Connery</mat-button-toggle>
-                            <mat-button-toggle value="10">Miller</mat-button-toggle>
-                            <mat-button-toggle value="13">Cobalt</mat-button-toggle>
-                            <mat-button-toggle value="17">Emerald</mat-button-toggle>
-                            <mat-button-toggle value="25">Briggs</mat-button-toggle>
-                            <mat-button-toggle value="40">SolTech</mat-button-toggle>
+                            <mat-button-toggle *ngFor="let world of worldService.Worlds | async" [value]="world.id">{{world.name}}</mat-button-toggle>
                         </mat-button-toggle-group>
                     </div>
                     <button mat-raised-button class="pull-left" *ngIf="pageNumber > 0" (click)="previousAlerts()">

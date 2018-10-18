@@ -5,7 +5,7 @@ import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/m
 import { Observable, Subscription, throwError, of } from 'rxjs';
 import { catchError, finalize, startWith, map, tap } from 'rxjs/operators';
 import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale, ScaleOrdinal } from 'd3-ng2-service';
-import { PlanetsideApi } from './../planetside-api.service';
+import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
 const statOptions = [
     { id: 'kills', display: 'Kills' },

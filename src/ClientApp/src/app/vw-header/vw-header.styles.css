@@ -125,108 +125,8 @@ ul.top-menu {
 .top-search {
     margin: 2px 0;
     overflow: hidden;
-}
-
-    .top-search.focus .top-search_input {
-        background: #edeff0;
-    }
-
-    .top-search.focus .top-search_reset {
-        color: #edeff0;
-    }
-        .top-search.focus .top-search_reset:before {
-            transform: scale(0) rotate(180deg);
-        }
-        .top-search.focus .top-search_reset:after {
-            transform: scale(1) rotate(0);
-        }
-
-.top-search_input {
-    border: 0;
-    height: 50px;
-    padding: 10px 20px 10px 50px;
-    border-radius: 2px;
-    width: 100%;
-    background-color: #2b3942;
-    font-size: 15px;
-    color: #22313a;
-    font-family: inherit;
-    line-height: inherit;
-    margin: 0;
-}
-
-.top-search_input:-moz-placeholder {
-    color: #b4bfc3;
-    opacity: 1;
-}
-.top-search_input:-ms-input-placeholder {
-    color: #b4bfc3;
-}
-.top-search_input::-webkit-input-placeholder {
-    color: #b4bfc3;
-}
-
-.top-search.focus .top-search_input:-moz-placeholder {
-    color: #22313a;
-    opacity: 1;
-}
-
-.top-search.focus .top-search_input:-ms-input-placeholder {
-    color: #22313a;
-}
-
-.top-search.focus .top-search_input::-webkit-input-placeholder {
-    color: #22313a;
-}
-
-.top-search, .top-search_input, .top-search_reset:before, .top-search_reset:after {
     transition: all;
     transition-duration: 0.3s;
-}
-
-.top-search_reset {
-    left: 0;
-    font-size: 20px;
-    color: #b4bfc3;
-    top: 0;
-    position: absolute;
-    cursor: pointer;
-    width: 50px;
-    height: 100%;
-    display: inline-block;
-    font: normal normal normal 24px/1 "Material Design Icons";
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-}
-
-    .top-search_reset:before, .top-search_reset:after {
-        position: absolute;
-        left: 13px;
-        top: 14px;
-    }
-
-    .top-search_reset:before {
-        content: "\F349";
-    }
-
-    .top-search_reset:after {
-        transform: scale(0) rotate(-180deg);
-        color: #22313a;
-        content: "\F04D";
-    }
-
-    .top-search_reset.loading:after {
-        animation: spin 0.5s infinite linear;
-        content: "\F771";
-    }
-
-.top-search_clear {
-    position: absolute;
-    right: 0;
-    line-height: 50px;
-    font-size: 20px;
-    width: 50px;
-    color: #22313a;
 }
 
 .top-menu .top-menu_search {
@@ -263,16 +163,6 @@ ul.top-menu {
     .top-search {
         margin: 20px 20px 0;
         width: calc(100% - 40px);
-    }
-}
-
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
-    }
-
-    to {
-        transform: rotate(360deg);
     }
 }
 
