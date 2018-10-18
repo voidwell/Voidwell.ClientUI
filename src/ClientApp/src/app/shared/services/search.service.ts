@@ -9,11 +9,11 @@ export class SearchService {
     public onClickResult: Observable<any>;
     public isUsable: boolean = false;
     public searchFocused: boolean = false;
+    public control: FormControl;
+    public placeholder: string = '';
+    public isSearching: boolean = false;
+    public results: any[];
 
-    private control: FormControl;
-    private isSearching: boolean = false;
-    private results: any[];
-    private placeholder: string = '';
     private searchStateSub: Subscription;
     private onEntryEmitter: EventEmitter<any> = new EventEmitter();
     private onClickResultEmitter: EventEmitter<any> = new EventEmitter();
