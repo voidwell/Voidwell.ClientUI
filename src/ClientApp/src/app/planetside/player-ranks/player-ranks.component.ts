@@ -2,7 +2,7 @@
 import { DataSource } from '@angular/cdk/collections';
 import { Observable, throwError, of } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { PlanetsideApi } from './../planetside-api.service';
+import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
 @Component({
     templateUrl: './player-ranks.template.html',

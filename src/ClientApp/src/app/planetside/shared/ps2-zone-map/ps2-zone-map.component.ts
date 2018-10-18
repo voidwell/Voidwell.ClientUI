@@ -1,13 +1,14 @@
 ﻿import { Component, Input, Output, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
-import { Subscription, Observable, throwError } from 'rxjs';
+import { Subscription, Observable, throwError, Subscribable } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import {
     Map, tileLayer, latLng, MapOptions, latLngBounds, LatLngBounds, CRS, Layer, polygon, Polygon, PolylineOptions, LatLng,
     icon, IconOptions, marker, MarkerOptions, TooltipOptions, Marker, DivIcon, DivIconOptions, divIcon, Polyline, polyline
 } from 'leaflet';
 import { VertexPoint, VertexLine, ZoneRegion, ZoneFacility, LatticeLink } from './models';
-import { Zones, Factions, FacilityTypes } from './../configs';
-import { ZoneHelper, ZoneMap } from './../../zone-helper.service';
+import { Factions, FacilityTypes } from './../configs';
+import { ZoneHelper, ZoneMap } from './../../shared/services/zone-helper.service';
+import { ZoneService } from '../services/zone-service.service';
 
 @Component({
     selector: 'ps2-zone-map',
@@ -26,6 +27,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
 
     isLoading: boolean = true;
     errorMessage: string;
+    zones: any;
 
     map: Map;
     warpgates: { [facilityId: string]: ZoneFacility } = {};
@@ -38,12 +40,13 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
     leafletOptions: MapOptions;
     fitBounds: LatLngBounds;
 
+    zoneListSub: Subscription
     ownershipSub: Subscription;
     zoneMapSub: Subscription;
     captureSub: Subscription;
     defendSub: Subscription;
 
-    constructor(private zoneHelper: ZoneHelper) {
+    constructor(private zoneHelper: ZoneHelper, private zoneService: ZoneService) {
     }
 
     ngOnInit() {
@@ -70,11 +73,24 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
         }
 
         this.isLoading = true;
-        this.setupMap();
+
+        this.zoneListSub = this.zoneService.Zones.subscribe(zones => {
+            if (!zones) {
+                return;
+            }
+
+            this.zones = zones;
+            this.setupMap();
+        });
     }
 
     setupMap() {
-        let zoneName = Zones[this.zoneId].name;
+        let zoneName = '';
+
+        let zone = this.zones.filter(zone => zone.id.toString() === this.zoneId.toString());
+        if (zone.length > 0) {
+            zoneName = zone[0].name;
+        }
 
         this.leafletOptions = {
             crs: CRS.Simple,
@@ -515,6 +531,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
     };
 
     ngOnDestroy() {
+        if (this.zoneListSub) this.zoneListSub.unsubscribe();
         if (this.zoneMapSub) this.zoneMapSub.unsubscribe();
         if (this.ownershipSub) this.ownershipSub.unsubscribe();
         if (this.captureSub) this.captureSub.unsubscribe();

@@ -1,7 +1,7 @@
 ﻿import { Component } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PlanetsideApi } from './../planetside-api.service';
+import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
 @Component({
     selector: 'planetside-news',

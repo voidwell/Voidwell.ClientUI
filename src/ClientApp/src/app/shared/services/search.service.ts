@@ -8,6 +8,7 @@ export class SearchService {
     public onEntry: Observable<any>;
     public onClickResult: Observable<any>;
     public isUsable: boolean = false;
+    public searchFocused: boolean = false;
 
     private control: FormControl;
     private isSearching: boolean = false;

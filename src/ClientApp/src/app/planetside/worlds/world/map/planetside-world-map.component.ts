@@ -2,9 +2,10 @@
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { PlanetsideWorldComponent } from './../planetside-world.component';
-import { Zones, Factions } from './../../../shared/configs';
+import { Factions } from './../../../shared/configs';
 import { WorldMaps, ZoneMap } from './models';
-import { PlanetsideApi } from './../../../planetside-api.service';
+import { PlanetsideApi } from './../../../shared/services/planetside-api.service';
+import { ZoneService } from '../../../shared/services/zone-service.service';
 
 const SocketConfig = {
     Host: 'push.planetside2.com',
@@ -24,25 +25,44 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
     socket: WebSocket;
 
     zoneLogs: { [zoneId: number]: any[] } = {};
+    zones: any;
 
     onFacilityCapture: EventEmitter<any> = new EventEmitter();
     onFacilityDefend: EventEmitter<any> = new EventEmitter();
     onContinentLock: EventEmitter<any> = new EventEmitter();
     onContinentUnlock: EventEmitter<any> = new EventEmitter();
 
-    playableZones: number[] = Object.keys(Zones).map(function (z) { return parseInt(z); });
+    playableZones: number[];
 
-    constructor(private router: Router, private route: ActivatedRoute, private parent: PlanetsideWorldComponent, private api: PlanetsideApi) {
+    constructor(private router: Router, private route: ActivatedRoute, private parent: PlanetsideWorldComponent, private api: PlanetsideApi, private zoneService: ZoneService) {
         this.worldId = this.parent.worldId;
 
-        for (let zoneId in Zones) {
-            this.zoneLogs[zoneId] = [];
+        this.zoneService.Zones.subscribe(zones => {
+            if (!zones) {
+                return;
+            }
 
-            this.navLinks.push({
-                path: zoneId,
-                display: Zones[zoneId].name
-            });
-        }
+            this.zones = zones;
+
+            this.playableZones = this.zones.map(z => z.id);
+
+            for (let idx in zones) {
+                let zoneId = zones[idx].id;
+
+                if (zoneId === 14 || zoneId > 90) {
+                    continue;
+                }
+
+                this.zoneLogs[zoneId] = [];
+
+                this.navLinks.push({
+                    path: zoneId,
+                    display: zones[idx].name
+                });
+            }
+
+            this.connectWebsocket();
+        });
 
         /*
         this.routeSub = this.route.params.subscribe(params => {
@@ -51,8 +71,19 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
             }
         });
         */
+    }
 
-        this.connectWebsocket();
+    private getZoneName(zoneId: number): string {
+        if (!this.zones) {
+            return;
+        }
+
+        let zone = this.zones.filter(z => z.id === zoneId);
+        if (zone.length > 0) {
+            return zone[0].name;
+        }
+
+        return;
     }
 
     getZoneOwnership(zoneId: number): Observable<any> {
@@ -177,7 +208,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
         let logData = {
             event: 'continent_lock',
             faction: Factions[lockData.factionId],
-            zone: Zones[zoneId],
+            zone: this.getZoneName(zoneId),
             timestamp: timestamp
         };
         this.zoneLogs[zoneId].unshift(logData);
@@ -197,7 +228,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
 
         let logData = {
             event: 'continent_unlock',
-            zone: Zones[zoneId],
+            zone: this.getZoneName(zoneId),
             timestamp: timestamp
         };
         this.zoneLogs[zoneId].unshift(logData);

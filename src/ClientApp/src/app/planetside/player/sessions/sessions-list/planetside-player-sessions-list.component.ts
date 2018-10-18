@@ -3,7 +3,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsidePlayerComponent } from './../../planetside-player.component';
-import { PlanetsideApi } from './../../../planetside-api.service';
+import { PlanetsideApi } from './../../../shared/services/planetside-api.service';
 
 @Component({
     templateUrl: './planetside-player-sessions-list.template.html',

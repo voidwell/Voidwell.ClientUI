@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { ActivatedRoute } from '@angular/router';
 import { PlanetsidePlayerComponent } from './../planetside-player.component';
-import { PlanetsideApi } from './../../planetside-api.service';
+import { PlanetsideApi } from './../../shared/services/planetside-api.service';
 import { Observable, of } from 'rxjs';
 
 @Component({

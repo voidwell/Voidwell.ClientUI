@@ -1,5 +1,6 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
-import { PlanetsideApi } from './../../planetside-api.service';
+import { PlanetsideApi } from './../../shared/services/planetside-api.service';
+import { WorldService } from '../../shared/services/world-service.service';
 
 @Component({
     templateUrl: './planetside-alerts-list.template.html',
@@ -16,7 +17,7 @@ export class PlanetsideAlertsListComponent {
     private firstPageAlerts = [];
     private pageWorldId;
 
-    constructor(private api: PlanetsideApi) {
+    constructor(private api: PlanetsideApi, private worldService: WorldService) {
         this.alerts = [];
         this.firstPageAlerts = [];
 
