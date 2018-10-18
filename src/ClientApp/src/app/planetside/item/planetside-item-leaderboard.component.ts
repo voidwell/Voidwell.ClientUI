@@ -3,7 +3,7 @@ import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable, MatPaginator } from '@angular/material';
 import { Observable, Subscription, of, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { PlanetsideApi } from './../planetside-api.service';
+import { PlanetsideApi } from './../shared/services/planetside-api.service';
 import { PlanetsideItemComponent } from './planetside-item.component';
 
 @Component({

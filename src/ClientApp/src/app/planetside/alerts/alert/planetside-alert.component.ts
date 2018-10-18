@@ -2,7 +2,7 @@
 import { ActivatedRoute } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { PlanetsideApi } from './../../planetside-api.service';
+import { PlanetsideApi } from './../../shared/services/planetside-api.service';
 import { PlanetsideCombatEventComponent } from './../../combat-event/planetside-combat-event.component';
 
 @Component({

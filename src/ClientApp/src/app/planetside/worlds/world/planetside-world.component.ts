@@ -1,8 +1,8 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
-import { PlanetsideApi } from './../../planetside-api.service';
-import { WorldNamePipe } from './../../../shared/pipes/ps2/world-name.pipe';
+import { PlanetsideApi } from './../../shared/services/planetside-api.service';
+import { WorldNamePipe } from './../../shared/pipes';
 
 @Component({
     templateUrl: './planetside-world.template.html'

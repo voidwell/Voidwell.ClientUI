@@ -7,13 +7,12 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MaterialLib } from '../shared/materialLib.module';
 import { RequestCache } from '../shared/services/request-cache.service';
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
-import { WorldNamePipe } from '../shared/pipes/ps2/world-name.pipe';
-import { ZoneNamePipe } from '../shared/pipes/ps2/zone-name.pipe';
 import { SharedComponentsModule } from '../shared/components/shared-components.module';
 import { routing } from './planetside.routes';
-import { PlanetsideApi } from './planetside-api.service';
-import { PerformanceGrades } from './performance-grades.service';
+import { PlanetsideApi } from './shared/services/planetside-api.service';
+import { PerformanceGrades } from './shared/services/performance-grades.service';
 import { PlanetsideWrapperComponent } from './planetsidewrapper.component';
+import { PlanetsideSearchComponent } from './search/planetside-search.component';
 import { PlanetsideCombatEventComponent } from './combat-event/planetside-combat-event.component';
 import { PlanetsideNewsComponent } from './news/planetside-news.component';
 import { NewsCardComponent } from './news/news-card/news-card.component';
@@ -55,16 +54,20 @@ import { PlanetsideWorldMapComponent } from './worlds/world/map/planetside-world
 import { PlanetsideWorldZoneComponent } from './worlds/world/map/zone/planetside-world-zone.component';
 import { GradeComponent } from './shared/vw-grade/vw-grade.component';
 import { FactionBarComponent } from './shared/faction-bar/faction-bar.component';
-import { ZoneHelper } from './zone-helper.service';
+import { ZoneHelper } from './shared/services/zone-helper.service';
 import { Ps2ZoneMapComponent } from './shared/ps2-zone-map/ps2-zone-map.component';
 import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.component';
 import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
+import { WorldService } from './shared/services/world-service.service';
+import { ZoneService } from './shared/services/zone-service.service';
+import { PlanetsidePipesModule } from './shared/pipes';
 
 @NgModule({
     declarations: [
         GradeComponent,
         FactionBarComponent,
         PlanetsideWrapperComponent,
+        PlanetsideSearchComponent,
         PlanetsideCombatEventComponent,
         PlanetsideNewsComponent,
         NewsCardComponent,
@@ -117,7 +120,8 @@ import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
         SharedComponentsModule,
         routing,
         NgPipesModule,
-        LeafletModule
+        LeafletModule,
+        PlanetsidePipesModule
     ],
     providers: [
         RequestCache,
@@ -126,9 +130,9 @@ import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
         DecimalPipe,
         DatePipe,
         D3Service,
-        WorldNamePipe,
-        ZoneNamePipe,
-        ZoneHelper
+        ZoneHelper,
+        WorldService,
+        ZoneService
     ],
     entryComponents: [PlanetsideWrapperComponent]
 })

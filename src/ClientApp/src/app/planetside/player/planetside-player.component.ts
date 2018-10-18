@@ -2,7 +2,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, Subscription, BehaviorSubject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PlanetsideApi } from './../planetside-api.service';
+import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
 @Component({
     selector: 'planetside-player',

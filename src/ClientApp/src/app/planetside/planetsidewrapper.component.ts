@@ -1,7 +1,7 @@
 ﻿import { Component, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { PlanetsideApi } from './planetside-api.service';
+import { PlanetsideApi } from './shared/services/planetside-api.service';
 import { SearchService, SearchState } from './../shared/services/search.service';
 
 @Component({

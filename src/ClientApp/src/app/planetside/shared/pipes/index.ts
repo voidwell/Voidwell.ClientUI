@@ -14,6 +14,7 @@ const PIPES = [
 @NgModule({
     declarations: PIPES,
     imports: [],
+    providers: PIPES,
     exports: PIPES
 })
 export class PlanetsidePipesModule {}

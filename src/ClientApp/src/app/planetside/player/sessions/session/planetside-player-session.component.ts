@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsidePlayerComponent } from './../../planetside-player.component';
-import { PlanetsideApi } from './../../../planetside-api.service';
+import { PlanetsideApi } from './../../../shared/services/planetside-api.service';
 
 @Component({
     templateUrl: './planetside-player-session.template.html',
