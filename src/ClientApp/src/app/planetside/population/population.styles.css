@@ -1,0 +1,92 @@
+﻿#line-graph {
+    height: 500px;
+}
+
+    #line-graph ::ng-deep .domain,
+    #line-graph ::ng-deep line {
+        stroke: rgba(138, 155, 161, 0.3);
+    }
+
+    #tooltip,
+    #line-graph ::ng-deep line,
+    #line-graph ::ng-deep .line,
+    #line-graph ::ng-deep .tick {
+        pointer-events: none;
+    }
+
+        #line-graph ::ng-deep .tick text {
+            fill: #8a9ba1;
+        }
+
+#tooltip {
+    display: none;
+}
+
+.graph-controls {
+    line-height: 45px;
+    overflow: hidden;
+}
+
+.zoom-controls,
+.date-controls {
+    display: inline-block;
+}
+
+.zoom-controls {
+    font-size: 11px;
+}
+
+    .zoom-controls ul {
+        display: inline-block;
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        margin-right: 5px;
+        padding: 3px 5px;
+    }
+
+    .zoom-controls li {
+        color: rgba(177, 188, 192, 0.47);
+        display: inline-block;
+        background: #22313a;
+        margin-right: 7px;
+        padding: 3px 10px;
+        line-height: initial;
+        cursor: pointer;
+    }
+
+.date-controls > *:not(:last-child) {
+    margin-right: 5px;
+}
+
+.date-controls .input-date {
+    max-width: 100px;
+}
+
+    .date-controls .input-date ::ng-deep .mat-datepicker-toggle-default-icon {
+        fill: rgba(177, 188, 192, 0.87);
+    }
+
+.graph-container {
+    position: relative;
+}
+
+#tooltip {
+    position: absolute;
+    padding: 2px;
+    background: rgba(34, 49, 58, 0.8);
+    border: 1px solid #1e2a31;
+}
+
+.weapon-chips-list {
+    width: 100%;
+}
+
+.legend > *:not(:first-child) {
+    margin-left: 10px;
+}
+
+.legend .legend-color {
+    width: 15px;
+    line-height: 12px;
+}

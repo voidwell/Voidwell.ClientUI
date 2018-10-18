@@ -1,0 +1,56 @@
+﻿<div>
+    <h1>Population (Daily unique users)</h1>
+    <mat-card>
+        <mat-card-content>
+            <div *ngIf="errorMessage" class="error-text">{{errorMessage}}</div>
+            <div class="filters">
+                <mat-button-toggle-group multiple #group="matButtonToggleGroup" [value]="selectedWorlds" (change)="onWorldSelected($event)">
+                    <mat-button-toggle *ngFor="let world of worlds" [value]="world">{{world.name}}</mat-button-toggle>
+                </mat-button-toggle-group>
+            </div>
+            <div>
+                <button mat-raised-button (click)="onSubmit()" [disabled]="isLoading || selectedWorlds.length === 0">Submit</button>
+            </div>
+            <div>
+                <vw-loader [loading]="isLoading"></vw-loader>
+                <div class="graph-controls" [hidden]="isLoading || stats.length === 0">
+                    <div class="zoom-controls">
+                        <span>Zoom</span>
+                        <ul>
+                            <li (click)="onZoom('1m')">1m</li>
+                            <li (click)="onZoom('3m')">3m</li>
+                            <li (click)="onZoom('6m')">6m</li>
+                            <li (click)="onZoom('ytd')">YTD</li>
+                            <li (click)="onZoom('1y')">1y</li>
+                            <li (click)="onZoom('all')">All</li>
+                        </ul>
+                    </div>
+                    <div class="date-controls pull-right">
+                        <span>From</span>
+                        <mat-form-field class="input-date">
+                            <input matInput [matDatepicker]="picker1" [formControl]="selectedStartDate" (dateChange)="onDateChange($event)">
+                            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </mat-form-field>
+                        <span>To</span>
+                        <mat-form-field class="input-date">
+                            <input matInput [matDatepicker]="picker2" [formControl]="selectedEndDate" (dateChange)="onDateChange($event)">
+                            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="graph-container">
+                    <div #linegraph id="line-graph"></div>
+                    <div id="tooltip"></div>
+                    <div class="legend">
+                        <span *ngFor="let world of graphWorlds; let i = index" [attr.data-index]="i">
+                            <mat-icon class="legend-color" fontSet="mdi" fontIcon="mdi-square" [style.color]="getLegendColor(i)"></mat-icon>
+                            <span>{{world.id}} - {{world.name}}</span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>

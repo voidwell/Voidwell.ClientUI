@@ -74,6 +74,11 @@ export class PlanetsideApi extends ApiBase {
             .pipe(map<Response, any>(resp => resp.json()));
     }
 
+    getWorldPopulationHistory(worldIds: number[]) {
+        return this.Get(this.ps2Url + 'world/population/?q=' + worldIds.join(','))
+            .pipe(map<Response, any>(resp => resp.json()));
+    }
+
     getAllZones() {
         return this.Get(this.ps2Url + 'zone', true)
             .pipe(map<Response, any>(resp => resp.json()));

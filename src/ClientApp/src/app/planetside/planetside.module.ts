@@ -57,6 +57,7 @@ import { FactionBarComponent } from './shared/faction-bar/faction-bar.component'
 import { ZoneHelper } from './shared/services/zone-helper.service';
 import { Ps2ZoneMapComponent } from './shared/ps2-zone-map/ps2-zone-map.component';
 import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.component';
+import { PopulationComponent } from './population/population.component';
 import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
 import { WorldService } from './shared/services/world-service.service';
 import { ZoneService } from './shared/services/zone-service.service';
@@ -109,6 +110,7 @@ import { PlanetsidePipesModule } from './shared/pipes';
         PlanetsideWorldZoneComponent,
         Ps2ZoneMapComponent,
         WeaponTrackerComponent,
+        PopulationComponent,
         PlayerRanksComponent
     ],
     imports: [
