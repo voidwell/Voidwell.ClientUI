@@ -42,7 +42,7 @@
         <div formArrayName="teams">
             <div *ngFor="let team of teamForm.controls; index as i" [formGroupName]="i">
                 <mat-checkbox formControlName="enabled"></mat-checkbox>
-                <mat-icon fontSet="mdi" fontIcon="mdi-account" [ngClass]="team.value.teamId | factionColor"></mat-icon>
+                <mat-icon fontSet="mdi" fontIcon="mdi-account" [ngClass]="getFactionColor(team.value.teamId)"></mat-icon>
                 <mat-form-field>
                     <input matInput formControlName="name" placeholder="Team name">
                 </mat-form-field>

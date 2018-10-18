@@ -179,6 +179,15 @@ export class EventEditorDialog implements OnInit, OnChanges {
         this.form.setControl('teams', teamFormArray);
     }
 
+    getFactionColor(id) {
+        let factions = {
+            1: 'faction-vs-text',
+            2: 'faction-nc-text',
+            3: 'faction-tr-text'
+        };
+        return factions[id];
+    }
+
     onSubmit() {
         if (this.form.invalid) {
             return;

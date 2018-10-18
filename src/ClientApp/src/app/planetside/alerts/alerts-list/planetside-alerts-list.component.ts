@@ -17,7 +17,7 @@ export class PlanetsideAlertsListComponent {
     private firstPageAlerts = [];
     private pageWorldId;
 
-    constructor(private api: PlanetsideApi, private worldService: WorldService) {
+    constructor(private api: PlanetsideApi, public worldService: WorldService) {
         this.alerts = [];
         this.firstPageAlerts = [];
 
