@@ -1,5 +1,5 @@
 ﻿import { Injectable, Injector } from '@angular/core';
-import { Http, Headers } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subject, Observable, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
@@ -16,9 +16,9 @@ export class VoidwellAuthService {
     rolesState: Observable<any>;
 
     private api: any;
-    private authHeaders: Headers;
+    private authHeaders: HttpHeaders;
 
-    constructor(private http: Http,
+    constructor(private http: HttpClient,
         private router: Router,
         private route: ActivatedRoute,
         private ngRedux: NgRedux<IAppState>,
@@ -162,8 +162,8 @@ export class VoidwellAuthService {
     };
 
     private setAuthHeaders(user: any) {
-        this.authHeaders = new Headers();
-        this.authHeaders.append('Authorization', user.token_type + ' ' + user.access_token);
-        this.authHeaders.append('Content-Type', 'application/json');
+        this.authHeaders = new HttpHeaders()
+            .set('Authorization', user.token_type + ' ' + user.access_token)
+            .set('Content-Type', 'application/json');
     }
 }

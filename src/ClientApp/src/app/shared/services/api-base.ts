@@ -1,6 +1,6 @@
 ﻿import { Observable, throwError, of } from 'rxjs';
 import { timeout, catchError, tap } from 'rxjs/operators';
-import { Http, RequestOptions, Response } from '@angular/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { VoidwellAuthService } from './../services/voidwell-auth.service';
 import { RequestCache } from './../services/request-cache.service';
@@ -12,43 +12,43 @@ export class ApiBase {
     private _requestTimeoutMessage = 'Request timed out';
 
     constructor(public authService: VoidwellAuthService,
-        public http: Http, public cache: RequestCache) {
-        this.options = new RequestOptions({ headers: this.authService.getAuthHeaders() });
+        public http: HttpClient, public cache: RequestCache) {
+        this.options = { headers: this.authService.getAuthHeaders() };
     }
 
-    protected Get(url: string, isCached: boolean = false): Observable<Response> {
+    protected Get(url: string, isCached: boolean = false): Observable<any> {
         return this.requestWrapper(url, this.http.get(url), isCached);
     }
 
-    protected Post(url: string, data: any): Observable<Response> {
+    protected Post(url: string, data: any): Observable<any> {
         return this.requestWrapper(url, this.http.post(url, data));
     }
 
-    protected Put(url: string, data: any): Observable<Response> {
+    protected Put(url: string, data: any): Observable<any> {
         return this.requestWrapper(url, this.http.put(url, data));
     }
 
-    protected Delete(url: string): Observable<Response> {
+    protected Delete(url: string): Observable<any> {
         return this.requestWrapper(url, this.http.delete(url));
     }
 
-    protected AuthGet(url: string): Observable<Response> {
+    protected AuthGet(url: string): Observable<any> {
         return this.requestWrapper(url, this.http.get(url, this.options));
     }
 
-    protected AuthPost(url: string, data: any): Observable<Response> {
+    protected AuthPost(url: string, data: any): Observable<any> {
         return this.requestWrapper(url, this.http.post(url, data, this.options));
     }
 
-    protected AuthPut(url: string, data: any): Observable<Response> {
+    protected AuthPut(url: string, data: any): Observable<any> {
         return this.requestWrapper(url, this.http.put(url, data, this.options));
     }
 
-    protected AuthDelete(url: string): Observable<Response> {
+    protected AuthDelete(url: string): Observable<any> {
         return this.requestWrapper(url, this.http.delete(url, this.options));
     }
 
-    private requestWrapper(url: string, request: Observable<Response>, isCached: boolean = false): Observable<Response> {
+    private requestWrapper(url: string, request: Observable<any>, isCached: boolean = false): Observable<any> {
         if (isCached) {
             const cachedResponse = this.cache.get(url);
             if (cachedResponse) {
@@ -77,11 +77,10 @@ export class ApiBase {
         return throwError(error);
     }
 
-    protected extractData(res: Response, key?: string) {
-        let body = res.json();
+    protected extractData(body: any, key?: string) {
         if (key) {
             return body[key];
         }
-        return body.data || {};
+        return body || {};
     }
 }

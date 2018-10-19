@@ -1,4 +1,12 @@
-FROM alexsuch/angular-cli:6.0.5 AS build-env
+FROM alexsuch/angular-cli:base AS build-env
+
+RUN apk update \
+  && npm install -g @angular/cli@7.0.1 \
+  && rm -rf /tmp/* /var/cache/apk/* *.tar.gz ~/.npm \
+  && npm cache clear --force \
+  && yarn cache clean \
+  && sed -i -e "s/bin\/ash/bin\/sh/" /etc/passwd
+
 WORKDIR /app
 
 COPY ./src/ClientApp/package.json /app/package.json

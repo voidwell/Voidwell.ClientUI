@@ -9,7 +9,7 @@
     </div>
     <ul class="top-menu">
         <li class="top-menu_search" *ngIf="searchService.isUsable">
-            <button mat-icon-button (click)="searchService.searchFocused=true">
+            <button mat-icon-button (click)="searchService.focusSearch()">
                 <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
             </button>
         </li>
