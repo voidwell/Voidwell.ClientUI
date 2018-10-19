@@ -57,6 +57,10 @@ ul {
     background-color: transparent;
 }
 
+.mat-drawer-side {
+    border: none;
+}
+
 
 ul > li > a {
     padding: 16px 25px 16px 0;

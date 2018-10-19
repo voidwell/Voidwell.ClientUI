@@ -387,6 +387,7 @@ mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
 [mat-button].mat-button,
 [mat-raised-button].mat-raised-button,
 .mat-button-toggle,
+button.mat-button-toggle-button,
 .mat-button-toggle-group {
     box-shadow: none !important;
     color: #b4bfc3;
@@ -423,6 +424,7 @@ mat-card.mat-card {
     background: #2b3942;
     color: inherit;
     box-shadow: none !important;
+    border-radius: 2px;
 }
 
 mat-card .mat-card-title h1,
@@ -456,7 +458,7 @@ mat-card .mat-card-subtitle {
     color: rgba(255,255,255,0.8);
 }
 
-.mat-dialog-container label:not(.mat-checkbox-layout) {
+.mat-dialog-container label:not(.mat-checkbox-layout):not(.mat-slide-toggle-label) {
     display: inline-block;
     width: 150px;
     opacity: 0.5;
