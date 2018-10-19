@@ -6,8 +6,12 @@
         <mat-card>
             <mat-card-header>
                 <mat-card-title>
-                    <mat-slide-toggle class="pull-right" [checked]="service.isEnabled" [disabled]="service.isLoading" (change)="onServiceUpdate(service, $event)"></mat-slide-toggle>
+                    <mat-slide-toggle class="pull-right"
+                                      [checked]="service.isEnabled"
+                                      [disabled]="service.isLoading"
+                                      (change)="onServiceUpdate(service, $event)">
                     {{service.name}}
+                    </mat-slide-toggle>
                 </mat-card-title>
             </mat-card-header>
             <mat-card-content class="layout-padding" *ngIf="service.details || service.errorMessage">

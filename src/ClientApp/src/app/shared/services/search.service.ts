@@ -5,6 +5,7 @@ import { Subscription, Observable } from 'rxjs';
 @Injectable()
 export class SearchService {
     public searchState: EventEmitter<SearchState> = new EventEmitter();
+    public onSearchOpen: EventEmitter<boolean> = new EventEmitter();
     public onEntry: Observable<any>;
     public onClickResult: Observable<any>;
     public isUsable: boolean = false;
@@ -59,6 +60,11 @@ export class SearchService {
             this.control.reset();
             this.results = [];
         }
+    }
+
+    focusSearch() {
+        this.searchFocused = true;
+        this.onSearchOpen.emit(true);
     }
 }
 

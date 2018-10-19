@@ -1,5 +1,4 @@
 ﻿import { Injectable } from '@angular/core';
-import { Response } from '@angular/http';
 
 const maxAge = 1000 * 1800; // 30 Minutes
 @Injectable()
@@ -7,7 +6,7 @@ export class RequestCache {
 
     cache = new Map();
 
-    get(url: string): Response | undefined {
+    get(url: string): any | undefined {
         const cached = this.cache.get(url);
 
         if (!cached) {
@@ -19,7 +18,7 @@ export class RequestCache {
         return cached.response;
     }
 
-    put(url: string, response: Response): void {
+    put(url: string, response: any): void {
         const entry = { url, response, lastRead: Date.now() };
         this.cache.set(url, entry);
 

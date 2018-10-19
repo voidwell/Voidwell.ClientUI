@@ -12,7 +12,7 @@ export class VWNavigationComponent implements OnDestroy {
     public sidenavState: boolean;
     public mobileQuery: MediaQueryList;
 
-    private mobileQueryListener: (mql: MediaQueryList) => void;
+    private mobileQueryListener: any; //MediaQueryListListener
 
     constructor(public navMenuService: NavMenuService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public zone: NgZone) {
         this.navMenuService.onToggle.subscribe(state => this.sidenavState = state);
