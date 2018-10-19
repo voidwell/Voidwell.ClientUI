@@ -49,8 +49,6 @@
                     "node_modules/leaflet/dist/leaflet.css"
                 ],
                 "scripts": [
-                    "node_modules/jquery/dist/jquery.min.js",
-                    "node_modules/zone.js/dist/zone.js",
                     "node_modules/oidc-client/lib/oidc-client.js"
                 ]
             },
