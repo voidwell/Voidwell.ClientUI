@@ -285,7 +285,7 @@ export class PopulationComponent implements OnInit {
         }
 
         function drawTooltip() {
-            let tipElement: HTMLElement = zoomRect.node() as HTMLElement;
+            let tipElement: SVGRectElement = zoomRect.node() as SVGRectElement;
             let mousePos = d3.mouse(tipElement);
             let dayMs = 1000 * 60 * 60 * 24;
 
