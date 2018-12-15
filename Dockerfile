@@ -1,7 +1,7 @@
 FROM alexsuch/angular-cli:base AS build-env
 
 RUN apk update \
-  && npm install -g @angular/cli@7.0.1 \
+  && npm install -g @angular/cli@7.1.3 \
   && rm -rf /tmp/* /var/cache/apk/* *.tar.gz ~/.npm \
   && npm cache clear --force \
   && yarn cache clean \

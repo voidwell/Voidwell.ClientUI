@@ -11,87 +11,35 @@
                         <mat-icon fontSet="mdi" fontIcon="mdi-arrow-left"></mat-icon>
                     </button>
                 </div>
-                <div class="navigation-toggles">
-                    
-                </div>
-                <ul class="nav-list nav-margin">
-                    <li>
-                        <a routerLink="/"
-                           routerLinkActive #rla1="routerLinkActive"
-                           [ngClass]="{ 'active': rla1.isActive }"
-                           [routerLinkActiveOptions]="{ exact: true }">
-                            <mat-icon fontSet="mdi" fontIcon="mdi-home"></mat-icon>
-                            Home
+                <div class="navigation-toggles"></div>
+                <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="nav-list nav-margin">
+                    <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
+                        <a routerLink="{{node.url}}"
+                           routerLinkActive #rla="routerLinkActive"
+                           [class.active]="rla.isActive"
+                           [routerLinkActiveOptions]="{ exact: node.exact }">
+                            <mat-icon *ngIf="node.icon" fontSet="mdi" fontIcon="{{node.icon}}"></mat-icon>
+                            {{node.name}}
                         </a>
-                    </li>
-                    <li>
-                        <a routerLink="/blog"
-                           routerLinkActive #rla2="routerLinkActive"
-                           [ngClass]="{ 'active': rla2.isActive }">
-                            <mat-icon fontSet="mdi" fontIcon="mdi-message-text"></mat-icon>
-                            Blog
+                    </mat-tree-node>
+                    <mat-nested-tree-node *matTreeNodeDef="let node; when: hasNestedChild">
+                        <a routerLink="{{node.url}}"
+                           routerLinkActive #rla="routerLinkActive"
+                           [class.active]="rla.isActive"
+                           [routerLinkActiveOptions]="{ exact: node.exact }"
+                           (click)="setActiveNode(node)">
+                            <mat-icon *ngIf="node.icon" fontSet="mdi" fontIcon="{{node.icon}}"></mat-icon>
+                            {{node.name}}
                         </a>
-                    </li>
-                    <li>
-                        <a routerLink="/ps2"
-                           routerLinkActive #rla3="routerLinkActive"
-                           [ngClass]="{ 'active': rla3.isActive }">
-                            <mat-icon fontSet="mdi" fontIcon="mdi-gamepad-variant"></mat-icon>
-                            Planetside 2
-                        </a>
-                        <ul>
-                            <li>
-                                <a routerLink="/ps2/news"
-                                   routerLinkActive #rla3_1="routerLinkActive"
-                                   [ngClass]="{ 'active': rla3_1.isActive }">
-                                    News
-                                </a>
-                            </li>
-                            <li>
-                                <a routerLink="/ps2/alerts"
-                                   routerLinkActive #rla3_2="routerLinkActive"
-                                   [ngClass]="{ 'active': rla3_2.isActive }">
-                                    Alerts
-                                </a>
-                            </li>
-                            <li>
-                                <a routerLink="/ps2/events"
-                                   routerLinkActive #rla3_3="routerLinkActive"
-                                   [ngClass]="{ 'active': rla3_3.isActive }">
-                                    Events
-                                </a>
-                            </li>
-                            <li>
-                                <a routerLink="/ps2/worlds"
-                                   routerLinkActive #rla3_4="routerLinkActive"
-                                   [ngClass]="{ 'active': rla3_4.isActive }">
-                                    Server Status
-                                </a>
-                            </li>
-                            <li>
-                                <a routerLink="/ps2/oracle"
-                                   routerLinkActive #rla3_5="routerLinkActive"
-                                   [ngClass]="{ 'active': rla3_5.isActive }">
-                                    Weapon Tracker
-                                </a>
-                            </li>
-                            <li>
-                                <a routerLink="/ps2/ranks"
-                                   routerLinkActive #rla3_6="routerLinkActive"
-                                   [ngClass]="{ 'active': rla3_6.isActive }">
-                                    Player Ranks
-                                </a>
-                            </li>
-                            <li>
-                                <a routerLink="/ps2/population"
-                                   routerLinkActive #rla3_7="routerLinkActive"
-                                   [ngClass]="{ 'active': rla3_7.isActive }">
-                                    Population
-                                </a>
-                            </li>
+                        <button mat-icon-button matTreeNodeToggle class="toggle-button">
+                            <mat-icon *ngIf="!nestedTreeControl.isExpanded(node)" fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
+                            <mat-icon *ngIf="nestedTreeControl.isExpanded(node)" fontSet="mdi" fontIcon="mdi-minus"></mat-icon>
+                        </button>
+                        <ul [class.nav-node-invisible]="!nestedTreeControl.isExpanded(node)">
+                            <ng-container matTreeNodeOutlet></ng-container>
                         </ul>
-                    </li>
-                </ul>
+                    </mat-nested-tree-node>
+                </mat-tree>
             </mat-nav-list>
         </mat-sidenav>
         <mat-sidenav-content>

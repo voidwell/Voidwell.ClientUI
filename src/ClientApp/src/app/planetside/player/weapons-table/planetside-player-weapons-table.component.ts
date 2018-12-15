@@ -22,7 +22,7 @@ export class PlanetsidePlayerWeaponsTableComponent implements OnInit {
             start: 'desc'
         });
 
-        let weapons = this.weapons.filter(item => item.stats.kills > 0 || item.stats.playTime > 0);
+        let weapons = this.weapons.filter(item => item.stats.kills > 0);
         this.dataSource = new TableDataSource(weapons, this.sort);
     }
 
