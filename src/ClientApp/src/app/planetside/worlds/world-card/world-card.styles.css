@@ -39,9 +39,14 @@
 
 .zone-state .zone-state-icon,
 .zone-state .zone-name,
-.zone-state .zone-population {
+.zone-state .zone-population,
+.zone-state .zone-state-description {
     display: inline-block;
     line-height: 24px;
+}
+
+.zone-state .zone-population {
+    width: 200px;
 }
 
 .zone-state .zone-state-icon {
