@@ -26,8 +26,7 @@
                         <a routerLink="{{node.url}}"
                            routerLinkActive #rla="routerLinkActive"
                            [class.active]="rla.isActive"
-                           [routerLinkActiveOptions]="{ exact: node.exact }"
-                           (click)="setActiveNode(node)">
+                           [routerLinkActiveOptions]="{ exact: node.exact }">
                             <mat-icon *ngIf="node.icon" fontSet="mdi" fontIcon="{{node.icon}}"></mat-icon>
                             {{node.name}}
                         </a>
