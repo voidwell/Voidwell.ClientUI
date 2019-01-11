@@ -1,9 +1,10 @@
 ﻿import { Component, ChangeDetectorRef, OnDestroy, NgZone } from '@angular/core';
+import { RouterLinkActive, Router } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatTreeNestedDataSource } from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { NavMenuService } from './../shared/services/nav-menu.service';
-import { BehaviorSubject } from 'rxjs';
 
 export class NavNode {
     name: string;
@@ -102,13 +103,14 @@ const NAV_DATA: NavNode[] = [
 export class VWNavigationComponent implements OnDestroy {
     public sidenavState: boolean;
     public mobileQuery: MediaQueryList;
+    private routerSub: Subscription;
 
     nestedTreeControl: NestedTreeControl<NavNode>;
     public nestedDataSource: MatTreeNestedDataSource<NavNode>;
 
     private mobileQueryListener: any; //MediaQueryListListener
 
-    constructor(public navMenuService: NavMenuService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public zone: NgZone) {
+    constructor(public navMenuService: NavMenuService, changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public zone: NgZone, public router: Router) {
         let database = new NavDatabase();
 
         this.navMenuService.onToggle.subscribe(state => this.sidenavState = state);
@@ -137,14 +139,17 @@ export class VWNavigationComponent implements OnDestroy {
         } else {
             this.navMenuService.open();
         }
+
+        this.routerSub = this.router.events.subscribe((result) => {
+            let activeParentNode = NAV_DATA.find(node => (node.exact && this.router.url === node.url) || (!node.exact && this.router.url.startsWith(node.url)));
+            if (activeParentNode && activeParentNode.children.length > 0) {
+                this.nestedTreeControl.expandDescendants(activeParentNode);
+            }
+        });
     }
 
     public closed() {
         this.navMenuService.close();
-    }
-
-    public setActiveNode(node: NavNode) {
-        this.nestedTreeControl.expandDescendants(node);
     }
 
     public hasNestedChild = (_: number, nodeData: NavNode) => nodeData.children.length > 0;
@@ -153,6 +158,7 @@ export class VWNavigationComponent implements OnDestroy {
 
     ngOnDestroy(): void {
         this.mobileQuery.removeListener(this.mobileQueryListener);
+        this.routerSub.unsubscribe();
     }
 }
 
