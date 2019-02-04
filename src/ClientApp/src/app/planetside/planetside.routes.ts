@@ -31,6 +31,7 @@ import { WeaponTrackerComponent } from './weapon-tracker/weapon-tracker.componen
 import { PopulationComponent } from './population/population.component';
 import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
 import { PlanetsideSearchComponent } from './search/planetside-search.component';
+import { BulkCharacterStatsComponent } from './bulk-character-stats/bulk-character-stats.component';
 
 const planetsideRoutes: Routes = [
     {
@@ -113,7 +114,8 @@ const planetsideRoutes: Routes = [
             },
             { path: 'oracle', component: WeaponTrackerComponent },
             { path: 'ranks', component: PlayerRanksComponent },
-            { path: 'population', component: PopulationComponent }
+            { path: 'population', component: PopulationComponent },
+            { path: 'bulk', component: BulkCharacterStatsComponent }
         ]
     }
 ];
