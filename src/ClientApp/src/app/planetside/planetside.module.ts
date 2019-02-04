@@ -62,6 +62,7 @@ import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
 import { WorldService } from './shared/services/world-service.service';
 import { ZoneService } from './shared/services/zone-service.service';
 import { PlanetsidePipesModule } from './shared/pipes';
+import { BulkCharacterStatsComponent } from './bulk-character-stats/bulk-character-stats.component';
 
 @NgModule({
     declarations: [
@@ -111,7 +112,8 @@ import { PlanetsidePipesModule } from './shared/pipes';
         Ps2ZoneMapComponent,
         WeaponTrackerComponent,
         PopulationComponent,
-        PlayerRanksComponent
+        PlayerRanksComponent,
+        BulkCharacterStatsComponent
     ],
     imports: [
         FormsModule,

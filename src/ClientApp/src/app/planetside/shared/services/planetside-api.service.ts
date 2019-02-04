@@ -121,4 +121,8 @@ export class PlanetsideApi extends ApiBase {
     getPlayerRanks() {
         return this.Get(this.ps2Url + 'ranks');
     }
+
+    getMultiplePlayerStatsByName(characterNames: string[]) {
+        return this.Post(this.ps2Url + 'character/byname', characterNames);
+    }
 }

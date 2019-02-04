@@ -83,6 +83,13 @@ const NAV_DATA: NavNode[] = [
                 icon: null,
                 exact: false,
                 children: []
+            },
+            {
+                name: 'Bulk Stats',
+                url: '/ps2/bulk',
+                icon: null,
+                exact: false,
+                children: []
             }
         ]
     },
