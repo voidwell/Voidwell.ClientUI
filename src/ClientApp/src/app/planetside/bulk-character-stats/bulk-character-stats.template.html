@@ -1,0 +1,114 @@
+﻿<div>
+    <h1>Bulk Player Stats</h1>
+    <mat-card>
+        <mat-card-content>
+            <mat-form-field class="name-chip-list">
+                <mat-chip-list #chipList>
+                    <mat-chip *ngFor="let characterName of characterNames" [selectable]="false"
+                              [removable]="true" (removed)="remove(characterName)">
+                        {{characterName}}
+                        <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" matChipRemove></mat-icon>
+                    </mat-chip>
+                    <input placeholder="Player names..."
+                           [matChipInputFor]="chipList"
+                           [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                           [matChipInputAddOnBlur]="true"
+                           (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+            </mat-form-field>
+            <button mat-raised-button (click)="onSubmit()" [disabled]="isLoading || characterNames.length === 0">Submit</button>
+            <br />
+            <br />
+            <vw-loader [loading]="isLoading"></vw-loader>
+            <div *ngIf="errorMessage" class="error-text">{{errorMessage}}</div>
+            <div [hidden]="isLoading || stats.length === 0">
+                <button mat-raised-button (click)="onExport()">Export</button>
+                <div>
+                    <mat-table #table [dataSource]="dataSource" class="striped stats-table" matSort>
+                        <ng-container matColumnDef="name">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+                            <mat-cell *matCellDef="let item">
+                                <a routerLink="/ps2/player/{{item.id}}" [ngClass]="item.factionId | factionColor">
+                                    <div class="name">{{item.name}}</div>
+                                </a>
+                            </mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="world">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Server</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.world}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="faction">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Faction</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.factionName}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="battlerank">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Battle Rank</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.battleRank | number}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="playTime">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Hours Played</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.totalPlayTimeMinutes / 60 | number:'.1-1'}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="kills">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.kills | number}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="kdr">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>KDR</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.killDeathRatio | number:'.2-2'}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="hsr">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>HSR</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.headshotRatio * 100 | number:'.1-1'}}%</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="kph">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>KpH</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.killsPerHour | number:'.1-1'}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="siege">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Siege</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.siegeLevel | number:'.0-0'}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="ivi">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>IVI</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.iviScore | number:'.0-0'}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mostPlayedWeaponName">
+                            <mat-header-cell *matHeaderCellDef>Best Weapon</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.mostPlayedWeaponName}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mostPlayedWeaponKills">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>Best Weapon Kills</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.mostPlayedWeaponKills | number}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="mostPlayedClassName">
+                            <mat-header-cell *matHeaderCellDef>Best Class</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.mostPlayedClassName}}</mat-cell>
+                        </ng-container>
+
+                        <ng-container matColumnDef="playTimeInMax">
+                            <mat-header-cell *matHeaderCellDef mat-sort-header>MAX Play Time</mat-header-cell>
+                            <mat-cell *matCellDef="let item">{{item.playTimeInMax | number}}</mat-cell>
+                        </ng-container>
+
+                        <mat-header-row *matHeaderRowDef="['name','world','faction','battlerank','playTime','kills','kdr','hsr','kph','siege','ivi','mostPlayedWeaponName','mostPlayedWeaponKills','mostPlayedClassName','playTimeInMax']"></mat-header-row>
+                        <mat-row *matRowDef="let row; columns: ['name','world','faction','battlerank','playTime','kills','kdr','hsr','kph','siege','ivi','mostPlayedWeaponName','mostPlayedWeaponKills','mostPlayedClassName','playTimeInMax'];"></mat-row>
+                    </mat-table>
+                </div>
+            </div>
+        </mat-card-content>
+    </mat-card>
+</div>
