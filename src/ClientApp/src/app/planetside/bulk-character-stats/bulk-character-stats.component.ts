@@ -63,6 +63,7 @@ export class BulkCharacterStatsComponent implements OnInit {
 
     if (index >= 0) {
       this.characterNames.splice(index, 1);
+      this.setQueryParam('names', this.characterNames);
     }
   }
 
