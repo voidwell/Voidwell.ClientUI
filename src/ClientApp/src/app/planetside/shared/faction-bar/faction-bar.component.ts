@@ -7,9 +7,9 @@
 })
 
 export class FactionBarComponent {
-    @Input('vs') vsScore: number;
-    @Input('nc') ncScore: number;
-    @Input('tr') trScore: number;
+    @Input('vs') vsScore: number = 0;
+    @Input('nc') ncScore: number = 0;
+    @Input('tr') trScore: number = 0;
     @Input() neutural: boolean = true;
 
     getWidth(value: number): number {

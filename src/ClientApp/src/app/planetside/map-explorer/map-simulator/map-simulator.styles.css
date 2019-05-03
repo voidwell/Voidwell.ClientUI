@@ -1,0 +1,41 @@
+﻿:host {
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.map-container {
+    height: 600px;
+}
+
+.score-box {
+    position: absolute;
+    top: 5px;
+    left: 0;
+    right: 0;
+    z-index: 999;
+}
+
+.bars-container {
+    width: 350px;
+    margin: 0 auto;
+}
+
+vw-faction-bar {
+    height: 20px;
+}
+
+.bars-container ::ng-deep .faction-bar {
+    line-height: 20px;
+    height: 20px;
+    font-size: 15px;
+}
+
+.overlay-toggle {
+    position: absolute;
+    top: 80px;
+    left: 10px;
+    min-width: 0px;
+    padding: 5px;
+    z-index: 999;
+}
