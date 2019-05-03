@@ -9,6 +9,7 @@ import { VertexPoint, VertexLine, ZoneRegion, ZoneFacility, LatticeLink } from '
 import { Factions, FacilityTypes } from './../configs';
 import { ZoneHelper, ZoneMap } from './../../shared/services/zone-helper.service';
 import { ZoneService } from '../services/zone-service.service';
+import { MapOperator } from 'rxjs/internal/operators/map';
 
 @Component({
     selector: 'ps2-zone-map',
@@ -22,15 +23,19 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
     @Input() defendStream: Observable<any>;
     @Input() ownershipStream: Observable<any>;
     @Input() focusFacility: Observable<any>;
+    @Input() hideOverlay: boolean = false;
 
     @Output() score = new EventEmitter<any>();
+    @Output() onHexSelected = new EventEmitter<ZoneRegion>();
 
+    activeZoneId: number;
     isLoading: boolean = true;
     errorMessage: string;
     zones: any;
+    popupsEnabled: boolean = false;
 
     map: Map;
-    warpgates: { [facilityId: string]: ZoneFacility } = {};
+    warpgates: ZoneFacility[] = [];
     facilities: { [facilityId: string]: ZoneFacility } = {};
     regions: { [regionId: string]: ZoneRegion } = {};
     lattice: LatticeLink[] = [];
@@ -54,14 +59,22 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             return;
         }
 
-        this.focusFacility.subscribe((facilityId: string) => {
-            this.map.setView(this.facilities[facilityId].getLatLng(), 5);
-        });
+        this.activeZoneId = this.zoneId;
+
+        if (this.focusFacility) {
+            this.focusFacility.subscribe((facilityId: string) => {
+                this.map.setView(this.facilities[facilityId].getLatLng(), 5);
+            });
+        }
     }
 
     ngOnChanges() {
+        if (this.zoneId === this.activeZoneId) {
+            return;
+        }
+
         this.map = null;
-        this.warpgates = {};
+        this.warpgates = [];
         this.facilities = {};
         this.regions = {};
         this.lattice = [];
@@ -120,34 +133,43 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                 this.zoneMap = zoneMap;
             });
 
-        this.captureSub = this.captureStream.subscribe(event => {
-            if (event.zoneId !== this.zoneId) {
-                return;
-            }
+        if (this.captureStream) {
+            this.captureSub = this.captureStream.subscribe(event => {
+                if (event.zoneId !== this.zoneId) {
+                    return;
+                }
+    
+                this.updateMapEvent(event.facilityId, event.factionId, event.noFlash);
+            });
+        }
 
-            let faction = Factions[event.factionId];
-            let facilityId = event.facilityId;
+        if (this.defendStream) {
+            this.defendSub = this.defendStream.subscribe(event => {
+                if (event.zoneId !== this.zoneId) {
+                    return;
+                }
+    
+                this.updateMapEvent(event.facilityId, event.factionId);
+            });
+        }
+    }
 
-            if (!this.facilities[facilityId]) {
-                return;
-            }
+    updateMapEvent(facilityId, factionId, noFlash: boolean = false) {
+        let faction = Factions[factionId];
 
-            this.facilities[facilityId].setFaction(faction.id);
+        if (!this.facilities[facilityId]) {
+            return;
+        }
 
-            for (let idx in this.facilities[facilityId].lattice) {
-                this.facilities[facilityId].lattice[idx].setFaction();
-            }
+        this.facilities[facilityId].setFaction(faction.id);
 
-            this.facilities[facilityId].region.setFaction(faction.id);
+        for (let idx in this.facilities[facilityId].lattice) {
+            this.facilities[facilityId].lattice[idx].setFaction();
+        }
 
-            this.updateScore();
-        });
+        this.facilities[facilityId].region.setFaction(faction.id, noFlash);
 
-        this.defendSub = this.defendStream.subscribe(event => {
-            if (event.zoneId !== this.zoneId) {
-                return;
-            }
-        });
+        this.updateScore();
     }
 
     getFacilityName(facilityId: number): string {
@@ -159,6 +181,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     onMapReady(map: Map) {
+        let self = this;
         this.map = map;
 
         map.createPane('regions');
@@ -176,13 +199,28 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
         };
 
         map.on('zoomend', mapZoom.bind(this)).fireEvent('zoomend');
+        map.on("keypress", function(e: any) {
+            let key = e.originalEvent.key;
+
+            switch(key) {
+                case "w":
+                    self.popupsEnabled = !self.popupsEnabled;
+                    if (self.popupsEnabled) {
+                        Object.keys(self.regions).map(regionId => self.regions[regionId].enablePopup())
+                    } else {
+                        Object.keys(self.regions).map(regionId => self.regions[regionId].disablePopup())
+                        self.map.closePopup();
+                    }
+                    break;
+            }
+        });
 
         this.setupMapMarkers();
         this.setupMapRegions();
         this.setupMapLinks();
 
-        let self = this;
-        this.ownershipSub = this.ownershipStream
+        if (this.ownershipStream) {
+            this.ownershipSub = this.ownershipStream
             .subscribe(data => {
                 if (!data) return;
 
@@ -191,6 +229,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                     self.updateScore();
                 }, 10);
             });
+        }
 
         map.fitBounds(latLngBounds(latLng(-128, -128), latLng(128, 128)));
     }
@@ -263,6 +302,10 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
 
                 this.facilities[facilityId] = facilityMarker;
 
+                if (facility && facility.facilityTypeId === 7) {
+                    this.warpgates.push(facilityMarker);
+                }
+
                 if (facility.x && facility.z) {
                     facilityMarker.addTo(this.map);
                 }
@@ -271,6 +314,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
     }
 
     setupMapRegions() {
+        let self = this;
         let width = 50 / 8;
 
         let b = width / 2;
@@ -346,6 +390,9 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                         weight: 1.2,
                         color: '#000'
                     });
+                })
+                .on("click", function (e) {
+                    self.onHexSelected.emit(region);
                 });
 
             region.addTo(this.map);
@@ -414,14 +461,6 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                 this.regions[regionId].facility.setFaction(faction);
             } else if (this.regions[regionId]) {
                 this.regions[regionId].setFaction(faction, true);
-            }
-        }
-
-        for (let regionId in this.regions) {
-            let region = this.regions[regionId];
-            if (region.facility && region.facility.facilityTypeId === 7) {
-                let factionId = regions[regionId][0].factionId;
-                this.warpgates[factionId] = region.facility;
             }
         }
 

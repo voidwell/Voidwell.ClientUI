@@ -9,10 +9,10 @@
             </mat-card-content>
             <mat-card-footer>
                 <div class="map-log">
-                    <div *ngIf="!zoneLogs || zoneLogs.length === 0">
+                    <div *ngIf="getZoneLogs().length === 0">
                         Waiting for activity...
                     </div>
-                    <div *ngFor="let item of zoneLogs" class="zone-event">
+                    <div *ngFor="let item of getZoneLogs()" class="zone-event">
                         <span class="timestamp">{{item.timestamp | date:'mediumTime'}}</span>
                         <span *ngIf="item.event === 'defend'">
                             <mat-icon fontSet="mdi" fontIcon="mdi-shield" [ngClass]="item.faction.id | factionColor"></mat-icon>

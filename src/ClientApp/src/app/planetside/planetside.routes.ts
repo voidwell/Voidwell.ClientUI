@@ -32,6 +32,8 @@ import { PopulationComponent } from './population/population.component';
 import { PlayerRanksComponent } from './player-ranks/player-ranks.component';
 import { PlanetsideSearchComponent } from './search/planetside-search.component';
 import { BulkCharacterStatsComponent } from './bulk-character-stats/bulk-character-stats.component';
+import { PlanetsideMapExplorerComponent } from './map-explorer/map-explorer.component';
+import { PlanetsideMapSimulatorComponent } from './map-explorer//map-simulator/map-simulator.component';
 
 const planetsideRoutes: Routes = [
     {
@@ -115,7 +117,15 @@ const planetsideRoutes: Routes = [
             { path: 'oracle', component: WeaponTrackerComponent },
             { path: 'ranks', component: PlayerRanksComponent },
             { path: 'population', component: PopulationComponent },
-            { path: 'bulk', component: BulkCharacterStatsComponent }
+            { path: 'bulk', component: BulkCharacterStatsComponent },
+            {
+                path: 'map',
+                component: PlanetsideMapExplorerComponent,
+                children: [
+                    { path: '', redirectTo: '2', pathMatch: 'full' },
+                    { path: ':zoneId', component: PlanetsideMapSimulatorComponent }
+                ]
+            }
         ]
     }
 ];

@@ -1,4 +1,4 @@
-﻿import { Component, EventEmitter, OnDestroy } from '@angular/core';
+﻿import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { PlanetsideWorldComponent } from './../../planetside-world.component';
@@ -10,12 +10,10 @@ import { ZoneHelper } from './../../../../shared/services/zone-helper.service';
     styleUrls: ['./planetside-world-zone.styles.css']
 })
 
-export class PlanetsideWorldZoneComponent implements OnDestroy {
+export class PlanetsideWorldZoneComponent implements OnInit, OnDestroy {
     private routeSub: Subscription;
 
     public zoneId: number;
-
-    zoneLogs: any[];
     score: [0, 0, 0, 0];
 
     ownershipSub: BehaviorSubject<any> = new BehaviorSubject(null);
@@ -26,7 +24,9 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
     constructor(private route: ActivatedRoute, private parent: PlanetsideWorldMapComponent, private zoneHelper: ZoneHelper) {
         this.captureSub = this.parent.onFacilityCapture.asObservable();
         this.defendSub = this.parent.onFacilityDefend.asObservable();
+    }
 
+    ngOnInit() {
         this.routeSub = this.route.params.subscribe(params => {
             if (!params['zoneId']) {
                 return;
@@ -34,13 +34,15 @@ export class PlanetsideWorldZoneComponent implements OnDestroy {
 
             this.zoneId = parseInt(params['zoneId']);
 
-            this.zoneLogs = parent.zoneLogs[this.zoneId];
-
             this.parent.getZoneOwnership(this.zoneId)
                 .subscribe(data => {
                     this.ownershipSub.next(data);
                 });
         });
+    }
+
+    getZoneLogs() {
+        return this.parent.zoneLogs[this.zoneId] || [];
     }
 
     getFacilityName(facilityId: number): string {

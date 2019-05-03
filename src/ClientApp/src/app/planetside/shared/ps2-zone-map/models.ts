@@ -53,7 +53,11 @@ export class ZoneRegion extends Polygon {
         this.setStyle({ 'className': 'region' });
     }
 
-    setFaction(faction: number, settingUp: boolean = false) {
+    setFaction(faction: number, noFlash: boolean = false) {
+        if (this.faction === faction) {
+            return;
+        }
+
         this.faction = faction;
 
         let elem = this.getElement();
@@ -69,7 +73,7 @@ export class ZoneRegion extends Polygon {
         let factionCode = Factions[this.faction].code
         elem.classList.add(factionCode);
 
-        if (!settingUp) {
+        if (!noFlash) {
             elem.classList.add('capture-flash');
             this.flashTimeout = setTimeout(function () {
                 if (elem) elem.classList.remove('capture-flash');
@@ -89,6 +93,21 @@ export class ZoneRegion extends Polygon {
             elem.classList.add('unconnected');
         }
     }
+
+    enablePopup() {
+        let self = this;
+        this.bindPopup(function() {
+            return "<div>RegionId: " + self.id+ "</div>" +
+                   "<div>FacilityId: " + self.facility.id+ "</div>" +
+                   "<div>FacilityName: " + self.facility.name+ "</div>" +
+                   "<div>FacilityType: " + self.facility.facilityType+ "</div>" +
+                   "<div>FactionId: " + self.faction+ "</div>";
+        }, );
+    }
+
+    disablePopup() {
+        this.unbindPopup();
+    }
 }
 
 export class ZoneFacility extends Marker {
@@ -102,9 +121,9 @@ export class ZoneFacility extends Marker {
     lattice: LatticeLink[] = [];
 
     facilityIcons: any;
-    warpgates: any;
+    warpgates: ZoneFacility[] = [];
 
-    constructor(latLng: LatLng, facilityIcons: any, warpgates: any, options?: MarkerOptions) {
+    constructor(latLng: LatLng, facilityIcons: any, warpgates: ZoneFacility[], options?: MarkerOptions) {
         super(latLng, options);
 
         this.facilityIcons = facilityIcons;
@@ -134,11 +153,12 @@ export class ZoneFacility extends Marker {
             return false;
         };
 
-        if (!this.warpgates[faction]) {
+        let factionWarpgate =this.warpgates.find(f => f.faction === faction);
+        if (!factionWarpgate) {
             return false;
         }
 
-        let isLinked = checkLinkedFacilities(this.warpgates[faction]);
+        let isLinked = checkLinkedFacilities(factionWarpgate);
 
         this.region.setLinkedState(isLinked);
 
@@ -146,6 +166,10 @@ export class ZoneFacility extends Marker {
     }
 
     setFaction(faction: number) {
+        if (this.faction === faction) {
+            return;
+        }
+        
         this.faction = faction
 
         if (!this.setIcon) {
@@ -200,7 +224,7 @@ export class LatticeLink {
         lineElem.classList.remove('vs', 'nc', 'tr', 'contested');
         outlineElem.classList.remove('contested');
 
-        if (this.faction) {
+        if (this.faction !== null) {
             let factionCode = Factions[this.faction].code;
             lineElem.classList.add(factionCode);
         } else {
