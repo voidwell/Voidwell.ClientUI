@@ -63,7 +63,7 @@ export class PlanetsideMapSimulatorComponent implements OnInit, OnDestroy {
     onKeypress(e: KeyboardEvent) {
         switch(e.key) {
             case "q": {
-                let commandList = Object.keys(this.stateLog).map(e => "/facility setfaction " + e + " " + this.stateLog[e]);
+                let commandList = Object.keys(this.stateLog).map(e => "/facility setfaction " + this.stateLog[e] + " " + e);
                 console.log(commandList.join(";"));
             }
         }
