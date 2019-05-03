@@ -73,6 +73,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             return;
         }
 
+        this.activeZoneId = this.zoneId;
         this.map = null;
         this.warpgates = [];
         this.facilities = {};
