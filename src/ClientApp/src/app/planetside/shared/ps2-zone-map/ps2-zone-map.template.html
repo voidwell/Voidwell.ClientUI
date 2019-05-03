@@ -1,3 +1,3 @@
 ﻿<vw-loader [loading]="isLoading"></vw-loader>
 <vw-error-message [message]="errorMessage"></vw-error-message>
-<div class="map" *ngIf="!isLoading && !errorMessage" leaflet [leafletOptions]="leafletOptions" [leafletFitBounds]="fitBounds" (leafletMapReady)="onMapReady($event)"></div>
+<div class="map" [class.overlay-hidden]="hideOverlay" *ngIf="!isLoading && !errorMessage" leaflet [leafletOptions]="leafletOptions" [leafletFitBounds]="fitBounds" (leafletMapReady)="onMapReady($event)"></div>

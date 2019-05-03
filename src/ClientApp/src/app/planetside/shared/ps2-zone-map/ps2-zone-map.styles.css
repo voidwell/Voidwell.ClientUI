@@ -195,13 +195,13 @@
             fill: #fff;
         }
 
-    .map ::ng-deep .region {
+    .map:not(.overlay-hidden) ::ng-deep .region {
         fill: #79e0e1;
         fill-opacity: 0.4;
         z-index: -1;
     }
 
-    .map ::ng-deep .region.unconnected {
+    .map :not(.overlay-hidden) ::ng-deep .region.unconnected {
         fill: #249c9e;
         fill-opacity: 0.7;
     }

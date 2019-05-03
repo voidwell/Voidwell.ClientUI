@@ -63,6 +63,8 @@ import { WorldService } from './shared/services/world-service.service';
 import { ZoneService } from './shared/services/zone-service.service';
 import { PlanetsidePipesModule } from './shared/pipes';
 import { BulkCharacterStatsComponent } from './bulk-character-stats/bulk-character-stats.component';
+import { PlanetsideMapExplorerComponent } from './map-explorer/map-explorer.component';
+import { PlanetsideMapSimulatorComponent } from './map-explorer//map-simulator/map-simulator.component';
 
 @NgModule({
     declarations: [
@@ -113,7 +115,9 @@ import { BulkCharacterStatsComponent } from './bulk-character-stats/bulk-charact
         WeaponTrackerComponent,
         PopulationComponent,
         PlayerRanksComponent,
-        BulkCharacterStatsComponent
+        BulkCharacterStatsComponent,
+        PlanetsideMapExplorerComponent,
+        PlanetsideMapSimulatorComponent
     ],
     imports: [
         FormsModule,

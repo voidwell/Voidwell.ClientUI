@@ -57,6 +57,13 @@ const NAV_DATA: NavNode[] = [
                 children: []
             },
             {
+                name: 'Map',
+                url: '/ps2/map',
+                icon: null,
+                exact: false,
+                children: []
+            },
+            {
                 name: 'Server Status',
                 url: '/ps2/worlds',
                 icon: null,
