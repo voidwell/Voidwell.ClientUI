@@ -25,6 +25,10 @@
     color: #fff;
 }
 
+.faction-ns-text {
+    color: #828486 !important;
+}
+
 .faction-vs-text {
     color: #8f45bb !important;
 }

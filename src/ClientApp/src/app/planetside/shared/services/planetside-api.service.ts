@@ -66,6 +66,10 @@ export class PlanetsideApi extends ApiBase {
         return this.Get(this.ps2Url + 'world/population/?q=' + worldIds.join(','));
     }
 
+    getWorldActivity(worldId: number, period: number) {
+        return this.Get(this.ps2Url + 'world/activity/?worldId=' + worldId + '&period=' + period);
+    }
+
     getAllZones() {
         return this.Get(this.ps2Url + 'zone', true);
     }
@@ -88,6 +92,10 @@ export class PlanetsideApi extends ApiBase {
 
     getAlert(worldId: string, alertId: string) {
         return this.Get(this.ps2Url + 'alert/' + worldId + '/' + alertId);
+    }
+
+    getWorldState(worldId: number) {
+        return this.Get(this.ps2Url + 'worldstate/' + worldId);
     }
 
     getWorldStates() {
