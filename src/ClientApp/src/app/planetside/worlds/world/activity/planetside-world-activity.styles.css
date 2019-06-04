@@ -1,0 +1,157 @@
+.world-activity {
+    margin-top: 25px;
+}
+
+.card-grid {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -15px;
+}
+
+.card {
+    flex: 1 1 auto;
+    margin: 15px;
+}
+
+.card-row.card-row-stretch .mat-card {
+    flex: 1;
+    margin-bottom: 10px;
+}
+
+.mat-card-title {
+    font-size: 18px;
+}
+
+.zone-state {
+    display: inline-block;
+    margin-bottom: 40px;
+    width: 50%;
+}
+
+.zone-state .zone-name {
+    font-size: 18px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.zone-state .zone-populations {
+    text-align: center;
+}
+
+.zone-state .zone-populations > * {
+    display: inline-block;
+    width: 40px;
+    text-align: center;
+}
+
+.world-stats table tr *:first-child {
+    font-weight: bold;
+    width: 100px;
+}
+
+.world-stats table tr *:not(:first-child) {
+    text-align: center;
+    width: 80px;
+}
+
+.class-stats-table {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.class-stats-table:not(:last-child) {
+    padding-right: 15px;
+}
+
+.class-stats-table table tr *:first-child {
+    width: 95px;
+}
+
+.class-stats-table table tr *:not(:first-child) {
+    text-align: center;
+    min-width: 25px;
+}
+
+.top-players .outfit-tag {
+    padding-right: 3px;
+}
+
+.top-players .battle-rank {
+    padding-left: 3px;
+}
+
+.top-players table tr > *:first-child {
+    max-width: 270px;
+    min-width: 270px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.top-players table tr > *:not(:first-child) {
+    text-align: center;
+    min-width: 30px;
+    padding-right: 20px;
+}
+
+.top-outfits .outfit-tag {
+    padding-right: 3px;
+}
+
+.top-outfits table tr > *:first-child {
+    max-width: 270px;
+    min-width: 270px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.top-outfits table tr > *:not(:first-child) {
+    text-align: center;
+    min-width: 30px;
+    padding-right: 20px;
+}
+
+.top-weapons table tr > *:first-child {
+    max-width: 200px;
+    min-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.top-weapons table tr > *:not(:first-child) {
+    text-align: center;
+    min-width: 30px;
+    padding-right: 20px;
+}
+
+.top-vehicles table tr > *:first-child {
+    max-width: 200px;
+    min-width: 200px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+
+.top-vehicles table tr > *:not(:first-child) {
+    text-align: center;
+    min-width: 30px;
+    padding-right: 20px;
+}
+
+.experience-stats table tr > *:not(:first-child) {
+    text-align: center;
+    min-width: 30px;
+    padding-right: 20px;
+}
+
+.experience-stats .experience-table {
+    display: inline-block;
+    vertical-align: top;
+    margin-right: 30px;
+}
+
+.experience-stats .experience-table table {
+    width: 250px;
+}
+
+.experience-stats .experience-table-row {
+    margin-bottom: 25px;
+}

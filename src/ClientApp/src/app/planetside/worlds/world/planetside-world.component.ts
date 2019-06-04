@@ -14,6 +14,7 @@ export class PlanetsideWorldComponent implements OnDestroy {
     worldId: number = null;
 
     navLinks = [
+        { path: 'activity', display: 'Activity' },
         { path: 'players', display: 'Online players' },
         { path: 'map', display: 'Map' }
     ];
@@ -29,6 +30,14 @@ export class PlanetsideWorldComponent implements OnDestroy {
 
     getOnlinePlayers(): Observable<any> {
         return this.api.getOnlinePlayers(this.worldId);
+    }
+
+    getActivity(): Observable<any> {
+        return this.api.getWorldActivity(this.worldId, 1);
+    }
+
+    getWorldState(): Observable<any> {
+        return this.api.getWorldState(this.worldId);
     }
 
     ngOnDestroy() {

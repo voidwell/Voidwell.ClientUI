@@ -1,0 +1,290 @@
+<div class="world-activity" *ngIf="worldState && activity">
+    <!--
+    <div class="card-grid">
+        <mat-card class="card">
+            <mat-card-title>Population</mat-card-title>
+            <mat-card-content>
+                TODO
+            </mat-card-content>
+        </mat-card>
+    </div>
+    -->
+
+    <div class="card-grid">
+        <mat-card class="card zone-stats">
+            <mat-card-title>Continents</mat-card-title>
+            <mat-card-content>
+                <div class="world-zone-states">
+                    <div *ngFor="let zone of worldState.zoneStates" class="zone-state" >
+                        <div class="zone-name">{{zone.name}}</div>
+                        <div class="zone-populations">
+                            <span [ngClass]="1 | factionColor">{{zone.population.vs}}</span>
+                            <span [ngClass]="2 | factionColor">{{zone.population.nc}}</span>
+                            <span [ngClass]="3 | factionColor">{{zone.population.tr}}</span>
+                            <span [ngClass]="4 | factionColor">{{zone.population.ns}}</span>
+                        </div>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="card world-stats">
+            <mat-card-title>Statistics</mat-card-title>
+            <mat-card-content>
+                <div>
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th [ngClass]="1 | factionColor">VS</th>
+                            <th [ngClass]="2 | factionColor">NC</th>
+                            <th [ngClass]="3 | factionColor">TR</th>
+                            <th [ngClass]="4 | factionColor">NS</th>
+                        </tr>
+                        <tr>
+                            <td>Kills</td>
+                            <td>{{activity.stats.kills.vs | number}}</td>
+                            <td>{{activity.stats.kills.nc | number}}</td>
+                            <td>{{activity.stats.kills.tr | number}}</td>
+                            <td>{{activity.stats.kills.ns | number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Deaths</td>
+                            <td>{{activity.stats.deaths.vs | number}}</td>
+                            <td>{{activity.stats.deaths.nc | number}}</td>
+                            <td>{{activity.stats.deaths.tr | number}}</td>
+                            <td>{{activity.stats.deaths.ns | number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Headshots</td>
+                            <td>{{activity.stats.headshots.vs | number}}</td>
+                            <td>{{activity.stats.headshots.nc | number}}</td>
+                            <td>{{activity.stats.headshots.tr | number}}</td>
+                            <td>{{activity.stats.headshots.ns | number}}</td>
+                        </tr>
+                        <tr>
+                            <td>TeamKills</td>
+                            <td>{{activity.stats.teamKills.vs | number}}</td>
+                            <td>{{activity.stats.teamKills.nc | number}}</td>
+                            <td>{{activity.stats.teamKills.tr | number}}</td>
+                            <td>{{activity.stats.teamKills.ns | number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Suicides</td>
+                            <td>{{activity.stats.suicides.vs | number}}</td>
+                            <td>{{activity.stats.suicides.nc | number}}</td>
+                            <td>{{activity.stats.suicides.tr | number}}</td>
+                            <td>{{activity.stats.suicides.ns | number}}</td>
+                        </tr>
+                        <tr>
+                            <td>Vehicle Kills</td>
+                            <td>{{activity.stats.vehicleKills.vs | number}}</td>
+                            <td>{{activity.stats.vehicleKills.nc | number}}</td>
+                            <td>{{activity.stats.vehicleKills.tr | number}}</td>
+                            <td>{{activity.stats.vehicleKills.ns | number}}</td>
+                        </tr>
+                        <tr>
+                            <td>KDR</td>
+                            <td>{{activity.stats.kdr.vs | number:'.2-2'}}</td>
+                            <td>{{activity.stats.kdr.nc | number:'.2-2'}}</td>
+                            <td>{{activity.stats.kdr.tr | number:'.2-2'}}</td>
+                            <td>{{activity.stats.kdr.ns | number:'.2-2'}}</td>
+                        </tr>
+                        <tr>
+                            <td>HSR</td>
+                            <td>{{activity.stats.hsr.vs * 100 | number:'.1-1'}}%</td>
+                            <td>{{activity.stats.hsr.nc * 100 | number:'.1-1'}}%</td>
+                            <td>{{activity.stats.hsr.tr * 100 | number:'.1-1'}}%</td>
+                            <td>{{activity.stats.hsr.ns * 100 | number:'.1-1'}}%</td>
+                        </tr>
+                    </table>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="card class-stats">
+            <mat-card-title>Classes</mat-card-title>
+            <mat-card-content>
+                <div class="class-stats-table" *ngFor="let classStats of [vsClasses, ncClasses, trClasses]">
+                    <table>
+                        <tr>
+                            <th></th>
+                            <th>Kills</th>
+                            <th>Deaths</th>
+                            <th>TKs</th>
+                            <th>Suicides</th>
+                            <th>V.Kills</th>
+                            <th>KDR</th>
+                            <th>HSR</th>
+                        </tr>
+                        <tr *ngFor="let class of classStats">
+                            <td [ngClass]="class.profile.factionId | factionColor">{{class.profile.name}}</td>
+                            <td>{{class.kills | number}}</td>
+                            <td>{{class.deaths | number}}</td>
+                            <td>{{class.teamkills | number}}</td>
+                            <td>{{class.suicides | number}}</td>
+                            <td>{{class.vehicleKills | number}}</td>
+                            <td>{{class.kills / (class.deaths > 0 ? class.deaths : 1) | number:'.2-2'}}</td>
+                            <td>{{class.headshots / (class.kills > 0 ? class.kills : 1) * 100 | number:'.1-1'}}%</td>
+                        </tr>
+                    </table>
+                </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="card top-players">
+            <mat-card-title>Top Players</mat-card-title>
+            <mat-card-content>
+                <div class="player-stats-table">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Kills</th>
+                        <th>Deaths</th>
+                        <th>KDR</th>
+                        <th>TKs</th>
+                        <th>Suicides</th>
+                        <th>V.Kills</th>
+                        <th>Headshots</th>
+                        <th>HSR</th>
+                    </tr>
+                    <tr *ngFor="let player of activity.topPlayers">
+                        <td>
+                            <a routerLink="/ps2/player/{{player.character.id}}" [ngClass]="player.character.factionId | factionColor">
+                                <span *ngIf="player.outfit && player.outfit.alias" class="outfit-tag">[{{player.outfit.alias}}]</span>
+                                <span class="player-name">{{player.character.name}}</span>
+                                <span class="battle-rank">(BR{{player.character.battleRank}}<span *ngIf="player.character.prestigeLevel > 0">~{{player.character.prestigeLevel}}</span>)</span>
+                            </a>
+                        </td>
+                        <td>{{player.kills | number}}</td>
+                        <td>{{player.deaths | number}}</td>
+                        <td>{{player.kills / (player.deaths > 0 ? player.deaths : 1) | number:'.2-2'}}</td>
+                        <td>{{player.teamkills | number}}</td>
+                        <td>{{player.suicides | number}}</td>
+                        <td>{{player.vehicleKills | number}}</td>
+                        <td>{{player.headshots | number}}</td>
+                        <td>{{player.headshots / (player.kills > 0 ? player.kills : 1) * 100 | number:'.1-1'}}%</td>
+                    </tr>
+                </table>
+            </div>
+            </mat-card-content>
+        </mat-card>
+
+        <mat-card class="card top-outfits">
+            <mat-card-title>Top Outfits</mat-card-title>
+            <mat-card-content>
+                <div class="outfit-stats-table">
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Kills (AVG)</th>
+                            <th>Deaths (AVG)</th>
+                            <th>Kills</th>
+                            <th>Deaths</th>
+                            <th>KDR</th>
+                            <th>TKs</th>
+                            <th>Suicides</th>
+                            <th>V.Kills</th>
+                            <th>HSR</th>
+                            <th>Members</th>
+                        </tr>
+                        <tr *ngFor="let outfit of activity.topOutfits">
+                            <td>
+                                <a routerLink="/ps2/outfit/{{outfit.outfit.id}}" [ngClass]="outfit.outfit.factionId | factionColor">
+                                    <span *ngIf="outfit.outfit && outfit.outfit.alias" class="outfit-tag">[{{outfit.outfit.alias}}]</span>
+                                    <span class="outfit-name">{{outfit.outfit.name}}</span>
+                                </a>
+                            </td>
+                            <td>{{outfit.kills / outfit.participantCount | number:'.2-2'}}</td>
+                            <td>{{outfit.deaths / outfit.participantCount | number:'.2-2'}}</td>
+                            <td>{{outfit.kills | number}}</td>
+                            <td>{{outfit.deaths | number}}</td>
+                            <td>{{outfit.kills / (outfit.deaths > 0 ? outfit.deaths : 1) | number:'.2-2'}}</td>
+                            <td>{{outfit.teamkills | number}}</td>
+                            <td>{{outfit.suicides | number}}</td>
+                            <td>{{outfit.vehicleKills | number}}</td>
+                            <td>{{outfit.headshots / (outfit.kills > 0 ? outfit.kills : 1) * 100 | number:'.1-1'}}%</td>
+                            <td>{{outfit.participantCount}}</td>
+                        </tr>
+                    </table>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div class="card-grid">
+        <mat-card class="card top-weapons">
+            <mat-card-title>Top Weapons</mat-card-title>
+            <mat-card-content>
+                <div class="top-weapons-table">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Kills</th>
+                        <th>Teamkills</th>
+                        <th>Headshots</th>
+                    </tr>
+                    <tr *ngFor="let weapon of activity.topWeapons">
+                        <td>
+                            <a routerLink="/ps2/item/{{weapon.item.id}}" [ngClass]="weapon.item.factionId | factionColor">
+                                {{weapon.item.name}}
+                            </a>
+                        </td>
+                        <td>{{weapon.kills | number}}</td>
+                        <td>{{weapon.teamkills | number}}</td>
+                        <td>{{weapon.headshots | number}}</td>
+                    </tr>
+                </table>
+            </div>
+            </mat-card-content>
+        </mat-card>
+        <mat-card class="card top-vehicles">
+            <mat-card-title>Top Vehicles</mat-card-title>
+            <mat-card-content>
+                <div class="top-vehicles-table">
+                <table>
+                    <tr>
+                        <th>Name</th>
+                        <th>Kills</th>
+                        <th>Deaths</th>
+                        <th>Teamkills</th>
+                    </tr>
+                    <tr *ngFor="let vehicle of activity.topVehicles">
+                        <td [ngClass]="vehicle.vehicle.factionId | factionColor">{{vehicle.vehicle.name}}</td>
+                        <td>{{vehicle.kills | number}}</td>
+                        <td>{{vehicle.deaths | number}}</td>
+                        <td>{{vehicle.teamkills | number}}</td>
+                    </tr>
+                </table>
+            </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div class="card-grid">
+        <mat-card class="card experience-stats">
+            <mat-card-title>Experience</mat-card-title>
+            <mat-card-content>
+                <div class="experience-table-row" *ngFor="let stat of objectKeys(activity.topExperience)">
+                    <div>{{formatName(stat)}}</div>
+                    <div class="experience-table" *ngFor="let faction of objectKeys(activity.topExperience[stat])">
+                        <table>
+                            <tr>
+                                <th>Player</th>
+                                <th>Ticks</th>
+                            </tr>
+                            <tr *ngFor="let player of activity.topExperience[stat][faction]">
+                                <td>
+                                    <a routerLink="/ps2/player/{{player.characterId}}" [ngClass]="player.characterFactionId | factionColor">
+                                        <span class="player-name">{{player.characterName}}</span>
+                                        <span class="battle-rank">(BR{{player.characterBattleRank}}<span *ngIf="player.characterPrestigeLevel > 0">~{{player.characterPrestigeLevel}}</span>)</span>
+                                    </a>
+                                </td>
+                                <td>{{player.ticks}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

@@ -50,6 +50,7 @@ import { PlanetsideWorldWrapperComponent } from './worlds/planetside-world-wrapp
 import { PlanetsideWorldComponent } from './worlds/world/planetside-world.component';
 import { WorldCardComponent } from './worlds/world-card/world-card.component';
 import { PlanetsideWorldPlayersComponent } from './worlds/world/players/planetside-world-players.component';
+import { PlanetsideWorldActivityComponent } from './worlds/world/activity/planetside-world-activity.component';
 import { PlanetsideWorldMapComponent } from './worlds/world/map/planetside-world-map.component';
 import { PlanetsideWorldZoneComponent } from './worlds/world/map/zone/planetside-world-zone.component';
 import { GradeComponent } from './shared/vw-grade/vw-grade.component';
@@ -109,6 +110,7 @@ import { PlanetsideMapSimulatorComponent } from './map-explorer//map-simulator/m
         PlanetsideWorldComponent,
         WorldCardComponent,
         PlanetsideWorldPlayersComponent,
+        PlanetsideWorldActivityComponent,
         PlanetsideWorldMapComponent,
         PlanetsideWorldZoneComponent,
         Ps2ZoneMapComponent,
