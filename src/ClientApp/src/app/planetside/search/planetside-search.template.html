@@ -1,17 +1,27 @@
 ﻿<div class="search" [ngClass]="{'focus': searchService.searchFocused || searchService.control.dirty}">
-    <button mat-icon-button *ngIf="searchService.control.dirty" class="top-search_clear" (click)="searchService.clearSearch()">
-        <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
-    </button>
-    <input class="top-search_input"
-           #searchInput
-           type="text"
-           matInput
-           [matAutocomplete]="auto"
-           [formControl]="searchService.control"
-           [placeholder]="searchService.placeholder"
-           (focus)="searchService.searchFocused=true"
-           (blur)="searchService.searchFocused=false">
-    <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching}"></i>
+    <div class="top-search-container" #searchContainer>
+        <button mat-icon-button *ngIf="searchService.control.dirty" class="top-search_clear" (click)="searchService.clearSearch()">
+            <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
+        </button>
+        <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching}"></i>
+        <mat-select class="top-search_dropdown"
+            [formControl]="searchService.categoryControl"
+            (openedChange)="searchService.dropdownToggled($event)"
+            panelClass="top-search_dropdown">
+            <mat-option value="character">Player</mat-option>
+            <mat-option value="outfit">Outfit</mat-option>
+            <mat-option value="item">Weapon</mat-option>
+        </mat-select>
+        <div class="top-search_input-container">
+            <input class="top-search_input"
+                #searchInput
+                type="text"
+                matInput
+                [matAutocomplete]="auto"
+                [formControl]="searchService.control"
+                [placeholder]="searchService.placeholder">
+        </div>
+    </div>
     <mat-autocomplete #auto="matAutocomplete">
         <mat-option *ngFor="let result of searchService.results" class="search-option" [value]="result.name" (click)="searchService.onClickResultEmitter.emit(result)">
             <div class="item-title">

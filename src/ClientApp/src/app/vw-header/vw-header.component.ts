@@ -69,6 +69,11 @@ export class VWHeaderComponent implements OnInit {
 
         return false;
     }
+    
+    focusSearch(event: MouseEvent) {
+        event.stopPropagation();
+        this.searchService.focusSearch()
+    }
 
     public toggleNav() {
         this.navMenuService.toggle();

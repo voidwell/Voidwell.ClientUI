@@ -11,6 +11,7 @@ export class SearchService {
     public isUsable: boolean = false;
     public searchFocused: boolean = false;
     public control: FormControl;
+    public categoryControl: FormControl;
     public placeholder: string = '';
     public isSearching: boolean = false;
     public results: any[];
@@ -21,6 +22,7 @@ export class SearchService {
 
     constructor() {
         this.control = new FormControl();
+        this.categoryControl = new FormControl();
         this.onEntry = this.onEntryEmitter.asObservable();
         this.onClickResult = this.onClickResultEmitter.asObservable();
 
@@ -29,7 +31,20 @@ export class SearchService {
                 if (!query || query === '') {
                     this.clearSearch();
                 }
-                this.onEntryEmitter.emit(query);
+                this.onEntryEmitter.emit({
+                    category: this.categoryControl.value,
+                    query: this.control.value
+                });
+            });
+
+        this.categoryControl.valueChanges
+            .subscribe(category => {
+                if (this.control.value && this.control.value !== "") {
+                    this.onEntryEmitter.emit({
+                        category: category,
+                        query: this.control.value
+                    });
+                }
             });
     }
 
@@ -48,6 +63,7 @@ export class SearchService {
         this.placeholder = '';
         this.isSearching = false;
         this.control.reset();
+        this.categoryControl.reset();
         this.results = [];
 
         this.searchStateSub.unsubscribe();
@@ -65,6 +81,22 @@ export class SearchService {
     focusSearch() {
         this.searchFocused = true;
         this.onSearchOpen.emit(true);
+    }
+
+    dropdownToggled(isOpened) {
+        if (isOpened) {
+            this.searchFocused = true;
+        } else {
+            this.focusSearch();
+        }
+    }
+
+    onFocus() {
+        this.searchFocused = true;
+    }
+
+    onBlur() {
+        this.searchFocused = false;
     }
 }
 

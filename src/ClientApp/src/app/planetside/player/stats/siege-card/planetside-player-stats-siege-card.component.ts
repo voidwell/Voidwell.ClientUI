@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ElementRef, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { D3Service, D3 } from 'd3-ng2-service';
 
 @Component({
@@ -50,7 +50,7 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
             labelFormat					: d3.format(''),
             labelInset					: 10,
 
-            arcColorFn					: d3.interpolateHsl(d3.rgb('#686e7d'), d3.rgb('#b11b1b'))
+            arcColorFn					: d3.interpolateHsl('#686e7d', '#b11b1b')
         };
 
         let range = undefined;
@@ -89,11 +89,11 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
                 .innerRadius(r - config.ringWidth - config.ringInset)
                 .outerRadius(r - config.ringInset)
                 .startAngle(function(d: any, i: any) {
-                    var ratio = d * i;
+                    let ratio = d * i;
                     return deg2rad(config.minAngle + (ratio * range));
                 })
                 .endAngle(function(d: any, i: any) {
-                    var ratio = d * (i + 1);
+                    let ratio = d * (i + 1);
                     return deg2rad(config.minAngle + (ratio * range));
                 });
         }
@@ -104,7 +104,7 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
                 .attr('width', config.clipWidth)
                 .attr('height', config.clipHeight);
 
-            var centerTx = centerTranslation();
+            let centerTx = centerTranslation();
 
             svg.append('g')
                 .attr('transform', centerTx)
@@ -114,26 +114,26 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
                 .attr('d', arc)
                 .style('fill', function (d, i) { return config.arcColorFn(d * i); });
 
-            var lg = svg.append('g')
+            let lg = svg.append('g')
                     .attr('class', 'label')
                     .attr('transform', centerTx);
             lg.selectAll('text')
                     .data(ticks)
                 .enter().append('text')
                     .attr('transform', function(d) {
-                        var ratio = scale(d);
-                        var newAngle = config.minAngle + (ratio * range);
+                        let ratio = scale(d);
+                        let newAngle = config.minAngle + (ratio * range);
                         return 'rotate(' + newAngle + ') translate(0,' + (config.labelInset - r) + ')';
                     })
                     .text(config.labelFormat);
 
-            var lineData = [ [config.pointerWidth / 2, 0],
+            let lineData = [ [config.pointerWidth / 2, 0],
                             [0, -pointerHeadLength],
                             [-(config.pointerWidth / 2), 0],
                             [0, config.pointerTailLength],
                             [config.pointerWidth / 2, 0] ];
-            var pointerLine = d3.line();
-            var pg = svg.append('g').data([lineData])
+            let pointerLine = d3.line();
+            let pg = svg.append('g').data([lineData])
                     .attr('class', 'pointer')
                     .attr('transform', centerTx);
 
@@ -145,8 +145,8 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
         }
 
         function update(newValue) {
-            var ratio = scale(newValue);
-            var newAngle = config.minAngle + (ratio * range);
+            let ratio = scale(newValue);
+            let newAngle = config.minAngle + (ratio * range);
 
             pointer.transition()
                 .duration(config.transitionMs)
