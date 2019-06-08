@@ -1,5 +1,18 @@
-﻿.search.focus .top-search_input {
+﻿.search.focus .top-search-container {
     background: #edeff0;
+}
+
+.top-search-container {
+    background: #2b3942;
+
+    transition: all;
+    transition-duration: 0.3s;
+}
+
+.top-search_input,
+.top-search_dropdown,
+.top-search_reset {
+    background: none;
 }
 
 .search.focus .top-search_reset {
@@ -14,13 +27,16 @@
         transform: scale(1) rotate(0);
     }
 
+.top-search_input-container {
+    margin-left: 150px;
+}
+
 .top-search_input {
     border: 0;
     height: 50px;
-    padding: 10px 20px 10px 50px;
-    border-radius: 2px;
+    padding: 10px 20px 10px 20px;
+    border-radius: 0 2px 2px 0;
     width: 100%;
-    background-color: #2b3942;
     font-size: 15px;
     color: #22313a;
     font-family: inherit;
@@ -54,23 +70,17 @@
     color: #22313a;
 }
 
-.search, .top-search_input, .top-search_reset:before, .top-search_reset:after {
-    transition: all;
-    transition-duration: 0.3s;
-}
-
 .top-search_reset {
-    left: 0;
     font-size: 20px;
     color: #b4bfc3;
-    top: 0;
-    position: absolute;
     cursor: pointer;
     width: 50px;
-    height: 100%;
-    display: inline-block;
+    height: 50px;
+    display: block;
     font: normal normal normal 24px/1 "Material Design Icons";
     text-rendering: auto;
+    float: left;
+    border-radius: 2px 0 0 2px;
     -webkit-font-smoothing: antialiased;
 }
 
@@ -78,6 +88,9 @@
         position: absolute;
         left: 13px;
         top: 14px;
+
+        transition: all;
+        transition-duration: 0.3s;
     }
 
     .top-search_reset:before {
@@ -112,4 +125,33 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+
+.top-search_dropdown {
+    border: 0;
+    height: 50px;
+    padding: 15px 0 15px 0;
+    border-radius: 0;
+    width: 100px;
+    font-size: 15px;
+    color: #22313a;
+    font-family: inherit;
+    line-height: inherit;
+    margin: 0;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+}
+
+.top-search_dropdown ::ng-deep .mat-select-arrow-wrapper {
+    visibility: hidden;
+}
+
+.top-search_dropdown ::ng-deep .mat-select-value-text {
+    color: #b4bfc3;
+}
+
+.search.focus .top-search_dropdown ::ng-deep .mat-select-value-text {
+    color: #22313a;
 }
