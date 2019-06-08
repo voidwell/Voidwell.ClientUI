@@ -22,8 +22,8 @@ export class PlanetsideApi extends ApiBase {
         return this.Get(this.ps2Url + 'feeds/updates');
     }
 
-    search(query: string) {
-        return this.Get(this.ps2Url + 'search/' + query);
+    search(category: string, query: string) {
+        return this.Get(`${this.ps2Url}search/${category}/${query}`);
     }
 
     getWeaponInfo(itemId: string) {

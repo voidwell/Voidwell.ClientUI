@@ -22,21 +22,23 @@ export class PlanetsideWrapperComponent implements OnDestroy {
         let searchPlaceholder = 'Search for players, outfits, and weapons';
         searchService.attach(searchPlaceholder);
 
+        searchService.categoryControl.setValue('character');
+
         this.searchSub = searchService.onEntry.subscribe(query => {
             clearTimeout(this.queryWait);
 
-            if (!query || query.length < 2) {
+            if (!query || !query.query || query.query.length < 2) {
                 return;
             }
 
             this.queryWait = setTimeout(() => {
-                if (this.activeSelection && this.activeSelection.name === query) {
+                if (this.activeSelection && this.activeSelection.name === query.query) {
                     return;
                 }
 
                 this.searchService.searchState.emit(new SearchState(true));
 
-                this.api.search(query).subscribe(data => {
+                this.api.search(query.category, query.query).subscribe(data => {
                     this.searchService.searchState.emit(new SearchState(false, data));
                 });
             }, 1000);
