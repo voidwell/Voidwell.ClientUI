@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Observable, Subscription, BehaviorSubject, interval, merge, timer } from 'rxjs';
 import { PlanetsideApi } from './../../shared/services/planetside-api.service';
 import { WorldNamePipe } from './../../shared/pipes';
-import { startWith, mergeMapTo } from 'rxjs/operators';
+import { mergeMapTo } from 'rxjs/operators';
 
 @Component({
     templateUrl: './planetside-world.template.html',
@@ -48,10 +48,15 @@ export class PlanetsideWorldComponent implements OnDestroy {
 
             this.worldId = parseInt(params['worldId']);
 
-            this.worldSub = timer(0, 10000)
+            this.worldSub = timer(0, 60000)
                 .pipe(mergeMapTo(this.api.getWorldState(this.worldId)))
                 .subscribe(function(worldState) {
                     self.world = worldState;
+
+                    Object.keys(self.zoneTotal).forEach(function(f) {
+                        self.zoneTotal[f] = 0;
+                    });
+
                     worldState.zoneStates.forEach(function(zoneState) {
                         Object.keys(zoneState.population).forEach(function(f) {
                             if (!self.zoneTotal[f]) self.zoneTotal[f] = 0;
@@ -62,13 +67,13 @@ export class PlanetsideWorldComponent implements OnDestroy {
                     self.isLoading = false;
                 });
             
-            this.activitySub = timer(0, 10000)
+            this.activitySub = timer(0, 60000)
                 .pipe(mergeMapTo(this.api.getWorldActivity(this.worldId, 1)))
                 .subscribe(function(activity) {
                     self.activitySubject.next(activity);
                 });
 
-            this.alertsSub = timer(0, 30000)
+            this.alertsSub = timer(0, 60000)
                 .pipe(mergeMapTo(this.api.getAlertsByWorldId(0, this.worldId)))
                 .subscribe(function(alerts) {
                     let now = new Date();
