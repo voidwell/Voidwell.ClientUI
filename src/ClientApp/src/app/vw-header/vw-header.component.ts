@@ -78,4 +78,25 @@ export class VWHeaderComponent implements OnInit {
     public toggleNav() {
         this.navMenuService.toggle();
     }
+
+    animateLogo() {
+        dynamics.css(logoContainer, {
+          scale: 0.5,
+          translateX: Math.random() * 100 - 50
+        });
+    
+        dynamics.setTimeout(function () {
+          dynamics.css(logoContainer, {
+            translateX: 10,
+            scale: 0.55
+          });
+        }, 100);
+    
+        dynamics.setTimeout(function () {
+          dynamics.css(logoContainer, {
+            translateX: 0,
+            scale: 0.5
+          });
+        }, 150);
+    };
 }
