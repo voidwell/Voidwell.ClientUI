@@ -32,7 +32,8 @@
     .logo img {
         display: block;
         position: relative;
-        margin-right: 5px;
+        margin-right: auto;
+        margin-left: auto;
         line-height: 30px;
         color: #edeff0;
         font-weight: 700;
@@ -42,8 +43,6 @@
 
     .logo img.logo-image {
         height: 28px;
-        margin-left: auto;
-        margin-right: auto;
         margin-bottom: 5px;
     }
 
@@ -74,20 +73,20 @@
         padding: 15px 25px;
     }
 
+    .logo img.logo-image {
+        height: 32px;
+    }
+
+    .logo img.logo-text {
+        display: none;
+    }
+
     .logo .logo-button {
         position: absolute;
         left: 0;
         right: 0;
         text-align: center;
         margin: 0;
-    }
-
-    .logo img.logo-image {
-        height: 32px;
-    }
-
-    .logo .logo-text {
-        display: none;
     }
 }
 
