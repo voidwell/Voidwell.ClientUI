@@ -77,7 +77,10 @@
     width: 50px;
     height: 50px;
     display: block;
-    font: normal normal normal 24px/1 "Material Design Icons";
+    font-family: "Material Design Icons";
+    font-size: 24px;
+    line-height: 1;
+    font-style: normal;
     text-rendering: auto;
     float: left;
     border-radius: 2px 0 0 2px;
