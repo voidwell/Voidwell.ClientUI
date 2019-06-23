@@ -34,7 +34,7 @@ export class PopulationComponent implements OnInit {
 
     graphHeight: any;
     graphWidth: any;
-    zoom: ZoomBehavior<Element, {}>;
+    zoom: ZoomBehavior<SVGRectElement, {}>;
     zoomRect: Selection<BaseType, {}, HTMLElement, any>;
     xExtent: [Date, Date];
     x: ScaleTime<number, number>;
@@ -211,7 +211,7 @@ export class PopulationComponent implements OnInit {
             .x(function (d) { return self.x(d.date); })
             .y(function (d) { return y(d.vsCount + d.ncCount + d.trCount); });
 
-        this.zoom = this.d3.zoom()
+        this.zoom = this.d3.zoom<SVGRectElement, {}>()
             .scaleExtent([1, 32])
             .translateExtent([[-this.graphWidth, -Infinity], [2 * this.graphWidth, Infinity]])
             .on('zoom', zoomed)

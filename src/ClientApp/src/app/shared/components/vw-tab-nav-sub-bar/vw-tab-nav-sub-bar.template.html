@@ -21,7 +21,7 @@
            [routerLink]="link.path"
            routerLinkActive #rla="routerLinkActive"
            [ngClass]="{ 'active': rla.isActive }">
-            {{link.display}}
+            <mat-icon *ngIf="link.icon" fontSet="mdi" [fontIcon]="link.icon"></mat-icon>{{link.display}}
         </a>
     </nav>
 </div>

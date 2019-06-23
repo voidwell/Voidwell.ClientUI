@@ -9,7 +9,8 @@ import { Subscription } from 'rxjs';
 
 export class PlanetsideWorldActivityComponent implements OnDestroy {
     activity: any;
-    worldState: any;
+    alerts: any;
+    isLoading: boolean = false;
 
     vsClasses: any[];
     ncClasses: any[];
@@ -17,24 +18,52 @@ export class PlanetsideWorldActivityComponent implements OnDestroy {
     nsClasses: any[];
 
     activitySub: Subscription;
-    worldStateSub: Subscription;
+    alertsSub: Subscription;
 
     objectKeys = Object.keys;
 
     constructor(private parent: PlanetsideWorldComponent) {
+        let self = this;
+        this.isLoading = true;
+
         this.activitySub = this.parent.getActivity()
             .subscribe(activity => {
+                if (!activity) {
+                    return;
+                }
+                
                 this.activity = activity;
                 
                 this.vsClasses = this.activity.classStats.filter(t => t.profile.factionId === 1);
                 this.ncClasses = this.activity.classStats.filter(t => t.profile.factionId === 2);
                 this.trClasses = this.activity.classStats.filter(t => t.profile.factionId === 3);
                 this.nsClasses = this.activity.classStats.filter(t => t.profile.factionId === 4);
-            });
 
-        this.worldStateSub = this.parent.getWorldState()
-            .subscribe(worldState => {
-                this.worldState = worldState;
+                this.activity.topPlayers.map(function(player) {
+                    player.kdr = player.kills / (player.deaths > 0 ? player.deaths : 1);
+                    player.hsr = player.headshots / (player.kills > 0 ? player.kills : 1) * 100;
+                    player.isOnline = !!player.logoutDate;
+                    player.loginDate = player.loginDate ? new Date(player.loginDate) : null;
+                    player.logoutDate = player.logoutDate ? new Date(player.logoutDate) : new Date();
+
+                    let timespan = player.loginDate ? player.logoutDate - player.loginDate : null;
+
+                    player.kpm = player.kills / 60;
+                    player.sessionKpm = player.kills / (timespan / 60000);
+
+                    player.playTime = self.formatTimespan(timespan);
+                });
+
+                this.isLoading = false;
+            });
+        
+        this.alertsSub = this.parent.getAlerts()
+            .subscribe(alerts => {
+                if (alerts === null) {
+                    return;
+                }
+
+                this.alerts = alerts;
             });
     }
 
@@ -42,8 +71,24 @@ export class PlanetsideWorldActivityComponent implements OnDestroy {
         return value.replace(/([A-Z])/g, ' $1').replace(/^./, function(str){ return str.toUpperCase(); });
     }
 
+    formatTimespan(timespan: number) {
+        if (!timespan) {
+            return "";
+        }
+
+        let hours = Math.floor(timespan / 36e5);
+        let minutes = Math.floor((timespan % 36e5) / 60000);
+
+        let result = "";
+        if (hours > 0) {
+            result += `${hours}${hours > 1 ? "hrs" : "h"} `
+        }
+        
+        return result += `${minutes}mins`;
+    }
+
     ngOnDestroy() {
         this.activitySub.unsubscribe();
-        this.worldStateSub.unsubscribe();
+        this.alertsSub.unsubscribe();
     }
 }
