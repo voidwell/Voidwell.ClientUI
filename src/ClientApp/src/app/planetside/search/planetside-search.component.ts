@@ -26,6 +26,10 @@ export class PlanetsideSearchComponent implements OnDestroy {
 
     @HostListener('document:click', ['$event'])
     clickout(event) {
+        if (!this.searchService.searchFocused) {
+            return;
+        }
+
         if(!this.elementOrAncestorHasClass(event.target, 'top-search_dropdown') && !this.searchContainer.nativeElement.contains(event.target)) {
             this.searchService.onBlur();
         }
@@ -40,7 +44,7 @@ export class PlanetsideSearchComponent implements OnDestroy {
           if (parent === document) {
             break;
           }
-          if (parent.className.indexOf(className) >= 0) {
+          if (typeof parent.className === 'string' && parent.className.indexOf(className) >= 0) {
             return true;
           }
         } while (parent = parent.parentNode);

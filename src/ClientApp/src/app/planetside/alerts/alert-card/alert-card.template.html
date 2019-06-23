@@ -15,10 +15,16 @@
                         </div>
                         <div class="duration">Duration: {{(alert.endDate.getTime() - alert.startDate.getTime()) / 60000 | number:'.0-0'}} Minutes</div>
                     </div>
-                    <div class="pull-left">
+                    <div class="pull-left" *ngIf="!focusEvent">
                         <div class="title-text">{{alert.worldId | worldName}}</div>
                         <div class="title-subtext">
                             <div>{{alert.metagameEvent.name}}</div>
+                            <div>{{alert.zoneId | zoneName}}</div>
+                        </div>
+                    </div>
+                    <div class="pull-left" *ngIf="focusEvent">
+                        <div class="title-text">{{alert.metagameEvent.name}}</div>
+                        <div class="title-subtext">
                             <div>{{alert.zoneId | zoneName}}</div>
                         </div>
                     </div>
@@ -30,5 +36,5 @@
             <vw-faction-bar [vs]="alert.lastFactionVs" [nc]="alert.lastFactionNc" [tr]="alert.lastFactionTr" [neutural]="isNeuturalMetagame(alert)"></vw-faction-bar>
         </mat-card>
     </div>
-    <a mat-button routerLink="{{alert.worldId}}/{{alert.metagameInstanceId}}" class="card-link"></a>
+    <a mat-button routerLink="/ps2/alerts/{{alert.worldId}}/{{alert.metagameInstanceId}}" class="card-link"></a>
 </div>

@@ -99,7 +99,7 @@ export class WeaponTrackerComponent implements OnInit {
 
     graphHeight: any;
     graphWidth: any;
-    zoom: ZoomBehavior<Element, {}>;
+    zoom: ZoomBehavior<SVGRectElement, {}>;
     zoomRect: Selection<BaseType, {}, HTMLElement, any>;
     xExtent: [Date, Date];
     x: ScaleTime<number, number>;
@@ -283,7 +283,7 @@ export class WeaponTrackerComponent implements OnInit {
             .x(function (d) { return self.x(d.period); })
             .y(function (d) { return y(d.value); });
 
-        this.zoom = this.d3.zoom()
+        this.zoom = this.d3.zoom<SVGRectElement, {}>()
             .scaleExtent([1, 32])
             .translateExtent([[-this.graphWidth, -Infinity], [2 * this.graphWidth, Infinity]])
             .on('zoom', zoomed)

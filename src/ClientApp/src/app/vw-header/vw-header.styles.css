@@ -1,7 +1,6 @@
 .vw-header {
     user-select: none;
     padding: 40px 45px;
-    margin-bottom: 20px;
     display: block;
 
     -webkit-user-select: none;
@@ -28,18 +27,28 @@
     line-height: 50px;
     transition: all;
     transition-duration: 0.3s;
+    display: inline-block;
 }
     .logo img {
-        display: inline-block;
-        height: 16px;
+        display: block;
         position: relative;
         margin-right: 5px;
-        vertical-align: middle;
         line-height: 30px;
         color: #edeff0;
         font-weight: 700;
         font-size: 23px;
         opacity: 0.9;
+    }
+
+    .logo img.logo-image {
+        height: 28px;
+        margin-left: auto;
+        margin-right: auto;
+        margin-bottom: 5px;
+    }
+
+    .logo img.logo-text {
+        height: 12px;
     }
 
     .logo .logo-button {
@@ -66,6 +75,18 @@
     }
 
     .logo .logo-button {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: 0;
+    }
+
+    .logo img.logo-image {
+        height: 32px;
+    }
+
+    .logo .logo-text {
         display: none;
     }
 }
