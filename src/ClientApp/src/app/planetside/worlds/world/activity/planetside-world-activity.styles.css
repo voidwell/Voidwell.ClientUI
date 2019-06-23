@@ -2,24 +2,37 @@
     margin-top: 25px;
 }
 
+.align-left {
+    text-align: left !important;
+}
+
 .card-grid {
     display: flex;
     flex-wrap: wrap;
     margin: -15px;
 }
 
-.card {
+::ng-deep .card {
     flex: 1 1 auto;
     margin: 15px;
 }
 
-.card-row.card-row-stretch .mat-card {
+.card-row.card-row-stretch ::ng-deep .mat-card {
     flex: 1;
     margin-bottom: 10px;
 }
 
-.mat-card-title {
+::ng-deep .mat-card-title {
     font-size: 18px;
+}
+
+.alerts-list {
+    display: flex;
+    flex-flow: column;
+}
+
+vw-alert-card {
+    margin-bottom: 25px;
 }
 
 .zone-state {
@@ -154,4 +167,21 @@
 
 .experience-stats .experience-table-row {
     margin-bottom: 25px;
+}
+
+.weapon-name {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 150px;
+}
+
+.player-name {
+    display: inline-block;
+    vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 200px;
+    line-height: 16px;
 }

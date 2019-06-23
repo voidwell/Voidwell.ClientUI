@@ -1,33 +1,14 @@
-<div class="world-activity" *ngIf="worldState && activity">
-    <!--
-    <div class="card-grid">
-        <mat-card class="card">
-            <mat-card-title>Population</mat-card-title>
-            <mat-card-content>
-                TODO
-            </mat-card-content>
-        </mat-card>
+<vw-loader [loading]="isLoading"></vw-loader>
+<div class="world-activity" *ngIf="!isLoading && activity">
+    <div class="alerts-list">
+        <vw-alert-card [alert]="alert" [focusEvent]="'true'" *ngFor="let alert of alerts | orderBy: 'startDate'"></vw-alert-card>
     </div>
-    -->
+
+    <div>
+        <activity-population-card [data]="activity.historicalPopulations"></activity-population-card>
+    </div>
 
     <div class="card-grid">
-        <mat-card class="card zone-stats">
-            <mat-card-title>Continents</mat-card-title>
-            <mat-card-content>
-                <div class="world-zone-states">
-                    <div *ngFor="let zone of worldState.zoneStates" class="zone-state" >
-                        <div class="zone-name">{{zone.name}}</div>
-                        <div class="zone-populations">
-                            <span [ngClass]="1 | factionColor">{{zone.population.vs}}</span>
-                            <span [ngClass]="2 | factionColor">{{zone.population.nc}}</span>
-                            <span [ngClass]="3 | factionColor">{{zone.population.tr}}</span>
-                            <span [ngClass]="4 | factionColor">{{zone.population.ns}}</span>
-                        </div>
-                    </div>
-                </div>
-            </mat-card-content>
-        </mat-card>
-
         <mat-card class="card world-stats">
             <mat-card-title>Statistics</mat-card-title>
             <mat-card-content>
@@ -144,25 +125,33 @@
                         <th>TKs</th>
                         <th>Suicides</th>
                         <th>V.Kills</th>
-                        <th>Headshots</th>
                         <th>HSR</th>
+                        <th>KPM</th>
+                        <th>S.KPM</th>
+                        <th>Weapon</th>
+                        <th>Class</th>
+                        <th>Playtime</th>
                     </tr>
                     <tr *ngFor="let player of activity.topPlayers">
                         <td>
                             <a routerLink="/ps2/player/{{player.character.id}}" [ngClass]="player.character.factionId | factionColor">
                                 <span *ngIf="player.outfit && player.outfit.alias" class="outfit-tag">[{{player.outfit.alias}}]</span>
-                                <span class="player-name">{{player.character.name}}</span>
+                                <span class="player-name" title="{{player.character.name}}">{{player.character.name}}</span>
                                 <span class="battle-rank">(BR{{player.character.battleRank}}<span *ngIf="player.character.prestigeLevel > 0">~{{player.character.prestigeLevel}}</span>)</span>
                             </a>
                         </td>
                         <td>{{player.kills | number}}</td>
                         <td>{{player.deaths | number}}</td>
-                        <td>{{player.kills / (player.deaths > 0 ? player.deaths : 1) | number:'.2-2'}}</td>
+                        <td>{{player.kdr | number:'.2-2'}}</td>
                         <td>{{player.teamkills | number}}</td>
                         <td>{{player.suicides | number}}</td>
                         <td>{{player.vehicleKills | number}}</td>
-                        <td>{{player.headshots | number}}</td>
-                        <td>{{player.headshots / (player.kills > 0 ? player.kills : 1) * 100 | number:'.1-1'}}%</td>
+                        <td>{{player.hsr | number:'.1-1'}}%</td>
+                        <td>{{player.kpm | number:'.2-2'}}</td>
+                        <td>{{player.sessionKpm | number:'.2-2'}}</td>
+                        <td class="align-left weapon-name" title="{{player.topWeaponName}}">{{player.topWeaponName || "Unknown"}}</td>
+                        <td class="align-left">{{player.topLoadoutName || "Unknown"}}</td>
+                        <td class="align-left">{{player.playTime}}</td>
                     </tr>
                 </table>
             </div>
@@ -264,24 +253,26 @@
         <mat-card class="card experience-stats">
             <mat-card-title>Experience</mat-card-title>
             <mat-card-content>
-                <div class="experience-table-row" *ngFor="let stat of objectKeys(activity.topExperience)">
-                    <div>{{formatName(stat)}}</div>
-                    <div class="experience-table" *ngFor="let faction of objectKeys(activity.topExperience[stat])">
-                        <table>
-                            <tr>
-                                <th>Player</th>
-                                <th>Ticks</th>
-                            </tr>
-                            <tr *ngFor="let player of activity.topExperience[stat][faction]">
-                                <td>
-                                    <a routerLink="/ps2/player/{{player.characterId}}" [ngClass]="player.characterFactionId | factionColor">
-                                        <span class="player-name">{{player.characterName}}</span>
-                                        <span class="battle-rank">(BR{{player.characterBattleRank}}<span *ngIf="player.characterPrestigeLevel > 0">~{{player.characterPrestigeLevel}}</span>)</span>
-                                    </a>
-                                </td>
-                                <td>{{player.ticks}}</td>
-                            </tr>
-                        </table>
+                <div *ngIf="activity.topExperience">
+                    <div class="experience-table-row" *ngFor="let stat of objectKeys(activity.topExperience)">
+                        <div>{{formatName(stat)}}</div>
+                        <div class="experience-table" *ngFor="let faction of objectKeys(activity.topExperience[stat])">
+                            <table>
+                                <tr>
+                                    <th>Player</th>
+                                    <th>Ticks</th>
+                                </tr>
+                                <tr *ngFor="let player of activity.topExperience[stat][faction]">
+                                    <td>
+                                        <a routerLink="/ps2/player/{{player.characterId}}" [ngClass]="player.characterFactionId | factionColor">
+                                            <span class="player-name">{{player.characterName}}</span>
+                                            <span class="battle-rank">(BR{{player.characterBattleRank}}<span *ngIf="player.characterPrestigeLevel > 0">~{{player.characterPrestigeLevel}}</span>)</span>
+                                        </a>
+                                    </td>
+                                    <td>{{player.ticks}}</td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </mat-card-content>

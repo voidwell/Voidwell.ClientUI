@@ -8,6 +8,7 @@
 
 export class AlertCardComponent {
     @Input('alert') alert: any;
+    @Input('focusEvent') focusEvent: boolean;
 
     defaultAlertLengthMinutes = 45;
 

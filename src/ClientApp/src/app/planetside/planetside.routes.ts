@@ -111,6 +111,7 @@ const planetsideRoutes: Routes = [
                         path: 'map',
                         component: PlanetsideWorldMapComponent,
                         children: [
+                            { path: '', redirectTo: '2', pathMatch: 'full' },
                             { path: ':zoneId', component: PlanetsideWorldZoneComponent }
                         ]
                     }

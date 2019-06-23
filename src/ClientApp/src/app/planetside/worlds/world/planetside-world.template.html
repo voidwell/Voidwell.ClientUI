@@ -1,6 +1,60 @@
-﻿<mat-card class="world-card">
-    <mat-card-content>
-        <h1>{{worldId | worldName}}</h1>
+﻿<vw-loader [loading]="isLoading"></vw-loader>
+<mat-card class="world-card">
+    <mat-card-title>
+        <div class="world-state">
+            <mat-icon *ngIf="world && world.isOnline" fontSet="mdi" fontIcon="mdi-check-circle"></mat-icon>
+            <mat-icon *ngIf="!world || !world.isOnline" fontSet="mdi" fontIcon="mdi-close-circle" class="offline"></mat-icon>
+        </div>
+        <span class="world-name">{{worldId | worldName}}</span>
+    </mat-card-title>
+    <mat-card-content *ngIf="!isLoading && world" class="world-card-content">
+        <div class="zone-state" *ngFor="let zone of world.zoneStates">
+            <span class="zone-state-icon">
+                <mat-icon *ngIf="zone.isTracking" fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
+                <mat-icon *ngIf="!zone.isTracking" fontSet="mdi" fontIcon="mdi-earth-off" class="offline"></mat-icon>
+            </span>
+            <a class="zone-name" routerLink="{{world.id}}/map/{{zone.id}}">{{zone.name}}</a>
+            <span class="zone-state-icon">
+                <mat-icon *ngIf="zone.lockState && zone.lockState.state === 'LOCKED'" [ngClass]="zone.lockState.triggeringFaction | factionColor" [title]="zone.lockState.timestamp | date" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+                <mat-icon *ngIf="zone.alertState" class="zone-alert-icon" fontSet="mdi" fontIcon="mdi-alarm-light"></mat-icon>
+            </span>
+            <div class="zone-population">
+                <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
+                <span>{{zone.population.vs + zone.population.nc + zone.population.tr + zone.population.ns}}</span>
+                |
+                <span [ngClass]="1 | factionColor">{{zone.population.vs}}</span>
+                /
+                <span [ngClass]="2 | factionColor">{{zone.population.nc}}</span>
+                /
+                <span [ngClass]="3 | factionColor">{{zone.population.tr}}</span>
+                /
+                <span [ngClass]="4 | factionColor">{{zone.population.ns}}</span>
+            </div>
+            <div class="zone-state-description">
+                <div *ngIf="zone.lockState && zone.lockState.triggeringFaction !== 0">
+                    <span *ngIf="zone.lockState.state === 'LOCKED'">LOCKED</span>
+                    <span *ngIf="zone.lockState.state === 'UNLOCKED'">UNLOCKED</span>
+                    {{getMinutes(zone.lockState.timestamp) | number}} minutes ago.
+                </div>
+            </div>
+        </div>
+        <div class="zone-state total-zone-state">
+            <span class="zone-state-icon"></span>
+            <span class="zone-name"></span>
+            <span class="zone-state-icon"></span>
+            <div class="zone-population">
+                <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
+                <span>{{zoneTotal.vs + zoneTotal.nc + zoneTotal.tr + zoneTotal.ns}}</span>
+                |
+                <span [ngClass]="1 | factionColor">{{zoneTotal.vs}}</span>
+                /
+                <span [ngClass]="2 | factionColor">{{zoneTotal.nc}}</span>
+                /
+                <span [ngClass]="3 | factionColor">{{zoneTotal.tr}}</span>
+                /
+                <span [ngClass]="4 | factionColor">{{zoneTotal.ns}}</span>
+            </div>
+        </div>
     </mat-card-content>
     <mat-card-footer>
         <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
