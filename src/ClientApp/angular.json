@@ -49,7 +49,9 @@
                     "node_modules/leaflet/dist/leaflet.css"
                 ],
                 "scripts": [
-                    "node_modules/oidc-client/lib/oidc-client.js"
+                    "node_modules/oidc-client/lib/oidc-client.js",
+                    "node_modules/dynamics.js/lib/dynamics.min.js",
+                    "node_modules/tinycolor2/tinycolor.js"
                 ]
             },
             "configurations": {
