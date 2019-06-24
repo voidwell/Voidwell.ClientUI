@@ -24,7 +24,7 @@
 }
 
 .logo {
-    line-height: 52px;
+    height: 52px;
     display: inline-block;
     vertical-align: middle;
 }
@@ -60,7 +60,7 @@
 
     .logo img.logo-text {
         height: 12px;
-        display: none;
+        
     }
 
     .logo .logo-button {
