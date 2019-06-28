@@ -1,4 +1,23 @@
-﻿h1 {
+﻿/*
+.splash {
+    position: fixed;
+    background: #22313a;
+    z-index: 9999;
+    height: 100%;
+    width: 100%;
+    animation: fadeOutUpBig 5s;
+    transform: translate3d(0, -2000px, 0);
+}
+
+.splash img {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+*/
+
+h1 {
     font-size: 26px;
     margin: 0;
 }
