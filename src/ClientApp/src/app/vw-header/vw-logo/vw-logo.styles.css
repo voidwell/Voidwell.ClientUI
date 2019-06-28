@@ -1,0 +1,56 @@
+.vw-logo {
+    display: inline-block;
+    position: relative;
+    width: 130px;
+    text-align: center;
+}
+
+#clip-paths {
+    position: absolute;
+}
+
+img,
+.logo-wrapper {
+    display: inline-block;
+    position: relative;
+    margin-right: auto;
+    margin-left: auto;
+    line-height: 30px;
+    color: #edeff0;
+    font-weight: 700;
+    font-size: 23px;
+    opacity: 0.9;
+    vertical-align: middle;
+}
+
+.logo-wrapper {
+    height: 32px;
+    width: 79px;
+}
+
+.logo-image {
+    height: 32px;
+    fill: white;
+    fill-rule: evenodd;
+}
+
+.logo-text {
+    height: 12px;
+    
+}
+
+@media (max-width: 991px) {
+    .vw-logo {
+        position: absolute;
+        left: 0;
+        right: 0;
+        text-align: center;
+        margin: 0;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .logo-image {
+        height: 32px;
+    }
+}
