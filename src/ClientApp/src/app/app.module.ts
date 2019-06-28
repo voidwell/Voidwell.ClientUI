@@ -16,6 +16,7 @@ import { VoidwellApi } from './shared/services/voidwell-api.service';
 import { SearchService } from './shared/services/search.service';
 import { NavMenuService } from './shared/services/nav-menu.service';
 import { VWHeaderComponent } from './vw-header/vw-header.component';
+import { VWLogoComponent } from './vw-header/vw-logo/vw-logo.component';
 import { VWNavigationComponent } from './vw-navigation/vw-navigation.component';
 import { VWFooterComponent } from './vw-footer/vw-footer.component';
 import { VoidwellPipesModule } from './shared/pipes/voidwellpipes.modules';
@@ -28,6 +29,7 @@ import { AppComponent } from './app.component';
     declarations: [
         AppComponent,
         VWHeaderComponent,
+        VWLogoComponent,
         VWNavigationComponent,
         VWFooterComponent
     ],

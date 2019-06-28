@@ -29,40 +29,6 @@
     vertical-align: middle;
 }
 
-    .logo #clip-paths {
-        position: absolute;
-    }
-
-    .logo img,
-    .logo #header-logo {
-        display: inline-block;
-        position: relative;
-        margin-right: auto;
-        margin-left: auto;
-        line-height: 30px;
-        color: #edeff0;
-        font-weight: 700;
-        font-size: 23px;
-        opacity: 0.9;
-        vertical-align: middle;
-    }
-
-    .logo #header-logo {
-        height: 32px;
-        width: 79px;
-    }
-
-    .logo .logo-image {
-        height: 32px;
-        fill: white;
-        fill-rule: evenodd;
-    }
-
-    .logo img.logo-text {
-        height: 12px;
-        
-    }
-
     .logo .logo-button {
         display: inline-block;
         text-decoration: none;
@@ -180,20 +146,6 @@ ul.top-menu {
     .logo {
         width: 32px;
         margin: 0;
-    }
-
-    .logo .logo-image {
-        height: 32px;
-    }
-
-    .logo .logo-button {
-        position: absolute;
-        left: 0;
-        right: 0;
-        text-align: center;
-        margin: 0;
-        margin-left: auto;
-        margin-right: auto;
     }
 }
 
