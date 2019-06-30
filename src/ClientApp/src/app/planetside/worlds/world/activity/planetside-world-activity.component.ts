@@ -34,6 +34,10 @@ export class PlanetsideWorldActivityComponent implements OnDestroy {
                 
                 this.activity = activity;
                 
+                this.activity.activityPeriodStart = new Date(this.activity.activityPeriodStart);
+                this.activity.activityPeriodEnd = new Date(this.activity.activityPeriodEnd);
+                let activityDurationMinutes = (this.activity.activityPeriodEnd - this.activity.activityPeriodStart) / (60000);
+
                 this.vsClasses = this.activity.classStats.filter(t => t.profile.factionId === 1);
                 this.ncClasses = this.activity.classStats.filter(t => t.profile.factionId === 2);
                 this.trClasses = this.activity.classStats.filter(t => t.profile.factionId === 3);
@@ -45,13 +49,15 @@ export class PlanetsideWorldActivityComponent implements OnDestroy {
                     player.isOnline = !!player.logoutDate;
                     player.loginDate = player.loginDate ? new Date(player.loginDate) : null;
                     player.logoutDate = player.logoutDate ? new Date(player.logoutDate) : new Date();
+                    player.kpm = player.kills / activityDurationMinutes;
 
-                    let timespan = player.loginDate ? player.logoutDate - player.loginDate : null;
+                    let sessionDurationMs = player.loginDate ? player.logoutDate - player.loginDate : null;
 
-                    player.kpm = player.kills / 60;
-                    player.sessionKpm = player.kills / (timespan / 60000);
+                    if (player.sessionKills && player.sessionKills > 0) {
+                        player.sessionKpm = player.sessionKills / (sessionDurationMs / 60000);
+                    }
 
-                    player.playTime = self.formatTimespan(timespan);
+                    player.playTime = self.formatTimespan(sessionDurationMs);
                 });
 
                 this.isLoading = false;
