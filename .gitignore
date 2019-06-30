@@ -260,5 +260,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
-/src/ClientApp/package-lock.json
-/src/ClientApp/dist
+/src/package-lock.json
+/src/dist
