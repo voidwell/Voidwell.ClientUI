@@ -116,45 +116,47 @@
             <mat-card-title>Top Players</mat-card-title>
             <mat-card-content>
                 <div class="player-stats-table">
-                <table>
-                    <tr>
-                        <th>Name</th>
-                        <th>Kills</th>
-                        <th>Deaths</th>
-                        <th>KDR</th>
-                        <th>TKs</th>
-                        <th>Suicides</th>
-                        <th>V.Kills</th>
-                        <th>HSR</th>
-                        <th>KPM</th>
-                        <th>S.KPM</th>
-                        <th>Weapon</th>
-                        <th>Class</th>
-                        <th>Playtime</th>
-                    </tr>
-                    <tr *ngFor="let player of activity.topPlayers">
-                        <td>
-                            <a routerLink="/ps2/player/{{player.character.id}}" [ngClass]="player.character.factionId | factionColor">
-                                <span *ngIf="player.outfit && player.outfit.alias" class="outfit-tag">[{{player.outfit.alias}}]</span>
-                                <span class="player-name" title="{{player.character.name}}">{{player.character.name}}</span>
-                                <span class="battle-rank">(BR{{player.character.battleRank}}<span *ngIf="player.character.prestigeLevel > 0">~{{player.character.prestigeLevel}}</span>)</span>
-                            </a>
-                        </td>
-                        <td>{{player.kills | number}}</td>
-                        <td>{{player.deaths | number}}</td>
-                        <td>{{player.kdr | number:'.2-2'}}</td>
-                        <td>{{player.teamkills | number}}</td>
-                        <td>{{player.suicides | number}}</td>
-                        <td>{{player.vehicleKills | number}}</td>
-                        <td>{{player.hsr | number:'.1-1'}}%</td>
-                        <td>{{player.kpm | number:'.2-2'}}</td>
-                        <td>{{player.sessionKpm | number:'.2-2'}}</td>
-                        <td class="align-left weapon-name" title="{{player.topWeaponName}}">{{player.topWeaponName || "Unknown"}}</td>
-                        <td class="align-left">{{player.topLoadoutName || "Unknown"}}</td>
-                        <td class="align-left">{{player.playTime}}</td>
-                    </tr>
-                </table>
-            </div>
+                    <table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Top Class</th>
+                            <th>Kills</th>
+                            <th>Deaths</th>
+                            <th>KDR</th>
+                            <th>TKs</th>
+                            <th>Suicides</th>
+                            <th>V.Kills</th>
+                            <th>HSR</th>
+                            <th>KPM</th>
+                            <th>S.KPM</th>
+                            <th>Top Weapon</th>
+                            <th>Playtime</th>
+                        </tr>
+                        <tr *ngFor="let player of activity.topPlayers">
+                            <td>
+                                <a routerLink="/ps2/player/{{player.character.id}}" class="player-link" [ngClass]="player.character.factionId | factionColor" [title]="player.character.name">
+                                    <span *ngIf="player.outfit && player.outfit.alias" class="outfit-tag">[{{player.outfit.alias}}]</span>
+                                    <span class="player-name">{{player.character.name}}</span>
+                                    <span class="battle-rank">(BR{{player.character.battleRank}}<span *ngIf="player.character.prestigeLevel > 0">~{{player.character.prestigeLevel}}</span>)</span>
+                                </a>
+                            </td>
+                            <td>
+                                <img *ngIf="player.topProfileImageId" class="class-icon" [src]="player.topProfileImageId | dgcImageUrl" [alt]="player.topProfileName" [title]="player.topProfileName" />
+                            </td>
+                            <td>{{player.kills | number}}</td>
+                            <td>{{player.deaths | number}}</td>
+                            <td>{{player.kdr | number:'.2-2'}}</td>
+                            <td>{{player.teamkills | number}}</td>
+                            <td>{{player.suicides | number}}</td>
+                            <td>{{player.vehicleKills | number}}</td>
+                            <td>{{player.hsr | number:'.1-1'}}%</td>
+                            <td>{{player.kpm | number:'.2-2'}}</td>
+                            <td [title]="player.sessionKills">{{player.sessionKpm | number:'.2-2'}}</td>
+                            <td class="align-left weapon-name" title="{{player.topWeaponName}}">{{player.topWeaponName || "Unknown"}}</td>
+                            <td class="align-left">{{player.playTime}}</td>
+                        </tr>
+                    </table>
+                </div>
             </mat-card-content>
         </mat-card>
 
@@ -175,6 +177,7 @@
                             <th>V.Kills</th>
                             <th>HSR</th>
                             <th>Members</th>
+                            <th>Captures</th>
                         </tr>
                         <tr *ngFor="let outfit of activity.topOutfits">
                             <td>
@@ -192,7 +195,8 @@
                             <td>{{outfit.suicides | number}}</td>
                             <td>{{outfit.vehicleKills | number}}</td>
                             <td>{{outfit.headshots / (outfit.kills > 0 ? outfit.kills : 1) * 100 | number:'.1-1'}}%</td>
-                            <td>{{outfit.participantCount}}</td>
+                            <td>{{outfit.participantCount | number}}</td>
+                            <td>{{outfit.facilityCaptures | number}}</td>
                         </tr>
                     </table>
                 </div>
@@ -264,7 +268,7 @@
                                 </tr>
                                 <tr *ngFor="let player of activity.topExperience[stat][faction]">
                                     <td>
-                                        <a routerLink="/ps2/player/{{player.characterId}}" [ngClass]="player.characterFactionId | factionColor">
+                                        <a routerLink="/ps2/player/{{player.characterId}}" [ngClass]="player.characterFactionId | factionColor" [title]="player.characterName">
                                             <span class="player-name">{{player.characterName}}</span>
                                             <span class="battle-rank">(BR{{player.characterBattleRank}}<span *ngIf="player.characterPrestigeLevel > 0">~{{player.characterPrestigeLevel}}</span>)</span>
                                         </a>

@@ -25,14 +25,14 @@
                 <mat-cell *matCellDef="let outfit">{{outfit.participantCount | number}}</mat-cell>
             </ng-container>
 
+            <ng-container matColumnDef="captures">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>Captures</mat-header-cell>
+                <mat-cell *matCellDef="let outfit">{{outfit.facilityCaptures | number}}</mat-cell>
+            </ng-container>
+
             <ng-container matColumnDef="kills">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
                 <mat-cell *matCellDef="let outfit">{{outfit.kills | number}}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="vehicleKills">
-                <mat-header-cell *matHeaderCellDef mat-sort-header>V.Kills</mat-header-cell>
-                <mat-cell *matCellDef="let outfit">{{outfit.vehicleKills | number}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="deaths">
@@ -43,6 +43,11 @@
             <ng-container matColumnDef="kdr">
                 <mat-header-cell *matHeaderCellDef mat-sort-header>K/D</mat-header-cell>
                 <mat-cell *matCellDef="let outfit">{{outfit.kills / outfit.deaths | number: '.2-2'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="vehicleKills">
+                <mat-header-cell *matHeaderCellDef mat-sort-header>V.Kills</mat-header-cell>
+                <mat-cell *matCellDef="let outfit">{{outfit.vehicleKills | number}}</mat-cell>
             </ng-container>
 
             <ng-container matColumnDef="tks">
@@ -65,8 +70,8 @@
                 <mat-cell *matCellDef="let outfit">{{outfit.headshots / outfit.kills * 100 | number: '.0-0'}}</mat-cell>
             </ng-container>
 
-            <mat-header-row *matHeaderRowDef="['idx','name','participants','kills','vehicleKills','deaths','kdr','tks','suicides','headshots','hsper']"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: ['idx','name','participants','kills','vehicleKills','deaths','kdr','tks','suicides','headshots','hsper'];"></mat-row>
+            <mat-header-row *matHeaderRowDef="['idx','name','participants','captures','kills','deaths','kdr','vehicleKills','tks','suicides','headshots','hsper']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['idx','name','participants','captures','kills','deaths','kdr','vehicleKills','tks','suicides','headshots','hsper'];"></mat-row>
         </mat-table>
     </div>
 

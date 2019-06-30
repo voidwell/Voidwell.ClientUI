@@ -76,6 +76,7 @@ export class TableDataSource extends DataSource<any> {
                 case 'headshots': [propertyA, propertyB] = [a.headshots, b.headshots]; break;
                 case 'hsper': [propertyA, propertyB] = [(a.headshots / a.kills), (b.headshots / b.kills)]; break;
                 case 'participants': [propertyA, propertyB] = [a.participantCount, b.participantCount]; break;
+                case 'captures': [propertyA, propertyB] = [a.facilityCaptures, b.facilityCaptures]; break;
             }
 
             let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
