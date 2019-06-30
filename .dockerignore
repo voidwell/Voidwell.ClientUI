@@ -4,7 +4,7 @@
 .gitattributes
 Dockerfile
 Dockerfile.debug
-/src/ClientApp/node_modules
-/src/ClientApp/dist
-/src/ClientApp/out-tsc
-/src/ClientApp/assets
+/src/node_modules
+/src/dist
+/src/out-tsc
+/src/assets

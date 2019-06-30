@@ -9,12 +9,12 @@ RUN apk update \
 
 WORKDIR /app
 
-COPY ./src/ClientApp/package.json /app/package.json
+COPY ./src/package.json /app/package.json
 RUN npm install
 
-COPY ./src/ClientApp/*.json /app/
+COPY ./src/*.json /app/
 
-COPY ./src/ClientApp/src /app/src
+COPY ./src/src /app/src
 
 RUN npm run build:prod
 
@@ -29,7 +29,7 @@ ENV NODE_ENV=production
 RUN yarn add express
 
 COPY --from=build-env /app/dist ./dist
-COPY ./src/ClientApp/server .
+COPY ./src/server .
 
 EXPOSE 5000
 
