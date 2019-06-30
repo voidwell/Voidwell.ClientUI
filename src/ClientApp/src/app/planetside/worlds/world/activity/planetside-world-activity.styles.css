@@ -176,12 +176,22 @@ vw-alert-card {
     max-width: 150px;
 }
 
+.player-link {
+    white-space: nowrap;
+}
+
 .player-name {
     display: inline-block;
     vertical-align: middle;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    max-width: 200px;
     line-height: 16px;
+    max-width: 140px;
+}
+
+.player-stats-table .class-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.5;
 }
