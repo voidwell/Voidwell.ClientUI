@@ -4,6 +4,7 @@
   "version": "0.0.0",
   "scripts": {
     "lint": "ng lint",
+    "analyze": "ng build --prod --stats-json && webpack-bundle-analyzer dist/stats.json",
     "start:dev": "npm rebuild node-sass | ng serve",
     "start:prod": "npm rebuild node-sass | node server.js",
     "build:dev": "npm rebuild node-sass | ng build --dev",
@@ -51,7 +52,8 @@
     "codelyzer": "4.5.0",
     "tslint": "5.8.0",
     "typescript": "3.1.3",
-    "@angular-devkit/build-angular": "0.11.3"
+    "@angular-devkit/build-angular": "0.11.3",
+    "webpack-bundle-analyzer": "3.3.2"
   },
   "resolutions": {
     "d3-selection": "1.3.0"
