@@ -71,22 +71,22 @@ export class PlanetsidePlayerVehiclesComponent implements OnDestroy {
             }
         });
 
-        for (var k = 0; k < vehicles.length; k++) {
-            if (vehicles[k].id === this.vehicleId) {
-                this.vehicle = vehicles[k];
-                break;
-            }
-        }
-
         this.vehicles = vehicles.sort(this.sortVehicles);
         this.vehiclesDataSource = new VehiclesDataSource(this.vehicles);
     }
 
     private setupVehicle(vehicleId) {
+        for (var k = 0; k < this.vehicles.length; k++) {
+            if (this.vehicles[k].id === vehicleId) {
+                this.vehicle = this.vehicles[k];
+                break;
+            }
+        }
+
         for (var w = 0; w < this.playerData.weaponStats.length; w++) {
             let weapon = this.playerData.weaponStats[w];
 
-            if (weapon.vehicleId === this.vehicleId) {
+            if (weapon.vehicleId === vehicleId) {
                 this.vehicleWeapons.push(weapon);
             }
         }
