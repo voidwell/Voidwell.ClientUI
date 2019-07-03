@@ -10,7 +10,8 @@
                                       [checked]="service.isEnabled"
                                       [disabled]="service.isLoading"
                                       (change)="onServiceUpdate(service, $event)">
-                    {{service.name}}
+                    <span *ngIf="service.originator">({{service.originator}})</span>
+                    <span>{{service.name}}</span>
                     </mat-slide-toggle>
                 </mat-card-title>
             </mat-card-header>
