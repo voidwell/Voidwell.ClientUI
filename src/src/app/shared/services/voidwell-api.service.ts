@@ -152,12 +152,14 @@ export class VoidwellApi extends ApiBase {
         return this.AuthGet(this.ps2Url + 'services/' + service + '/status');
     }
 
-    enablePS2Service(service: string) {
-        return this.AuthPost(this.ps2Url + 'services/' + service + '/enable', null);
+    enablePS2Service(service: string, originator: string) {
+        let url = `${this.ps2Url}services/${service}/enable${originator ? '?platform=' + originator : ''}`;
+        return this.AuthPost(url, null);
     }
 
-    disablePS2Service(service: string) {
-        return this.AuthPost(this.ps2Url + 'services/' + service + '/disable', null);
+    disablePS2Service(service: string, originator: string) {
+        let url = `${this.ps2Url}services/${service}/disable${originator ? '?platform=' + originator : ''}`;
+        return this.AuthPost(url, null);
     }
 
     setupWorldZones(worldId: string) {

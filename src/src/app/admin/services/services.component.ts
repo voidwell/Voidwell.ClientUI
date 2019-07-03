@@ -37,9 +37,9 @@ export class ServicesComponent {
         let serviceRequest: Observable<any> = null;
 
         if (event.checked) {
-            serviceRequest = this.api.enablePS2Service(service.name);
+            serviceRequest = this.api.enablePS2Service(service.name, service.originator);
         } else {
-            serviceRequest = this.api.disablePS2Service(service.name);
+            serviceRequest = this.api.disablePS2Service(service.name, service.originator);
         }
 
         serviceRequest
