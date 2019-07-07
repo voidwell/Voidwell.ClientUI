@@ -18,6 +18,11 @@
         id: 3,
         code: 'tr',
         name: 'Terran Republic'
+    },
+    4: {
+        id: 4,
+        code: 'ns',
+        name: 'Nanite Systems Operative'
     }
 };
 
@@ -56,5 +61,10 @@ export const FacilityTypes = {
         id: 8,
         name: 'Interlink Facility',
         code: 'interlink_facility'
+    },
+    9: {
+        id: 9,
+        name: 'Construction Outpost',
+        code: 'construction_outpost'
     }
 };
