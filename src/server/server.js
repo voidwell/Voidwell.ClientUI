@@ -1,22 +1,23 @@
-﻿var express = require('express');
-var path = require('path');
+const express = require('express');
+const path = require('path');
 
-var isProduction = process.env.NODE_ENV === 'production';
-var port = 5000;
+const port = process.env.SERVER_PORT || 5000;
 
-var app = express();
+const app = express();
 
-var distPath = path.resolve(__dirname, './dist');
-var publicPath = path.resolve(__dirname, './public');
+const distPath = path.resolve(__dirname, './dist');
+const publicPath = path.resolve(__dirname, './public');
+
+const fallbackPage = path.join(distPath, 'index.html');
 
 app.use('/files', express.static(publicPath));
 
 app.use(express.static(distPath));
 
 app.route('/*').get(function(req, res) {
-    return res.sendFile(path.join(distPath, 'index.html'));
+    return res.sendFile(fallbackPage);
 });
 
 app.listen(port, function() {
-    console.log('Server running on port ' + port);
+    console.log(`Server running on port ${port}`);
 });
