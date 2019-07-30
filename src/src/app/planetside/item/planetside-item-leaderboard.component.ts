@@ -50,7 +50,7 @@ export class PlanetsideItemLeaderboardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.weaponDataSub.unsubscribe();
+        if (this.weaponDataSub) this.weaponDataSub.unsubscribe();
     }
 }
 
@@ -96,6 +96,10 @@ export class TableDataSource extends DataSource<any> {
                 case 'aga': [propertyA, propertyB] = [a.aga, b.aga]; break;
                 case 'accuracy': [propertyA, propertyB] = [(a.shotsHit / a.shotsFired), (b.shotsHit / b.shotsFired)]; break;
                 case 'accuracyDelta': [propertyA, propertyB] = [a.accuracyDelta, b.accuracyDelta]; break;
+                case 'hsr': [propertyA, propertyB] = [(a.headshots / a.kills), (b.headshots / b.kills)]; break;
+                case 'hsrDelta': [propertyA, propertyB] = [a.hsrDelta, b.hsrDelta]; break;
+                case 'kph': [propertyA, propertyB] = [(a.kills / (a.playTime / 3600)), (b.kills / (b.playTime / 3600))]; break;
+                case 'kphDelta': [propertyA, propertyB] = [a.kphDelta, b.kphDelta]; break;
             }
 
             let valueA = isNaN(+propertyA) ? propertyA : +propertyA;
