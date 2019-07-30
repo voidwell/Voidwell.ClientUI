@@ -21,6 +21,7 @@ export interface IModuleState {
 export class PlanetsideWrapperComponent implements OnDestroy {
     private queryWait: any;
     private activeSelection: any;
+    private activePlatform: string = 'pc';
 
     private searchSub: Subscription;
     private resultSub: Subscription;
@@ -30,8 +31,9 @@ export class PlanetsideWrapperComponent implements OnDestroy {
         let store = this.ngRedux.configureSubStore(['ps2'], reducers);
         store.dispatch({ type: INIT_PLATFORM });
 
-        this.platformSub = store.select('platform').subscribe(platformState => {
-            if (platformState) {
+        this.platformSub = store.select('platform').subscribe((platformState: any) => {
+            if (platformState && this.activePlatform !== platformState.platform) {
+                this.activePlatform = platformState.platform;
                 this.router.navigateByUrl('ps2');
             }
         });

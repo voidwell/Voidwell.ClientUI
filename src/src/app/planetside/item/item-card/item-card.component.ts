@@ -29,6 +29,6 @@ export class ItemCardComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy() {
-        this.itemDataSub.unsubscribe();
+        if (this.itemDataSub) this.itemDataSub.unsubscribe();
     }
 }
