@@ -18,7 +18,7 @@ import { MatSelectChange } from '@angular/material';
 
 export class PlanetsidePlatformControl implements OnInit, OnDestroy {
     private platformSub: Subscription;
-    private selectedValue: any;
+    public selectedValue: any;
 
     @select('platform') readonly platform$: Observable<any>;
 
