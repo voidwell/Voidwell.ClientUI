@@ -13,6 +13,7 @@ import { PlanetsideApi } from './shared/services/planetside-api.service';
 import { PerformanceGrades } from './shared/services/performance-grades.service';
 import { PlanetsideWrapperComponent } from './planetsidewrapper.component';
 import { PlanetsideSearchComponent } from './search/planetside-search.component';
+import { PlanetsidePlatformControl } from './search/platform-control/platform-control.component';
 import { PlanetsideCombatEventComponent } from './combat-event/planetside-combat-event.component';
 import { PlanetsideNewsComponent } from './news/planetside-news.component';
 import { NewsCardComponent } from './news/news-card/news-card.component';
@@ -74,6 +75,7 @@ import { PlanetsideMapSimulatorComponent } from './map-explorer//map-simulator/m
         FactionBarComponent,
         PlanetsideWrapperComponent,
         PlanetsideSearchComponent,
+        PlanetsidePlatformControl,
         PlanetsideCombatEventComponent,
         PlanetsideNewsComponent,
         NewsCardComponent,

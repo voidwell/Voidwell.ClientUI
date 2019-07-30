@@ -1,13 +1,15 @@
-﻿import { Pipe, PipeTransform } from '@angular/core';
+﻿import { Pipe, PipeTransform, OnDestroy } from '@angular/core';
 import { WorldService } from './../services/world-service.service';
+import { Subscription } from 'rxjs';
 
 @Pipe({ name: 'worldName', pure: false })
 
-export class WorldNamePipe implements PipeTransform {
+export class WorldNamePipe implements PipeTransform, OnDestroy {
     private worlds;
+    private worldSub: Subscription;
 
     constructor(private worldService: WorldService) {
-        this.worldService.Worlds.subscribe(worlds => this.worlds = worlds);
+        this.worldSub = this.worldService.Worlds.subscribe(worlds => this.worlds = worlds);
     }
 
     transform(worldId: any): string {
@@ -27,5 +29,9 @@ export class WorldNamePipe implements PipeTransform {
         }
 
         return null;
+    }
+
+    ngOnDestroy(): void {
+        if (this.worldSub) this.worldSub.unsubscribe();
     }
 }
