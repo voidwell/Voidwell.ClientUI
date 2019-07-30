@@ -1,0 +1,21 @@
+<div class="platform-control">
+    <mat-select class="platform-dropdown"
+        (selectionChange)="onValueChange($event)"
+        [(value)]="selectedValue"
+        panelClass="platform-dropdown">
+        <mat-select-trigger>
+            <mat-icon fontSet="mdi" fontIcon="mdi-windows" *ngIf="selectedValue==='pc'"></mat-icon>
+            <mat-icon fontSet="mdi" fontIcon="mdi-playstation" *ngIf="selectedValue==='ps4us' || selectedValue==='ps4eu'"></mat-icon>
+            <span>{{selectedValue | uppercase}}</span>
+        </mat-select-trigger>
+        <mat-option value="pc">
+            <mat-icon fontSet="mdi" fontIcon="mdi-windows"></mat-icon>PC
+        </mat-option>
+        <mat-option value="ps4us">
+            <mat-icon fontSet="mdi" fontIcon="mdi-playstation"></mat-icon>PS4-US
+        </mat-option>
+        <mat-option value="ps4eu">
+            <mat-icon fontSet="mdi" fontIcon="mdi-playstation"></mat-icon>PS4-EU
+        </mat-option>
+    </mat-select>
+</div>
