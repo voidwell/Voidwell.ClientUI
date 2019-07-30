@@ -1,8 +1,15 @@
-﻿import { Component, EventEmitter, ViewEncapsulation, OnDestroy } from '@angular/core';
+﻿import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgRedux } from '@angular-redux/store';
 import { Subscription } from 'rxjs';
 import { PlanetsideApi } from './shared/services/planetside-api.service';
 import { SearchService, SearchState } from './../shared/services/search.service';
+import reducers from './planetside.reducers';
+import { IPlatformState, INIT_PLATFORM } from './reducers';
+
+export interface IModuleState {
+    platform: IPlatformState;
+};
 
 @Component({
     selector: 'voidwell-planetside-wrapper',
@@ -17,8 +24,18 @@ export class PlanetsideWrapperComponent implements OnDestroy {
 
     private searchSub: Subscription;
     private resultSub: Subscription;
+    private platformSub: Subscription;
 
-    constructor(private api: PlanetsideApi, private router: Router, private searchService: SearchService) {
+    constructor(private api: PlanetsideApi, private router: Router, private searchService: SearchService, private ngRedux: NgRedux<IModuleState>) {
+        let store = this.ngRedux.configureSubStore(['ps2'], reducers);
+        store.dispatch({ type: INIT_PLATFORM });
+
+        this.platformSub = store.select('platform').subscribe(platformState => {
+            if (platformState) {
+                this.router.navigateByUrl('ps2');
+            }
+        });
+
         let searchPlaceholder = 'Search for players, outfits, and weapons';
         searchService.attach(searchPlaceholder);
 
@@ -63,5 +80,6 @@ export class PlanetsideWrapperComponent implements OnDestroy {
         this.searchService.detach();
         this.searchSub.unsubscribe();
         this.resultSub.unsubscribe();
+        if (this.platformSub) this.platformSub.unsubscribe();
     }
 }

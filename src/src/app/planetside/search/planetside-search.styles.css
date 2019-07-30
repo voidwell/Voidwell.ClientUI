@@ -3,10 +3,19 @@
 }
 
 .top-search-container {
-    background: #2b3942;
+    margin-left: 130px;
+    white-space: nowrap;
 
     transition: all;
     transition-duration: 0.3s;
+}
+::ng-deep .search-results {
+    margin-right: 150px;
+}
+
+.top-search-container,
+.platform-control {
+    background: #2b3942;
 }
 
 .top-search_input,
@@ -26,10 +35,6 @@
     .search.focus .top-search_reset:after {
         transform: scale(1) rotate(0);
     }
-
-.top-search_input-container {
-    margin-left: 150px;
-}
 
 .top-search_input {
     border: 0;
@@ -71,6 +76,7 @@
 }
 
 .top-search_reset {
+    position: relative;
     font-size: 20px;
     color: #b4bfc3;
     cursor: pointer;
@@ -131,7 +137,8 @@
 }
 
 
-.top-search_dropdown {
+.top-search_dropdown,
+.platform-control {
     border: 0;
     height: 50px;
     padding: 15px 0 15px 0;
@@ -147,11 +154,18 @@
     font-weight: bold;
 }
 
-.top-search_dropdown ::ng-deep .mat-select-arrow-wrapper {
-    visibility: hidden;
+.platform-control {
+    width: 110px;
 }
 
-.top-search_dropdown ::ng-deep .mat-select-value-text {
+.top-search_dropdown ::ng-deep .mat-select-arrow-wrapper *,
+.platform-control ::ng-deep .mat-select-arrow-wrapper * {
+    visibility: hidden;
+    border: none;
+}
+
+.top-search_dropdown ::ng-deep .mat-select-value-text,
+.platform-control ::ng-deep .mat-select-value-text {
     color: #b4bfc3;
 }
 
