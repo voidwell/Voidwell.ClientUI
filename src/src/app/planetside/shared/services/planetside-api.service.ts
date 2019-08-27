@@ -69,7 +69,7 @@ export class PlanetsideApi extends ApiBase implements OnDestroy {
     }
 
     getAllProfiles() {
-        return this.Get(`${this.ps2Url}profile}`, true);
+        return this.Get(`${this.ps2Url}profile`, true);
     }
 
     getAllVehicles() {
