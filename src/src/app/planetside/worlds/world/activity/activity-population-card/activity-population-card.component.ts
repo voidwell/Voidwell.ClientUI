@@ -218,7 +218,7 @@ export class ActivityPopulationCardComponent implements OnChanges {
     }
 
     private updateData() {
-        let d3 = this.d3;
+        let d3 = this.d3; // Unused
 
         this.svgContainer.selectAll('path').remove();
 
@@ -264,7 +264,7 @@ export class ActivityPopulationCardComponent implements OnChanges {
     }
 
     private updateAxis() {
-        let d3 = this.d3;
+        let d3 = this.d3; // Unused
 
         this.createAxis();
 

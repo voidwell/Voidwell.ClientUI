@@ -1,6 +1,6 @@
-﻿import { Component, OnDestroy } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
 @Component({

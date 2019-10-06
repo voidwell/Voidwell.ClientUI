@@ -1,6 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
 import { Subscription } from 'rxjs';
-import { Factions } from './../shared/configs';
 import { ZoneService } from '../shared/services/zone-service.service';
 
 @Component({

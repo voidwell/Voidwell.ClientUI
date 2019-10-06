@@ -1,6 +1,6 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { VoidwellApi } from './../../../shared/services/voidwell-api.service';
 import { PlanetsideCombatEventComponent } from './../../combat-event/planetside-combat-event.component';
