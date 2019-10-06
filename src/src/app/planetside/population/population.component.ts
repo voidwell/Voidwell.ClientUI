@@ -2,8 +2,8 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { MatButtonToggleChange } from '@angular/material';
-import { Observable, Subscription, throwError, of } from 'rxjs';
-import { catchError, finalize, startWith, map, tap } from 'rxjs/operators';
+import { throwError } from 'rxjs';
+import { catchError, finalize } from 'rxjs/operators';
 import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale, ScaleOrdinal } from 'd3-ng2-service';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
 import { WorldService } from '../shared/services/world-service.service';

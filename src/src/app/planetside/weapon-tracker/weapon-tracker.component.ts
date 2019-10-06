@@ -2,7 +2,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material';
-import { Observable, Subscription, throwError, of } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { catchError, finalize, startWith, map, tap } from 'rxjs/operators';
 import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale, ScaleOrdinal } from 'd3-ng2-service';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';

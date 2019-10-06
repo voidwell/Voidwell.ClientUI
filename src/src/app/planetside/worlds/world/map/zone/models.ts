@@ -1,6 +1,6 @@
-﻿import { latLng, polyline, Map, LatLng, Polygon, Polyline, Marker, PolylineOptions, MarkerOptions, PathOptions } from 'leaflet';
+﻿import { latLng, polyline, Map, LatLng, Polygon, Polyline, Marker, PolylineOptions, MarkerOptions } from 'leaflet';
 import { Factions } from './../../../../shared/configs';
-import { RegionStyles, LatticeStyles, FactionColors } from './zone-configs';
+import { RegionStyles, LatticeStyles } from './zone-configs';
 
 export class VertexPoint {
     x: number;

@@ -1,5 +1,4 @@
-﻿import { divIcon, DivIcon, Map, DivIconOptions } from 'leaflet';
-import { ZoneRegion, ZoneFacility, LatticeLink } from './zone/models';
+﻿import { divIcon, DivIcon, DivIconOptions } from 'leaflet';
 import { FacilityTypes, Factions } from './../../../shared/configs';
 
 export class WorldMaps {
