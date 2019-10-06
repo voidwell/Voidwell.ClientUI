@@ -1,6 +1,4 @@
-﻿import { Observable } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
-import { HttpClient } from '@angular/common/http';
+﻿import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { VoidwellAuthService } from './../../../shared/services/voidwell-auth.service';
 import { RequestCache } from './../../../shared/services/request-cache.service';

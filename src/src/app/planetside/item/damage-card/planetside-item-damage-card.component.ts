@@ -1,5 +1,5 @@
 ﻿import { Component, Input, OnInit, ElementRef, ViewEncapsulation } from '@angular/core';
-import { D3Service, D3, Selection } from 'd3-ng2-service';
+import { D3Service, D3 } from 'd3-ng2-service';
 
 @Component({
     selector: 'planetside-item-damage-card',

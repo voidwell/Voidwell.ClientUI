@@ -2,7 +2,7 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable } from '@angular/material';
-import { Observable, Observer, Subscriber, Subscription, of, merge, throwError } from 'rxjs';
+import { Observable, Subscription, of, merge, throwError } from 'rxjs';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
@@ -44,7 +44,7 @@ export class PlanetsideOutfitComponent implements OnDestroy {
                 .subscribe(data => {
                     this.outfitData = data;
 
-                    let alias = data.alias ? '[' + data.alias + '] ' : '';
+                    let alias = data.alias ? '[' + data.alias + '] ' : ''; // Unused
                 });
 
             this.api.getOutfitMembers(id)

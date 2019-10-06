@@ -1,6 +1,5 @@
 ﻿import { Input, Component, OnInit, OnDestroy, EventEmitter } from '@angular/core';
 import { Observable, Subscription, BehaviorSubject, interval} from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Component({
     selector: 'zone-replay-map',
