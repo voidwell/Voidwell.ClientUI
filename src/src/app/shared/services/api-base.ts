@@ -1,6 +1,6 @@
 ﻿import { Observable, throwError, of } from 'rxjs';
 import { timeout, catchError, tap } from 'rxjs/operators';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { VoidwellAuthService } from './../services/voidwell-auth.service';
 import { RequestCache } from './../services/request-cache.service';

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
+﻿import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatSort, MatSortable, MatPaginator } from '@angular/material';
 import { Observable, Subscription, of, merge } from 'rxjs';

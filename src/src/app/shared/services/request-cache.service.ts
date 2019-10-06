@@ -14,7 +14,7 @@ export class RequestCache {
         }
 
         const isExpired = cached.lastRead < (Date.now() - maxAge);
-        const expired = isExpired ? 'expired ' : '';
+        const expired = isExpired ? 'expired ' : ''; // Unused
         return cached.response;
     }
 

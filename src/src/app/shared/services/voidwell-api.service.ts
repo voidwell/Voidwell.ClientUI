@@ -1,10 +1,9 @@
 ﻿import { Observable } from 'rxjs';
-import { map, timeout, catchError } from 'rxjs/operators';
+import { map, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { NgRedux } from '@angular-redux/store';
 import { IAppState } from './../../app.component';
 import { Injectable } from '@angular/core';
-import * as actionType from './../../reducers';
 import { VoidwellAuthService } from './../services/voidwell-auth.service';
 import { ApiBase } from './api-base';
 import { RequestCache } from './../services/request-cache.service';
