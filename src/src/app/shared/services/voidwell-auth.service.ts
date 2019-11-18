@@ -6,7 +6,7 @@ import { take } from 'rxjs/operators';
 import { NgRedux } from '@angular-redux/store';
 import { UserManager, UserManagerSettings, Log } from 'oidc-client';
 import { IAppState } from '../../app.component';
-import { LOAD_USER, UNLOAD_USER, RENEW_TOKEN, RENEW_TOKEN_FAILED, IS_ADMIN } from '../../reducers';
+import { LOAD_USER, UNLOAD_USER, RENEW_TOKEN, IS_ADMIN } from '../../reducers';
 import { VoidwellApi } from './voidwell-api.service';
 
 @Injectable()

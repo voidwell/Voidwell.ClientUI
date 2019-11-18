@@ -1,15 +1,14 @@
 ﻿import { Component, Input, Output, OnInit, OnDestroy, OnChanges, EventEmitter } from '@angular/core';
-import { Subscription, Observable, throwError, Subscribable } from 'rxjs';
+import { Subscription, Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import {
-    Map, tileLayer, latLng, MapOptions, latLngBounds, LatLngBounds, CRS, Layer, polygon, Polygon, PolylineOptions, LatLng,
-    icon, IconOptions, marker, MarkerOptions, TooltipOptions, Marker, DivIcon, DivIconOptions, divIcon, Polyline, polyline
+    Map, tileLayer, latLng, MapOptions, latLngBounds, LatLngBounds, CRS, PolylineOptions,
+    MarkerOptions, TooltipOptions
 } from 'leaflet';
 import { VertexPoint, VertexLine, ZoneRegion, ZoneFacility, LatticeLink } from './models';
 import { Factions, FacilityTypes } from './../configs';
 import { ZoneHelper, ZoneMap } from './../../shared/services/zone-helper.service';
 import { ZoneService } from '../services/zone-service.service';
-import { MapOperator } from 'rxjs/internal/operators/map';
 
 @Component({
     selector: 'ps2-zone-map',
@@ -333,8 +332,8 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             for (var hexIdx in hexs) {
                 var hex = hexs[hexIdx];
 
-                var xCord = hex.x;
-                var yCord = hex.y;
+                var xCord = hex.x; // Unused
+                var yCord = hex.y; // Unused
 
                 var x = (2 * hex.x + hex.y) / 2 * width;
 

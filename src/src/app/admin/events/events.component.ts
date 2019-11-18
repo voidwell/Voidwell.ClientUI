@@ -1,6 +1,5 @@
 ﻿import { Component, OnDestroy, Inject, OnInit, OnChanges } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { ActivatedRoute } from '@angular/router';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -144,7 +143,7 @@ export class EventEditorDialog implements OnInit, OnChanges {
     }
 
     ngOnChanges() {
-        let self = this;
+        let self = this; // Unused
 
         this.form.reset({
             id: this.event.id

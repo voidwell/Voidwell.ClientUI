@@ -1,7 +1,7 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, FormArray, FormControl } from '@angular/forms';
-import { Subscription, Observable, throwError } from 'rxjs';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
+import { Subscription, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { VoidwellApi } from './../../../../shared/services/voidwell-api.service';
 

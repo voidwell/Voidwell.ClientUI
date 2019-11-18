@@ -1,5 +1,4 @@
 ﻿import { Component, OnInit } from '@angular/core';
-import { Observable, Subscription } from 'rxjs';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
 @Component({

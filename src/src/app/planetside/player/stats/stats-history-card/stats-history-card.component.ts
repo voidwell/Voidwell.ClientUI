@@ -1,5 +1,5 @@
 ﻿import { Component, Input, OnInit, OnDestroy, ElementRef, ViewChild } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { D3Service, D3 } from 'd3-ng2-service';
 
@@ -180,7 +180,7 @@ export class StatsHistoryCardComponent implements OnInit, OnDestroy {
         this.maxAreaValue = d3.max<number>(this.activeConfig.area.map(d => d3.max(this.activeData.map(a => d.value(a)))));
         this.maxLineValue = d3.max<number>(this.activeData.map(a => this.activeConfig.line.value(a)));
 
-        this.svg = d3.select(this.element.nativeElement)
+        this.svg = d3.select(this.element.nativeElement);
 
         this.height = this.element.nativeElement.offsetHeight;
         this.width = this.element.nativeElement.offsetWidth;

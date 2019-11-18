@@ -1,8 +1,7 @@
 ﻿import { Observable, Subscription } from 'rxjs';
-import { map, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { WithSubStore, select, dispatch } from '@angular-redux/store';
+import { WithSubStore, select } from '@angular-redux/store';
 import { VoidwellAuthService } from './../../../shared/services/voidwell-auth.service';
 import { RequestCache } from './../../../shared/services/request-cache.service';
 import { ApiBase } from './../../../shared/services/api-base';
@@ -69,7 +68,7 @@ export class PlanetsideApi extends ApiBase implements OnDestroy {
     }
 
     getAllProfiles() {
-        return this.Get(`${this.ps2Url}profile}`, true);
+        return this.Get(`${this.ps2Url}profile`, true);
     }
 
     getAllVehicles() {

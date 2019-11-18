@@ -22,7 +22,7 @@ export class VWHeaderComponent implements OnInit {
     }
 
     ngOnInit() {
-        let self = this;
+        let self = this; // Unused
         
         this.userState = this.ngRedux.select('loggedInUser');
         this.userState.subscribe(user => {

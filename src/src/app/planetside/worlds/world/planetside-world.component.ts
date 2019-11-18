@@ -1,6 +1,6 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, Subscription, BehaviorSubject, interval, merge, timer } from 'rxjs';
+import { Observable, Subscription, BehaviorSubject, timer } from 'rxjs';
 import { PlanetsideApi } from './../../shared/services/planetside-api.service';
 import { WorldNamePipe } from './../../shared/pipes';
 import { mergeMapTo } from 'rxjs/operators';
