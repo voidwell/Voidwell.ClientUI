@@ -1,6 +1,6 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Observable, Subscription, BehaviorSubject, throwError } from 'rxjs';
+import { Subscription, BehaviorSubject, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
