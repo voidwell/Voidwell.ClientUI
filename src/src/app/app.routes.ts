@@ -8,8 +8,7 @@ const routes: Routes = [
     { path: 'account', loadChildren: './account/account.module#AccountModule' },
     { path: 'account/settings', loadChildren: './account/settings/account-settings.module#AccountSettingsModule' },
     { path: 'admin', loadChildren: './admin/admin.module#AdminModule' },
-    { path: 'ps2', loadChildren: './planetside/planetside.module#PlanetsideModule' },
-    { path: 'psa', loadChildren: './planetside-arena/planetside-arena.module#PlanetsideArenaModule' }
+    { path: 'ps2', loadChildren: './planetside/planetside.module#PlanetsideModule' }
 ];
 
 export const appRouterProviders = [
