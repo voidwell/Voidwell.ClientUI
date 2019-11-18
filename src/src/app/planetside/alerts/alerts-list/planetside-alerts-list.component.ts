@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy } from '@angular/core';
+﻿import { Component } from '@angular/core';
 import { PlanetsideApi } from './../../shared/services/planetside-api.service';
 import { WorldService } from '../../shared/services/world-service.service';
 

@@ -1,7 +1,6 @@
 ﻿import { Component, EventEmitter, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
-import { PlanetsideWorldComponent } from './../../planetside-world.component';
 import { PlanetsideWorldMapComponent } from './../planetside-world-map.component';
 import { ZoneHelper } from './../../../../shared/services/zone-helper.service';
 

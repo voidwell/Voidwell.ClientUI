@@ -1,4 +1,4 @@
-﻿import { latLng, polyline, Map, LatLng, Polygon, Polyline, Marker, PolylineOptions, MarkerOptions, PathOptions } from 'leaflet';
+﻿import { latLng, polyline, Map, LatLng, Polygon, Polyline, Marker, PolylineOptions, MarkerOptions } from 'leaflet';
 import { Factions } from './../configs';
 
 export class ZoneMap {
@@ -70,7 +70,7 @@ export class ZoneRegion extends Polygon {
 
         elem.classList.remove('vs', 'nc', 'tr');
 
-        let factionCode = Factions[this.faction].code
+        let factionCode = Factions[this.faction].code;
         elem.classList.add(factionCode);
 
         if (!noFlash) {

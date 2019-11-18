@@ -1,9 +1,8 @@
-﻿import { Component, OnInit, OnDestroy, ElementRef, ViewChild, Inject } from '@angular/core';
-import { NgForm } from '@angular/forms';
+﻿import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatDialog, MatDialogRef, MatPaginator, MAT_DIALOG_DATA } from '@angular/material';
-import { Subscription, Observable, BehaviorSubject, of, merge, fromEvent } from 'rxjs';
-import { debounceTime, distinctUntilChanged, startWith, map } from 'rxjs/operators';
+import { Subscription, Observable, of, merge } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 
 @Component({

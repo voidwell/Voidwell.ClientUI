@@ -1,6 +1,5 @@
 ﻿import { Routes, RouterModule } from '@angular/router';
 import { ModuleWithProviders } from '@angular/core';
-import { LoginComponent } from './login.component';
 import { RegisterComponent } from './register.component';
 import { PasswordResetComponent } from './passwordreset.component';
 import { VoidwellAuthGuard } from '../shared/services/voidwell-authguard.service';

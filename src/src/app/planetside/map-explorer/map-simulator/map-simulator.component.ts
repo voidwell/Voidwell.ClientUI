@@ -1,6 +1,5 @@
-﻿import { Input, Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
-import { Observable, Subscription, BehaviorSubject, interval} from 'rxjs';
-import { map } from 'rxjs/operators';
+﻿import { Component, OnInit, OnDestroy, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { ZoneRegion } from '../../shared/ps2-zone-map/models';
 

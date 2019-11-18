@@ -1,5 +1,5 @@
 ﻿import { Component } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
 

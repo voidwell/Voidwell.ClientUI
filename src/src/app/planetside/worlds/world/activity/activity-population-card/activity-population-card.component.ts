@@ -1,8 +1,6 @@
 ﻿import { Component, Input, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import { of } from 'rxjs';
-import { delay } from 'rxjs/operators';
 import {  D3Service, D3 } from 'd3-ng2-service';
-import { select, Selection } from 'd3-selection';
+import { Selection } from 'd3-selection';
 import 'd3-transition';
 
 @Component({
@@ -84,7 +82,7 @@ export class ActivityPopulationCardComponent implements OnChanges {
     private setup() {
         let d3 = this.d3;
 
-        this.svg = d3.select(this.element.nativeElement)
+        this.svg = d3.select(this.element.nativeElement);
         this.tooltip = d3.select('#tooltip');
 
         this.margin = {top: 0, right: 20, bottom: 30, left: 40};
@@ -116,7 +114,7 @@ export class ActivityPopulationCardComponent implements OnChanges {
 
         this.populationData.forEach(function(d) {
             d.timestamp = d3.isoParse(d.timestamp);
-        })
+        });
 
         this.updateScales();
 
@@ -143,7 +141,7 @@ export class ActivityPopulationCardComponent implements OnChanges {
                         tipHtml += `<div><span class="${d.class}">${d.label}</span>: ${d.value}</div>`
                         tipTotal += d.value;
                     });
-                tipHtml += `<div>Total: ${tipTotal}</div>`
+                tipHtml += `<div>Total: ${tipTotal}</div>`;
 
                 self.tipLine.style('display', 'inline')
                     .attr('x1', self.xScale(targetData.timestamp))
@@ -220,9 +218,7 @@ export class ActivityPopulationCardComponent implements OnChanges {
     }
 
     private updateData() {
-        let d3 = this.d3;
-        let t = d3.transition()
-            .duration(500);
+        let d3 = this.d3; // Unused
 
         this.svgContainer.selectAll('path').remove();
 
@@ -268,9 +264,7 @@ export class ActivityPopulationCardComponent implements OnChanges {
     }
 
     private updateAxis() {
-        let d3 = this.d3;
-        let t = d3.transition()
-            .duration(500);
+        let d3 = this.d3; // Unused
 
         this.createAxis();
 

@@ -3,7 +3,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { PlanetsideWorldComponent } from './../planetside-world.component';
 import { Factions } from './../../../shared/configs';
-import { WorldMaps, ZoneMap } from './models';
 import { PlanetsideApi } from './../../../shared/services/planetside-api.service';
 import { ZoneService } from '../../../shared/services/zone-service.service';
 
