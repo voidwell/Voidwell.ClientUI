@@ -484,8 +484,13 @@ mat-card .mat-card-subtitle {
 }
 
 
-mat-checkbox.mat-checkbox.mat-checkbox-checked .mat-checkbox-background {
+mat-checkbox.mat-checkbox.mat-checkbox-checked .mat-checkbox-background,
+.mat-list-item-content mat-pseudo-checkbox.mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
     background-color: #525252;
+}
+
+.mat-list-item-content .mat-list-text {
+    color: #8a9ba1;
 }
 
 .mat-menu-item.active {
