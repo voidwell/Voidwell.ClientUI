@@ -4,48 +4,45 @@
     <div *ngIf="!isLoading && !errorMessage">
         <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
             <mat-card>
-                <mat-card-header>
-                    <mat-card-title>
-                        <mat-slide-toggle class="pull-right" formControlName="enabled">Enabled</mat-slide-toggle>
-                        <h2>{{client.clientId}}</h2>
-                    </mat-card-title>
-                </mat-card-header>
                 <mat-card-content class="client-form layout-padding">
+                    <div class="form-title">
+                        <mat-slide-toggle class="pull-right" formControlName="enabled">Enabled</mat-slide-toggle>
+                        <span>{{client.clientId}}</span>
+                    </div>
                     <div>
-                        <h3>Client Name</h3>
+                        <label>Client Name</label>
                         <mat-form-field>
                             <input matInput formControlName="clientName">
                         </mat-form-field>
                     </div>
                     <div>
-                        <h3>Allowed Grant Types</h3>
-                        <div>
-                            <mat-checkbox formControlName="allowedGrantTypes1">Implicit</mat-checkbox>
-                        </div>
-                        <div>
-                            <mat-checkbox formControlName="allowedGrantTypes2">ClientCredentials</mat-checkbox>
-                        </div>
-                        <div>
-                            <mat-checkbox formControlName="allowedGrantTypes3">Hybrid</mat-checkbox>
-                        </div>
-                        <div>
-                            <mat-form-field>
-                                <input matInput [(ngModel)]="grantTypeInput">
-                            </mat-form-field>
-                            <button mat-icon-button (click)="addGrantType(grantTypeInput)">
-                                <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                            </button>
-                        </div>
+                        <label>Allowed Grant Types</label>
+                        <mat-selection-list>
+                            <mat-list-option
+                                checkboxPosition="before"
+                                *ngFor="let grantType of form.controls['allowedGrantTypes'].controls"
+                                [selected]="grantType.value.selected"
+                                [disableRipple]="true">
+                                    {{grantType.value.name}}
+                            </mat-list-option>
+                        </mat-selection-list>
                     </div>
+                    <br>
                     <mat-slide-toggle formControlName="allowAccessTokensViaBrowser">Allow access tokens via browser</mat-slide-toggle>
+                    <br>
                     <div>
-                        <h3>Allowed Scopes</h3>
-                        <div>
-                            <mat-checkbox formControlName="allowedScope1">voidwell-api</mat-checkbox>
-                        </div>
+                        <label>Allowed Scopes</label>
+                        <mat-list>
+                            <mat-list-item *ngFor="let control of form.controls['allowedScopes'].controls">
+                                <div matLine>
+                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                                    <span>{{control.value}}</span>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
                         <div>
                             <mat-form-field>
-                                <input matInput [(ngModel)]="scopeInput">
+                                <input matInput formControlName="scopeInput">
                             </mat-form-field>
                             <button mat-icon-button (click)="addScope(scopeInput)">
                                 <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
@@ -53,13 +50,18 @@
                         </div>
                     </div>
                     <div>
-                        <h3>Redirect Uris</h3>
-                        <div>
-                            <mat-checkbox>placeholder</mat-checkbox>
-                        </div>
+                        <label>Redirect Uris</label>
+                        <mat-list>
+                            <mat-list-item *ngFor="let control of form.controls['redirectUris'].controls">
+                                <div matLine>
+                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                                    <span>{{control.value}}</span>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
                         <div>
                             <mat-form-field>
-                                <input matInput [(ngModel)]="redirectUriInput">
+                                <input matInput formControlName="redirectUriInput">
                             </mat-form-field>
                             <button mat-icon-button (click)="addRedirectUri(redirectUriInput)">
                                 <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
@@ -75,13 +77,18 @@
             <mat-card>
                 <mat-card-content class="client-form layout-padding">
                     <div>
-                        <h3>Post Logout Redirect Uris</h3>
-                        <div>
-                            <mat-checkbox>placeholder</mat-checkbox>
-                        </div>
+                        <label>Post Logout Redirect Uris</label>
+                        <mat-list>
+                            <mat-list-item *ngFor="let control of form.controls['postLogoutRedirectUris'].controls">
+                                <div matLine>
+                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                                    <span>{{control.value}}</span>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
                         <div>
                             <mat-form-field>
-                                <input matInput [(ngModel)]="postLogoutRedirectUriInput">
+                                <input matInput formControlName="postLogoutRedirectUriInput">
                             </mat-form-field>
                             <button mat-icon-button (click)="addPostLogoutRedirectUri(postLogoutRedirectUriInput)">
                                 <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
@@ -89,14 +96,14 @@
                         </div>
                     </div>
                     <div>
-                        <h3>Front Channel Logout Uri</h3>
+                        <label>Front Channel Logout Uri</label>
                         <mat-form-field>
                             <input matInput formControlName="frontChannelLogoutUri">
                         </mat-form-field>
                     </div>
                     <mat-slide-toggle formControlName="frontChannelLogoutSessionRequired">Front channel logout session required</mat-slide-toggle>
                     <div>
-                        <h3>Back Channel Logout Uri</h3>
+                        <label>Back Channel Logout Uri</label>
                         <mat-form-field>
                             <input matInput formControlName="backChannelLogoutUri">
                         </mat-form-field>
@@ -104,59 +111,50 @@
                     <mat-slide-toggle formControlName="backChannelLogoutSessionRequired">Back channel logout session required</mat-slide-toggle>
                     <div>-----------------------------------------------------------------------------------------------------</div>
                     <mat-slide-toggle formControlName="enableLocalLogin">Enable local login</mat-slide-toggle>
-                    <div>
-                        <h3>Identity Provider Restriction</h3>
-                        <div>
-                            <mat-checkbox>placeholder</mat-checkbox>
-                        </div>
-                        <div>
-                            <mat-form-field>
-                                <input matInput [(ngModel)]="identityProviderRestrictionsInput">
-                            </mat-form-field>
-                            <button mat-icon-button (click)="addIdentityProviderRestrictions(identityProviderRestrictionsInput)">
-                                <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                            </button>
-                        </div>
-                    </div>
                 </mat-card-content>
             </mat-card>
             <mat-card>
                 <mat-card-content class="client-form layout-padding">
                     <div>
-                        <h3>Identity Token Lifetime</h3>
+                        <label>Identity Token Lifetime</label>
                         <mat-form-field>
                             <input matInput formControlName="identityTokenLifetime">
                         </mat-form-field>
                     </div>
                     <div>
-                        <h3>Access Token Lifetime</h3>
+                        <label>Access Token Lifetime</label>
                         <mat-form-field>
                             <input matInput formControlName="accessTokenLifetime">
                         </mat-form-field>
                     </div>
                     <div>
-                        <h3>Authorization Code Lifetime</h3>
+                        <label>Authorization Code Lifetime</label>
                         <mat-form-field>
                             <input matInput formControlName="authorizationCodeLifetime">
                         </mat-form-field>
                     </div>
                     <div>
-                        <h3>Access Token Type</h3>
+                        <label>Access Token Type</label>
                         <mat-form-field>
-                            <mat-select formControlName="authorizationCodeLifetime">
-                                <mat-option value="1">Jwt</mat-option>
-                                <mat-option value="2">Reference</mat-option>
+                            <mat-select formControlName="accessTokenType">
+                                <mat-option value="0">Jwt</mat-option>
+                                <mat-option value="1">Reference</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                     <div>
-                        <h3>Allowed Cors Origins</h3>
-                        <div>
-                            <mat-checkbox>placeholder</mat-checkbox>
-                        </div>
+                        <label>Allowed Cors Origins</label>
+                        <mat-list>
+                            <mat-list-item *ngFor="let control of form.controls['allowedCorsOrigins'].controls">
+                                <div matLine>
+                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                                    <span>{{control.value}}</span>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
                         <div>
                             <mat-form-field>
-                                <input matInput [(ngModel)]="allowedCorsOriginsInput">
+                                <input matInput formControlName="allowedCorsOriginsInput">
                             </mat-form-field>
                             <button mat-icon-button (click)="addAllowedCorsOrigins(allowedCorsOriginsInput)">
                                 <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
@@ -165,45 +163,50 @@
                     </div>
                     <div>-----------------------------------------------------------------------------------------------------</div>
                     <div>
-                        <h3>Absolute Refresh Token Lifetime</h3>
+                        <label>Absolute Refresh Token Lifetime</label>
                         <mat-form-field>
                             <input matInput formControlName="absoluteRefreshTokenLifetime">
                         </mat-form-field>
                     </div>
                     <div>
-                        <h3>Sliding Refresh Token Lifetime</h3>
+                        <label>Sliding Refresh Token Lifetime</label>
                         <mat-form-field>
                             <input matInput formControlName="slidingRefreshTokenLifetime">
                         </mat-form-field>
                     </div>
                     <div>
-                        <h3>Access Token Type</h3>
+                        <label>Refresh Token Usage</label>
                         <mat-form-field>
                             <mat-select formControlName="refreshTokenUsage">
-                                <mat-option value="1">Reuse</mat-option>
-                                <mat-option value="2">One time only</mat-option>
+                                <mat-option value="0">Reuse</mat-option>
+                                <mat-option value="1">One time only</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                     <div>
-                        <h3>Refresh Token Expiration</h3>
+                        <label>Refresh Token Expiration</label>
                         <mat-form-field>
                             <mat-select formControlName="refreshTokenExpiration">
-                                <mat-option value="1">Sliding</mat-option>
-                                <mat-option value="2">Absolute</mat-option>
+                                <mat-option value="0">Sliding</mat-option>
+                                <mat-option value="1">Absolute</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
                     <mat-slide-toggle formControlName="updateAccessTokenClaimsOnRefresh">Update access token claims on refresh</mat-slide-toggle>
                     <mat-slide-toggle formControlName="includeJwtId">Include jwt id</mat-slide-toggle>
                     <div>
-                        <h3>Claims</h3>
-                        <div>
-                            <mat-checkbox>placeholder</mat-checkbox>
-                        </div>
+                        <label>Claims</label>
+                        <mat-list>
+                            <mat-list-item *ngFor="let control of form.controls['claims'].controls">
+                                <div matLine>
+                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                                    <span>{{control.value}}</span>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
                         <div>
                             <mat-form-field>
-                                <input matInput [(ngModel)]="claimsInput">
+                                <input matInput formControlName="claimsInput">
                             </mat-form-field>
                             <button mat-icon-button (click)="addClaim(claimsInput)">
                                 <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
@@ -211,21 +214,23 @@
                         </div>
                     </div>
                     <mat-slide-toggle formControlName="alwaysSendClientClaims">Always send client claims</mat-slide-toggle>
-                    <mat-slide-toggle formControlName="prefixClientClaims">Prefix client claims</mat-slide-toggle>
+                    <mat-slide-toggle formControlName="clientClaimsPrefix">Prefix client claims</mat-slide-toggle>
                 </mat-card-content>
             </mat-card>
             <mat-card>
                 <mat-card-content class="client-form layout-padding">
-                    <h3>Client Secrets</h3>
+                    <label>Client Secrets</label>
                     <div>
+                        <mat-list>
+                            <mat-list-item *ngFor="let control of form.controls['clientSecrets'].controls">
+                                <div matLine>
+                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                                    <span>{{control.value}}</span>
+                                </div>
+                            </mat-list-item>
+                        </mat-list>
                         <div>
-                            <mat-checkbox>placeholder</mat-checkbox>
-                        </div>
-                        <div>
-                            <mat-form-field>
-                                <input matInput [(ngModel)]="claimsInput">
-                            </mat-form-field>
-                            <button mat-icon-button (click)="addClaim(claimsInput)">
+                            <button mat-icon-button (click)="generateSecret()">
                                 <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
                             </button>
                         </div>

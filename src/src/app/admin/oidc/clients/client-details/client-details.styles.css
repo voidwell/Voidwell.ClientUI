@@ -4,6 +4,16 @@
     justify-content: space-between;
 }
 
-.client-form > * {
-    width: 45%;
+label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.form-title > * {
+    height: 50px;
+}
+
+.form-title span {
+    font-size: 35px;
+    font-weight: bold;
 }
