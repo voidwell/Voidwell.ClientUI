@@ -17,3 +17,21 @@ label {
     font-size: 35px;
     font-weight: bold;
 }
+
+.client-form-secret-col {
+    display: inline-block;
+    margin-right: 5px;
+}
+
+.client-form-secret-remove {
+    width: 15px;
+}
+
+.client-form-secret-type,
+.client-form-secret-expiration {
+    width: 150px;
+}
+
+.secret-buttons {
+    margin-top: 10px;
+}

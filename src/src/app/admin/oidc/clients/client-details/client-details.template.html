@@ -32,41 +32,19 @@
                     <br>
                     <div>
                         <label>Allowed Scopes</label>
-                        <mat-list>
-                            <mat-list-item *ngFor="let control of form.controls['allowedScopes'].controls">
-                                <div matLine>
-                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-                                    <span>{{control.value}}</span>
-                                </div>
-                            </mat-list-item>
-                        </mat-list>
-                        <div>
-                            <mat-form-field>
-                                <input matInput formControlName="scopeInput">
-                            </mat-form-field>
-                            <button mat-icon-button (click)="addScope(scopeInput)">
-                                <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                            </button>
-                        </div>
+                        <vw-entry-list formControlName="allowedScopes"
+                                       placeholder="Scope"
+                                       emptyMessage="No scopes added"
+                                       [validation]="scopeValidation">
+                        </vw-entry-list>
                     </div>
+                    <br>
                     <div>
                         <label>Redirect Uris</label>
-                        <mat-list>
-                            <mat-list-item *ngFor="let control of form.controls['redirectUris'].controls">
-                                <div matLine>
-                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-                                    <span>{{control.value}}</span>
-                                </div>
-                            </mat-list-item>
-                        </mat-list>
-                        <div>
-                            <mat-form-field>
-                                <input matInput formControlName="redirectUriInput">
-                            </mat-form-field>
-                            <button mat-icon-button (click)="addRedirectUri(redirectUriInput)">
-                                <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                            </button>
-                        </div>
+                        <vw-entry-list formControlName="redirectUris"
+                                       placeholder="Redirect URI"
+                                       emptyMessage="No redirect URIs added">
+                        </vw-entry-list>
                     </div>
                     <div>-----------------------------------------------------------------------------------------------------</div>
                     <mat-slide-toggle formControlName="requireClientSecret">Require client secret</mat-slide-toggle>
@@ -78,22 +56,10 @@
                 <mat-card-content class="client-form layout-padding">
                     <div>
                         <label>Post Logout Redirect Uris</label>
-                        <mat-list>
-                            <mat-list-item *ngFor="let control of form.controls['postLogoutRedirectUris'].controls">
-                                <div matLine>
-                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-                                    <span>{{control.value}}</span>
-                                </div>
-                            </mat-list-item>
-                        </mat-list>
-                        <div>
-                            <mat-form-field>
-                                <input matInput formControlName="postLogoutRedirectUriInput">
-                            </mat-form-field>
-                            <button mat-icon-button (click)="addPostLogoutRedirectUri(postLogoutRedirectUriInput)">
-                                <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                            </button>
-                        </div>
+                        <vw-entry-list formControlName="postLogoutRedirectUris"
+                                       placeholder="Post logout redirect URI"
+                                       emptyMessage="No redirect URIs added">
+                        </vw-entry-list>
                     </div>
                     <div>
                         <label>Front Channel Logout Uri</label>
@@ -144,22 +110,10 @@
                     </div>
                     <div>
                         <label>Allowed Cors Origins</label>
-                        <mat-list>
-                            <mat-list-item *ngFor="let control of form.controls['allowedCorsOrigins'].controls">
-                                <div matLine>
-                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-                                    <span>{{control.value}}</span>
-                                </div>
-                            </mat-list-item>
-                        </mat-list>
-                        <div>
-                            <mat-form-field>
-                                <input matInput formControlName="allowedCorsOriginsInput">
-                            </mat-form-field>
-                            <button mat-icon-button (click)="addAllowedCorsOrigins(allowedCorsOriginsInput)">
-                                <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                            </button>
-                        </div>
+                        <vw-entry-list formControlName="allowedCorsOrigins"
+                                       placeholder="CORS origin"
+                                       emptyMessage="No cors origins added">
+                        </vw-entry-list>
                     </div>
                     <div>-----------------------------------------------------------------------------------------------------</div>
                     <div>
@@ -196,22 +150,10 @@
                     <mat-slide-toggle formControlName="includeJwtId">Include jwt id</mat-slide-toggle>
                     <div>
                         <label>Claims</label>
-                        <mat-list>
-                            <mat-list-item *ngFor="let control of form.controls['claims'].controls">
-                                <div matLine>
-                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-                                    <span>{{control.value}}</span>
-                                </div>
-                            </mat-list-item>
-                        </mat-list>
-                        <div>
-                            <mat-form-field>
-                                <input matInput formControlName="claimsInput">
-                            </mat-form-field>
-                            <button mat-icon-button (click)="addClaim(claimsInput)">
-                                <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                            </button>
-                        </div>
+                        <vw-entry-list formControlName="claims"
+                                       placeholder="Claim"
+                                       emptyMessage="No claims added">
+                        </vw-entry-list>
                     </div>
                     <mat-slide-toggle formControlName="alwaysSendClientClaims">Always send client claims</mat-slide-toggle>
                     <mat-slide-toggle formControlName="clientClaimsPrefix">Prefix client claims</mat-slide-toggle>
@@ -221,18 +163,22 @@
                 <mat-card-content class="client-form layout-padding">
                     <label>Client Secrets</label>
                     <div>
-                        <mat-list>
-                            <mat-list-item *ngFor="let control of form.controls['clientSecrets'].controls">
-                                <div matLine>
-                                    <mat-icon (click)="removeFromControlList(control)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-                                    <span>{{control.value}}</span>
-                                </div>
-                            </mat-list-item>
-                        </mat-list>
                         <div>
-                            <button mat-icon-button (click)="generateSecret()">
-                                <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                            </button>
+                            <span class="client-form-secret-col client-form-secret-remove"></span>
+                            <span class="client-form-secret-col client-form-secret-type">Type</span>
+                            <span class="client-form-secret-col client-form-secret-expiration">Expiration</span>
+                            <span class="client-form-secret-col client-form-secret-description">Description</span>
+                        </div>
+                        <div *ngFor="let secret of form.controls['clientSecrets'].value">
+                            <span class="client-form-secret-col client-form-secret-remove">
+                                <mat-icon (click)="deleteSecret(secret)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                            </span>
+                            <span class="client-form-secret-col client-form-secret-type">{{secret.type}}</span>
+                            <span class="client-form-secret-col client-form-secret-expiration">{{secret.expiration | date}}</span>
+                            <span class="client-form-secret-col client-form-secret-description">{{secret.description}}</span>
+                        </div>
+                        <div class="secret-buttons">
+                            <button mat-flat-button (click)="generateSecret()">New Secret</button>
                         </div>
                     </div>
                 </mat-card-content>
