@@ -177,11 +177,51 @@ export class VoidwellApi extends ApiBase {
         return this.AuthGet(this.oidcAdminUrl + 'client/' + clientId);
     }
 
+    createClient(clientConfig: any) {
+        return this.AuthPost(this.oidcAdminUrl + 'client', clientConfig);
+    }
+
+    updateClientById(clientId: string, clientConfig: any) {
+        return this.AuthPut(this.oidcAdminUrl + 'client/' + clientId, clientConfig);
+    }
+
+    deleteClientById(clientId: string) {
+        return this.AuthDelete(this.oidcAdminUrl + 'client/' + clientId);
+    }
+
+    createClientSecret(clientId: string, secretConfig: any) {
+        return this.AuthPost(`${this.oidcAdminUrl}client/${clientId}/secret`, secretConfig);
+    }
+
+    deleteClientSecret(clientId: string, secretIndex: number) {
+        return this.AuthDelete(`${this.oidcAdminUrl}client/${clientId}/secret/${secretIndex}`);
+    }
+
     getAllApiResources() {
         return this.AuthGet(this.oidcAdminUrl + 'resource');
     }
 
     getApiResourceById(resourceId: string) {
         return this.AuthGet(this.oidcAdminUrl + 'resource/' + resourceId);
+    }
+
+    createApiResource(resourceConfig: any) {
+        return this.AuthPost(this.oidcAdminUrl + 'resource', resourceConfig);
+    }
+
+    updateApiResourceById(resourceId: string, resourceConfig: any) {
+        return this.AuthPut(this.oidcAdminUrl + 'resource/' + resourceId, resourceConfig);
+    }
+
+    deleteApiResourceById(resourceId: string) {
+        return this.AuthDelete(this.oidcAdminUrl + 'resource/' + resourceId);
+    }
+
+    createApiResourceSecret(resourceId: string, secretConfig: any) {
+        return this.AuthPost(`${this.oidcAdminUrl}resource/${resourceId}/secret`, secretConfig);
+    }
+
+    deleteApiResourceSecret(resourceId: string, secretIndex: number) {
+        return this.AuthDelete(`${this.oidcAdminUrl}resource/${resourceId}/secret/${secretIndex}`);
     }
 }
