@@ -8,6 +8,7 @@ import { LoaderComponent } from './loader/loader.component';
 import { VWCountdownComponent } from './vw-countdown/vw-countdown.component';
 import { VWTabNavBarComponent } from './vw-tab-nav-bar/vw-tab-nav-bar.component';
 import { VWTabNavSubBarComponent } from './vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
+import { EntryListComponent } from './entry-list/entry-list.component';
 
 @NgModule({
     declarations: [
@@ -15,7 +16,8 @@ import { VWTabNavSubBarComponent } from './vw-tab-nav-sub-bar/vw-tab-nav-sub-bar
         LoaderComponent,
         VWCountdownComponent,
         VWTabNavBarComponent,
-        VWTabNavSubBarComponent
+        VWTabNavSubBarComponent,
+        EntryListComponent
     ],
     imports: [
         CommonModule,
@@ -27,7 +29,8 @@ import { VWTabNavSubBarComponent } from './vw-tab-nav-sub-bar/vw-tab-nav-sub-bar
         LoaderComponent,
         VWCountdownComponent,
         VWTabNavBarComponent,
-        VWTabNavSubBarComponent
+        VWTabNavSubBarComponent,
+        EntryListComponent
     ]
 })
 export class SharedComponentsModule { }

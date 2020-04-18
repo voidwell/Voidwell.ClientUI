@@ -1,0 +1,27 @@
+<label [attr.for]="inputId" class="vw-entry-list-label" #label>
+    <div class="vw-entry-list-empty-message" *ngIf="value.length === 0 && emptyMessage !== ''">
+        {{emptyMessage}}
+    </div>
+    <div *ngFor="let item of value">
+        <span class="vw-entry-list-remove-button" (click)="_onRemoveClick($event, item)">
+            <mat-icon fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+        </span>
+        <span class="vw-entry-list-item">{{item}}</span>
+    </div>
+    <div>
+        <mat-form-field floatLabel="never">
+            <mat-label>{{placeholder}}</mat-label>
+            <input #input
+                matInput
+                class="vw-entry-list-input"
+                type="text"
+                [id]="inputId"
+                [disabled]="disabled"
+                [attr.name]="name">
+        </mat-form-field>
+        <button mat-icon-button
+            (click)="_onAddClick($event)">
+            <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
+        </button>
+    </div>
+</label>
