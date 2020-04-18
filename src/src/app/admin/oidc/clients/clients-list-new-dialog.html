@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Create Client</h1>
+<div mat-dialog-content>
+  <p>Client Id</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.clientId">
+  </mat-form-field>
+
+  <p>Client Name</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.clientName">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="data" cdkFocusInitial>Create</button>
+</div>

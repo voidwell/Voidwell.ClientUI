@@ -1,4 +1,8 @@
-﻿.client-link {
+﻿.control-buttons {
+    padding: 0 10px;
+}
+
+.client-link {
     text-decoration: none;
     color: inherit;
 }

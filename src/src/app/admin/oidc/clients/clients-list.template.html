@@ -2,8 +2,13 @@
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <div [hidden]="isLoading">
+
+        <div class="control-buttons">
+            <button class="pull-left" mat-raised-button (click)="createNewClient()">New</button>
+        </div>
+
         <div class="table-filter">
-            <mat-form-field floatPlaceholder="never">
+            <mat-form-field floatLabel="never">
                 <input matInput #filter placeholder="Filter clients">
             </mat-form-field>
         </div>

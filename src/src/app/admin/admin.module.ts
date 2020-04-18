@@ -15,8 +15,8 @@ import { EventsComponent, EventEditorDialog } from './events/events.component';
 import { ServicesComponent } from './services/services.component';
 import { PsbComponent } from './psb/psb.component';
 import { OidcWrapperComponent } from './oidc/oidcwrapper.component';
-import { ClientsListComponent } from './oidc/clients/clients-list.component';
-import { ClientDetailsComponent } from './oidc/clients/client-details/client-details.component';
+import { ClientsListComponent, ClientsListNewDialog } from './oidc/clients/clients-list.component';
+import { ClientDetailsComponent, ClientDetailsNewSecretDialog, ClientDetailsShowSecretDialog } from './oidc/clients/client-details/client-details.component';
 import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-list.component';
 
 
@@ -33,10 +33,13 @@ import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-li
         OidcWrapperComponent,
         ClientsListComponent,
         ClientDetailsComponent,
+        ClientDetailsNewSecretDialog,
+        ClientDetailsShowSecretDialog,
         ApiResourcesListComponent,
         EventEditorDialog,
         UserEditorDialog,
-        BlogEditorDialog
+        BlogEditorDialog,
+        ClientsListNewDialog
     ],
     imports: [
         FormsModule,
@@ -53,7 +56,10 @@ import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-li
         AdminWrapperComponent,
         EventEditorDialog,
         UserEditorDialog,
-        BlogEditorDialog
+        BlogEditorDialog,
+        ClientsListNewDialog,
+        ClientDetailsNewSecretDialog,
+        ClientDetailsShowSecretDialog
     ]
 })
 export class AdminModule { }
