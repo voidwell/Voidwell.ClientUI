@@ -1,0 +1,8 @@
+.vw-entry-list {
+    display: block;
+    margin-top: 5px;
+}
+
+.vw-entry-list-remove-button {
+    cursor: pointer;
+}
