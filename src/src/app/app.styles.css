@@ -327,7 +327,7 @@ img.inverse-img {
 }
 
 .mat-tab-link,
-.mat-tab-label, {
+.mat-tab-label {
     color: #fff;
 }
 .mat-ink-bar {
@@ -422,6 +422,9 @@ button.mat-button-toggle-button,
 }
 [mat-raised-button].mat-raised-button {
     background-color: #394650;
+}
+[mat-raised-button].mat-raised-button.mat-warn {
+    background-color: #922424;
 }
 [mat-button].mat-button[disabled],
 [mat-raised-button].mat-raised-button[disabled] {
