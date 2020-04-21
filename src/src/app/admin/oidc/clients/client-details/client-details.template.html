@@ -2,9 +2,9 @@
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <div *ngIf="!isLoading && !errorMessage">
-        <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <form class="client-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
             <mat-card>
-                <mat-card-content class="client-form layout-padding">
+                <mat-card-content class="client-form-card">
                     <div class="form-title">
                         <mat-slide-toggle class="pull-right" formControlName="enabled">Enabled</mat-slide-toggle>
                         <span>{{client.clientId}}</span>
@@ -17,13 +17,12 @@
                     </div>
                     <div>
                         <label>Allowed Grant Types</label>
-                        <mat-selection-list>
-                            <mat-list-option
-                                checkboxPosition="before"
-                                *ngFor="let grantType of form.controls['allowedGrantTypes'].controls"
-                                [selected]="grantType.value.selected"
+                        <mat-selection-list dense formControlName="allowedGrantTypes">
+                            <mat-list-option checkboxPosition="before"
+                                *ngFor="let grantType of GRANT_TYPES"
+                                [value]="grantType"
                                 [disableRipple]="true">
-                                    {{grantType.value.name}}
+                                    {{grantType}}
                             </mat-list-option>
                         </mat-selection-list>
                     </div>
@@ -53,7 +52,7 @@
                 </mat-card-content>
             </mat-card>
             <mat-card>
-                <mat-card-content class="client-form layout-padding">
+                <mat-card-content class="client-form-card">
                     <div>
                         <label>Post Logout Redirect Uris</label>
                         <vw-entry-list formControlName="postLogoutRedirectUris"
@@ -80,7 +79,7 @@
                 </mat-card-content>
             </mat-card>
             <mat-card>
-                <mat-card-content class="client-form layout-padding">
+                <mat-card-content class="client-form-card">
                     <div>
                         <label>Identity Token Lifetime</label>
                         <mat-form-field>
@@ -159,29 +158,12 @@
                     <mat-slide-toggle formControlName="clientClaimsPrefix">Prefix client claims</mat-slide-toggle>
                 </mat-card-content>
             </mat-card>
+            <vw-secret-manager formControlName="clientSecrets" [onGenerate]="secretGenerateCallback" [onDelete]="secretDeleteCallback" (reload)="reload()"></vw-secret-manager>
             <mat-card>
-                <mat-card-content class="client-form layout-padding">
-                    <label>Client Secrets</label>
-                    <div>
-                        <div>
-                            <span class="client-form-secret-col client-form-secret-remove"></span>
-                            <span class="client-form-secret-col client-form-secret-type">Type</span>
-                            <span class="client-form-secret-col client-form-secret-expiration">Expiration</span>
-                            <span class="client-form-secret-col client-form-secret-description">Description</span>
-                        </div>
-                        <div *ngFor="let secret of form.controls['clientSecrets'].value">
-                            <span class="client-form-secret-col client-form-secret-remove">
-                                <mat-icon (click)="deleteSecret(secret)" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
-                            </span>
-                            <span class="client-form-secret-col client-form-secret-type">{{secret.type}}</span>
-                            <span class="client-form-secret-col client-form-secret-expiration">{{secret.expiration | date}}</span>
-                            <span class="client-form-secret-col client-form-secret-description">{{secret.description}}</span>
-                        </div>
-                        <div class="secret-buttons">
-                            <button mat-flat-button (click)="generateSecret()">New Secret</button>
-                        </div>
-                    </div>
-                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button (click)="saveConfiguration()">Save</button>
+                    <button mat-raised-button color="warn" (click)="deleteConfiguration()">Delete</button>
+                </mat-card-actions>
             </mat-card>
         </form>
     </div>

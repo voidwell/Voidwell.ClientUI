@@ -16,8 +16,9 @@ import { ServicesComponent } from './services/services.component';
 import { PsbComponent } from './psb/psb.component';
 import { OidcWrapperComponent } from './oidc/oidcwrapper.component';
 import { ClientsListComponent, ClientsListNewDialog } from './oidc/clients/clients-list.component';
-import { ClientDetailsComponent, ClientDetailsNewSecretDialog, ClientDetailsShowSecretDialog } from './oidc/clients/client-details/client-details.component';
+import { ClientDetailsComponent, ClientDetailsDeleteDialog } from './oidc/clients/client-details/client-details.component';
 import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-list.component';
+import { SecretManagerComponent, SecretManagerNewSecretDialog, SecretManagerShowSecretDialog, SecretManagerDeleteSecretDialog } from './oidc/secret-manager/secret-manager.component';
 
 
 @NgModule({
@@ -33,13 +34,16 @@ import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-li
         OidcWrapperComponent,
         ClientsListComponent,
         ClientDetailsComponent,
-        ClientDetailsNewSecretDialog,
-        ClientDetailsShowSecretDialog,
+        ClientDetailsDeleteDialog,
         ApiResourcesListComponent,
         EventEditorDialog,
         UserEditorDialog,
         BlogEditorDialog,
-        ClientsListNewDialog
+        ClientsListNewDialog,
+        SecretManagerComponent,
+        SecretManagerNewSecretDialog,
+        SecretManagerShowSecretDialog,
+        SecretManagerDeleteSecretDialog,
     ],
     imports: [
         FormsModule,
@@ -58,8 +62,10 @@ import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-li
         UserEditorDialog,
         BlogEditorDialog,
         ClientsListNewDialog,
-        ClientDetailsNewSecretDialog,
-        ClientDetailsShowSecretDialog
+        ClientDetailsDeleteDialog,
+        SecretManagerNewSecretDialog,
+        SecretManagerShowSecretDialog,
+        SecretManagerDeleteSecretDialog
     ]
 })
 export class AdminModule { }
