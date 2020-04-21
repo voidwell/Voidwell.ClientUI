@@ -1,16 +1,12 @@
-﻿import { Component, OnDestroy, Inject } from '@angular/core';
+﻿import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { Subscription, throwError } from 'rxjs';
+import { Subscription, throwError, Observable } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { VoidwellApi } from './../../../../shared/services/voidwell-api.service';
-
-const GRANT_TYPES = [
-    "delegation",
-    "client_credentials",
-    "implicit"
-];
+import { NewSecretRequestData } from '../../secret-manager/secret-manager.component';
+import { Secret } from '../../models/secret.model';
 
 const SCOPE_RGEX = /^[-a-z]*$/;
 
@@ -18,15 +14,24 @@ const SCOPE_RGEX = /^[-a-z]*$/;
     templateUrl: './client-details.template.html',
     styleUrls: ['./client-details.styles.css']
 })
-export class ClientDetailsComponent implements OnDestroy {
+export class ClientDetailsComponent implements OnInit, OnDestroy {    
     isLoading: boolean;
     errorMessage: string;
     client: any;
     form: FormGroup;
 
+    GRANT_TYPES = [
+        "delegation",
+        "client_credentials",
+        "implicit"
+    ];
+
     private routeSub: Subscription;
 
-    constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private api: VoidwellApi, public dialog: MatDialog, private router: Router) {
+    secretGenerateCallback: Function;
+    secretDeleteCallback: Function;
+
+    constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private api: VoidwellApi, private router: Router, public dialog: MatDialog) {
         this.isLoading = true;
 
         this.routeSub = this.route.params.subscribe(params => {
@@ -34,6 +39,11 @@ export class ClientDetailsComponent implements OnDestroy {
 
             this.loadClient(clientId);
         });
+    }
+
+    ngOnInit() {
+        this.secretGenerateCallback = this.generateSecret.bind(this);
+        this.secretDeleteCallback = this.deleteSecret.bind(this);
     }
 
     loadClient(clientId: string) {
@@ -60,8 +70,6 @@ export class ClientDetailsComponent implements OnDestroy {
     }
 
     createForm(config) {
-        let allowedGrantTypes = this.formBuilder.array(GRANT_TYPES.map(t => new FormControl({selected: config.allowedGrantTypes.indexOf(t) > -1, name: t})));
-
         this.form = this.formBuilder.group({
             enabled: new FormControl(config.enabled),
             clientId: new FormControl(config.clientId),
@@ -69,9 +77,9 @@ export class ClientDetailsComponent implements OnDestroy {
             clientSecrets: new FormControl(config.clientSecrets),
             requireClientSecret: new FormControl(config.requireClientSecret),
             description: new FormControl(config.description),
-            allowedGrantTypes: allowedGrantTypes,
+            allowedGrantTypes: new FormControl(config.allowedGrantTypes),
             requirePkce: new FormControl(config.requirePkce),
-            allowPlainTextPkce: new FormControl(config.allowPlanTextPkce),
+            allowPlainTextPkce: new FormControl(config.allowPlanTextPkce || false),
             allowAccessTokensViaBrowser: new FormControl(config.allowAccessTokensViaBrowser),
             redirectUris: new FormControl(config.redirectUris || []),
             postLogoutRedirectUris: new FormControl(config.postLogoutRedirectUris || []),
@@ -96,13 +104,7 @@ export class ClientDetailsComponent implements OnDestroy {
             alwaysSendClientClaims: new FormControl(config.alwaysSendClientClaims),
             clientClaimsPrefix: new FormControl(config.clientClaimsPrefix),
             allowedCorsOrigins: new FormControl(config.allowedCorsOrigins),
-            includeJwtId: new FormControl(config.includeJwtId),
-
-            scopeInput: new FormControl(),
-            redirectUriInput: new FormControl(),
-            postLogoutRedirectUriInput: new FormControl(),
-            allowedCorsOriginsInput: new FormControl(),
-            claimsInput: new FormControl()
+            includeJwtId: new FormControl(config.includeJwtId)
         });
     }
 
@@ -110,25 +112,37 @@ export class ClientDetailsComponent implements OnDestroy {
         return SCOPE_RGEX.test(value);
     }
 
-    generateSecret() {
-        const generateDialogRef = this.dialog.open(ClientDetailsNewSecretDialog, {});
-    
-        generateDialogRef.afterClosed().subscribe((result: NewSecretDialogData) => {
-            this.api.createClientSecret(this.client.clientId, { description: result.description })
-                .pipe<any>(catchError(error => {
-                    this.errorMessage = error._body
-                    return throwError(error);
-                }))
-                .subscribe(secret => {
-                    const displayDialogRef = this.dialog.open(ClientDetailsShowSecretDialog, {
-                        data: { secret: secret }
-                    });
+    generateSecret(request: NewSecretRequestData): Observable<string> {
+        return this.api.createClientSecret(this.client.clientId, { description: request.description, expiration: request.expiration }); 
+    }
 
-                    displayDialogRef.afterClosed().subscribe(() => {
-                        this.loadClient(this.client.clientId);
-                    });
-                }); 
-        });
+    deleteSecret(secret: Secret, index: number): Observable<any> {
+        return this.api.deleteClientSecret(this.client.clientId, index);
+    }
+
+    reload() {
+        this.loadClient(this.client.clientId);
+    }
+
+    saveConfiguration() {
+        console.log(this.form.getRawValue());
+        this.api.updateClientById(this.client.clientId, this.form.getRawValue())
+            .subscribe(() => {
+                this.router.navigateByUrl("admin/oidc/clients");
+            });
+    }
+
+    deleteConfiguration() {
+        this.dialog.open(ClientDetailsDeleteDialog, {})
+            .afterClosed().subscribe(confirmed => {
+                if(!confirmed) {
+                    return;
+                }
+                this.api.deleteClientById(this.client.clientId)
+                    .subscribe(() => {
+                        this.router.navigateByUrl("admin/oidc/clients");
+                    })
+            });
     }
 
     ngOnDestroy() {
@@ -136,36 +150,11 @@ export class ClientDetailsComponent implements OnDestroy {
     }
 }
 
-export class NewSecretDialogData {
-    description: string;
-    expiration: string;
-}
-
 @Component({
-    selector: 'client-details-new-secret-dialog',
-    templateUrl: 'client-details-new-secret-dialog.html',
+    selector: 'client-details-delete-dialog',
+    templateUrl: 'client-details-delete-dialog.html',
 })
-export class ClientDetailsNewSecretDialog {
-    data: NewSecretDialogData = new NewSecretDialogData();
-
+export class ClientDetailsDeleteDialog {
     constructor(
-        public dialogRef: MatDialogRef<ClientDetailsNewSecretDialog>) {}
-
-    onNoClick(): void {
-        this.dialogRef.close();
-    }
-}
-
-@Component({
-    selector: 'client-details-show-secret-dialog',
-    templateUrl: 'client-details-show-secret-dialog.html',
-})
-export class ClientDetailsShowSecretDialog {
-    constructor(
-        public dialogRef: MatDialogRef<ClientDetailsNewSecretDialog>,
-        @Inject(MAT_DIALOG_DATA) public data: any) {}
-
-    onNoClick(): void {
-        this.dialogRef.close();
-    }
+        public dialogRef: MatDialogRef<ClientDetailsDeleteDialog>) {}
 }
