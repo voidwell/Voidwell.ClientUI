@@ -169,8 +169,8 @@ export class VoidwellApi extends ApiBase {
         return this.AuthGet(this.ps2Url + 'psb/sessions');
     }
 
-    getAllClients() {
-        return this.AuthGet(this.oidcAdminUrl + 'client');
+    getAllClients(search: string = '', page: number = 1) {
+        return this.AuthGet(`${this.oidcAdminUrl}client?search=${search}&page=${page}`);
     }
 
     getClientById(clientId: string) {
@@ -189,16 +189,20 @@ export class VoidwellApi extends ApiBase {
         return this.AuthDelete(this.oidcAdminUrl + 'client/' + clientId);
     }
 
+    getClientSecrets(clientId: string) {
+        return this.AuthGet(`${this.oidcAdminUrl}client/${clientId}/secret`);
+    }
+    
     createClientSecret(clientId: string, secretConfig: any) {
         return this.AuthPost(`${this.oidcAdminUrl}client/${clientId}/secret`, secretConfig);
     }
 
-    deleteClientSecret(clientId: string, secretIndex: number) {
-        return this.AuthDelete(`${this.oidcAdminUrl}client/${clientId}/secret/${secretIndex}`);
+    deleteClientSecret(clientId: string, secretId: string) {
+        return this.AuthDelete(`${this.oidcAdminUrl}client/${clientId}/secret/${secretId}`);
     }
 
-    getAllApiResources() {
-        return this.AuthGet(this.oidcAdminUrl + 'resource');
+    getAllApiResources(search: string = '', page: number = 1) {
+        return this.AuthGet(`${this.oidcAdminUrl}resource?search=${search}&page=${page}`);
     }
 
     getApiResourceById(resourceId: string) {
@@ -217,11 +221,15 @@ export class VoidwellApi extends ApiBase {
         return this.AuthDelete(this.oidcAdminUrl + 'resource/' + resourceId);
     }
 
+    getApiResourceSecrets(resourceId: string) {
+        return this.AuthGet(`${this.oidcAdminUrl}resource/${resourceId}/secret`);
+    }
+
     createApiResourceSecret(resourceId: string, secretConfig: any) {
         return this.AuthPost(`${this.oidcAdminUrl}resource/${resourceId}/secret`, secretConfig);
     }
 
-    deleteApiResourceSecret(resourceId: string, secretIndex: number) {
-        return this.AuthDelete(`${this.oidcAdminUrl}resource/${resourceId}/secret/${secretIndex}`);
+    deleteApiResourceSecret(resourceId: string, secretId: string) {
+        return this.AuthDelete(`${this.oidcAdminUrl}resource/${resourceId}/secret/${secretId}`);
     }
 }

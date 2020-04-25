@@ -1,10 +1,7 @@
-import { Secret } from "./secret.model";
-
 export class ClientConfig {
     public clientId: string;
     public clientName: string;
     public enabled: boolean;
-    public clientSecrets: Secret[];
     public requireClientSecret: boolean;
     public allowedGrantTypes: string[];
     public requirePkce: boolean;

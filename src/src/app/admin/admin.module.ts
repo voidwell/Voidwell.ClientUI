@@ -17,7 +17,8 @@ import { PsbComponent } from './psb/psb.component';
 import { OidcWrapperComponent } from './oidc/oidcwrapper.component';
 import { ClientsListComponent, ClientsListNewDialog } from './oidc/clients/clients-list.component';
 import { ClientDetailsComponent, ClientDetailsDeleteDialog } from './oidc/clients/client-details/client-details.component';
-import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-list.component';
+import { ApiResourcesListComponent, ApiResourcesListNewDialog } from './oidc/api-resources/api-resources-list.component';
+import { ApiResourceDetailsComponent, ApiResourceDetailsDeleteDialog } from './oidc/api-resources/api-resource-details/api-resource-details.component';
 import { SecretManagerComponent, SecretManagerNewSecretDialog, SecretManagerShowSecretDialog, SecretManagerDeleteSecretDialog } from './oidc/secret-manager/secret-manager.component';
 
 
@@ -33,13 +34,16 @@ import { SecretManagerComponent, SecretManagerNewSecretDialog, SecretManagerShow
         PsbComponent,
         OidcWrapperComponent,
         ClientsListComponent,
+        ClientsListNewDialog,
         ClientDetailsComponent,
         ClientDetailsDeleteDialog,
+        ApiResourceDetailsComponent,
+        ApiResourceDetailsDeleteDialog,
         ApiResourcesListComponent,
+        ApiResourcesListNewDialog,
         EventEditorDialog,
         UserEditorDialog,
         BlogEditorDialog,
-        ClientsListNewDialog,
         SecretManagerComponent,
         SecretManagerNewSecretDialog,
         SecretManagerShowSecretDialog,
@@ -61,6 +65,8 @@ import { SecretManagerComponent, SecretManagerNewSecretDialog, SecretManagerShow
         EventEditorDialog,
         UserEditorDialog,
         BlogEditorDialog,
+        ApiResourcesListNewDialog,
+        ApiResourceDetailsDeleteDialog,
         ClientsListNewDialog,
         ClientDetailsDeleteDialog,
         SecretManagerNewSecretDialog,

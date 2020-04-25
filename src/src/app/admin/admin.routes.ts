@@ -12,6 +12,7 @@ import { OidcWrapperComponent } from './oidc/oidcwrapper.component';
 import { ClientsListComponent } from './oidc/clients/clients-list.component';
 import { ClientDetailsComponent } from './oidc/clients/client-details/client-details.component';
 import { ApiResourcesListComponent } from './oidc/api-resources/api-resources-list.component';
+import { ApiResourceDetailsComponent } from './oidc/api-resources//api-resource-details/api-resource-details.component'
 import { VoidwellAuthGuard } from '../shared/services/voidwell-authguard.service';
 
 const adminRoutes: Routes = [
@@ -61,7 +62,8 @@ const adminRoutes: Routes = [
                 children: [
                     { path: 'clients', component: ClientsListComponent },
                     { path: 'clients/:clientId', component: ClientDetailsComponent },
-                    { path: 'resources', component: ApiResourcesListComponent }
+                    { path: 'resources', component: ApiResourcesListComponent },
+                    { path: 'resources/:resourceId', component: ApiResourceDetailsComponent }
                 ]
             }
         ],
