@@ -1,0 +1,11 @@
+<h1 mat-dialog-title>Create Api Resource</h1>
+<div mat-dialog-content>
+  <p>Resource Name</p>
+  <mat-form-field>
+    <input matInput [(ngModel)]="data.name">
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button (click)="onNoClick()">Cancel</button>
+  <button mat-raised-button [mat-dialog-close]="data" cdkFocusInitial>Create</button>
+</div>

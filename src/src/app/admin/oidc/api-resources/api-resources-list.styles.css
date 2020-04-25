@@ -1,0 +1,21 @@
+.control-buttons {
+    padding: 0 10px;
+}
+
+.resource-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.resource-state {
+    color: #b60d0d;
+    margin-right: 3px;
+}
+
+.resource-state .enabled {
+    color: #1b8f2f;
+}
+
+.mat-column-options {
+    text-align: right;
+}

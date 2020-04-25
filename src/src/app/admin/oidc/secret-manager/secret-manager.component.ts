@@ -1,16 +1,7 @@
-import { Component, Input, ChangeDetectorRef, ChangeDetectionStrategy, forwardRef, ViewEncapsulation, Inject, Output, EventEmitter } from '@angular/core';
-import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
+import { Component, Input, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, Inject, Output, EventEmitter } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Secret } from '../models/secret.model';
 import { Observable } from 'rxjs';
-
-let nextUniqueId = 0;
-
-const SECRET_MANAGER_VALUE_ACCESSOR: any = {
-    provide: NG_VALUE_ACCESSOR,
-    useExisting: forwardRef(() => SecretManagerComponent),
-    multi: true
-};
 
 export class SecretListChange {
     constructor(
@@ -23,38 +14,33 @@ export class SecretListChange {
     templateUrl: './secret-manager.template.html',
     styleUrls: ['./secret-manager.styles.css'],
     host: {
-        'class': 'vw-secret-manager',
-        '[id]': 'id'
+        'class': 'vw-secret-manager'
     },
     encapsulation: ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [SECRET_MANAGER_VALUE_ACCESSOR]
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class SecretManagerComponent implements ControlValueAccessor {
-    private _onChange = (_: any) => {};
-
-    private _uniqueId: string = `secret-manager-${++nextUniqueId}`;
+export class SecretManagerComponent implements OnInit {
     private _valueList: Secret[] = [];
     private _isDeletingSecret: boolean = false;
 
-    @Input() id: string = this._uniqueId;
     @Input() onGenerate: (request: NewSecretRequestData) => Observable<any>;
-    @Input() onDelete: (value: Secret, index: number) => Observable<any>;
+    @Input() onDelete: (value: string) => Observable<any>;
+    @Input() loadSource: Observable<any>;
 
-    @Input()
     get value(): Secret[] { return this._valueList; }
     set value(value: Secret[]) {
         this._valueList = value;
         this._changeDetectorRef.markForCheck();
     }
 
-    @Output() readonly change: EventEmitter<SecretListChange> = new EventEmitter<SecretListChange>();
     @Output() readonly reload: EventEmitter<any> = new EventEmitter<any>();
 
-    get inputId(): string { return `${this.id || this._uniqueId}-input`; }
-
     constructor(private _changeDetectorRef: ChangeDetectorRef, public dialog: MatDialog) {
+    }
+
+    ngOnInit() {
+        this.loadSource.subscribe((secrets: Secret[]) => this.value = secrets);
     }
 
     _onGenerateClick(event: Event) {
@@ -68,7 +54,7 @@ export class SecretManagerComponent implements ControlValueAccessor {
                 this.onGenerate(result)
                     .subscribe(secret => {
                         this.dialog.open(SecretManagerShowSecretDialog, {
-                            data: { secret: secret }
+                            data: secret
                         }).afterClosed().subscribe(() => {
                             this.reload.emit();
                         });
@@ -90,34 +76,13 @@ export class SecretManagerComponent implements ControlValueAccessor {
                 if(!confirmed) {
                     return;
                 }
-                let idx = this.value.indexOf(secret);
-                this.onDelete(secret, idx)
+                this.onDelete(secret.id)
                     .subscribe(() => {
                         this._isDeletingSecret = false;
-                        this.value.splice(idx, 1);
-                        this._emitChangeEvent();
+                        this.value.splice(this.value.indexOf(secret), 1);
                         this._changeDetectorRef.markForCheck();
                     }); 
             });
-    }
-
-    private _emitChangeEvent() {
-        this._onChange(this.value);
-        this.change.emit(new SecretListChange(this, this.value));
-    }
-
-    writeValue(value: any) {
-        this.value = value;
-    }
-
-    registerOnChange(fn: any): void {
-        this._onChange = fn;
-    }
-
-    registerOnTouched(fn: any): void {
-    }
-
-    setDisabledState(isDisabled: boolean): void {
     }
 }
 

@@ -1,10 +1,10 @@
-﻿import { Component, OnInit, ViewChild, ElementRef, Inject } from '@angular/core';
+﻿import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
 import { MatPaginator } from '@angular/material';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
-import { Observable, BehaviorSubject, of, merge, fromEvent, throwError } from 'rxjs';
-import { map, distinctUntilChanged, debounceTime, catchError, finalize } from 'rxjs/operators';
+import { Observable, BehaviorSubject, of, fromEvent, throwError } from 'rxjs';
+import { distinctUntilChanged, debounceTime, catchError, finalize, tap } from 'rxjs/operators';
 import { VoidwellApi } from './../../../shared/services/voidwell-api.service';
 import { ClientConfig } from '../models/client.model';
 
@@ -13,13 +13,9 @@ import { ClientConfig } from '../models/client.model';
     styleUrls: ['./clients-list.styles.css']
 })
 
-export class ClientsListComponent implements OnInit {
+export class ClientsListComponent implements OnInit, AfterViewInit {
     @ViewChild(MatPaginator) paginator: MatPaginator;
     @ViewChild('filter') filter: ElementRef;
-
-    isLoading: boolean;
-    errorMessage: string;
-    clients: any[] = [];
 
     dataSource: TableDataSource;
 
@@ -27,31 +23,30 @@ export class ClientsListComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.isLoading = true;
-        this.errorMessage = null;
+        this.dataSource = new TableDataSource(this.api);
 
-        this.dataSource = new TableDataSource(this.clients, this.paginator);
+        this.dataSource.loadClients('', 1);
+    }
 
-        this.api.getAllClients()
-            .pipe<any>(catchError(error => {
-                this.errorMessage = error._body
-                return throwError(error);
-            }))
-            .pipe<any>(finalize(() => {
-                this.isLoading = false;
-            }))
-            .subscribe(clients => {
-                this.clients = clients;
-                this.dataSource = new TableDataSource(this.clients, this.paginator);
-            });
-
+    ngAfterViewInit() {
         fromEvent(this.filter.nativeElement, 'keyup')
-            .pipe(debounceTime(150))
+            .pipe(debounceTime(1000))
             .pipe(distinctUntilChanged())
             .subscribe(() => {
-                if (!this.dataSource) { return; }
-                this.dataSource.filter = this.filter.nativeElement.value;
+                this.paginator.pageIndex = 0;
+                this.loadClientList();
             });
+
+        this.paginator.page
+            .pipe(
+                tap(() => this.loadClientList())
+            )
+            .subscribe();
+    }
+
+    private loadClientList() {
+        if (!this.dataSource) { return; }
+        this.dataSource.loadClients(this.filter.nativeElement.value, this.paginator.pageIndex + 1);
     }
 
     createNewClient() {
@@ -60,7 +55,6 @@ export class ClientsListComponent implements OnInit {
         dialogRef.afterClosed().subscribe((result: DialogData) => {
             this.api.createClient(new ClientConfig(result))
                 .pipe<any>(catchError(error => {
-                    this.errorMessage = error._body
                     return throwError(error);
                 }))
                 .subscribe(client => {
@@ -71,34 +65,41 @@ export class ClientsListComponent implements OnInit {
 }
 
 export class TableDataSource extends DataSource<any> {
-    constructor(public data, private paginator: MatPaginator) {
+    private clientSubject = new BehaviorSubject<any[]>([]);
+    private loadingSubject = new BehaviorSubject<boolean>(false);
+
+    public totalItems: number;
+    public pageSize: number;
+
+    constructor(private api: VoidwellApi) {
         super();
     }
 
-    _filterChange = new BehaviorSubject('');
-    get filter(): string { return this._filterChange.value; }
-    set filter(filter: string) { this._filterChange.next(filter); }
+    public loading$ = this.loadingSubject.asObservable();
 
     connect(): Observable<any[]> {
-        let first = of(this.data);
-        return merge(first, this.paginator.page, this._filterChange).pipe(map(() => {
-            if (this.data == null || this.data.length == 0) {
-                return [];
-            }
-
-            const data = this.data.slice();
-
-            let filteredData = data.filter(item => {
-                let searchStr = item.clientId.toLowerCase();
-                return searchStr.indexOf(this.filter.toLowerCase()) != -1;
-            });
-
-            let startIndex = this.paginator.pageIndex * this.paginator.pageSize;
-            return filteredData.splice(startIndex, this.paginator.pageSize);
-        }));
+        return this.clientSubject.asObservable();
     }
 
-    disconnect() { }
+    disconnect() {
+        this.clientSubject.complete();
+        this.loadingSubject.complete();
+    }
+
+    loadClients(filter = '', pageIndex = 1) {
+        this.loadingSubject.next(true);
+
+        this.api.getAllClients(filter, pageIndex)
+            .pipe(
+                catchError(() => of([])),
+                finalize(() => this.loadingSubject.next(false))
+            )
+            .subscribe(results => {
+                this.totalItems = results.totalCount;
+                this.pageSize = results.pageSize;
+                this.clientSubject.next(results.data)
+            });
+    }
 }
 
 export class DialogData {

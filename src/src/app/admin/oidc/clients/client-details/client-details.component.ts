@@ -74,7 +74,6 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
             enabled: new FormControl(config.enabled),
             clientId: new FormControl(config.clientId),
             clientName: new FormControl(config.clientName),
-            clientSecrets: new FormControl(config.clientSecrets),
             requireClientSecret: new FormControl(config.requireClientSecret),
             description: new FormControl(config.description),
             allowedGrantTypes: new FormControl(config.allowedGrantTypes),
@@ -116,8 +115,12 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
         return this.api.createClientSecret(this.client.clientId, { description: request.description, expiration: request.expiration }); 
     }
 
-    deleteSecret(secret: Secret, index: number): Observable<any> {
-        return this.api.deleteClientSecret(this.client.clientId, index);
+    deleteSecret(secretId: string): Observable<any> {
+        return this.api.deleteClientSecret(this.client.clientId, secretId);
+    }
+
+    secretLoad(): Observable<any> {
+        return this.api.getClientSecrets(this.client.clientId);
     }
 
     reload() {
@@ -125,8 +128,9 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
     }
 
     saveConfiguration() {
-        console.log(this.form.getRawValue());
-        this.api.updateClientById(this.client.clientId, this.form.getRawValue())
+        let config = this.form.getRawValue();
+        config.id = this.client.id;
+        this.api.updateClientById(this.client.clientId, config)
             .subscribe(() => {
                 this.router.navigateByUrl("admin/oidc/clients");
             });

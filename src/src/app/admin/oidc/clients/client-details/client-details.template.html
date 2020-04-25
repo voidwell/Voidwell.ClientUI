@@ -158,7 +158,7 @@
                     <mat-slide-toggle formControlName="clientClaimsPrefix">Prefix client claims</mat-slide-toggle>
                 </mat-card-content>
             </mat-card>
-            <vw-secret-manager formControlName="clientSecrets" [onGenerate]="secretGenerateCallback" [onDelete]="secretDeleteCallback" (reload)="reload()"></vw-secret-manager>
+            <vw-secret-manager [onGenerate]="secretGenerateCallback" [onDelete]="secretDeleteCallback" [loadSource]="secretLoad()" (reload)="reload()"></vw-secret-manager>
             <mat-card>
                 <mat-card-actions>
                     <button mat-raised-button (click)="saveConfiguration()">Save</button>

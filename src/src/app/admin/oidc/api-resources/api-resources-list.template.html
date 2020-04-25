@@ -1,3 +1,44 @@
 ﻿<div class="content-container">
-    <div>{{apiResources | json}}</div>
+    <vw-loader [loading]="dataSource.loading$ | async"></vw-loader>
+    <div [hidden]="dataSource.loading$ | async">
+
+        <div class="control-buttons">
+            <button class="pull-left" mat-raised-button (click)="createNewApiResource()">New</button>
+        </div>
+
+        <div class="table-filter">
+            <mat-form-field floatLabel="never">
+                <input matInput #filter placeholder="Filter resources">
+            </mat-form-field>
+        </div>
+
+        <mat-table #table [dataSource]="dataSource" class="striped">
+            <ng-container matColumnDef="id">
+                <mat-header-cell *matHeaderCellDef>Resource Name</mat-header-cell>
+                <mat-cell *matCellDef="let resource">{{resource.name}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="enabled">
+                <mat-header-cell *matHeaderCellDef>Enabled</mat-header-cell>
+                <mat-cell *matCellDef="let resource">
+                    <div class="resource-state">
+                        <mat-icon *ngIf="resource.enabled" fontSet="mdi" fontIcon="mdi-check-circle" class="enabled"></mat-icon>
+                        <mat-icon *ngIf="!resource.enabled" fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                    </div>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="options">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let resource">
+                    <a mat-raised-button [routerLink]="resource.name">Edit</a>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['id','enabled','options']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['id','enabled','options'];"></mat-row>
+        </mat-table>
+
+        <mat-paginator #paginator [length]="dataSource.totalItems" [pageIndex]="0" [pageSize]="dataSource.pageSize"></mat-paginator>
+    </div>
 </div>
