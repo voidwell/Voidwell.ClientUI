@@ -1,0 +1,27 @@
+﻿.resource-form {
+    margin-top: 5px;
+}
+
+.resource-form > *:not(:last-child) {
+    margin-bottom: 10px;
+}
+
+.resource-form-card {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: space-between;
+}
+
+label {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.form-title > * {
+    height: 50px;
+}
+
+.form-title span {
+    font-size: 35px;
+    font-weight: bold;
+}

@@ -1,0 +1,34 @@
+﻿<div class="content-container">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngIf="!isLoading && !errorMessage">
+        <form class="resource-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+            <mat-card>
+                <mat-card-content class="resource-form-card">
+                    <div class="form-title">
+                        <mat-slide-toggle class="pull-right" formControlName="enabled">Enabled</mat-slide-toggle>
+                        <span>{{resource.name}}</span>
+                    </div>
+                    <div>
+                        <label>Display Name</label>
+                        <mat-form-field>
+                            <input matInput formControlName="displayName">
+                        </mat-form-field>
+                    </div>
+                </mat-card-content>
+            </mat-card>
+            <mat-card>
+                <mat-card-content>
+                    <pre>{{resource | json}}</pre>
+                </mat-card-content>
+            </mat-card>
+            <vw-secret-manager [onGenerate]="secretGenerateCallback" [onDelete]="secretDeleteCallback" [loadSource]="secretLoad()" (reload)="reload()"></vw-secret-manager>
+            <mat-card>
+                <mat-card-actions>
+                    <button mat-raised-button (click)="saveConfiguration()">Save</button>
+                    <button mat-raised-button color="warn" (click)="deleteConfiguration()">Delete</button>
+                </mat-card-actions>
+            </mat-card>
+        </form>
+    </div>
+</div>
