@@ -25,3 +25,32 @@ label {
     font-size: 35px;
     font-weight: bold;
 }
+
+.scope-table th {
+    text-align: left;
+}
+
+.scope-table .col-remove {
+    width: 15px;
+}
+
+.scope-table .col-name,
+.scope-table .col-display-name {
+    width: 150px;
+}
+
+.scope-table .col-required,
+.scope-table .col-emphasize,
+.scope-table .col-show-discovery {
+    width: 100px;
+}
+
+.scope-table td.col-required,
+.scope-table td.col-emphasize,
+.scope-table td.col-show-discovery {
+    text-align: center;
+}
+
+.delete-button {
+    cursor: pointer;
+}

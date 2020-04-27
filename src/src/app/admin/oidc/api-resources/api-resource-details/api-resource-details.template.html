@@ -1,7 +1,7 @@
 ﻿<div class="content-container">
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
-    <div *ngIf="!isLoading && !errorMessage">
+    <div *ngIf="resource && !isLoading">
         <form class="resource-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
             <mat-card>
                 <mat-card-content class="resource-form-card">
@@ -15,14 +15,75 @@
                             <input matInput formControlName="displayName">
                         </mat-form-field>
                     </div>
+                    <div>
+                        <label>Description</label>
+                        <mat-form-field>
+                            <input matInput formControlName="description">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label>User Claims</label>
+                        <vw-entry-list formControlName="userClaims"
+                                       placeholder="User claim"
+                                       emptyMessage="No user claims added">
+                        </vw-entry-list>
+                    </div>
                 </mat-card-content>
             </mat-card>
             <mat-card>
+                <mat-card-title>
+                    <h3>Manage Scopes</h3>
+                </mat-card-title>
                 <mat-card-content>
-                    <pre>{{resource | json}}</pre>
+                    <table class="scope-table">
+                        <tr>
+                            <th class="col-remove"></th>
+                            <th class="col-name">Name</th>
+                            <th class="col-display-name">Display Name</th>
+                            <th class="col-required">Show In Discovery Document</th>
+                            <th class="col-required">Required</th>
+                            <th class="col-emphasize">Emphasize</th>
+                            <th class="col-user-claims">User Claims</th>
+                        </tr>
+                        <tr *ngFor="let scopeGroup of form.controls['scopes'].controls" [formGroup]="scopeGroup">
+                            <td class="col-remove">
+                                <span class="delete-button" (click)="onDeleteScope(scopeGroup)">
+                                    <mat-icon fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+                                </span>
+                            </td>
+                            <td class="col-name">
+                                <mat-form-field>
+                                    <input matInput formControlName="name">
+                                </mat-form-field>
+                            </td>
+                            <td class="col-display-name">
+                                <mat-form-field>
+                                    <input matInput formControlName="displayName">
+                                </mat-form-field>
+                            </td>
+                            <td class="col-show-discovery">
+                                <mat-slide-toggle formControlName="showInDiscoveryDocument"></mat-slide-toggle>
+                            </td>
+                            <td class="col-required">
+                                <mat-slide-toggle formControlName="required"></mat-slide-toggle>
+                            </td>
+                            <td class="col-emphasize">
+                                <mat-slide-toggle formControlName="emphasize"></mat-slide-toggle>
+                            </td>
+                            <td class="col-user-claims">
+                                <vw-entry-list formControlName="userClaims"
+                                   placeholder="User claim"
+                                   emptyMessage="No user claims added">
+                                </vw-entry-list>
+                            </td>
+                        </tr>
+                    </table>
                 </mat-card-content>
+                <mat-card-actions>
+                    <button mat-raised-button (click)="onAddScope()">Add Scope</button>
+                </mat-card-actions>
             </mat-card>
-            <vw-secret-manager [onGenerate]="secretGenerateCallback" [onDelete]="secretDeleteCallback" [loadSource]="secretLoad()" (reload)="reload()"></vw-secret-manager>
+            <vw-secret-manager ownerType="resource" [ownerId]="resource.name"></vw-secret-manager>
             <mat-card>
                 <mat-card-actions>
                     <button mat-raised-button (click)="saveConfiguration()">Save</button>
