@@ -1,7 +1,7 @@
 ﻿<div class="content-container">
     <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
-    <div *ngIf="!isLoading && !errorMessage">
+    <div *ngIf="client && !isLoading">
         <form class="client-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
             <mat-card>
                 <mat-card-content class="client-form-card">
@@ -13,6 +13,12 @@
                         <label>Client Name</label>
                         <mat-form-field>
                             <input matInput formControlName="clientName">
+                        </mat-form-field>
+                    </div>
+                    <div>
+                        <label>Description</label>
+                        <mat-form-field>
+                            <input matInput formControlName="description">
                         </mat-form-field>
                     </div>
                     <div>
@@ -45,7 +51,6 @@
                                        emptyMessage="No redirect URIs added">
                         </vw-entry-list>
                     </div>
-                    <div>-----------------------------------------------------------------------------------------------------</div>
                     <mat-slide-toggle formControlName="requireClientSecret">Require client secret</mat-slide-toggle>
                     <mat-slide-toggle formControlName="requirePkce">Require PKCE</mat-slide-toggle>
                     <mat-slide-toggle formControlName="allowPlainTextPkce">Allow plan text PKCE</mat-slide-toggle>
@@ -74,7 +79,6 @@
                         </mat-form-field>
                     </div>
                     <mat-slide-toggle formControlName="backChannelLogoutSessionRequired">Back channel logout session required</mat-slide-toggle>
-                    <div>-----------------------------------------------------------------------------------------------------</div>
                     <mat-slide-toggle formControlName="enableLocalLogin">Enable local login</mat-slide-toggle>
                 </mat-card-content>
             </mat-card>
@@ -114,7 +118,6 @@
                                        emptyMessage="No cors origins added">
                         </vw-entry-list>
                     </div>
-                    <div>-----------------------------------------------------------------------------------------------------</div>
                     <div>
                         <label>Absolute Refresh Token Lifetime</label>
                         <mat-form-field>
@@ -158,7 +161,7 @@
                     <mat-slide-toggle formControlName="clientClaimsPrefix">Prefix client claims</mat-slide-toggle>
                 </mat-card-content>
             </mat-card>
-            <vw-secret-manager [onGenerate]="secretGenerateCallback" [onDelete]="secretDeleteCallback" [loadSource]="secretLoad()" (reload)="reload()"></vw-secret-manager>
+            <vw-secret-manager ownerType="client" [ownerId]="client.clientId" ></vw-secret-manager>
             <mat-card>
                 <mat-card-actions>
                     <button mat-raised-button (click)="saveConfiguration()">Save</button>

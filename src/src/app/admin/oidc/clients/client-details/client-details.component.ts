@@ -1,12 +1,10 @@
-﻿import { Component, OnDestroy, OnInit } from '@angular/core';
+﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { Subscription, throwError, Observable } from 'rxjs';
+import { Subscription, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { VoidwellApi } from './../../../../shared/services/voidwell-api.service';
-import { NewSecretRequestData } from '../../secret-manager/secret-manager.component';
-import { Secret } from '../../models/secret.model';
 
 const SCOPE_RGEX = /^[-a-z]*$/;
 
@@ -14,8 +12,8 @@ const SCOPE_RGEX = /^[-a-z]*$/;
     templateUrl: './client-details.template.html',
     styleUrls: ['./client-details.styles.css']
 })
-export class ClientDetailsComponent implements OnInit, OnDestroy {    
-    isLoading: boolean;
+export class ClientDetailsComponent implements OnDestroy {    
+    isLoading: boolean = true;
     errorMessage: string;
     client: any;
     form: FormGroup;
@@ -28,12 +26,7 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
 
     private routeSub: Subscription;
 
-    secretGenerateCallback: Function;
-    secretDeleteCallback: Function;
-
     constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private api: VoidwellApi, private router: Router, public dialog: MatDialog) {
-        this.isLoading = true;
-
         this.routeSub = this.route.params.subscribe(params => {
             let clientId = params['clientId'];
 
@@ -41,14 +34,8 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    ngOnInit() {
-        this.secretGenerateCallback = this.generateSecret.bind(this);
-        this.secretDeleteCallback = this.deleteSecret.bind(this);
-    }
-
-    loadClient(clientId: string) {
+    loadClient(clientId: string) {        
         this.isLoading = true;
-        
         this.api.getClientById(clientId)
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body
@@ -109,22 +96,6 @@ export class ClientDetailsComponent implements OnInit, OnDestroy {
 
     scopeValidation(value: string): boolean {
         return SCOPE_RGEX.test(value);
-    }
-
-    generateSecret(request: NewSecretRequestData): Observable<string> {
-        return this.api.createClientSecret(this.client.clientId, { description: request.description, expiration: request.expiration }); 
-    }
-
-    deleteSecret(secretId: string): Observable<any> {
-        return this.api.deleteClientSecret(this.client.clientId, secretId);
-    }
-
-    secretLoad(): Observable<any> {
-        return this.api.getClientSecrets(this.client.clientId);
-    }
-
-    reload() {
-        this.loadClient(this.client.clientId);
     }
 
     saveConfiguration() {
