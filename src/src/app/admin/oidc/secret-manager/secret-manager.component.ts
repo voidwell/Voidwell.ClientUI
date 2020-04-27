@@ -1,7 +1,8 @@
-import { Component, Input, OnInit, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, Inject, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnChanges, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, Inject, Output, EventEmitter } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Secret } from '../models/secret.model';
 import { Observable } from 'rxjs';
+import { VoidwellApi } from '../../../shared/services/voidwell-api.service';
 
 export class SecretListChange {
     constructor(
@@ -20,13 +21,15 @@ export class SecretListChange {
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class SecretManagerComponent implements OnInit {
+export class SecretManagerComponent implements OnChanges {
     private _valueList: Secret[] = [];
     private _isDeletingSecret: boolean = false;
+    private _onLoadSource: () => Observable<Secret[]>;
+    private _onDelete: (secretId: string) => Observable<any>;
+    private _onGenerate: (req: NewSecretRequestData) => Observable<Secret>;
 
-    @Input() onGenerate: (request: NewSecretRequestData) => Observable<any>;
-    @Input() onDelete: (value: string) => Observable<any>;
-    @Input() loadSource: Observable<any>;
+    @Input() ownerId: string;
+    @Input() ownerType: string;
 
     get value(): Secret[] { return this._valueList; }
     set value(value: Secret[]) {
@@ -36,11 +39,21 @@ export class SecretManagerComponent implements OnInit {
 
     @Output() readonly reload: EventEmitter<any> = new EventEmitter<any>();
 
-    constructor(private _changeDetectorRef: ChangeDetectorRef, public dialog: MatDialog) {
+    constructor(private _changeDetectorRef: ChangeDetectorRef, public dialog: MatDialog, private api: VoidwellApi) {
     }
 
-    ngOnInit() {
-        this.loadSource.subscribe((secrets: Secret[]) => this.value = secrets);
+    ngOnChanges() {
+        if (this.ownerType.toLowerCase() === 'client') {
+            this._onLoadSource = () => this.api.getClientSecrets(this.ownerId);
+            this._onDelete = (secretId: string) => this.api.deleteClientSecret(this.ownerId, secretId);
+            this._onGenerate = (req: NewSecretRequestData) => this.api.createClientSecret(this.ownerId, { description: req.description, expiration: req.expiration })
+        } else if (this.ownerType.toLowerCase() === 'resource') {
+            this._onLoadSource = () => this.api.getApiResourceSecrets(this.ownerId);
+            this._onDelete = (secretId: string) => this.api.deleteApiResourceSecret(this.ownerId, secretId);
+            this._onGenerate = (req: NewSecretRequestData) => this.api.createApiResourceSecret(this.ownerId, { description: req.description, expiration: req.expiration })
+        }
+
+        this._onLoadSource().subscribe((secrets: Secret[]) => this.value = secrets);
     }
 
     _onGenerateClick(event: Event) {
@@ -51,12 +64,13 @@ export class SecretManagerComponent implements OnInit {
                 if(!result) {
                     return;
                 }
-                this.onGenerate(result)
+                this._onGenerate(result)
                     .subscribe(secret => {
                         this.dialog.open(SecretManagerShowSecretDialog, {
                             data: secret
                         }).afterClosed().subscribe(() => {
-                            this.reload.emit();
+                            this.value.push(secret);
+                            this._changeDetectorRef.markForCheck();
                         });
                     }); 
             });
@@ -76,7 +90,7 @@ export class SecretManagerComponent implements OnInit {
                 if(!confirmed) {
                     return;
                 }
-                this.onDelete(secret.id)
+                this._onDelete(secret.id)
                     .subscribe(() => {
                         this._isDeletingSecret = false;
                         this.value.splice(this.value.indexOf(secret), 1);
