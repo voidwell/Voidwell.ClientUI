@@ -1,6 +1,6 @@
 ﻿import { Component, OnDestroy, Inject, OnInit, OnChanges } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';

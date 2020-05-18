@@ -4,7 +4,8 @@ import { DataSource } from '@angular/cdk/collections';
 import { Observable, throwError, of, merge } from 'rxjs';
 import { catchError, finalize, map } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { MatChipInputEvent, MatSort } from '@angular/material';
+import { MatChipInputEvent } from '@angular/material/chips';
+import { MatSort } from '@angular/material/sort';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
 @Component({

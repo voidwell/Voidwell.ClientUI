@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { Router } from '@angular/router';
-import { MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
 import {MatDialog, MatDialogRef} from '@angular/material/dialog';
 import { Observable, BehaviorSubject, of, fromEvent, throwError } from 'rxjs';
 import { distinctUntilChanged, debounceTime, catchError, finalize, tap } from 'rxjs/operators';

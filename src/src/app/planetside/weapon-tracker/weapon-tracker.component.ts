@@ -1,7 +1,7 @@
 ﻿import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
-import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material';
+import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger } from '@angular/material/autocomplete';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize, startWith, map, tap } from 'rxjs/operators';
 import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale, ScaleOrdinal } from 'd3-ng2-service';

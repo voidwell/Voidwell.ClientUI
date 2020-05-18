@@ -89,7 +89,7 @@ export class VoidwellAuthService {
             this.ngRedux.dispatch({ type: LOAD_USER, user });
         });
 
-        this.mgr.events.addUserSignedOut((e) => {
+        this.mgr.events.addUserSignedOut(() => {
             this.signOut();
         });
 
