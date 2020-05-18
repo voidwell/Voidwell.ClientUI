@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy } from '@angular/core';
+﻿import { Component, OnDestroy, forwardRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -7,7 +7,8 @@ import { PlanetsideCombatEventComponent } from './../../combat-event/planetside-
 
 @Component({
     templateUrl: './planetside-event.template.html',
-    styleUrls: ['./planetside-event.styles.css']
+    styleUrls: ['./planetside-event.styles.css'],
+    providers: [ {provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideEventComponent) }]
 })
 
 export class PlanetsideEventComponent extends PlanetsideCombatEventComponent implements OnDestroy {

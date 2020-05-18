@@ -116,7 +116,9 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                     bounds: latLngBounds(latLng(-128, -128), latLng(128, 128))
                 })
             ],
-            attributionControl: false
+            attributionControl: false,
+            center: latLng(0, 0),
+            zoom: 0
         };
 
         this.zoneMapSub = this.zoneHelper.getZoneMap(this.zoneId)
