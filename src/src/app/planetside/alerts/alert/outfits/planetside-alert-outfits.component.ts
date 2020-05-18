@@ -11,8 +11,8 @@ import { map } from 'rxjs/operators';
 })
 
 export class PlanetsideAlertOutfitsComponent implements OnInit {
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
     dataSource: TableDataSource;
 

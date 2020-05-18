@@ -10,7 +10,7 @@ import { D3Service, D3 } from 'd3-ng2-service';
 export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
     @Input() captured: number;
     @Input() defended: number;
-    @ViewChild('siegegauge') gaugeElement: ElementRef;
+    @ViewChild('siegegauge', { static: true }) gaugeElement: ElementRef;
 
     private d3: D3;
 

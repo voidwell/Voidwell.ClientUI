@@ -14,7 +14,7 @@ import { PlanetsideApi } from './../shared/services/planetside-api.service';
 })
 
 export class BulkCharacterStatsComponent implements OnInit {
-  @ViewChild(MatSort) sort: MatSort;
+  @ViewChild(MatSort, { static: true }) sort: MatSort;
 
   isLoading: boolean;
   errorMessage: string = null;

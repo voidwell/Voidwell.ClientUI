@@ -11,9 +11,9 @@ import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 })
 
 export class PlanetsideAlertPlayersComponent implements OnInit {
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild('filter') filter: ElementRef;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('filter', { static: true }) filter: ElementRef;
 
     dataSource: TableDataSource;
 

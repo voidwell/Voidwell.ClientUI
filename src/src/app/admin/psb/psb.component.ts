@@ -12,9 +12,9 @@ import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 })
 
 export class PsbComponent implements OnInit, OnDestroy {
-    @ViewChild(MatSort) sort: MatSort;
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild('filter') filter: ElementRef;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('filter', { static: true }) filter: ElementRef;
 
     errorMessage: string = null;
     sessions: Array<any> = null;

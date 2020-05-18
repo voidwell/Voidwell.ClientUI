@@ -14,8 +14,8 @@ import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 })
 
 export class UsersComponent implements OnInit, OnDestroy {
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild('filter') filter: ElementRef;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('filter', { static: true }) filter: ElementRef;
 
     users: Array<any> = [];
     roles: Array<any>;

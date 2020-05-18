@@ -69,7 +69,7 @@ const categoryOptions = [
 })
 
 export class WeaponTrackerComponent implements OnInit {
-    @ViewChild('linegraph') graphElement: ElementRef;
+    @ViewChild('linegraph', { static: true }) graphElement: ElementRef;
     @ViewChild('weaponInput') weaponInput: ElementRef;
     @ViewChild(MatAutocompleteTrigger) autoTrigger: MatAutocompleteTrigger;
 
