@@ -1,9 +1,11 @@
-FROM alexsuch/angular-cli:base AS build-env
+FROM node:12-alpine AS build-env
 
 RUN apk update \
-  && npm install -g @angular/cli@7.1.3 \
+  && apk add --update alpine-sdk python \
+  && yarn global add @angular/cli@9.1.6 \
+  && apk del alpine-sdk python \
   && rm -rf /tmp/* /var/cache/apk/* *.tar.gz ~/.npm \
-  && npm cache clear --force \
+  && npm cache clean --force \
   && yarn cache clean \
   && sed -i -e "s/bin\/ash/bin\/sh/" /etc/passwd
 
@@ -12,13 +14,15 @@ WORKDIR /app
 COPY ./src/package.json /app/package.json
 RUN npm install
 
+RUN npx ngcc --properties esm5 module main --create-ivy-entry-points
+
 COPY ./src/*.json /app/
 
 COPY ./src/src /app/src
 
 RUN npm run build:prod
 
-FROM node:6.10.2
+FROM node:12
 WORKDIR /app
 
 RUN mkdir -p /opt && cd /opt && curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.3 && mv ~/.yarn /opt/yarn
