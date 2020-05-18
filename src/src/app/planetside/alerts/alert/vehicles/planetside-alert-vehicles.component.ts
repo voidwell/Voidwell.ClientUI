@@ -1,9 +1,10 @@
-﻿import { Component, OnInit, ViewChild, Injector } from '@angular/core';
+﻿import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortable } from '@angular/material/sort';
 import { Observable, of, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { PlanetsideCombatEventComponent } from '../../../combat-event/planetside-combat-event.component';
 
 @Component({
     templateUrl: './planetside-alert-vehicles.template.html',
@@ -16,14 +17,11 @@ export class PlanetsideAlertVehiclesComponent implements OnInit {
 
     dataSource: TableDataSource;
 
-    constructor(private injector: Injector) {
+    constructor(private parentEventComponent: PlanetsideCombatEventComponent) {
     }
 
     ngOnInit() {
-        var inj: any = this.injector;
-        let combatEvent = inj.view.viewContainerParent.component;
-
-        combatEvent.event.subscribe(alert => {
+        this.parentEventComponent.event.subscribe(alert => {
             if (alert == null) {
                 return;
             }
