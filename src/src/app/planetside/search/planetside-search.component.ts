@@ -8,8 +8,8 @@ import { SearchService } from './../../shared/services/search.service';
 })
 
 export class PlanetsideSearchComponent implements OnDestroy {
-    @ViewChild('searchInput') searchInput: ElementRef;
-    @ViewChild('searchContainer') searchContainer: ElementRef;
+    @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
+    @ViewChild('searchContainer', { static: true }) searchContainer: ElementRef;
 
     private openSub: Subscription;
 

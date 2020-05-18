@@ -14,7 +14,7 @@ import { WorldService } from '../shared/services/world-service.service';
 })
 
 export class PopulationComponent implements OnInit {
-    @ViewChild('linegraph') graphElement: ElementRef;
+    @ViewChild('linegraph', { static: true }) graphElement: ElementRef;
 
     isLoading: boolean;
     errorMessage: string = null;

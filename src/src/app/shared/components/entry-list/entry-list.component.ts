@@ -61,7 +61,7 @@ export class EntryListComponent extends _EntryListMixinBase implements ControlVa
 
     get inputId(): string { return `${this.id || this._uniqueId}-input`; }
 
-    @ViewChild('input') _inputElement: ElementRef<HTMLInputElement>;
+    @ViewChild('input', { static: true }) _inputElement: ElementRef<HTMLInputElement>;
 
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,

@@ -14,8 +14,8 @@ import { ClientConfig } from '../models/client.model';
 })
 
 export class ClientsListComponent implements OnInit, AfterViewInit {
-    @ViewChild(MatPaginator) paginator: MatPaginator;
-    @ViewChild('filter') filter: ElementRef;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    @ViewChild('filter', { static: true }) filter: ElementRef;
 
     dataSource: TableDataSource;
 

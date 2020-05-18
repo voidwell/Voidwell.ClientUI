@@ -13,7 +13,7 @@ export class StatsHistoryCardComponent implements OnInit, OnDestroy {
     @Input('type') statsType: string;
     @Input('data') statsHistoryData: any[];
     @Input('period') period: string;
-    @ViewChild('graphContainer') element: ElementRef;
+    @ViewChild('graphContainer', { static: true }) element: ElementRef;
 
     private d3: D3;
     private svg;

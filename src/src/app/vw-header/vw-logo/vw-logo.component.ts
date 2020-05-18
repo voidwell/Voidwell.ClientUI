@@ -9,8 +9,8 @@ import * as tinycolor from 'tinycolor2';
 })
 
 export class VWLogoComponent implements OnInit, OnDestroy {
-    @ViewChild('logowrapper') logoElement: ElementRef;
-    @ViewChild('effectwrapper') effectElement: ElementRef;
+    @ViewChild('logowrapper', { static: true }) logoElement: ElementRef;
+    @ViewChild('effectwrapper', { static: true }) effectElement: ElementRef;
 
     logoTimeout: any;
 
