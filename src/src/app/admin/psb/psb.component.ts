@@ -1,6 +1,7 @@
 ﻿import { Component, ElementRef, ViewChild, OnInit, OnDestroy } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { MatSort, MatSortable, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, MatSortable } from '@angular/material/sort';
 import { Subscription, Observable, BehaviorSubject, merge, fromEvent, of, throwError } from 'rxjs';
 import { debounceTime, distinctUntilChanged, map, catchError } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';

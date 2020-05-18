@@ -1,7 +1,7 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DataSource } from '@angular/cdk/collections';
-import { MatSort, MatSortable } from '@angular/material';
+import { MatSort, MatSortable } from '@angular/material/sort';
 import { Observable, Subscription, of, merge, throwError } from 'rxjs';
 import { map, catchError, finalize } from 'rxjs/operators';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';

@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit, ViewChild, Inject } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { MatDialog, MatDialogRef, MatPaginator, MAT_DIALOG_DATA } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatPaginator } from '@angular/material/paginator';
 import { Subscription, Observable, of, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { VoidwellApi } from './../../shared/services/voidwell-api.service';

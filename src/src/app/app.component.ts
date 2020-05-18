@@ -5,7 +5,7 @@ import {
     IRegistrationState
 } from './reducers';
 import { NgRedux } from '@angular-redux/store';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 
 export interface IAppState {
     loggedInUser: IUserLoginState;

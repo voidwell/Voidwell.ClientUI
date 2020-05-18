@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgReduxModule } from '@angular-redux/store';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatIconRegistry } from '@angular/material';
+import { MatIconRegistry } from '@angular/material/icon';
 import { NgPipesModule } from 'ngx-pipes';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 
@@ -45,7 +45,7 @@ import { AppComponent } from './app.component';
         ReactiveFormsModule,
         NgReduxModule,
         NgPipesModule,
-        LeafletModule.forRoot(),
+        LeafletModule,
         VoidwellPipesModule
     ],
     providers: [

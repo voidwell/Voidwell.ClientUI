@@ -113,7 +113,6 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                     maxZoom: 6,
                     maxNativeZoom: 5,
                     noWrap: true,
-                    continuousWorld: true,
                     bounds: latLngBounds(latLng(-128, -128), latLng(128, 128))
                 })
             ],
