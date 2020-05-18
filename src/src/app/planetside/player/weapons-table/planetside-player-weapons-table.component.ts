@@ -11,7 +11,7 @@ import { map } from 'rxjs/operators';
 })
 
 export class PlanetsidePlayerWeaponsTableComponent implements OnInit {
-    @ViewChild(MatSort) sort: MatSort;
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
     @Input() weapons: any;
 
     dataSource: TableDataSource;

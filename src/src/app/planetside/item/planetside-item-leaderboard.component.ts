@@ -12,7 +12,7 @@ import { PlanetsideItemComponent } from './planetside-item.component';
 })
 
 export class PlanetsideItemLeaderboardComponent implements OnInit {
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
     errorMessage: string = null;
     weaponDataSub: Subscription;

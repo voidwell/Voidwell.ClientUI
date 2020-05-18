@@ -13,7 +13,7 @@ import { VoidwellApi } from './../../shared/services/voidwell-api.service';
 })
 
 export class BlogComponent implements OnInit {
-    @ViewChild(MatPaginator) paginator: MatPaginator;
+    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
     errorMessage: string = null;
     blogPosts: Array<any> = [];

@@ -11,7 +11,7 @@ import 'd3-transition';
 
 export class ActivityPopulationCardComponent implements OnChanges {
     @Input('data') populationData: any[];
-    @ViewChild('graphContainer') element: ElementRef;
+    @ViewChild('graphContainer', { static: true }) element: ElementRef;
 
     private d3: D3;
     private svg;
