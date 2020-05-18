@@ -1,6 +1,7 @@
 ﻿import { Component, OnInit, ElementRef, ViewChild, Injector } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { MatSort, MatSortable, MatPaginator } from '@angular/material';
+import { MatPaginator } from '@angular/material/paginator';
+import { MatSort, MatSortable } from '@angular/material/sort';
 import { Observable, BehaviorSubject, of, merge, fromEvent } from 'rxjs';
 import { map, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 

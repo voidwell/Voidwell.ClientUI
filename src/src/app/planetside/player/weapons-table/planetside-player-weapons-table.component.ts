@@ -1,6 +1,6 @@
 ﻿import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { MatSort, MatSortable } from '@angular/material';
+import { MatSort, MatSortable } from '@angular/material/sort';
 import { Observable, of, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 

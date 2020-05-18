@@ -3,7 +3,7 @@ import { WithSubStore, select, dispatch } from '@angular-redux/store';
 import { Observable, Subscription } from 'rxjs';
 import { CHANGE_PLATFORM } from './../../reducers';
 import reducers from './../../planetside.reducers';
-import { MatSelectChange } from '@angular/material';
+import { MatSelectChange } from '@angular/material/select';
 
 @Component({
     selector: 'platform-control',
