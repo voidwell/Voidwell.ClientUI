@@ -14,7 +14,8 @@ import reducers from './../../planetside.reducers';
 
 @Injectable()
 export class PlanetsideApi extends ApiBase implements OnDestroy {
-    public ps2Url = location.origin + '/api/ps2/';
+    apiRoot = `${location.protocol}//api.${location.host}`
+    public ps2Url = `${this.apiRoot}/ps2/`;
     
     private platformSub: Subscription;
     private platform: string = 'pc';

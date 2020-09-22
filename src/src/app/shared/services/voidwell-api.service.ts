@@ -11,12 +11,13 @@ import { RequestCache } from './../services/request-cache.service';
 @Injectable()
 export class VoidwellApi extends ApiBase {
     apiBaseUrl = 'app/';
-    public blogUrl = location.origin + '/api/blog/';
-    public eventsUrl = location.origin + '/api/events/';
-    public accountUrl = location.origin + '/api/account/';
-    public authAdminUrl = location.origin + '/api/authadmin/';
-    public oidcAdminUrl = location.origin + '/api/oidcadmin/';
-    public ps2Url = location.origin + '/api/ps2/';
+    apiRoot = `${location.protocol}//api.${location.host}`
+    public blogUrl = `${this.apiRoot}/blog/`;
+    public eventsUrl = `${this.apiRoot}/events/`;
+    public accountUrl = `${this.apiRoot}/account/`;
+    public authAdminUrl = `${this.apiRoot}/authadmin/`;
+    public oidcAdminUrl = `${this.apiRoot}/oidcadmin/`;
+    public ps2Url = `${this.apiRoot}/ps2/`;
 
     constructor(public authService: VoidwellAuthService,
         public http: HttpClient,
