@@ -1,16 +1,16 @@
 ﻿import { Component, ViewEncapsulation, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { NgRedux } from '@angular-redux/store';
-import { Subscription } from 'rxjs';
+import { WithSubStore, dispatch, select } from '@angular-redux/store';
+import { Observable, Subscription } from 'rxjs';
 import { PlanetsideApi } from './shared/services/planetside-api.service';
 import { SearchService, SearchState } from './../shared/services/search.service';
 import reducers from './planetside.reducers';
-import { IPlatformState, INIT_PLATFORM } from './reducers';
+import { CHANGE_PLATFORM } from './reducers';
 
-export interface IModuleState {
-    platform: IPlatformState;
-};
-
+@WithSubStore({
+    basePathMethodName: 'getBasePath',
+    localReducer: reducers
+})
 @Component({
     selector: 'voidwell-planetside-wrapper',
     templateUrl: './planetsidewrapper.template.html',
@@ -27,11 +27,13 @@ export class PlanetsideWrapperComponent implements OnDestroy {
     private resultSub: Subscription;
     private platformSub: Subscription;
 
-    constructor(private api: PlanetsideApi, private router: Router, private searchService: SearchService, private ngRedux: NgRedux<IModuleState>) {
-        let store = this.ngRedux.configureSubStore(['ps2'], reducers);
-        store.dispatch({ type: INIT_PLATFORM });
+    @select('platform') readonly platform$: Observable<any>;
+    @dispatch() initializeState = () => ({ type: CHANGE_PLATFORM, value: 'pc' });
 
-        this.platformSub = store.select('platform').subscribe((platformState: any) => {
+    constructor(private api: PlanetsideApi, private router: Router, private searchService: SearchService) {
+        this.initializeState();
+
+        this.platformSub = this.platform$.subscribe((platformState: any) => {
             if (platformState && this.activePlatform !== platformState.platform) {
                 this.activePlatform = platformState.platform;
                 this.router.navigateByUrl('ps2');
@@ -83,5 +85,9 @@ export class PlanetsideWrapperComponent implements OnDestroy {
         this.searchSub.unsubscribe();
         this.resultSub.unsubscribe();
         if (this.platformSub) this.platformSub.unsubscribe();
+    }
+
+    private getBasePath() {
+        return ['ps2'];
     }
 }

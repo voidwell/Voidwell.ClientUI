@@ -71,6 +71,7 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
+            "poll": 2000,
             "browserTarget": "ClientUI:build",
             "port": 5000,
             "host": "0.0.0.0",
