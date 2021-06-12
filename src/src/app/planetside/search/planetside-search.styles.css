@@ -1,4 +1,8 @@
-﻿.search.focus .top-search-container {
+﻿.search.focus {
+    overflow: hidden;
+}
+
+.search.focus .top-search-container {
     background: #edeff0;
 }
 
