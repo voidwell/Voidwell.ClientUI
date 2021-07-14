@@ -11,16 +11,14 @@ RUN apk update \
 
 WORKDIR /app
 
-COPY ./src/package.json /app/package.json
-RUN npm install
-
-RUN npx ngcc --properties esm5 module main --create-ivy-entry-points
-
 COPY ./src/*.json /app/
-
+COPY ./src/*.lock /app/
 COPY ./src/src /app/src
 
-RUN npm run build:prod
+RUN yarn install
+RUN npx ngcc --properties esm5 module main --create-ivy-entry-points
+
+RUN yarn run build:prod
 
 FROM node:12
 WORKDIR /app
