@@ -7,7 +7,7 @@
     "analyze": "ng build --prod --stats-json && webpack-bundle-analyzer dist/stats.json -s gzip",
     "start:dev": "npm rebuild node-sass | ng serve",
     "start:prod": "npm rebuild node-sass | node server.js",
-    "build:dev": "npm rebuild node-sass | ng build --dev",
+    "build:dev": "npm rebuild node-sass | ng build",
     "build:prod": "npm rebuild node-sass | ng build --prod"
   },
   "dependencies": {
