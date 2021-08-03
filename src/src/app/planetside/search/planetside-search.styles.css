@@ -1,4 +1,8 @@
-﻿.search.focus {
+﻿.search .platform-control {
+    margin-right: 20px;
+}
+
+.search.focus {
     overflow: hidden;
 }
 
@@ -7,14 +11,8 @@
 }
 
 .top-search-container {
-    margin-left: 130px;
-    white-space: nowrap;
-
     transition: all;
     transition-duration: 0.3s;
-}
-::ng-deep .search-results {
-    margin-right: 150px;
 }
 
 .top-search-container,
