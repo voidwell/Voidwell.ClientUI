@@ -12,7 +12,7 @@ pipeline {
     stage('Docker Push') {
       steps {
         script {
-          docker.withRegistry('https://${REGISTRY_ENDPOINT}', 'docker.voidwell.com') {
+          docker.withRegistry('${REGISTRY_ENDPOINT}', 'docker.voidwell.com') {
             dockerImage.push("${BUILD_NUMBER}")
             dockerImage.push("latest")
           }
@@ -39,7 +39,7 @@ git commit -m "Updated ${ENV_VAR_KEY} in ${RELEASE_FILE} with ${BUILD_NUMBER}"
     }
   }
   environment {
-    REGISTRY_ENDPOINT = 'docker.voidwell.com'
+    REGISTRY_ENDPOINT = 'https://docker.voidwell.com'
     REPOSITORY = 'voidwell/clientui'
     SERVICE_NAME = 'clientui'
     DOCKERFILE_PATH = './Dockerfile'
