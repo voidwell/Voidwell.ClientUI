@@ -21,7 +21,7 @@ pipeline {
     stage('Update Release') {
       steps {
         dir ('release-tmp') {
-          git branch: 'master', credentialsId: 'GithubSSH', url: 'git@github.com:voidwell/server.git'
+          git changelog: false, branch: 'master', credentialsId: 'GithubSSH', url: 'git@github.com:voidwell/server.git'
           sh '''#!/bin/bash
 ENV_VAR_KEY="IMAGE_${SERVICE_NAME^^}_VERS"
 
