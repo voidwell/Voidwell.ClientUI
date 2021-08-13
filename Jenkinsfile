@@ -11,7 +11,7 @@ pipeline {
     stage('Docker Push') {
       steps {
         script {
-          docker.withRegistry('${REGISTRY_ENDPOINT}', 'docker.voidwell.com') {
+          docker.withRegistry("${REGISTRY_ENDPOINT}", 'docker.voidwell.com') {
             dockerImage.push("${BUILD_NUMBER}")
             dockerImage.push("latest")
           }
