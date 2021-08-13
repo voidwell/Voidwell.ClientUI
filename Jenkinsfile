@@ -5,7 +5,7 @@ pipeline {
       agent any
       steps {
         script {
-          dockerImage = docker.build("${REGISTRY_ENDPOINT}/${REPOSITORY}", "-f ${DOCKERFILE_PATH}")
+          dockerImage = docker.build("${REGISTRY_ENDPOINT}/${REPOSITORY}", "-f ${DOCKERFILE_PATH} .")
         }
       }
     }
