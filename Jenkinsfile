@@ -2,7 +2,6 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      agent any
       steps {
         script {
           dockerImage = docker.build("${REPOSITORY}", "-f ${DOCKERFILE_PATH} .")
