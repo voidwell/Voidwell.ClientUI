@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconRegistry } from '@angular/material/icon';
 import { NgPipesModule } from 'ngx-pipes';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import { MaterialLib } from './shared/materialLib.module';
 import { RequestCache } from './shared/services/request-cache.service';
@@ -46,6 +47,7 @@ import { AppComponent } from './app.component';
         NgReduxModule,
         NgPipesModule,
         LeafletModule,
+        FlexLayoutModule,
         VoidwellPipesModule
     ],
     providers: [

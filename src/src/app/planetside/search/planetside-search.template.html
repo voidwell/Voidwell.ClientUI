@@ -1,26 +1,28 @@
 ﻿<div class="search" [ngClass]="{'focus': searchService.searchFocused || searchService.control.dirty}">
-    <platform-control class="platform-control"></platform-control>
-    <div class="top-search-container" #searchContainer>
-        <button mat-icon-button *ngIf="searchService.control.dirty" class="top-search_clear" (click)="searchService.clearSearch()">
-            <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
-        </button>
-        <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching}"></i>
-        <mat-select class="top-search_dropdown"
-            [formControl]="searchService.categoryControl"
-            (openedChange)="searchService.dropdownToggled($event)"
-            panelClass="top-search_dropdown">
-            <mat-option value="character">Player</mat-option>
-            <mat-option value="outfit">Outfit</mat-option>
-            <mat-option value="item">Weapon</mat-option>
-        </mat-select>
-        <div class="top-search_input-container">
-            <input class="top-search_input"
-                #searchInput
-                type="text"
-                matInput
-                [matAutocomplete]="auto"
-                [formControl]="searchService.control"
-                [placeholder]="searchService.placeholder">
+    <div class ="top-search-flex" fxLayout="row">
+        <platform-control class="platform-control" fxFlex="none"></platform-control>
+        <div class="top-search-container" fxFlex="100%" #searchContainer>
+            <button mat-icon-button *ngIf="searchService.control.dirty" class="top-search_clear" (click)="searchService.clearSearch()">
+                <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
+            </button>
+            <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching}"></i>
+            <mat-select class="top-search_dropdown"
+                [formControl]="searchService.categoryControl"
+                (openedChange)="searchService.dropdownToggled($event)"
+                panelClass="top-search_dropdown">
+                <mat-option value="character">Player</mat-option>
+                <mat-option value="outfit">Outfit</mat-option>
+                <mat-option value="item">Weapon</mat-option>
+            </mat-select>
+            <div class="top-search_input-container" fxFlex="100%">
+                <input class="top-search_input"
+                    #searchInput
+                    type="text"
+                    matInput
+                    [matAutocomplete]="auto"
+                    [formControl]="searchService.control"
+                    [placeholder]="searchService.placeholder">
+            </div>
         </div>
     </div>
     <mat-autocomplete #auto="matAutocomplete" class="search-results">

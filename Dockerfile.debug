@@ -9,9 +9,14 @@ RUN apk update \
   && yarn cache clean \
   && sed -i -e "s/bin\/ash/bin\/sh/" /etc/passwd
 
+WORKDIR /app/src
+COPY . .
+
+WORKDIR /app/src/src
+RUN yarn install
+
 ENV NODE_ENV=dev
 
-WORKDIR /app/src
 EXPOSE 5000
 
-ENTRYPOINT npm run start:dev
+ENTRYPOINT yarn start:dev

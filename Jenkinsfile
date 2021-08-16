@@ -2,60 +2,47 @@ pipeline {
   agent any
   stages {
     stage('Build') {
-      agent any
       steps {
-        sh '''#!/bin/bash
-REGISTRY=$REGISTRY_ENDPOINT
-REPOSITORY=$REPOSITORY
-DOCKERFILE_PATH=$DOCKERFILE_PATH
-
-docker build -t ${REGISTRY}/${REPOSITORY}:latest -f ${DOCKERFILE_PATH} .
-
-echo -e "\\nBuild Completed"'''
+        script {
+          dockerImage = docker.build("${REPOSITORY}", "-f ${DOCKERFILE_PATH} .")
+        }
       }
     }
     stage('Docker Push') {
       steps {
-        sh '''#!/bin/bash
-REGISTRY=$REGISTRY_ENDPOINT
-REPOSITORY=$REPOSITORY
-REGISTRY_USER=$REGISTRY_USER
-REGISTRY_PASSWORD=$REGISTRY_PASSWORD
-
-REGISTRY_CRED="${REGISTRY_USER}:${REGISTRY_PASSWORD}"
-REPO_LABEL=${REGISTRY}/${REPOSITORY}
-
-TAGS="`curl -s --user ${REGISTRY_CRED} https://${REGISTRY}/v2/${REPOSITORY}/tags/list | jq -r \'.tags\' | sed \'s/[^0-9]*//g\'`"
-LATEST=`echo "${TAGS[*]}" | sort -nr | head -n1`
-BUILDTAG=$((LATEST + 1))
-
-docker tag ${REPO_LABEL}:latest ${REPO_LABEL}:${BUILDTAG}
-
-docker push ${REPO_LABEL}:${BUILDTAG}
-docker push ${REPO_LABEL}:latest
-
-echo export "${REPO_LABEL}:${BUILDTAG}" > buildlabel
-echo -e "\\nPushed ${REPO_LABEL}:${BUILDTAG}"'''
+        script {
+          docker.withRegistry("${REGISTRY_ENDPOINT}", 'docker.voidwell.com') {
+            dockerImage.push("${BUILD_NUMBER}")
+            dockerImage.push("latest")
+          }
+        }
       }
     }
-    stage('Deploy') {
+    stage('Update Release') {
       steps {
-        sh '''#!/bin/bash
-#COMPOSE_PATH=$COMPOSE_PATH
+        dir ('release-tmp') {
+          git changelog: false, branch: 'master', credentialsId: 'GithubSSH', url: 'git@github.com:voidwell/server.git'
+          sh '''#!/bin/bash
+ENV_VAR_KEY="IMAGE_${SERVICE_NAME^^}_VERS"
 
-#BUILD_LABEL=readFile(\'buildlabel\').trim()
+sed -i "/^${ENV_VAR_KEY}=/{h;s/=.*/=${BUILD_NUMBER}/};\\${x;/^$/{s//${ENV_VAR_KEY}=${BUILD_NUMBER}/;H};x}" $RELEASE_FILE
 
-#echo ${COMPOSE_PATH}
-#echo ${BUILD_LABEL}'''
+git add $RELEASE_FILE
+git commit -m "Updated ${ENV_VAR_KEY} in ${RELEASE_FILE} with ${BUILD_NUMBER}"
+'''
+          sshagent(credentials: ['GithubSSH']) {
+            sh 'git push origin master'
+          }
+        }
       }
     }
   }
   environment {
-    REGISTRY_USER = credentials('docker-registry-user')
-    REGISTRY_PASSWORD = credentials('docker-registry-password')
-    REGISTRY_ENDPOINT = 'docker.voidwell.com'
+    REGISTRY_ENDPOINT = 'https://docker.voidwell.com'
     REPOSITORY = 'voidwell/clientui'
+    SERVICE_NAME = 'clientui'
     DOCKERFILE_PATH = './Dockerfile'
-    COMPOSE_PATH = '/docker-configs/voidwell/docker-compose.yml'
+    RELEASE_FILE = '.env.prod'
+    dockerImage = ''
   }
 }

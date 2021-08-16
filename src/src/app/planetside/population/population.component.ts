@@ -178,9 +178,11 @@ export class PopulationComponent implements OnInit {
                     vsCount: d.vsCount,
                     ncCount: d.ncCount,
                     trCount: d.trCount,
+                    nsCount: d.nsCount,
                     vsAvgPlayTime: d.vsAvgPlayTime,
                     ncAvgPlayTime: d.ncAvgPlayTime,
                     trAvgPlayTime: d.trAvgPlayTime,
+                    nsAvgPlayTime: d.nsAvgPlayTime,
                     avgPlayTime: d.avgPlayTime
                 };
             });
@@ -200,16 +202,16 @@ export class PopulationComponent implements OnInit {
             .domain(this.xExtent)
             .range([0, this.graphWidth]);
 
-        let maxY = d3.max(series, function (s) { return d3.max(s, function (d) { return d.vsCount + d.ncCount + d.trCount; }) });
+        let maxY = d3.max(series, function (s) { return d3.max(s, function (d) { return d.vsCount + d.ncCount + d.trCount + d.nsCount; }) });
 
         let y = d3.scaleLinear()
             .domain([0, maxY])
             .rangeRound([this.graphHeight, 0]);
 
         let line = d3.line<any>()
-            .defined(function (d) { return d.vsCount + d.ncCount + d.trCount; })
+            .defined(function (d) { return d.vsCount + d.ncCount + d.trCount + d.nsCount; })
             .x(function (d) { return self.x(d.date); })
-            .y(function (d) { return y(d.vsCount + d.ncCount + d.trCount); });
+            .y(function (d) { return y(d.vsCount + d.ncCount + d.trCount + d.nsCount); });
 
         this.zoom = this.d3.zoom<SVGRectElement, {}>()
             .scaleExtent([1, 32])
@@ -313,7 +315,7 @@ export class PopulationComponent implements OnInit {
                 .style('color', (d, i) => self.lineColors(i.toString()))
                 .html((d, i) => {
                     let match = d.find(h => h.date.getTime() === matchingDate.getTime());
-                    let matchValue = match ? (match.vsCount + match.ncCount + match.trCount) : 0;
+                    let matchValue = match ? (match.vsCount + match.ncCount + match.trCount + match.nsCount) : 0;
                     return self.graphWorlds[i].id + ' - ' + self.graphWorlds[i].name + ': ' + (matchValue ? matchValue.toLocaleString() : '-');
                 });
         }
@@ -392,8 +394,10 @@ interface DailyPopulation {
     vsCount: number;
     ncCount: number;
     trCount: number;
+    nsCount: number;
     vsAvgPlayTime: number;
     ncAvgPlayTime: number;
     trAvgPlayTime: number;
+    nsAvgPlayTime: number;
     avgPlayTime: number;
 }
