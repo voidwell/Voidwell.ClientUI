@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy } from '@angular/core';
+﻿import { Component, EventEmitter, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription, BehaviorSubject } from "rxjs";
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
@@ -10,14 +10,19 @@ import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
 export class PlanetsideItemComponent implements OnDestroy {
     errorMessage: string = null;
-    isLoading: boolean;
+    isLoading: boolean = true;
+    itemId: string;
 
     routeSub: Subscription;
+    itemIdChange: EventEmitter<string> = new EventEmitter<string>();
     weaponData: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
     constructor(private api: PlanetsideApi, private route: ActivatedRoute) {
         this.routeSub = this.route.params.subscribe(params => {
             let id = params['id'];
+            this.itemId = id;
+            this.itemIdChange.emit(id);
+            this.weaponData.next(null);
             this.isLoading = true;
 
             this.api.getWeaponInfo(id)

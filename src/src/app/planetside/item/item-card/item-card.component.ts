@@ -17,7 +17,7 @@ export class ItemCardComponent implements OnInit, OnDestroy {
         { path: 'leaderboard', display: 'Leaderboard' }
     ];
 
-    constructor(private itemComponent: PlanetsideItemComponent) {
+    constructor(public itemComponent: PlanetsideItemComponent) {
     }
 
     ngOnInit() {

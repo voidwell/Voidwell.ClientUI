@@ -23,27 +23,22 @@ export class PlanetsideItemLeaderboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dataSource = new TableDataSource(this.api, this.paginator, this.itemComponent.weaponData);
+        this.dataSource = new TableDataSource(this.api, this.paginator, this.itemComponent);
     }
 }
 
 export class TableDataSource extends DataSource<any> {
     private itemSubject = new BehaviorSubject<any[]>([]);
     private loadingSubject = new BehaviorSubject<boolean>(false);
-    private itemId: string;
 
-    constructor(private api: PlanetsideApi, private paginator: MatPaginator, private weaponId: Observable<any>) {
+    constructor(private api: PlanetsideApi, private paginator: MatPaginator, private itemComponent: PlanetsideItemComponent) {
         super();
     }
 
     public loading$ = this.loadingSubject.asObservable();
 
     connect(): Observable<any[]> {
-        merge(this.weaponId, this.paginator.page).subscribe((result) => {
-            if (result && result.itemId) {
-                this.itemId = result.itemId;
-            }
-
+        merge(this.itemComponent.itemIdChange, this.paginator.page).subscribe(() => {
             this.loadItems();
         })
 
@@ -56,13 +51,13 @@ export class TableDataSource extends DataSource<any> {
     }
 
     loadItems() {
-        if (this.itemId === '' || this.itemId === undefined) {
+        if (this.itemComponent.itemId === '' || this.itemComponent.itemId === undefined) {
             return;
         }
         
         this.loadingSubject.next(true);
 
-        this.api.getWeaponLeaderboard(this.itemId, this.paginator.pageIndex)
+        this.api.getWeaponLeaderboard(this.itemComponent.itemId, this.paginator.pageIndex)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false))

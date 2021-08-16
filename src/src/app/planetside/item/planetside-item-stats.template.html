@@ -1,5 +1,5 @@
 ﻿<div>
-    <div *ngIf="!isLoading" class="card-row">
+    <div *ngIf="!isLoading && weaponData" class="card-row">
         <mat-card class="weapon-description-card pull-left">
             <mat-card-content class="layout-padding">
                 <img [src]="weaponData.imageId | dgcImageUrl" />
