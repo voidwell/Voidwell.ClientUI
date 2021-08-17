@@ -1,6 +1,6 @@
 ﻿import { Component, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Subscription, BehaviorSubject, throwError } from "rxjs";
+import { Subscription, BehaviorSubject, throwError, of } from "rxjs";
 import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
 
@@ -26,15 +26,18 @@ export class PlanetsideItemComponent implements OnDestroy {
             this.isLoading = true;
 
             this.api.getWeaponInfo(id)
-                .pipe<any>(catchError(error => {
-                    if (error.status != 404) {
-                        this.errorMessage = error.statusText
+                .pipe(
+                    catchError(error => {
+                        if (error.status === 404) {
+                            return of();
+                        }
+                        this.errorMessage = error.statusText;
                         return throwError(error);
-                    }
-                }))
-                .pipe<any>(finalize(() => {
-                    this.isLoading = false;
-                }))
+                    }),
+                    finalize(() => {
+                        this.isLoading = false;
+                    })
+                )
                 .subscribe(data => {
                     this.weaponData.next(data);
                 });
