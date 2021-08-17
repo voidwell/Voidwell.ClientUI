@@ -1,15 +1,15 @@
 ﻿<mat-card class="item-card" *ngIf="!itemComponent.isLoading" [ngClass]="{'bg-vs': itemData?.factionId===1, 'bg-nc': itemData?.factionId===2, 'bg-tr': itemData?.factionId===3}">
     <mat-card-title>
-        <h1 class="item-name">{{itemData?.name || "Unknown"}}</h1>
+        <h1 class="item-name">{{itemData?.name || "Unknown (" + (itemComponent.itemId | async) +")"}}</h1>
         <div class="stats pull-right">
             <div>
-                {{itemData.category}}
+                {{itemData?.category}}
             </div>
         </div>
     </mat-card-title>
     <mat-card-subtitle>
         <div class="outfit-description">
-            {{itemData.description}}
+            {{itemData?.description}}
         </div>
     </mat-card-subtitle>
     <mat-card-footer>

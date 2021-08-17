@@ -29,7 +29,8 @@ export class PlanetsideItemLeaderboardComponent implements OnInit {
 
 export class TableDataSource extends DataSource<any> {
     private itemSubject = new BehaviorSubject<any[]>([]);
-    private loadingSubject = new BehaviorSubject<boolean>(false);
+    private loadingSubject = new BehaviorSubject<boolean>(true);
+    private itemId: string;
 
     constructor(private api: PlanetsideApi, private paginator: MatPaginator, private itemComponent: PlanetsideItemComponent) {
         super();
@@ -38,7 +39,8 @@ export class TableDataSource extends DataSource<any> {
     public loading$ = this.loadingSubject.asObservable();
 
     connect(): Observable<any[]> {
-        merge(this.itemComponent.itemIdChange, this.paginator.page).subscribe(() => {
+        merge(this.itemComponent.itemId, this.paginator.page).subscribe(() => {
+            this.itemId = this.itemComponent.itemId.value;
             this.loadItems();
         })
 
@@ -51,13 +53,13 @@ export class TableDataSource extends DataSource<any> {
     }
 
     loadItems() {
-        if (this.itemComponent.itemId === '' || this.itemComponent.itemId === undefined) {
+        if (this.itemId === '' || this.itemId === undefined) {
             return;
         }
         
         this.loadingSubject.next(true);
 
-        this.api.getWeaponLeaderboard(this.itemComponent.itemId, this.paginator.pageIndex)
+        this.api.getWeaponLeaderboard(this.itemId, this.paginator.pageIndex)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false))
