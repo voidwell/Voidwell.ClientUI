@@ -128,64 +128,81 @@ export class TableDataSource extends DataSource<any> {
 export class UserEditorDialog {
     public errorMessage: string;
     public isLoading: boolean;
-    private user: any;
+    public isLocked: boolean;
+    public user: any;
 
     constructor(public dialogRef: MatDialogRef<UserEditorDialog>, private api: VoidwellApi, @Inject(MAT_DIALOG_DATA) public data: any) {
-        this.errorMessage = null;
         this.isLoading = true;
 
         this.api.getUser(this.data.userId)
+            .pipe<any>(catchError(error => {
+                this.errorMessage = error._body;
+                return throwError(error);
+            }))
+            .pipe<any>(finalize(() => {
+                this.isLoading = false;
+            }))
             .subscribe(user => {
                 this.user = user;
-                this.isLoading = false;
             });
     }
 
-    private setRoles(user, userRolesForm: NgForm) {
-        if (userRolesForm.pristine) {
+    onRoleDropdownToggle(isOpen: boolean, userRolesForm: NgForm) {
+        if (isOpen || userRolesForm.pristine) {
             return;
         }
 
         this.errorMessage = null;
-        user.isLocked = true;
-        this.api.updateUserRoles(user.id, userRolesForm.value)
+        this.isLocked = true;
+        
+        this.api.updateUserRoles(this.user.id, userRolesForm.value)
             .pipe<any>(catchError(error => {
                 this.errorMessage = error._body;
-                userRolesForm.form.patchValue(user);
+                userRolesForm.form.patchValue(this.user);
                 return throwError(error);
             }))
             .pipe<any>(finalize(() => {
-                user.isLocked = false;
+                this.isLocked = false;
                 userRolesForm.form.markAsPristine();
             }))
             .subscribe(updatedRoles => {
-                user.roles = updatedRoles;
+                this.user.roles = updatedRoles;
             });
     }
 
-    lockUser(user: any) {
+    lockUser() {
         this.errorMessage = null;
-        user.isLocked = true;
+        this.isLocked = true;
 
         let params = {
             IsPermanant: true,
             LockLength: 60
         };
 
-        this.api.lockUser(this.data.userId, params)
-            .subscribe(() => {
-                user.isLocked = false;
-            });
+        this.api.lockUser(this.user.id, params)
+            .pipe<any>(catchError(error => {
+                this.errorMessage = error._body;
+                return throwError(error);
+            }))
+            .pipe<any>(finalize(() => {
+                this.isLocked = false;
+            }))
+            .subscribe();
     }
 
-    unlockUser(user: any) {
+    unlockUser() {
         this.errorMessage = null;
-        user.isLocked = true;
+        this.isLocked = true;
 
-        this.api.unlockUser(this.data.userId)
-            .subscribe(() => {
-                user.isLocked = false;
-            });
+        this.api.unlockUser(this.user.id)
+            .pipe<any>(catchError(error => {
+                this.errorMessage = error._body;
+                return throwError(error);
+            }))
+            .pipe<any>(finalize(() => {
+                this.isLocked = false;
+            }))
+            .subscribe();
     }
 
     closeDialog() {
@@ -195,5 +212,4 @@ export class UserEditorDialog {
     onNoClick(): void {
         this.dialogRef.close();
     }
-
 }
