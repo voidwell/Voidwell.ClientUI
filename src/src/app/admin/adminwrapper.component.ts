@@ -21,7 +21,7 @@ export class AdminWrapperComponent {
         { path: 'blog', display: 'Blog', roles: ['Administrator', 'Blog'] },
         { path: 'users', display: 'Users', roles: ['Administrator'] },
         { path: 'roles', display: 'Roles', roles: ['Administrator'] },
-        { path: 'services', display: 'Services', roles: ['Administrator'] },
+        { path: 'status', display: 'Status', roles: ['Administrator'] },
         { path: 'oidc', display: 'OIDC', roles: ['Administrator'] }
     ];
 
