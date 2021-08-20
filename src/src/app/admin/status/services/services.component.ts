@@ -2,7 +2,7 @@
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { VoidwellApi } from './../../shared/services/voidwell-api.service';
+import { VoidwellApi } from '../../../shared/services/voidwell-api.service';
 
 @Component({
     templateUrl: './services.template.html'

@@ -162,6 +162,15 @@ export class VoidwellApi extends ApiBase {
         return this.AuthPost(url, null);
     }
 
+    getPS2StoreLogs() {
+        return this.AuthGet(`${this.ps2Url}store/updatelog`);
+    }
+
+    refreshPS2Store(store: string, originator: string) {
+        let url = `${this.ps2Url}store/update/${store}${originator ? '?platform=' + originator : ''}`;
+        return this.AuthPost(url, null);
+    }
+
     setupWorldZones(worldId: string) {
         return this.AuthPost(this.ps2Url + 'worldstate/' + worldId + '/zone', null);
     }

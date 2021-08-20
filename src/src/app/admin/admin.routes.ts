@@ -6,7 +6,9 @@ import { BlogComponent } from './blog/blog.component';
 import { UsersComponent } from './users/users.component';
 import { RolesComponent } from './roles/roles.component';
 import { EventsComponent } from './events/events.component';
-import { ServicesComponent } from './services/services.component';
+import { StatusWrapperComponent } from './status/statuswrappaer.component';
+import { ServicesComponent } from './status/services/services.component';
+import { StoresComponent } from './status/stores/stores.component';
 import { PsbComponent } from './psb/psb.component';
 import { OidcWrapperComponent } from './oidc/oidcwrapper.component';
 import { ClientsListComponent } from './oidc/clients/clients-list.component';
@@ -51,9 +53,13 @@ const adminRoutes: Routes = [
                 data: { roles: ['Administrator', 'PSB'] }
             },
             {
-                path: 'services',
-                component: ServicesComponent,
-                data: { roles: ['Administrator'] }
+                path: 'status',
+                component: StatusWrapperComponent,
+                data: { roles: ['Administrator'] },
+                children: [
+                    { path: 'services', component: ServicesComponent },
+                    { path: 'stores', component: StoresComponent },
+                ]
             },
             {
                 path: 'oidc',

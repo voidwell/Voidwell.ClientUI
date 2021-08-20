@@ -1,0 +1,43 @@
+﻿<div class="content-container">
+    <h3>Planetside</h3>
+    <vw-loader [loading]="dataSource.loading$ | async"></vw-loader>
+    <vw-error-message [message]="dataSource.errorMessage$ | async"></vw-error-message>
+    <div [hidden]="dataSource.loading$ | async">
+
+        <div class="table-filter">
+            <mat-form-field floatLabel="never">
+                <input matInput #filter placeholder="Filter stores">
+            </mat-form-field>
+        </div>
+
+        <mat-table #table [dataSource]="dataSource" class="striped">
+            <ng-container matColumnDef="storeName">
+                <mat-header-cell *matHeaderCellDef>Store Name</mat-header-cell>
+                <mat-cell *matCellDef="let store">
+                    <span *ngIf="store.originator">({{store.originator}})</span>
+                    <span>{{store.storeName}}</span>
+                </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="updateInterval">
+                <mat-header-cell *matHeaderCellDef>Update Interval</mat-header-cell>
+                <mat-cell *matCellDef="let store">{{store.updateInterval}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="lastUpdated">
+                <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
+                <mat-cell *matCellDef="let store">{{store.lastUpdated | date:'dd MMM yyyy HH:mm'}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="refreshButton">
+                <mat-header-cell *matHeaderCellDef></mat-header-cell>
+                <mat-cell *matCellDef="let store">
+                    <button mat-raised-button (click)="onStoreRefresh(store)" [disabled]="store.isLoading">Refresh</button>
+                </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="['storeName','updateInterval','lastUpdated','refreshButton']"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: ['storeName','updateInterval','lastUpdated','refreshButton'];"></mat-row>
+        </mat-table>
+    </div>
+</div>

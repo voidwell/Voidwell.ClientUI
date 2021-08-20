@@ -12,7 +12,9 @@ import { BlogComponent, BlogEditorDialog } from './blog/blog.component';
 import { UsersComponent, UserEditorDialog } from './users/users.component';
 import { RolesComponent } from './roles/roles.component';
 import { EventsComponent, EventEditorDialog } from './events/events.component';
-import { ServicesComponent } from './services/services.component';
+import { StatusWrapperComponent } from './status/statuswrappaer.component';
+import { ServicesComponent } from './status/services/services.component';
+import { StoresComponent } from './status/stores/stores.component';
 import { PsbComponent } from './psb/psb.component';
 import { OidcWrapperComponent } from './oidc/oidcwrapper.component';
 import { ClientsListComponent, ClientsListNewDialog } from './oidc/clients/clients-list.component';
@@ -30,7 +32,9 @@ import { SecretManagerComponent, SecretManagerNewSecretDialog, SecretManagerShow
         UsersComponent,
         RolesComponent,
         EventsComponent,
+        StatusWrapperComponent,
         ServicesComponent,
+        StoresComponent,
         PsbComponent,
         OidcWrapperComponent,
         ClientsListComponent,
