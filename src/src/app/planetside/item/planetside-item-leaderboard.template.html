@@ -4,7 +4,7 @@
     <div [hidden]="dataSource.loading$ | async">
         <mat-card>
             <mat-card-footer>
-                <mat-table #table [dataSource]="dataSource" class="striped" matSort matSortActive="kills" matSortDirection="desc" matSortDirection="desc" matSortDisableClear>
+                <mat-table #table [dataSource]="dataSource" class="striped" matSort matSortActive="kills" matSortDirection="desc" matSortStart="desc" matSortDisableClear>
                     <ng-container matColumnDef="idx">
                         <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
                         <mat-cell *matCellDef="let idx = index">{{idx + 1 + (paginator.pageIndex * paginator.pageSize) | number}}</mat-cell>
