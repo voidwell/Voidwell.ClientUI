@@ -48,8 +48,8 @@ export class PlanetsideApi extends ApiBase implements OnDestroy {
         return this.Get(`${this.ps2Url}weaponinfo/${itemId}`);
     }
 
-    getWeaponLeaderboard(itemId: string, page: number = 1) {
-        return this.Get(`${this.ps2Url}leaderboard/weapon/${itemId}?platform=${this.platform}&page=${page}`);
+    getWeaponLeaderboard(itemId: string, page: number = 1, sort: string, sortDir: string) {
+        return this.Get(`${this.ps2Url}leaderboard/weapon/${itemId}?platform=${this.platform}&page=${page}&sort=${sort}&sortDir=${sortDir}`);
     }
 
     getCharacter(characterId: string) {

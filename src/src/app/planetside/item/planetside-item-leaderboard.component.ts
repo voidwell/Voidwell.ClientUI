@@ -5,6 +5,7 @@ import { Observable, Subscription, of, merge, BehaviorSubject } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
 import { PlanetsideItemComponent } from './planetside-item.component';
+import { MatSort, MatSortable } from '@angular/material/sort';
 
 @Component({
     templateUrl: './planetside-item-leaderboard.template.html',
@@ -12,6 +13,7 @@ import { PlanetsideItemComponent } from './planetside-item.component';
 })
 
 export class PlanetsideItemLeaderboardComponent implements OnInit {
+    @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
     errorMessage: string = null;
@@ -23,7 +25,7 @@ export class PlanetsideItemLeaderboardComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.dataSource = new TableDataSource(this.api, this.paginator, this.itemComponent);
+        this.dataSource = new TableDataSource(this.api, this.sort, this.paginator, this.itemComponent);
     }
 }
 
@@ -32,14 +34,14 @@ export class TableDataSource extends DataSource<any> {
     private loadingSubject = new BehaviorSubject<boolean>(true);
     private itemId: string;
 
-    constructor(private api: PlanetsideApi, private paginator: MatPaginator, private itemComponent: PlanetsideItemComponent) {
+    constructor(private api: PlanetsideApi, private sort: MatSort, private paginator: MatPaginator, private itemComponent: PlanetsideItemComponent) {
         super();
     }
 
     public loading$ = this.loadingSubject.asObservable();
 
     connect(): Observable<any[]> {
-        merge(this.itemComponent.itemId, this.paginator.page).subscribe(() => {
+        merge(this.itemComponent.itemId, this.sort.sortChange, this.paginator.page).subscribe(() => {
             this.itemId = this.itemComponent.itemId.value;
             this.loadItems();
         })
@@ -59,7 +61,7 @@ export class TableDataSource extends DataSource<any> {
         
         this.loadingSubject.next(true);
 
-        this.api.getWeaponLeaderboard(this.itemId, this.paginator.pageIndex)
+        this.api.getWeaponLeaderboard(this.itemId, this.paginator.pageIndex, this.sort.active, this.sort.direction)
             .pipe(
                 catchError(() => of([])),
                 finalize(() => this.loadingSubject.next(false))
