@@ -17,12 +17,12 @@
                                     <div class="duration">Duration: {{(getEndDate(activeEvent).getTime() - activeEvent.startDate.getTime()) / 60000 | number:'.0-0'}} Minutes</div>
                                 </div>
                                 <div class="event-name">
-                                    <h1>{{activeEvent.metagameEvent.name}}</h1>
+                                    <h1>{{activeEvent.metagameEvent?.name}}</h1>
                                     <small>{{activeEvent.worldId | worldName}} <mat-icon fontSet="mdi" class="location-spacer" fontIcon="mdi-chevron-double-right"></mat-icon> {{activeEvent.zoneId | zoneName}}</small>
                                 </div>
                             </div>
                         </mat-card-title>
-                        <mat-card-subtitle>{{activeEvent.metagameEvent.description}}</mat-card-subtitle>
+                        <mat-card-subtitle>{{activeEvent.metagameEvent?.description}}</mat-card-subtitle>
                         <mat-card-content>
                             <vw-faction-bar [vs]="activeEvent.lastFactionVS" [nc]="activeEvent.lastFactionNC" [tr]="activeEvent.lastFactionTR" [neutural]="isNeuturalMetagame(activeEvent)"></vw-faction-bar>
                         </mat-card-content>
