@@ -18,12 +18,12 @@
                     <div class="pull-left" *ngIf="!focusEvent">
                         <div class="title-text">{{alert.worldId | worldName}}</div>
                         <div class="title-subtext">
-                            <div>{{alert.metagameEvent.name}}</div>
+                            <div>{{alert.metagameEvent?.name}}</div>
                             <div>{{alert.zoneId | zoneName}}</div>
                         </div>
                     </div>
                     <div class="pull-left" *ngIf="focusEvent">
-                        <div class="title-text">{{alert.metagameEvent.name}}</div>
+                        <div class="title-text">{{alert.metagameEvent?.name}}</div>
                         <div class="title-subtext">
                             <div>{{alert.zoneId | zoneName}}</div>
                         </div>
