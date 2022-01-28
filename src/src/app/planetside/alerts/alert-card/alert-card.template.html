@@ -18,12 +18,12 @@
                     <div class="pull-left" *ngIf="!focusEvent">
                         <div class="title-text">{{alert.worldId | worldName}}</div>
                         <div class="title-subtext">
-                            <div>{{alert.metagameEvent.name}}</div>
+                            <div>{{alert.metagameEvent?.name}}</div>
                             <div>{{alert.zoneId | zoneName}}</div>
                         </div>
                     </div>
                     <div class="pull-left" *ngIf="focusEvent">
-                        <div class="title-text">{{alert.metagameEvent.name}}</div>
+                        <div class="title-text">{{alert.metagameEvent?.name}}</div>
                         <div class="title-subtext">
                             <div>{{alert.zoneId | zoneName}}</div>
                         </div>
@@ -31,7 +31,7 @@
                 </div>
             </mat-card-title>
             <mat-card-subtitle>
-                {{alert.metagameEvent.description}}
+                {{alert.metagameEvent?.description}}
             </mat-card-subtitle>
             <vw-faction-bar [vs]="alert.lastFactionVs" [nc]="alert.lastFactionNc" [tr]="alert.lastFactionTr" [neutural]="isNeuturalMetagame(alert)"></vw-faction-bar>
         </mat-card>
