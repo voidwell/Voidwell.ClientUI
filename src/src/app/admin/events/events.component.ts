@@ -106,7 +106,8 @@ export class EventEditorDialog implements OnInit, OnChanges {
         { id: "2", name: "Indar" },
         { id: "4", name: "Hossin" },
         { id: "6", name: "Amerish" },
-        { id: "8", name: "Esamir" }
+        { id: "8", name: "Esamir" },
+        { id: "344", name: "Oshur" }
     ];
 
     defaultTeams = [

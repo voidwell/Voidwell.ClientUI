@@ -25,224 +25,130 @@
 ##
 ## payload section (trivial)
 
+from DbgPack import AssetManager
+from pathlib import Path
 from struct import unpack,pack
 import sys, os, shutil, math, time, random, subprocess
-
-def ps2int(num):
-	intstr=str(num)
-	if len(intstr)==1:   return "00"+intstr
-	elif len(intstr)==2: return"0"+intstr
-	else:                return intstr
-
-class entry:
-	pass
 
 # Output folder
 output = sys.path[0] + "\\output\\"
 
 # PlanetSide 2 installation assets folder
-inputFolder = "S:\\SteamLibrary\\SteamApps\\common\\PlanetSide 2\\Resources\\Assets\\"
+inputFolder = r"D:\SteamLibrary\SteamApps\common\PlanetSide 2\Resources\Assets"
 
 # ImageMagick exe's
-convert = "C:\\ImageMagick\\convert.exe"
-montage = "C:\\ImageMagick\\montage.exe"
-
-# Path checking
-if not os.path.exists(inputFolder):
-	print("PlanetSide 2 Assets folder does not exist: " + inputFolder)
-	sys.exit()
-if not os.path.exists(convert):
-	print("ImageMagick convert.exe does not exist: " + convert)
-	sys.exit()
-if not os.path.exists(montage):
-	print("ImageMagick montage.exe does not exist: " + montage)
-	sys.exit()
+magick = r'C:\Program Files\ImageMagick\magick.exe'
 
 # JPG quality
 quality = str(65)
 
 # List of continents to extract tiles for
-continents = ['amerish','esamir','hossin','indar']
+continents = ['Amerish','Esamir','Hossin','Indar','Oshur']
+
+def ps2int(num):
+	negator=""
+	if num < 0:
+		negator="-"
+	intstr=str(num)
+	if len(intstr)==1:   return f'00{intstr}'
+	elif len(intstr)==2: return f'{negator}0{abs(num)}'
+	else:                return intstr
+
+def zoneZoomDirName(outputStr, zoneNameStr, zoomLevelInt):
+	return f'{outputStr}{zoneNameStr.lower()}\\zoom{zoomLevelInt}\\'
+
+def tileFileName(outputStr, zoneNameStr, zoomLevelInt, xInt, yInt):
+	return f'{zoneZoomDirName(outputStr,zoneNameStr,zoomLevelInt)}{zoneNameStr.lower()}_{zoomLevelInt}_{xInt}_{yInt}.jpg'
+
+def montageTileArgumentStr(outputStr, zoneNameStr, zoomLevelInt, xInt, yInt):
+	tile1 = tileFileName(outputStr, continent, zoomLevelInt, xInt, yInt)
+	tile2 = tileFileName(outputStr, continent, zoomLevelInt, xInt+1, yInt)
+	tile3 = tileFileName(outputStr, continent, zoomLevelInt, xInt, yInt+1)
+	tile4 = tileFileName(outputStr, continent, zoomLevelInt, xInt+1, yInt+1)
+	outputFilename = tileFileName(outputStr, zoneNameStr, zoomLevelInt-1, int(xInt/2), int(yInt/2))
+	return f'-quality {quality} {tile1} {tile2} {tile3} {tile4} {outputFilename}'
+
+# Create Zoom Level tiles
+def createZoomTiles(outputStr, zoneNameStr, zoomLevelInt):
+	print(f'\nCreating zoom level {zoomLevelInt} tiles for {zoneNameStr}')
+
+	# Make zoom output folder
+	zoomDir = zoneZoomDirName(outputStr, zoneNameStr, zoomLevelInt)
+	if not os.path.exists(zoomDir):
+		os.makedirs(zoomDir)
+
+	# Create zoom tiles
+	iterRange = 2 ** zoomLevelInt
+	for x in range(-iterRange,iterRange, 2):
+		for y in range(-iterRange,iterRange, 2):
+
+			tileOutputStr = montageTileArgumentStr(outputStr, zoneNameStr, zoomLevelInt+1, x, y)
+
+			print(".", end='')
+
+			cmd = magick + " montage -geometry +0+0 -resize 256x256 -background none " + tileOutputStr
+			subprocess.check_call(cmd)
+
+class entry:
+	pass
+
+# Path checking
+if not os.path.exists(inputFolder):
+	print("PlanetSide 2 Assets folder does not exist: " + inputFolder)
+	sys.exit()
+if not os.path.exists(magick):
+	print("ImageMagick magick.exe does not exist: " + magick)
+	sys.exit()
 
 # Loop thru continents
 for continent in continents:
 	# Delete and recreate output folder
 	if os.path.exists(output + continent):
-		print("Deleting output folder for " + continent)
-		#shutil.rmtree(output + continent)
+		print("\nDeleting output folder for " + continent)
+		shutil.rmtree(output + continent)
 		time.sleep(1)
+
+	print(f'Loading pack for {continent}')
+
+	filelist = []
+	for x in range(-64, 64, 4):
+		for y in range(-64, 64, 4):
+			filelist.append(f'{continent}_Tile_{ps2int(x)}_{ps2int(y)}_LOD0.dds')
+
+	globs = Path(inputFolder).glob(f'{continent}_*.pack2')
+	current_manager = AssetManager(list(globs), filelist)
 
 	print("\nExtracting zoom level 5 tiles for " + continent)
 
 	# Zoom 5 output folder
-	zoom5 = output + continent + "\\zoom5\\"
+	zoom5 = zoneZoomDirName(output, continent, 5)
 	if not os.path.exists(zoom5):
 		os.makedirs(zoom5)
 
-	ij=0
-	while 1:
-		partSize=1 #anything non-zero to make a do-while
-		entrylist=[]
-		fname=inputFolder+"Assets_"+ps2int(ij)+".pack"
-		if not os.path.exists(fname):
-			break
-		pack = open(fname,"rb")
-		while partSize:
-			partSize=unpack(">I",pack.read(4))[0]
-			numEntries=unpack(">I",pack.read(4))[0]
-			for i in range(numEntries):
-				ent=entry()
-				stringlen=unpack(">I",pack.read(4))[0]
-				ent.name=pack.read(stringlen)
-				ent.offset,ent.size,ent.crc32=unpack(">III",pack.read(12))
-				entrylist.append(ent)
+	for x in range(-64, 64, 4):
+		for y in range(-64, 64, 4):
+			# Convert the tile coordinates
+			ent = current_manager[f'{continent}_Tile_{ps2int(x)}_{ps2int(y)}_LOD0.dds']
 
-			end=entrylist[-1].offset+entrylist[-1].size
-			pack.seek(partSize)
+			longitude = int(x/4)
+			latitude = int((y * -1)/4 - 1)
 
-		for ent in entrylist:
-			pack.seek(ent.offset)
-			pathinfo = os.path.splitext(ent.name)
-			extension = pathinfo[1][1:].lower().decode()
-			filename = pathinfo[0].lower().decode()
+			# Output filename (zoom level 5 is base zoom value)
+			outputFilename = tileFileName(output, continent, 5, longitude, latitude)
 
-            
-			# Find map tiles
-			if extension == 'dds' and filename.find('_lod0') != -1 and filename.find(continent) != -1:
-				print('.',)
+			# Write temp DDS file
+			tmp = zoom5 + ent.name.lower()
+			dds=open(tmp,"wb")
+			dds.write(ent.get_data())
+			dds.close()
 
-				# Convert the tile coordinates
-				fileparts = filename.replace('_lod0','').replace('_tile','').split('_')
-				longitude = str(int(int(fileparts[1])/4))
-				latitude = str(int((int(fileparts[2]) * -1)/4 - 1))
+			# Convert to PNG
+			cmd = magick + " convert " + tmp + " -flip -resize 256x256 -quality " + quality + " " + outputFilename
+			subprocess.check_call(cmd)
 
-				# Output filename (zoom level 5 is base zoom value)
-				outputFilename = continent + "_5_" + longitude + "_" + latitude + ".jpg"
+			# Delete the temporary DDS file
+			os.remove(tmp)
 
-				# Write temp DDS file
-				tmp = zoom5 + ent.name.lower().decode()
-				dds=open(tmp,"wb")
-				dds.write(pack.read(ent.size))
-				dds.close()
-
-				# Convert to PNG
-				cmd = convert + " " + tmp + " -flip -resize 256x256 -quality " + quality + " " + zoom5 + outputFilename
-				os.system(cmd)
-
-				# Delete the temporary DDS file
-				os.remove(tmp)
-
-		pack.close()
-		ij+=1
-
-	# Create Zoom Level 4 tiles
-	print("\nCreating zoom level 4 tiles for " + continent)
-
-	# Zoom 4 output folder
-	zoom4 = output + continent + "\\zoom4\\"
-	if not os.path.exists(zoom4):
-		os.makedirs(zoom4)
-
-	for x in range(-16,16, 2):
-		for y in range(-16,16, 2):
-
-			tile1 = zoom5 + continent + "_5_" + str(x) + "_" + str(y) + ".jpg"
-			tile2 = zoom5 + continent + "_5_" + str(x+1) + "_" + str(y) + ".jpg"
-			tile3 = zoom5 + continent + "_5_" + str(x) + "_" + str(y+1) + ".jpg"
-			tile4 = zoom5 + continent + "_5_" + str(x+1) + "_" + str(y+1) + ".jpg"
-			outputFilename = zoom4 + continent + "_4_" + str(int(x/2)) + "_" + str(int(y/2)) + ".jpg"
-
-			print(".",)
-
-			cmd = montage + " -geometry +0+0 -resize 256x256 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
-			os.system(cmd)
-
-	# Create Zoom Level 3 tiles
-	print("\nCreating zoom level 3 tiles for " + continent)
-
-	# Zoom 3 output folder
-	zoom3 = output + continent + "\\zoom3\\"
-	if not os.path.exists(zoom3):
-		os.makedirs(zoom3)
-
-	for x in range(-8,8, 2):
-		for y in range(-8,8, 2):
-
-			tile1 = zoom4 + continent + "_4_" + str(x) + "_" + str(y) + ".jpg"
-			tile2 = zoom4 + continent + "_4_" + str(x+1) + "_" + str(y) + ".jpg"
-			tile3 = zoom4 + continent + "_4_" + str(x) + "_" + str(y+1) + ".jpg"
-			tile4 = zoom4 + continent + "_4_" + str(x+1) + "_" + str(y+1) + ".jpg"
-			outputFilename = zoom3 + continent + "_3_" + str(int(x/2)) + "_" + str(int(y/2)) + ".jpg"
-
-			print("."),
-
-			cmd = montage + " -geometry +0+0 -resize 256x256 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
-			os.system(cmd)
-
-	# Create Zoom Level 2 tiles
-	print("\nCreating zoom level 2 tiles for " + continent)
-
-	# Zoom 2 output folder
-	zoom2 = output + continent + "\\zoom2\\"
-	if not os.path.exists(zoom2):
-		os.makedirs(zoom2)
-
-	for x in range(-4,4, 2):
-		for y in range(-4,4, 2):
-
-			tile1 = zoom3 + continent + "_3_" + str(x) + "_" + str(y) + ".jpg"
-			tile2 = zoom3 + continent + "_3_" + str(x+1) + "_" + str(y) + ".jpg"
-			tile3 = zoom3 + continent + "_3_" + str(x) + "_" + str(y+1) + ".jpg"
-			tile4 = zoom3 + continent + "_3_" + str(x+1) + "_" + str(y+1) + ".jpg"
-			outputFilename = zoom2 + continent + "_2_" + str(int(x/2)) + "_" + str(int(y/2)) + ".jpg"
-
-			print("."),
-
-			cmd = montage + " -geometry +0+0 -resize 256x256 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
-			os.system(cmd)
-
-	# Create Zoom Level 1 tiles
-	print("\nCreating zoom level 1 tiles for " + continent)
-
-	# Zoom 1 output folder
-	zoom1 = output + continent + "\\zoom1\\"
-	if not os.path.exists(zoom1):
-		os.makedirs(zoom1)
-
-	for x in range(-2,2, 2):
-		for y in range(-2,2, 2):
-
-			tile1 = zoom2 + continent + "_2_" + str(x) + "_" + str(y) + ".jpg"
-			tile2 = zoom2 + continent + "_2_" + str(x+1) + "_" + str(y) + ".jpg"
-			tile3 = zoom2 + continent + "_2_" + str(x) + "_" + str(y+1) + ".jpg"
-			tile4 = zoom2 + continent + "_2_" + str(x+1) + "_" + str(y+1) + ".jpg"
-			outputFilename = zoom1 + continent + "_1_" + str(int(x/2)) + "_" + str(int(y/2)) + ".jpg"
-
-			print("."),
-
-			cmd = montage + " -geometry +0+0 -resize 256x256 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
-			os.system(cmd)
-    
-	# Create zoom level 0 tiles
-	print("\nCreating zoom level 0 tiles for " + continent)
-
-	# Zoom 0 output folder
-	zoom0 = output + continent + "\\zoom0\\"
-	if not os.path.exists(zoom0):
-		os.makedirs(zoom0)
-    
-	# Create empty image that uses background color #051111
-	empty = zoom0 + "empty.jpg"
-	cmd = convert + " -resize 256x256 xc:#051111 -quality " + quality + " " + empty
-	os.system(cmd)
-
-	tile4 = zoom1 + continent + "_1_0_0.jpg"
-	tile2 = zoom1 + continent + "_1_0_-1.jpg"
-	tile3 = zoom1 + continent + "_1_-1_0.jpg"
-	tile1 = zoom1 + continent + "_1_-1_-1.jpg"
-    
-	outputFilename = zoom0 + continent + "_0_0_0.jpg"
-	cmd = montage + " -geometry +0+0 -background none -quality " + quality + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + outputFilename
-	os.system(cmd)
-
-	os.remove(empty)
+	# Create Zoom Level tiles
+	for zoneLevel in range(4, 0, -1):
+		createZoomTiles(output, continent, zoneLevel)

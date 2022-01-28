@@ -67,6 +67,11 @@
         background-position: center center;
     }
 
+    .side-img.oshur {
+        background-image: url("/Oshur-160.jpg");
+        background-position: center center;
+    }
+
 @media screen and (max-width: 450px) {
     .side-img {
         display: none;
