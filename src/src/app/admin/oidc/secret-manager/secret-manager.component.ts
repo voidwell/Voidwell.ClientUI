@@ -1,6 +1,7 @@
 import { Component, Input, OnChanges, ChangeDetectorRef, ChangeDetectionStrategy, ViewEncapsulation, Inject, Output, EventEmitter } from '@angular/core';
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { Secret } from '../models/secret.model';
+import { SecretResponse } from '../models/secretresponse.model';
 import { Observable } from 'rxjs';
 import { VoidwellApi } from '../../../shared/services/voidwell-api.service';
 
@@ -26,7 +27,7 @@ export class SecretManagerComponent implements OnChanges {
     private _isDeletingSecret: boolean = false;
     private _onLoadSource: () => Observable<Secret[]>;
     private _onDelete: (secretId: string) => Observable<any>;
-    private _onGenerate: (req: NewSecretRequestData) => Observable<Secret>;
+    private _onGenerate: (req: NewSecretRequestData) => Observable<SecretResponse>;
 
     @Input() ownerId: string;
     @Input() ownerType: string;
@@ -69,7 +70,7 @@ export class SecretManagerComponent implements OnChanges {
                         this.dialog.open(SecretManagerShowSecretDialog, {
                             data: secret
                         }).afterClosed().subscribe(() => {
-                            this.value.push(secret);
+                            this.value.push(secret.model);
                             this._changeDetectorRef.markForCheck();
                         });
                     }); 
