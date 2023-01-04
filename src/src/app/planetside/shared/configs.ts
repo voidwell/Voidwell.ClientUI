@@ -66,5 +66,45 @@ export const FacilityTypes = {
         id: 9,
         name: 'Construction Outpost',
         code: 'construction_outpost'
+    },
+    10: {
+        id: 10,
+        name: 'Relic Outpost',
+        code: 'relic_outpost'
+    },
+    11: {
+        id: 11,
+        name: 'Containment Site',
+        code: 'containment_site'
+    },
+    12: {
+        id: 12,
+        name: 'Trident',
+        code: 'trident'
+    },
+    13: {
+        id: 13,
+        name: 'Seapost',
+        code: 'seapost'
+    },
+    14: {
+        id: 14,
+        name: 'Large Outpost (CTF)',
+        code: 'large_outpost_ctf'
+    },
+    15: {
+        id: 15,
+        name: 'Small Outpost (CTF)',
+        code: 'small_outpost_ctf'
+    },
+    16: {
+        id: 16,
+        name: 'Amp Station (CTF)',
+        code: 'amp_station_ctf'
+    },
+    17: {
+        id: 17,
+        name: 'Construction Outpost (CTF)',
+        code: 'construction_outpost_ctf'
     }
 };
