@@ -48,7 +48,7 @@ export class PlanetsideWorldMapComponent implements OnDestroy {
             for (let idx in zones) {
                 let zoneId = zones[idx].id;
 
-                if (zoneId === 14 || zoneId > 90) {
+                if (zoneId != 344 && (zoneId === 14 || zoneId === 10 || zoneId > 90)) {
                     continue;
                 }
 
