@@ -243,9 +243,12 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             let facilityType = FacilityTypes[facilityTypeId].code;
 
             let markerOptions: MarkerOptions = {
-                icon: this.zoneHelper.facilityIcons[facilityTypeId][0],
                 pane: 'markerPane'
             };
+
+            if (this.zoneHelper.facilityIcons[facilityTypeId]) {
+                markerOptions.icon = this.zoneHelper.facilityIcons[facilityTypeId][0]
+            }
 
             let tooltipOptions: TooltipOptions = {
                 offset: [0, 0],
