@@ -21,7 +21,8 @@
                     matInput
                     [matAutocomplete]="auto"
                     [formControl]="searchService.control"
-                    [placeholder]="searchService.placeholder">
+                    [placeholder]="searchService.placeholder"
+                    (keydown.enter)="$event.preventDefault()">
             </div>
         </div>
     </div>

@@ -1,0 +1,20 @@
+<div [matTooltip]="directive.description">
+    <div class="directive-objective-info">
+        <div class="directive-objective-name">{{directive.name}}</div>
+        <div class="directive-objective-progress" *ngIf="directive.objective && !directive.completionDate">
+            <div class="progress-outer">
+                <div class="progress-state" [style.width.%]="(directive.progress || 0) / directive.objective.goalValue * 100">{{(directive.progress || 0) / directive.objective.goalValue * 100 | number: '1.0-0'}}%</div>
+            </div>
+            <div class="progress-count">
+                <div class="progress-goal">{{directive.progress}} / {{directive.objective.goalValue}}</div>
+                <div class="progress-remaining">{{directive.objective.goalValue - directive.progress}} to go</div>
+            </div>
+        </div>
+        <div class="directive-objective-completed" *ngIf="directive.completionDate">
+            <span>COMPLETED {{directive.completionDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+        </div>
+    </div>
+    <div class="directive-objective-image">
+        <img [src]="directive.imageId | dgcImageUrl" alt="" />
+    </div>
+</div>

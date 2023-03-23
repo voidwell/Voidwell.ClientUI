@@ -1,0 +1,64 @@
+.directive-tree-header-title .directive-tree-header-name {
+    display: inline-block;
+    line-height: 48px;
+}
+.directive-tree-header-title > img {
+    float: left;
+    height: 48px;
+    width: 48px;
+}
+
+.unstarted-tree,
+.started-tree {
+    background: #111111 !important;
+}
+
+.novice-tree {
+    background: #6c2e0f !important;
+}
+
+.adept-tree {
+    background: #484848 !important;
+}
+
+.expert-tree {
+    background: #504c0d !important;
+}
+
+.master-tree {
+    background: #310a32 !important;
+}
+
+.directive-tree-header-stats {
+    margin: auto 0 auto auto;
+    display: flex;
+    align-items: center;
+}
+
+.directive-reward {
+    display: inline-flex;
+    align-items: center;
+    margin: 0 20px;
+    width: 60px;
+}    
+.directive-reward mat-icon
+ {
+    color: #3470ff;
+    font-size: 32px;
+    width: auto;
+}
+
+.requirement-bars  {
+    display: inline-block;
+}
+.requirement-bars .bar {
+    display: inline-block;
+    width: 15px;
+    height: 25px;
+    transform: skewX(-30deg);
+    box-shadow: 0 0 1px 1px #027d50;
+}
+
+.requirement-bars .bar.completed {
+    background: linear-gradient(0,#027d50 0,#02cc7d 100%);
+}

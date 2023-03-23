@@ -15,6 +15,7 @@ export class CharacterCardComponent {
         { path: 'vehicles', display: 'Vehicles' },
         { path: 'weapons', display: 'Weapons' },
         { path: 'sessions', display: 'Sessions' },
+        { path: 'directives', display: 'Directives' }
     ];
 
     constructor(private planetsidePlayer: PlanetsidePlayerComponent) {

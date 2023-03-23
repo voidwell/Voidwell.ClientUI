@@ -11,6 +11,7 @@ import { PlanetsidePlayerClassesComponent } from './player/classes/planetside-pl
 import { PlanetsidePlayerVehiclesComponent } from './player/vehicles/planetside-player-vehicles.component';
 import { PlanetsidePlayerWeaponsComponent } from './player/weapons/planetside-player-weapons.component';
 import { PlanetsidePlayerSessionsListComponent } from './player/sessions/sessions-list/planetside-player-sessions-list.component';
+import { PlanetsidePlayerDirectivesComponent } from './player/directives/planetside-player-directives.component';
 import { PlanetsidePlayerSessionComponent } from './player/sessions/session/planetside-player-session.component';
 import { PlanetsideOutfitComponent } from './outfit/planetside-outfit.component';
 import { PlanetsideAlertsListComponent } from './alerts/alerts-list/planetside-alerts-list.component';
@@ -69,7 +70,8 @@ const planetsideRoutes: Routes = [
                     { path: 'vehicles/:id', component: PlanetsidePlayerVehiclesComponent },
                     { path: 'weapons', component: PlanetsidePlayerWeaponsComponent },
                     { path: 'sessions', component: PlanetsidePlayerSessionsListComponent },
-                    { path: 'sessions/:id', component: PlanetsidePlayerSessionComponent }
+                    { path: 'sessions/:id', component: PlanetsidePlayerSessionComponent },
+                    { path: 'directives', component: PlanetsidePlayerDirectivesComponent }
                 ]
             },
             { path: 'outfit/:id', component: PlanetsideOutfitComponent },

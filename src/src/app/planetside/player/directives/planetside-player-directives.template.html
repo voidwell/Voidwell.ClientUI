@@ -1,0 +1,12 @@
+﻿<div class="content-container">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    <div *ngIf="!isLoading" class="directives">
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let category of outline.categories">
+                <mat-expansion-panel-header>{{category.name}}</mat-expansion-panel-header>
+                <directive-tree-list [trees]="category.trees"></directive-tree-list>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+</div>

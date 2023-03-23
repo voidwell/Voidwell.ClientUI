@@ -269,6 +269,9 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                 case 'large_outpost':
                 case 'small_outpost':
                 case 'construction_outpost':
+                case 'large_outpost_ctf':
+                case 'small_outpost_ctf':
+                case 'construction_outpost_ctf':
                     markerOptions.pane = 'outpostsPane';
                     tooltipOptions.pane = 'outpostsLabelsPane';
             }

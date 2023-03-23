@@ -1,0 +1,69 @@
+:host h3 {
+    margin: 0 0 5px;
+}
+
+:host.completed .directive-tier-requirements {
+    background:rgba(14, 139, 62, 0.1);
+}
+:host.completed .directive-tier-requirements .directive-tier-completed {
+    color: #17a304;
+}
+
+:host.completed directive-objective:not(.completed) {
+    opacity: 0.5;
+}
+
+.directive-tier-info {
+    display: flex;
+}
+
+.directive-tier-requirements,
+.directive-tier-rewards {
+    text-align: center;
+    color: #fff;
+    padding: 10px;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 2px;
+    flex: 1;
+    overflow: hidden;
+}
+
+.directive-tier-rewards-list {
+    white-space: nowrap;
+    overflow-x: auto;
+    padding-bottom: 10px;
+}
+
+.directive-tier-rewards-list > div {
+    display: inline-block;
+    margin: 0 10px;
+
+}
+.directive-tier-rewards-list .directive-reward {
+    line-height: 32px;
+}
+.directive-tier-rewards-list .directive-reward > img,
+.directive-tier-rewards-list .directive-reward > mat-icon
+ {
+    color: #3470ff;
+    font-size: 32px;
+    height: 32px;
+    width: auto;
+    float: left;
+}
+
+.requirement-bars  {
+    text-align: center;
+}
+.requirement-bars .bar {
+    display: inline-block;
+    width: 18px;
+    height: 28px;
+    transform: skewX(-30deg);
+    box-shadow: 0 0 1px 1px #027d50;
+}
+
+.requirement-bars .bar.completed {
+    background: linear-gradient(0,#027d50 0,#02cc7d 100%);
+}

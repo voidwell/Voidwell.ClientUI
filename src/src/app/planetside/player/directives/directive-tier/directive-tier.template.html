@@ -1,0 +1,30 @@
+<div class="directive-tier-info">
+    <div class="directive-tier-requirements">
+        <h3>Requirements</h3>
+        <div class="requirement-bars">
+            <div class="bar" *ngFor="let bar of requirementBars" [ngClass]="{'completed': bar+1 <= requirementsCompleted}"></div>
+        </div>
+        <div *ngIf="!tier.completionDate">
+            Complete {{tier.completionCount}} objective(s)
+        </div>
+        <div class="directive-tier-completed" *ngIf="tier.completionDate">
+            <span>Completed {{tier.completionDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+        </div>
+    </div>
+    <div class="directive-tier-rewards">
+        <h3>Rewards</h3>
+        <div class="directive-tier-rewards-list">
+            <div class="directive-reward">
+                <span>{{tier.directivePoints}}</span>
+                <mat-icon fontSet="mdi" fontIcon="mdi-star-circle-outline"></mat-icon>
+            </div>
+            <div class="directive-reward" *ngFor="let reward of tier.rewards">
+                <span>{{reward.name}}</span>
+                <img [src]="reward.imageId | dgcImageUrl" alt="" />
+            </div>
+        </div>
+    </div>
+</div>
+<div class="directive-item-list">
+    <directive-objective *ngFor="let directive of tier.directives" [directive]="directive"></directive-objective>
+</div>

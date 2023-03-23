@@ -1,9 +1,9 @@
 FROM node:12-alpine AS build-env
 
 RUN apk update \
-  && apk add --update alpine-sdk python \
+  && apk add --update alpine-sdk python2 \
   && yarn global add @angular/cli@9.1.6 \
-  && apk del alpine-sdk python \
+  && apk del alpine-sdk python2 \
   && rm -rf /tmp/* /var/cache/apk/* *.tar.gz ~/.npm \
   && npm cache clean --force \
   && yarn cache clean \

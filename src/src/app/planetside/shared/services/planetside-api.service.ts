@@ -68,6 +68,10 @@ export class PlanetsideApi extends ApiBase implements OnDestroy {
         return this.Get(`${this.ps2Url}character/${characterId}/state?platform=${this.platform}`);
     }
 
+    getCharacterDirectives(characterId: string) {
+        return this.Get(`${this.ps2Url}character/${characterId}/directives?platform=${this.platform}`);
+    }
+
     getAllProfiles() {
         return this.Get(`${this.ps2Url}profile`, true);
     }

@@ -1,0 +1,69 @@
+:host {
+    display: inline-block;
+    width: 33%;
+    color: #fff;
+    background: rgba(0, 0, 0, 0.1);
+    margin: 2px;
+    padding: 5px;
+    height: 70px;
+    vertical-align: middle;
+}
+:host.completed {
+    background:rgba(14, 139, 62, 0.1);
+    border: 1px solid rgba(14, 139, 62, 0.5);
+}
+:host.completed .directive-objective-completed {
+    color: #17a304;
+}
+
+.directive-objective-image {
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}
+
+.directive-objective-image img {
+    height: auto;
+    width: 59px;
+    max-height: 59px;
+}
+.directive-objective-info {
+    display: inline-block;
+    vertical-align: top;
+    margin-left: 5px;
+}
+
+.directive-objective-progress .progress-count {
+    display: flex;
+    flex-direction: column;
+}
+
+.directive-objective-progress .progress-count .progress-remaining {
+    color: rgba(255, 255, 255, 0.4);
+    font-size: 12px;
+    font-style: italic;
+} 
+
+.directive-objective-progress .progress-outer {
+    display: inline-block;
+}
+.directive-objective-progress .progress-outer {
+    border: 1px solid #1b557f;
+    height: auto;
+    width: 160px;
+    float: left;
+    margin-right: 5px;
+    padding: 2px;
+}
+.directive-objective-progress .progress-state {
+    background-color: #4d97cc;
+    color: #000;
+    height: 12px;
+    float: left;
+    text-align: right;
+    font-size: 10px;
+    margin-right: 5px;
+    line-height: 12px;
+}

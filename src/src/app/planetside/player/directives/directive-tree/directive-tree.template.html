@@ -1,0 +1,17 @@
+<div class="mat-tab-tier-progress">
+    <div class="mat-tab-tier" *ngFor="let tier of tree.tiers | slice:1:tree.tiers.length">
+        <div class="mat-tab-tier-completion" *ngIf="tier.tierId <= tree.currentDirectiveTierId" [style.width.%]="tier.completionPercent"></div>
+        <div class="mat-tab-tier-completion-text" *ngIf="tier.tierId == tree.currentDirectiveTierId">{{tier.completionPercent - tier.completionPercent % 1 | number: '1.0-0'}}%</div>
+    </div>
+</div>
+<mat-tab-group mat-align-tabs="center" [selectedIndex]="tabIndex">
+    <mat-tab *ngFor="let tier of tree.tiers">
+        <ng-template mat-tab-label>
+            <div class="directive-tier-header">
+                <div class="directive-tier-header-name">{{tier.name}}</div>
+                <img [src]="tier.imageId | dgcImageUrl" alt="" />
+            </div>
+        </ng-template>
+        <directive-tier [tier]="tier"></directive-tier>
+    </mat-tab>
+</mat-tab-group>

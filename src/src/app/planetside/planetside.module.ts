@@ -33,6 +33,11 @@ import { PlanetsidePlayerWeaponsComponent } from './player/weapons/planetside-pl
 import { PlanetsidePlayerWeaponsTableComponent } from './player/weapons-table/planetside-player-weapons-table.component';
 import { PlanetsidePlayerSessionsListComponent } from './player/sessions/sessions-list/planetside-player-sessions-list.component';
 import { PlanetsidePlayerSessionComponent } from './player/sessions/session/planetside-player-session.component';
+import { PlanetsidePlayerDirectivesComponent } from './player/directives/planetside-player-directives.component';
+import { DirectiveTreeListComponent } from './player/directives/directive-tree-list/directive-tree-list.component';
+import { DirectiveTreeComponent } from './player/directives/directive-tree/directive-tree.component';
+import { DirectiveTierComponent } from './player/directives/directive-tier/directive-tier.component';
+import { DirectiveObjectiveComponent } from './player/directives/directive-objective/directive-objective.component';
 import { PlanetsideOutfitComponent } from './outfit/planetside-outfit.component';
 import { OutfitCardComponent } from './outfit/outfit-card/outfit-card.component';
 import { AlertCardComponent } from './alerts/alert-card/alert-card.component';
@@ -95,6 +100,11 @@ import { PlanetsideMapSimulatorComponent } from './map-explorer//map-simulator/m
         PlanetsidePlayerWeaponsTableComponent,
         PlanetsidePlayerSessionsListComponent,
         PlanetsidePlayerSessionComponent,
+        PlanetsidePlayerDirectivesComponent,
+        DirectiveTreeListComponent,
+        DirectiveTreeComponent,
+        DirectiveTierComponent,
+        DirectiveObjectiveComponent,
         PlanetsideOutfitComponent,
         OutfitCardComponent,
         AlertCardComponent,

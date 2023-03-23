@@ -499,3 +499,26 @@ mat-checkbox.mat-checkbox.mat-checkbox-checked .mat-checkbox-background,
 .mat-menu-item.active {
     font-weight: bold;
 }
+.mat-expansion-panel {
+    border-radius: 0 !important;
+}
+.mat-expansion-panel .mat-expansion-panel-header {
+    background: #2b3942 !important;
+}
+
+.mat-expanded > .mat-expansion-indicator::after,
+.mat-expanded.mat-expansion-panel-header {
+    color: #fff !important;
+}
+.mat-expansion-indicator::after,
+.mat-expansion-panel-header {
+    color: #8a9ba1 !important;
+}
+.mat-expansion-panel-content,
+.mat-expansion-panel-header:hover {
+    background: #2b3942;
+}
+
+.mat-expansion-panel .mat-expansion-panel .mat-expansion-panel-content {
+    background: #253037;
+}
