@@ -12,8 +12,8 @@ export class DirectiveTierComponent implements OnInit {
 
     @HostBinding('class.completed') isCompleted: boolean = false;
 
-    private requirementBars = [];
-    private requirementsCompleted = 0;
+    requirementBars = [];
+    requirementsCompleted = 0;
 
     ngOnInit() {
         this.isCompleted = this.tier.completionDate;

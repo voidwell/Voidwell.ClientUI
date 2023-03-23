@@ -10,7 +10,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class DirectiveTreeComponent implements OnInit {
     @Input() tree: any;
 
-    private tabIndex: number;
+    tabIndex: number;
 
     ngOnInit() {
         if (this.tree.currentDirectiveTierId > 0) {
