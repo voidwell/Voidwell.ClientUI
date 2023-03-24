@@ -13,10 +13,12 @@ WORKDIR /app
 
 COPY ./src/*.json /app/
 COPY ./src/*.lock /app/
-COPY ./src/src /app/src
 
 RUN yarn install
+
 RUN npx ngcc --properties esm5 module main --create-ivy-entry-points
+
+COPY ./src/src /app/src
 
 RUN yarn run build:prod
 
