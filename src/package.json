@@ -33,7 +33,7 @@
     "d3-ng2-service": "^2.2.0",
     "es6-shim": "0.35.5",
     "@mdi/font": "^2.2.43",
-    "moment": "^2.20.1",
+    "moment": "^2.29.4",
     "ngx-pipes": "2.7.3",
     "oidc-client": "1.10.1",
     "redux": "^4.0.0",
