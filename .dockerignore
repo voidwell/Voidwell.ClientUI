@@ -2,6 +2,7 @@
 .vs
 .gitignore
 .gitattributes
+.github
 Dockerfile
 Dockerfile.debug
 /src/node_modules
