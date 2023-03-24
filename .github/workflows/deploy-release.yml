@@ -61,7 +61,7 @@ jobs:
               ref: '${{ vars.SERVER_DISPATCH_REF }}',
               inputs: {
                 project: '${{ vars.DOCKER_SERVICE }}',
-                version: '${{ steps.version.outputs.value }}'
+                version: '${{ steps.image.outputs.version }}'
               }
             });
             console.log(result);
@@ -72,4 +72,4 @@ jobs:
           }
 
     - name: Summary
-      run: echo "### Deployed ${{ vars.DOCKER_SERVICE }} /#${{ steps.version.outputs.value }} :rocket:" >> $GITHUB_STEP_SUMMARY
+      run: echo "### Deployed ${{ vars.DOCKER_SERVICE }} /#${{ steps.image.outputs.version }} :rocket:" >> $GITHUB_STEP_SUMMARY
