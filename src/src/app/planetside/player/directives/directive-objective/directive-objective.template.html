@@ -1,4 +1,7 @@
-<div [matTooltip]="directive.description">
+<div class="directive-objective-container" [matTooltip]="directive.description">
+    <div class="directive-objective-image">
+        <img [src]="directive.imageId | dgcImageUrl" alt="" />
+    </div>
     <div class="directive-objective-info">
         <div class="directive-objective-name">{{directive.name}}</div>
         <div class="directive-objective-progress" *ngIf="directive.objective && !directive.completionDate">
@@ -11,10 +14,7 @@
             </div>
         </div>
         <div class="directive-objective-completed" *ngIf="directive.completionDate">
-            <span>COMPLETED {{directive.completionDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+            <span>Completed {{directive.completionDate | date:'yyyy-MM-dd HH:mm:ss'}}</span>
         </div>
-    </div>
-    <div class="directive-objective-image">
-        <img [src]="directive.imageId | dgcImageUrl" alt="" />
     </div>
 </div>

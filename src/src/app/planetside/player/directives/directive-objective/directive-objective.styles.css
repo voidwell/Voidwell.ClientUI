@@ -6,6 +6,7 @@
     margin: 2px;
     padding: 5px;
     height: 70px;
+    overflow: hidden;
 }
 :host.completed {
     background:rgba(14, 139, 62, 0.1);
@@ -15,12 +16,15 @@
     color: #17a304;
 }
 
-.directive-objective-image {
-    float: left;
+.directive-objective-container {
     display: flex;
-    justify-content: center;
+    white-space: nowrap;
+    overflow-x: auto;
+}
+
+.directive-objective-image {
+    display: flex;
     align-items: center;
-    height: 100%;
 }
 
 .directive-objective-image img {
