@@ -70,17 +70,17 @@
 
 @media screen and (max-width: 600px) {
     :host ::ng-deep .mat-tab-label {
-        height: initial;
-        flex: initial;
-        padding: initial;
-        min-width: initial;
+        height: 48px;
+        min-width: 100px;
+        flex: none;
+        opacity: 0.6;
     }
 
     :host ::ng-deep .mat-tab-label:not(.mat-tab-label-active) .directive-tier-header-name {
         visibility: visible;
     }
 
-    :host ::ng-deep .mat-tab-label.mat-tab-label-active .directive-tier-header > img {
+    :host ::ng-deep .mat-tab-label .directive-tier-header > img {
         display: none;
     }
 }
