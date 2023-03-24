@@ -1,0 +1,73 @@
+name: Deploy Release
+
+on:
+  push:
+    branches:
+    - master
+    
+jobs:
+  build-and-test:
+    uses: ./.github/workflows/build-and-test.yml
+
+  deploy-release:
+    needs: [build-and-test]
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Configure image
+      id: image
+      run: |
+        version=${{ github.run_number }};
+        if [ "${{ vars.BASE_VERSION_NUMBER }}" != '' ]; then
+          ((version+=${{ vars.BASE_VERSION_NUMBER }}))
+        fi
+
+       echo "name=${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_PROJECT }}/${{ vars.DOCKER_SERVICE }}" >> $GITHUB_OUTPUT;
+       echo "version=$version" >> $GITHUB_OUTPUT;
+
+    - uses: actions/checkout@v2
+
+    - name: Login to Voidwell Container Registry
+      uses: docker/login-action@v2
+      with:
+        registry: ${{ vars.DOCKER_REGISTRY }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_SECRET }}
+      
+    - name: Publish
+      uses: docker/build-push-action@v4
+      with:
+        context: .
+        push: true
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
+        tags: |
+          ${{ steps.image.outputs.name }}:latest
+          ${{ steps.image.outputs.name }}:${{ steps.image.outputs.version }}
+
+    - name: Update release
+      uses: actions/github-script@v6
+      with:
+        github-token: ${{ secrets.ACTIONS_PAT }}
+        script: |
+          try {
+            const result = await github.rest.actions.createWorkflowDispatch({
+              owner: ${{ vars.SERVER_DISPATCH_OWNER }},
+              repo: ${{ vars.SERVER_DISPATCH_REPO }},
+              workflow_id: ${{ vars.SERVER_DISPATCH_WORKFLOW }},
+              ref: ${{ vars.SERVER_DISPATCH_REF }},
+              inputs: {
+                project: '${{ vars.DOCKER_SERVICE }}',
+                version: '${{ steps.version.outputs.value }}'
+              }
+            });
+            console.log(result);
+          }
+          catch(error) {
+            console.error(error);
+            core.setFailed(error);
+          }
+
+    - name: Summary
+      run: echo "### Deployed ${{ vars.DOCKER_SERVICE }} /#${{ steps.version.outputs.value }} :rocket:" >> $GITHUB_STEP_SUMMARY
