@@ -62,3 +62,9 @@
 .requirement-bars .bar.completed {
     background: linear-gradient(0,#027d50 0,#02cc7d 100%);
 }
+
+@media screen and (max-width: 500px) {
+    .directive-tree-header-stats {
+        display: none;
+    }
+}

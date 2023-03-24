@@ -5,8 +5,10 @@
 
 :host ::ng-deep .mat-tab-label {
     height: 130px;
-    padding: 0 100px;
     opacity: 1;
+    flex: 1;
+    padding: 0;
+    min-width: 0;
 }
 
 :host ::ng-deep .mat-tab-label.mat-tab-label-active .directive-tier-header > img {
@@ -38,14 +40,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 0 12.5%;
 }
 
 .mat-tab-tier-progress .mat-tab-tier {
     display: inline-flex;
     border-top: dashed 1px #1b557f;
-    width: 295px;
     margin-top: 23px;
     position: relative;
+    flex: 1;
 }
 
 .mat-tab-tier-progress .mat-tab-tier .mat-tab-tier-completion {
@@ -57,4 +60,27 @@
     color: #97c2e0;
     width: 100%;
     text-align: center;
+}
+
+@media screen and (max-width: 830px) {
+    .mat-tab-tier-progress {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    :host ::ng-deep .mat-tab-label {
+        height: initial;
+        flex: initial;
+        padding: initial;
+        min-width: initial;
+    }
+
+    :host ::ng-deep .mat-tab-label:not(.mat-tab-label-active) .directive-tier-header-name {
+        visibility: visible;
+    }
+
+    :host ::ng-deep .mat-tab-label.mat-tab-label-active .directive-tier-header > img {
+        display: none;
+    }
 }

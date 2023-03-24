@@ -15,6 +15,7 @@
 
 .directive-tier-info {
     display: flex;
+    flex-wrap: wrap;
 }
 
 .directive-tier-requirements,
@@ -25,7 +26,7 @@
     height: 100px;
     background: rgba(0, 0, 0, 0.1);
     margin: 2px;
-    flex: 1;
+    flex: 1 1 300px;
     overflow: hidden;
 }
 
@@ -66,4 +67,9 @@
 
 .requirement-bars .bar.completed {
     background: linear-gradient(0,#027d50 0,#02cc7d 100%);
+}
+
+.directive-item-list {
+    display: flex;
+    flex-wrap: wrap;
 }
