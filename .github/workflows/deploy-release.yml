@@ -55,10 +55,10 @@ jobs:
         script: |
           try {
             const result = await github.rest.actions.createWorkflowDispatch({
-              owner: ${{ vars.SERVER_DISPATCH_OWNER }},
-              repo: ${{ vars.SERVER_DISPATCH_REPO }},
-              workflow_id: ${{ vars.SERVER_DISPATCH_WORKFLOW }},
-              ref: ${{ vars.SERVER_DISPATCH_REF }},
+              owner: '${{ vars.SERVER_DISPATCH_OWNER }}',
+              repo: '${{ vars.SERVER_DISPATCH_REPO }}',
+              workflow_id: '${{ vars.SERVER_DISPATCH_WORKFLOW }}',
+              ref: '${{ vars.SERVER_DISPATCH_REF }}',
               inputs: {
                 project: '${{ vars.DOCKER_SERVICE }}',
                 version: '${{ steps.version.outputs.value }}'
