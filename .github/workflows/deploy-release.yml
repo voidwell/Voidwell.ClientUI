@@ -72,4 +72,4 @@ jobs:
           }
 
     - name: Summary
-      run: echo "### Deployed ${{ vars.DOCKER_SERVICE }} /#${{ steps.image.outputs.version }} :rocket:" >> $GITHUB_STEP_SUMMARY
+      run: echo "### Deployed ${{ vars.DOCKER_SERVICE }} #${{ steps.image.outputs.version }} :rocket:" >> $GITHUB_STEP_SUMMARY
