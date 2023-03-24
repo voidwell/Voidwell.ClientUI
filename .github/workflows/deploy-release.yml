@@ -23,8 +23,8 @@ jobs:
           ((version+=${{ vars.BASE_VERSION_NUMBER }}))
         fi
 
-       echo "name=${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_PROJECT }}/${{ vars.DOCKER_SERVICE }}" >> $GITHUB_OUTPUT;
-       echo "version=$version" >> $GITHUB_OUTPUT;
+        echo "name=${{ vars.DOCKER_REGISTRY }}/${{ vars.DOCKER_PROJECT }}/${{ vars.DOCKER_SERVICE }}" >> $GITHUB_OUTPUT;
+        echo "version=$version" >> $GITHUB_OUTPUT;
 
     - uses: actions/checkout@v2
 
