@@ -1,7 +1,5 @@
-﻿import { Component, Input, ElementRef, ViewChild, OnChanges, SimpleChanges } from '@angular/core';
-import {  D3Service, D3 } from 'd3-ng2-service';
-import { Selection } from 'd3-selection';
-import 'd3-transition';
+﻿import { Component, Input, ElementRef, ViewChild, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import * as d3 from 'd3';
 
 @Component({
     selector: 'activity-population-card',
@@ -9,13 +7,12 @@ import 'd3-transition';
     styleUrls: ['./activity-population-card.styles.css']
 })
 
-export class ActivityPopulationCardComponent implements OnChanges {
+export class ActivityPopulationCardComponent implements OnInit, OnChanges {
     @Input('data') populationData: any[];
     @ViewChild('graphContainer', { static: true }) element: ElementRef;
 
-    private d3: D3;
     private svg;
-    private svgContainer: Selection<SVGGElement, unknown, null, undefined>;
+    private svgContainer: d3.Selection<SVGGElement, unknown, null, undefined>;
     private xScale;
     private yScale;
     private height: number;
@@ -30,11 +27,6 @@ export class ActivityPopulationCardComponent implements OnChanges {
 
     private xAxis: any;
     private yAxis: any;
-
-    private vsLine: any;
-    private ncLine: any;
-    private trLine: any;
-    private nsLine: any;
 
     private labelData = {
         vs: {
@@ -59,30 +51,26 @@ export class ActivityPopulationCardComponent implements OnChanges {
         }
     };
 
-    constructor(d3Service: D3Service) {
-        this.d3 = d3Service.getD3();
-        this.bisectTimestamp = this.d3.bisector(function(d: any) { return d.timestamp; }).left;
+    private strokeMap = {
+        'vs': '#8f45bb',
+        'nc': '#1565C0',
+        'tr': '#C62828',
+        'ns': '#828486'
+    };
+
+    constructor() {
+        this.bisectTimestamp = d3.bisector(function(d: any) { return d.timestamp; }).left;
     }
 
-    ngOnChanges(changes: SimpleChanges) {
-        if (!this.svg) {
-            this.setup();
-        }
-        if (!this.populationData) {
-            return;
-        }
-
-        if (changes.populationData.isFirstChange()) {
-            this.init();
-        } else {
-            this.update();
-        }
+    ngOnInit() {
+        this.createSvg();
     }
 
-    private setup() {
-        let d3 = this.d3;
+    private createSvg() {
+        let self = this;
 
         this.svg = d3.select(this.element.nativeElement);
+
         this.tooltip = d3.select('#tooltip');
 
         this.margin = {top: 0, right: 20, bottom: 30, left: 40};
@@ -98,6 +86,31 @@ export class ActivityPopulationCardComponent implements OnChanges {
             .classed('svg-content-responsive', true)
             .append('g')
             .attr('transform', `translate(${this.margin.left}, ${this.margin.top})`);
+            
+        this.xScale = d3.scaleUtc().range([0, this.width]);
+
+        this.yScale = d3.scaleLinear().range([this.height, 0]);
+
+        this.xAxis = d3.axisBottom(this.xScale)
+            .tickFormat(function(domain, i) {
+                let d = new Date(domain.valueOf());
+                let hour = self.pad(d.getUTCHours());
+                let minutes = self.pad(d.getUTCMinutes());
+                return `${hour}:${minutes}`
+            });
+        
+        this.yAxis = d3.axisLeft(this.yScale);
+
+        this.svgContainer.append('g')
+            .attr('class', 'x-axis')
+            .attr('transform', `translate(0, ${this.height})`)
+            .call(this.xAxis);
+
+        this.svgContainer.append("g")
+            .attr('class', 'y-axis')
+            .call(this.yAxis);
+
+        this.update();
         
         this.tipLine = this.svgContainer.append('line')
             .attr('class', 'tipline');
@@ -105,27 +118,16 @@ export class ActivityPopulationCardComponent implements OnChanges {
         this.tipBox = this.svgContainer.append('rect')
             .attr('width', this.width)
             .attr('height', this.height)
-            .attr('opacity', 0);
-    }
-
-    private init() {
-        let self = this;
-        let d3 = this.d3;
-
-        this.populationData.forEach(function(d) {
-            d.timestamp = d3.isoParse(d.timestamp);
-        });
-
-        this.updateScales();
-
-        this.tipBox
-            .on('mousemove', function() {
+            .attr('opacity', 0)
+            .on('mousemove', function(ev) {
                 self.populationData.sort(function(a, b) { return a.timestamp - b.timestamp; });
 
-                let x0 = self.xScale.invert(self.d3.mouse(self.tipBox.node())[0]);
+                let mouseX = d3.pointer(ev, self.tipBox.node())[0];
+                let x0 = self.xScale.invert(mouseX);
                 let i = self.bisectTimestamp(self.populationData, x0, 1);
                 let d0 = self.populationData[i - 1];
                 let d1 = self.populationData[i];
+
                 let targetData = x0 - d0.timestamp > d1.timestamp - x0 ? d1 : d0;
 
                 let tipHtml = '';
@@ -151,8 +153,8 @@ export class ActivityPopulationCardComponent implements OnChanges {
 
                 self.tooltip.html(targetData.timestamp.toUTCString())
                     .style('display', 'block')
-                    .style('left', `${self.d3.event.offsetX + 20}px`)
-                    .style('top', `${self.d3.event.offsetY - 20}px`)
+                    .style('left', `${ev.offsetX + 20}px`)
+                    .style('top', `${ev.offsetY - 20}px`)
                     .append('div')
                     .html(tipHtml);
             })
@@ -160,121 +162,57 @@ export class ActivityPopulationCardComponent implements OnChanges {
                 if (self.tooltip) self.tooltip.style('display', 'none');
                 if (self.tipLine) self.tipLine.style('display', 'none');
             });
+    }
 
-        this.vsLine = d3.line<any>()
-            .x(function(d) { return self.xScale(d.timestamp); })
-            .y(function(d) { return self.yScale(d.vs) });
-
-        this.ncLine = d3.line<any>()
-            .x(function(d) { return self.xScale(d.timestamp); })
-            .y(function(d) { return self.yScale(d.nc) });
-
-        this.trLine = d3.line<any>()
-            .x(function(d) { return self.xScale(d.timestamp); })
-            .y(function(d) { return self.yScale(d.tr) });
-
-        this.nsLine = d3.line<any>()
-            .x(function(d) { return self.xScale(d.timestamp); })
-            .y(function(d) { return self.yScale(d.ns) });
-
-        this.updateData();
-        this.createAxis();
-
-        this.svgContainer.append('g')
-            .attr('class', 'x-axis')
-            .attr('transform', `translate(0, ${this.height})`)
-            .call(this.xAxis);
-
-        this.svgContainer.append("g")
-            .attr('class', 'y-axis')
-            .call(this.yAxis);
+    ngOnChanges(changes: SimpleChanges) {
+        this.update();
     }
 
     private update() {
-        let d3 = this.d3;
+        let self = this;
+
+        if (!this.populationData || !this.svgContainer) {
+            return;
+        }
 
         this.populationData.forEach(function(d) {
             d.timestamp = d3.isoParse(d.timestamp);
-        })
-        
-        this.updateScales();
-        this.updateData();
-        this.updateAxis();
-    }
+        });
 
-    private updateScales() {
-        let d3 = this.d3;
+        let vsData = this.populationData.map(x => ({ timestamp: x.timestamp, value: x.vs, faction: 'vs' }));
+        let ncData = this.populationData.map(x => ({ timestamp: x.timestamp, value: x.nc, faction: 'nc' }));
+        let trData = this.populationData.map(x => ({ timestamp: x.timestamp, value: x.tr, faction: 'tr' }));
+        let nsData = this.populationData.map(x => ({ timestamp: x.timestamp, value: x.ns, faction: 'ns' }));
+        let groupData = d3.group([].concat(vsData, ncData, trData, nsData), function(d) { return d.faction;});
 
-        this.xScale = this.d3.scaleUtc()
-            .domain(d3.extent(this.populationData, function(d) { return d.timestamp; }))
-            .range([0, this.width]);
-
-        this.yScale = this.d3.scaleLinear()
-            .domain([
-                d3.min(this.populationData, function (d) { return d3.min([d.vs, d.nc, d.tr, d.ns]); }),
-                d3.max(this.populationData, function (d) { return d3.max([d.vs, d.nc, d.tr, d.ns]); })
-            ])
-            .range([this.height, 0]);
-    }
-
-    private updateData() {
-        let d3 = this.d3; // Unused
-
-        this.svgContainer.selectAll('path').remove();
-
-        let paths = this.svgContainer.selectAll('path')
-            .data([this.populationData]);
-
-        let newPaths = paths.enter();
-
-        newPaths.append('path')
-            .attr('class', 'line vs-line')
-            .style('stroke', '#8f45bb')
-            .attr('d', this.vsLine);
-
-        newPaths.append('path')
-            .attr('class', 'line nc-line')
-            .style('stroke', '#1565C0')
-            .attr('d', this.ncLine);
-
-        newPaths.append('path')
-            .attr('class', 'line tr-line')
-            .style('stroke', '#C62828')
-            .attr('d', this.trLine);
-
-        newPaths.append('path')
-            .attr('class', 'line ns-line')
-            .style('stroke', '#828486')
-            .attr('d', this.nsLine);
-    }
-
-    private createAxis() {
-        let self = this;
-        let d3 = this.d3;
-
-        this.xAxis = d3.axisBottom(this.xScale)
-            .tickFormat(function(domain, i) {
-                let d = new Date(domain.valueOf());
-                let hour = self.pad(d.getUTCHours());
-                let minutes = self.pad(d.getUTCMinutes());
-                return `${hour}:${minutes}`
-            });
-        
-        this.yAxis = d3.axisLeft(this.yScale);
-    }
-
-    private updateAxis() {
-        let d3 = this.d3; // Unused
-
-        this.createAxis();
-
+        this.xScale.domain(d3.extent(this.populationData, function(d) { return d.timestamp; }));
         this.svgContainer.select('.x-axis')
             .transition()
+            .duration(1500)
             .call(this.xAxis);
 
+        this.yScale.domain([
+                d3.min(this.populationData, function (d) { return d3.min([d.vs, d.nc, d.tr, d.ns]); }),
+                d3.max(this.populationData, function (d) { return d3.max([d.vs, d.nc, d.tr, d.ns]); })
+            ]);
         this.svgContainer.select('.y-axis')
             .transition()
+            .duration(1500)
             .call(this.yAxis);
+
+        this.svgContainer.selectAll('.line')
+            .data(groupData)
+            .join('path')
+            .transition()
+            .duration(1500)
+            .attr('class', 'line')
+            .attr('d', function(d) {
+                return d3.line()
+                    .x(function(d) { return self.xScale(d.timestamp); })
+                    .y(function(d) { return self.yScale(d.value); })
+                    (d[1]);
+            })
+            .style('stroke', function(d){ return self.strokeMap[d[0]]; });
     }
 
     private pad(value: number) {

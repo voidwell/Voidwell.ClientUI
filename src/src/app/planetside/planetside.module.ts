@@ -2,7 +2,6 @@
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
 import { NgPipesModule } from 'ngx-pipes';
-import { D3Service } from 'd3-ng2-service';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { MaterialLib } from '../shared/materialLib.module';
 import { RequestCache } from '../shared/services/request-cache.service';
@@ -26,7 +25,6 @@ import { PlanetsidePlayerComponent } from './player/planetside-player.component'
 import { CharacterCardComponent } from './player/character-card/character-card.component';
 import { PlanetsidePlayerStatsComponent } from './player/stats/planetside-player-stats.component';
 import { PlanetsidePlayerStatsSiegeCardComponent } from './player/stats/siege-card/planetside-player-stats-siege-card.component';
-import { StatsHistoryCardComponent } from './player/stats/stats-history-card/stats-history-card.component';
 import { PlanetsidePlayerClassesComponent } from './player/classes/planetside-player-classes.component';
 import { PlanetsidePlayerVehiclesComponent } from './player/vehicles/planetside-player-vehicles.component';
 import { PlanetsidePlayerWeaponsComponent } from './player/weapons/planetside-player-weapons.component';
@@ -93,7 +91,6 @@ import { PlanetsideMapSimulatorComponent } from './map-explorer//map-simulator/m
         CharacterCardComponent,
         PlanetsidePlayerStatsComponent,
         PlanetsidePlayerStatsSiegeCardComponent,
-        StatsHistoryCardComponent,
         PlanetsidePlayerClassesComponent,
         PlanetsidePlayerVehiclesComponent,
         PlanetsidePlayerWeaponsComponent,
@@ -153,7 +150,6 @@ import { PlanetsideMapSimulatorComponent } from './map-explorer//map-simulator/m
         PerformanceGrades,
         DecimalPipe,
         DatePipe,
-        D3Service,
         ZoneHelper,
         WorldService,
         ZoneService

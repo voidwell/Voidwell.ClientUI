@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
-import { D3Service, D3 } from 'd3-ng2-service';
+import * as d3 from 'd3';
 
 @Component({
     selector: 'planetside-player-stats-siege-card',
@@ -12,24 +12,30 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
     @Input() defended: number;
     @ViewChild('siegegauge', { static: true }) gaugeElement: ElementRef;
 
-    private d3: D3;
-
-    constructor(element: ElementRef, d3Service: D3Service) {
-        this.d3 = d3Service.getD3();
-    }
+    private svg: any;
+    private width: 200
+    private height: 110;
 
     public siegeLevel: number;
 
     ngOnInit() {
-        let d3 = this.d3;
-        let gaugeElem = this.gaugeElement.nativeElement;
+        this.createSvg();
+        this.drawData();
+    }
 
+    private createSvg() {
+        this.svg = d3.select(this.gaugeElement.nativeElement)
+            .append('svg:svg')
+            .attr('width', this.width)
+            .attr('height', this.height);
+    }
+
+    private drawData() {
+        let self = this;
         this.siegeLevel = this.captured / this.defended * 100;
 
         let config = {
             size						: 200,
-            clipWidth					: 200,
-            clipHeight					: 110,
             ringInset					: 20,
             ringWidth					: 30,
 
@@ -57,11 +63,9 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
         let r = undefined;
         let pointerHeadLength = undefined;
 
-        let svg = undefined;
         let arc = undefined;
         let scale = undefined;
         let ticks = undefined;
-        let tickData = undefined;
         let pointer = undefined;
 
         function deg2rad(deg) {
@@ -83,7 +87,6 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
                 .domain([config.minValue, config.maxValue]);
 
             ticks = scale.ticks(config.textTicks);
-            tickData = d3.range(config.majorTicks).map(function() {return 1 / config.majorTicks; });
 
             arc = d3.arc()
                 .innerRadius(r - config.ringWidth - config.ringInset)
@@ -99,14 +102,9 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
         }
 
         function render(newValue) {
-            svg = d3.select(gaugeElem)
-                .append('svg:svg')
-                .attr('width', config.clipWidth)
-                .attr('height', config.clipHeight);
-
             let centerTx = centerTranslation();
 
-            svg.append('g')
+            self.svg.append('g')
                 .attr('transform', centerTx)
                 .selectAll('path')
                 .data(d3.range(500).map(function () { return 1 / 500; }))
@@ -114,7 +112,7 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
                 .attr('d', arc)
                 .style('fill', function (d, i) { return config.arcColorFn(d * i); });
 
-            let lg = svg.append('g')
+            let lg = self.svg.append('g')
                     .attr('class', 'label')
                     .attr('transform', centerTx);
             lg.selectAll('text')
@@ -133,7 +131,7 @@ export class PlanetsidePlayerStatsSiegeCardComponent implements OnInit {
                             [0, config.pointerTailLength],
                             [config.pointerWidth / 2, 0] ];
             let pointerLine = d3.line();
-            let pg = svg.append('g').data([lineData])
+            let pg = self.svg.append('g').data([lineData])
                     .attr('class', 'pointer')
                     .attr('transform', centerTx);
 

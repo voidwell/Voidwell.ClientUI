@@ -339,9 +339,6 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             for (var hexIdx in hexs) {
                 var hex = hexs[hexIdx];
 
-                var xCord = hex.x; // Unused
-                var yCord = hex.y; // Unused
-
                 var x = (2 * hex.x + hex.y) / 2 * width;
 
                 var y;

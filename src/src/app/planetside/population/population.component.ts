@@ -4,9 +4,10 @@ import { FormControl } from '@angular/forms';
 import { MatButtonToggleChange } from '@angular/material/button-toggle';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { D3Service, D3, Selection, BaseType, ZoomBehavior, ScaleTime, AxisScale, ScaleOrdinal } from 'd3-ng2-service';
 import { PlanetsideApi } from './../shared/services/planetside-api.service';
 import { WorldService } from '../shared/services/world-service.service';
+import * as d3 from 'd3';
+
 
 @Component({
     templateUrl: './population.template.html',
@@ -27,17 +28,16 @@ export class PopulationComponent implements OnInit {
     selectedWorlds: any[] = [];
     graphWorlds: any[] = [];
 
-    svg: Selection<BaseType, {}, HTMLElement, any>;
-    d3: D3;
+    svg: d3.Selection<d3.BaseType, {}, HTMLElement, any>;
     svgMargin = { top: 0, right: 0, bottom: 30, left: 0 };
-    lineColors: ScaleOrdinal<string, string> = null;
+    lineColors: d3.ScaleOrdinal<string, string> = null;
 
     graphHeight: any;
     graphWidth: any;
-    zoom: ZoomBehavior<SVGRectElement, {}>;
-    zoomRect: Selection<BaseType, {}, HTMLElement, any>;
+    zoom: d3.ZoomBehavior<SVGRectElement, {}>;
+    zoomRect: d3.Selection<d3.BaseType, {}, HTMLElement, any>;
     xExtent: [Date, Date];
-    x: ScaleTime<number, number>;
+    x: d3.ScaleTime<number, number>;
 
     queryParams: {
         [key: string]: any
@@ -46,32 +46,14 @@ export class PopulationComponent implements OnInit {
     schemeCategory20 = ["#1f77b4", "#aec7e8", "#ff7f0e", "#ffbb78", "#2ca02c", "#98df8a", "#d62728", "#ff9896", "#9467bd", "#c5b0d5",
         "#8c564b", "#c49c94", "#e377c2", "#f7b6d2", "#7f7f7f", "#c7c7c7", "#bcbd22", "#dbdb8d", "#17becf", "#9edae5"];
 
-    constructor(private activatedRoute: ActivatedRoute, private router: Router, private api: PlanetsideApi, private worldService: WorldService, element: ElementRef, d3Service: D3Service) {
+    constructor(private activatedRoute: ActivatedRoute, private router: Router, private api: PlanetsideApi, private worldService: WorldService, element: ElementRef) {
         this.queryParams = Object.assign({}, activatedRoute.snapshot.queryParams);
 
-        this.d3 = d3Service.getD3();
-        this.lineColors = this.d3.scaleOrdinal(this.schemeCategory20);
+        this.lineColors = d3.scaleOrdinal(this.schemeCategory20);
     }
 
     ngOnInit() {
-        let element = this.graphElement.nativeElement;
-
-        let svgHeight = element.offsetHeight;
-        let svgWidth = element.offsetWidth;
-        this.graphWidth = element.offsetWidth - this.svgMargin.left - this.svgMargin.right;
-        this.graphHeight = element.offsetHeight - this.svgMargin.top - this.svgMargin.bottom
-
-        this.svg = this.d3.select(element)
-            .append('svg:svg')
-            .attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight)
-            .append("g")
-            .attr("transform", "translate(" + this.svgMargin.left + "," + this.svgMargin.top + ")");
-
-        this.svg.append('clipPath')
-            .attr('id', 'clip')
-            .append('rect')
-            .attr('width', this.graphWidth)
-            .attr('height', this.graphHeight);
+        this.createSvg();
 
         this.isLoading = true;
 
@@ -86,6 +68,27 @@ export class PopulationComponent implements OnInit {
 
             this.isLoading = false;
         });
+    }
+
+    private createSvg() {
+        let element = this.graphElement.nativeElement
+
+        let svgHeight = element.offsetHeight;
+        let svgWidth = element.offsetWidth;
+        this.graphWidth = element.offsetWidth - this.svgMargin.left - this.svgMargin.right;
+        this.graphHeight = element.offsetHeight - this.svgMargin.top - this.svgMargin.bottom            
+    
+        this.svg = d3.select(element)
+            .append('svg:svg')
+            .attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight)
+            .append("g")
+            .attr("transform", "translate(" + this.svgMargin.left + "," + this.svgMargin.top + ")");
+    
+        this.svg.append('clipPath')
+            .attr('id', 'clip')
+            .append('rect')
+            .attr('width', this.graphWidth)
+            .attr('height', this.graphHeight);
     }
 
     onWorldSelected(event: MatButtonToggleChange) {
@@ -163,7 +166,6 @@ export class PopulationComponent implements OnInit {
     }
 
     renderGraph() {
-        let d3 = this.d3;
         let self = this;
 
         let series: DailyPopulation[][] = [...Array(this.graphWorlds.length)];
@@ -213,7 +215,7 @@ export class PopulationComponent implements OnInit {
             .x(function (d) { return self.x(d.date); })
             .y(function (d) { return y(d.vsCount + d.ncCount + d.trCount + d.nsCount); });
 
-        this.zoom = this.d3.zoom<SVGRectElement, {}>()
+        this.zoom = d3.zoom<SVGRectElement, {}>()
             .scaleExtent([1, 32])
             .translateExtent([[-this.graphWidth, -Infinity], [2 * this.graphWidth, Infinity]])
             .on('zoom', zoomed)
@@ -268,15 +270,15 @@ export class PopulationComponent implements OnInit {
 
         this.zoomBetween(this.selectedStartDate.value, this.selectedEndDate.value);
 
-        function zoomed() {
-            let xz = d3.event.transform.rescaleX(self.x);
+        function zoomed(ev) {
+            let xz = ev.transform.rescaleX(self.x);
             xGroup.call(xAxis.scale(xz)).select('.domain').remove();
             seriesGroup.selectAll('.line').attr('d', line.x(function (d) {
                 return xz(d.date);
             }));
 
-            let domainXMin: Date = xAxis.scale<AxisScale<Date>>().domain()[0];
-            let domainXMax: Date = xAxis.scale<AxisScale<Date>>().domain()[1];
+            let domainXMin: Date = xAxis.scale<d3.AxisScale<Date>>().domain()[0];
+            let domainXMax: Date = xAxis.scale<d3.AxisScale<Date>>().domain()[1];
             self.selectedStartDate.setValue(domainXMin);
             self.selectedEndDate.setValue(domainXMax);
         }
@@ -286,9 +288,9 @@ export class PopulationComponent implements OnInit {
             if (tooltipLine) tooltipLine.style('display', 'none');
         }
 
-        function drawTooltip() {
+        function drawTooltip(ev) {
             let tipElement: SVGRectElement = zoomRect.node() as SVGRectElement;
-            let mousePos = d3.mouse(tipElement);
+            let mousePos = d3.pointer(ev, tipElement);
             let dayMs = 1000 * 60 * 60 * 24;
 
             let zoomScale = d3.scaleTime().domain(xAxis.scale().domain()).range([0, self.graphWidth]);;
@@ -361,7 +363,7 @@ export class PopulationComponent implements OnInit {
     private zoomBetween(start: Date, end: Date) {
         let zoomScale = this.graphWidth / (this.x(end) - this.x(start));
         let zoomTranslate = -this.x(start);
-        this.zoomRect.call(this.zoom.transform, this.d3.zoomIdentity.scale(zoomScale).translate(zoomTranslate, 0));
+        this.zoomRect.call(this.zoom.transform, d3.zoomIdentity.scale(zoomScale).translate(zoomTranslate, 0));
 
         this.setQueryParam("startDate", start);
         this.setQueryParam("endDate", end);
