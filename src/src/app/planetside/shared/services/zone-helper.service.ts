@@ -20,6 +20,7 @@ export class ZoneHelper {
                 case 'interlink_facility':
                 case 'tech_plant':
                 case 'warpgate':
+                case 'seapost':
                     options = {
                         className: 'svg-icon svg-icon-large',
                         iconSize: [24, 24],
@@ -76,6 +77,7 @@ export class ZoneHelper {
                         map.hexs = data.hexs;
                         map.regions = data.regions;
                         map.links = data.links;
+                        map.hexSize = data.hexSize;
 
                         this.zoneMaps[zoneId] = map;
 
@@ -105,4 +107,5 @@ export class ZoneMap {
     links: any[] = [];
     regions: any[] = [];
     hexs: any[] = [];
+    hexSize: number;
 }

@@ -263,6 +263,7 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                 case 'interlink_facility':
                 case 'tech_plant':
                 case 'warpgate':
+                case 'seapost':
                     markerOptions.pane = 'facilitiesPane';
                     tooltipOptions.pane = 'facilitiesLabelsPane';
                     break;
@@ -323,39 +324,50 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
 
     setupMapRegions() {
         let self = this;
-        let width = 50 / 8;
 
-        let b = width / 2;
-        let c = b / Math.sqrt(3) * 2;
-        let a = c / 2;
+        let hexScale = 1/32;
+        let hexSize = hexScale * (this.zoneMap.hexSize || 200);
+        let heightOffset = hexSize / 2;
+        let widthOffset = hexSize / Math.sqrt(3);
+        let d = widthOffset / 2;
 
         var regionHexs = this.groupBy(this.zoneMap.hexs, 'mapRegionId');
 
         for (var regionId in regionHexs) {
+            let regionData = this.zoneMap.regions.find(r => r.regionId == regionId);
+
+            if (regionId === '0' || regionData === undefined) {
+                continue;
+            }
+
             var hexs = regionHexs[regionId];
 
             let regionLines: VertexLine[] = [];
 
             for (var hexIdx in hexs) {
-                var hex = hexs[hexIdx];
+                var hex = hexs[hexIdx];            
 
-                var x = (2 * hex.x + hex.y) / 2 * width;
-
-                var y;
-                if (hex.y % 2 == 1) {
-                    let t = Math.floor(hex.y / 2);
-                    y = c * t + 2 * c * (t + 1) + c / 2;
-                } else {
-                    y = (3 * c * hex.y) / 2 + c;
+                if (hex.hexType === 1) {
+                    continue;
                 }
 
+                var x;
+                if (hex.y % 2 == 1) {
+                    let t = Math.floor(hex.y / 2);
+                    x = widthOffset * t + 2 * widthOffset * (t + 1) + widthOffset / 2;
+                } else {
+                    x = (3 * widthOffset * hex.y) / 2 + widthOffset;
+                }
+
+                var y = (2 * hex.x + hex.y) * heightOffset;
+
                 var hexVerts = [
-                    new VertexPoint(x - b, y - a),
-                    new VertexPoint(x, y - c),
-                    new VertexPoint(x + b, y - a),
-                    new VertexPoint(x + b, y + a),
-                    new VertexPoint(x, y + c),
-                    new VertexPoint(x - b, y + a)
+                    new VertexPoint(x - d, y - heightOffset),
+                    new VertexPoint(x - widthOffset, y),
+                    new VertexPoint(x - d, y + heightOffset),
+                    new VertexPoint(x + d, y + heightOffset),
+                    new VertexPoint(x + widthOffset, y),
+                    new VertexPoint(x + d, y - heightOffset)
                 ];
 
                 var hexLines = [
@@ -368,6 +380,10 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
                 ];
 
                 regionLines = regionLines.concat(hexLines);
+            }
+
+            if (regionLines.length === 0) {
+                continue;
             }
 
             let regionOuterLines = this.getOuterLines(regionLines);

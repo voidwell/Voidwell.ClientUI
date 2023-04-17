@@ -1,19 +1,13 @@
 ﻿import { latLng, polyline, Map, LatLng, Polygon, Polyline, Marker, PolylineOptions, MarkerOptions } from 'leaflet';
 import { Factions } from './../configs';
 
-export class ZoneMap {
-    links: any[] = [];
-    regions: any[] = [];
-    hexs: any[] = [];
-}
-
 export class VertexPoint {
     x: number;
     y: number;
 
     constructor(x: number, y: number) {
-        this.y = Math.round(x * 1000) / 1000;
-        this.x = Math.round(y * 1000) / 1000;
+        this.x = Math.round(x * 1000) / 1000;
+        this.y = Math.round(y * 1000) / 1000;
     }
 
     equals(other: VertexPoint): boolean {
