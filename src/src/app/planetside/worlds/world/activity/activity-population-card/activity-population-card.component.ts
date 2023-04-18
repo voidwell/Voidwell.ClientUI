@@ -208,8 +208,8 @@ export class ActivityPopulationCardComponent implements OnInit, OnChanges {
             .attr('class', 'line')
             .attr('d', function(d) {
                 return d3.line()
-                    .x(function(d) { return self.xScale(d.timestamp); })
-                    .y(function(d) { return self.yScale(d.value); })
+                    .x(function(n) { return self.xScale(n.timestamp); })
+                    .y(function(n) { return self.yScale(n.value); })
                     (d[1]);
             })
             .style('stroke', function(d){ return self.strokeMap[d[0]]; });
