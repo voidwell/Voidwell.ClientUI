@@ -1,7 +1,6 @@
 ﻿import { Component } from '@angular/core';
-import { NgRedux } from '@angular-redux/store';
-import { Observable } from 'rxjs';
-import { IAppState } from './../app.component';
+import { Store } from '@ngrx/store';
+import { AppState, selectAuthState } from './../store/app.states';
 import { VoidwellAuthService } from './../shared/services/voidwell-auth.service';
 
 @Component({
@@ -12,7 +11,6 @@ import { VoidwellAuthService } from './../shared/services/voidwell-auth.service'
 
 export class AdminWrapperComponent {
     userRoles: Array<string>;
-    userState: Observable<any>;
 
     navLinks = [
         { path: 'dashboard', display: 'Dashboard', roles: null },
@@ -25,15 +23,11 @@ export class AdminWrapperComponent {
         { path: 'oidc', display: 'OIDC', roles: ['Administrator'] }
     ];
 
-    constructor(private auth: VoidwellAuthService, private ngRedux: NgRedux<IAppState>) {
-        this.userState = this.ngRedux.select('loggedInUser');
-        this.userState.subscribe(user => {
-            if (user) {
-                if (user.roles) {
-                    this.userRoles = user.roles || [];
-                }
-            }
-        });
+    constructor(private auth: VoidwellAuthService, private store: Store<AppState>) {
+        this.store.select(selectAuthState)
+            .subscribe(state => {
+                this.userRoles = state.userRoles
+            });
     }
 
     getNavLinks(): any[] {

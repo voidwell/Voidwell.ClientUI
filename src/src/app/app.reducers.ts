@@ -1,6 +1,6 @@
 ﻿import { combineReducers } from 'redux';
 import stateHistory from './app.statehistory';
-import { loginReducer, registrationReducer } from './reducers';
+import { reducers } from './store/app.states';
 
 const rootReducer = reducer => (state = stateHistory.presentState, action) => {
     switch (action.type) {
@@ -14,6 +14,6 @@ const rootReducer = reducer => (state = stateHistory.presentState, action) => {
 };
 
 export default rootReducer(combineReducers({
-    loggedInUser: loginReducer,
-    registration: registrationReducer
+    auth: reducers.auth,
+    registration: reducers.registration
 }));

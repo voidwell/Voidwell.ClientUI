@@ -3,11 +3,13 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule, DecimalPipe, DatePipe } from '@angular/common';
 import { NgPipesModule } from 'ngx-pipes';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { StoreModule } from '@ngrx/store';
 import { MaterialLib } from '../shared/materialLib.module';
 import { RequestCache } from '../shared/services/request-cache.service';
 import { VoidwellPipesModule } from '../shared/pipes/voidwellpipes.modules';
 import { SharedComponentsModule } from '../shared/components/shared-components.module';
 import { routing } from './planetside.routes';
+import { reducers } from './store/planetside.states';
 import { PlanetsideApi } from './shared/services/planetside-api.service';
 import { PerformanceGrades } from './shared/services/performance-grades.service';
 import { PlanetsideWrapperComponent } from './planetsidewrapper.component';
@@ -142,7 +144,8 @@ import { PlanetsideMapSimulatorComponent } from './map-explorer//map-simulator/m
         routing,
         NgPipesModule,
         LeafletModule,
-        PlanetsidePipesModule
+        PlanetsidePipesModule,
+        StoreModule.forFeature('ps2', reducers.planetside)
     ],
     providers: [
         RequestCache,

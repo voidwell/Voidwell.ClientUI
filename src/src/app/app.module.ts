@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgReduxModule } from '@angular-redux/store';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatIconRegistry } from '@angular/material/icon';
 import { NgPipesModule } from 'ngx-pipes';
@@ -24,6 +25,8 @@ import { VoidwellPipesModule } from './shared/pipes/voidwellpipes.modules';
 
 import { routing, appRouterProviders } from './app.routes';
 import { AppComponent } from './app.component';
+import { reducers } from './store/app.states';
+import { AuthEffects, RegistrationEffects } from './store/effects';
 
 @NgModule({
     bootstrap: [AppComponent],
@@ -44,7 +47,8 @@ import { AppComponent } from './app.component';
         HttpClientModule,
         FormsModule,
         ReactiveFormsModule,
-        NgReduxModule,
+        StoreModule.forRoot(reducers, {}),
+        EffectsModule.forRoot([AuthEffects, RegistrationEffects]),
         NgPipesModule,
         LeafletModule,
         FlexLayoutModule,

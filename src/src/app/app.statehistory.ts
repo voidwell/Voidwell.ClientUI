@@ -1,4 +1,4 @@
-﻿import { LOAD_USER } from './reducers';
+﻿import { LoadUserSuccess } from './store/actions/auth.actions';
 
 const actionMaxLimit = 30;
 
@@ -22,7 +22,7 @@ export default {
 
     stripInfo(action) {
         switch (action.type) {
-            case LOAD_USER:
+            case LoadUserSuccess:
                 return {
                     type: action.type,
                     payload: ''

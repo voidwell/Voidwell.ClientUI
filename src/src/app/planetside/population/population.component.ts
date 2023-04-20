@@ -35,7 +35,7 @@ export class PopulationComponent implements OnInit {
     graphHeight: any;
     graphWidth: any;
     zoom: d3.ZoomBehavior<SVGRectElement, {}>;
-    zoomRect: d3.Selection<d3.BaseType, {}, HTMLElement, any>;
+    zoomRect: d3.Selection<SVGRectElement, {}, HTMLElement, any>;
     xExtent: [Date, Date];
     x: d3.ScaleTime<number, number>;
 

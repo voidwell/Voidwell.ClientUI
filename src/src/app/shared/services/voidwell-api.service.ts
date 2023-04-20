@@ -1,12 +1,12 @@
 ﻿import { Observable } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import { NgRedux } from '@angular-redux/store';
-import { IAppState } from './../../app.component';
 import { Injectable } from '@angular/core';
 import { VoidwellAuthService } from './../services/voidwell-auth.service';
 import { ApiBase } from './api-base';
 import { RequestCache } from './../services/request-cache.service';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../store/app.states';
 
 @Injectable()
 export class VoidwellApi extends ApiBase {
@@ -22,8 +22,8 @@ export class VoidwellApi extends ApiBase {
     constructor(public authService: VoidwellAuthService,
         public http: HttpClient,
         public cache: RequestCache,
-        public ngRedux: NgRedux<IAppState>) {
-        super(authService, http, cache);
+        public store: Store<AppState>) {
+        super(authService, http, cache, store);
     }
 
     getAllBlogPosts() {
@@ -47,15 +47,7 @@ export class VoidwellApi extends ApiBase {
     }
 
     accountRegister(registrationForm: any) {
-        this.ngRedux.dispatch({ type: 'REGISTER_USER' });
-
-        return this.Post(this.accountUrl + 'register', registrationForm)
-            .pipe(catchError(error => {
-                this.ngRedux.dispatch({ type: 'REGISTRATION_FAIL', error });
-                return Observable.throw(error);
-            }))
-            .pipe(map(payload => ({ type: 'REGISTER_USER_SUCCESS', payload })))
-            .subscribe(action => this.ngRedux.dispatch(action));
+        return this.Post(this.accountUrl + 'register', registrationForm);
     }
 
     getSecurityQuestions() {
@@ -63,9 +55,7 @@ export class VoidwellApi extends ApiBase {
     }
 
     getRoles() {
-        return this.AuthGet(this.accountUrl + 'roles/')
-            .pipe(map(payload => ({ type: 'GET_USER_ROLES', payload })))
-            .subscribe(action => this.ngRedux.dispatch(action));
+        return this.AuthGet(this.accountUrl + 'roles/');
     }
 
     getUsers() {

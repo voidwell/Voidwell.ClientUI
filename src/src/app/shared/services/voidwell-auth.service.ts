@@ -1,13 +1,10 @@
-﻿import { Injectable, Injector } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+﻿import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subject, Observable, throwError } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { NgRedux } from '@angular-redux/store';
+import { Observable, throwError } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { UserManager, UserManagerSettings, Log } from 'oidc-client';
-import { IAppState } from '../../app.component';
-import { LOAD_USER, UNLOAD_USER, RENEW_TOKEN, IS_ADMIN } from '../../reducers';
-import { VoidwellApi } from './voidwell-api.service';
+import { LoadUserFailure, LoadUserSuccess, RenewToken } from '../../store/actions/auth.actions';
+import { AppState } from '../../store/app.states';
 
 @Injectable()
 export class VoidwellAuthService {
@@ -15,14 +12,9 @@ export class VoidwellAuthService {
     userRoleState: Observable<any>;
     rolesState: Observable<any>;
 
-    private api: any;
-    private authHeaders: HttpHeaders;
-
-    constructor(private http: HttpClient,
-        private router: Router,
+    constructor(private router: Router,
         private route: ActivatedRoute,
-        private ngRedux: NgRedux<IAppState>,
-        private injector: Injector) {
+        private store: Store<AppState>) {
         
         let redirectUri = location.origin + '/';
         let signInCallbackUri = redirectUri + 'signInCallback.html';
@@ -53,40 +45,19 @@ export class VoidwellAuthService {
 
             this.mgr.getUser()
                 .then((user) => {
-
-                    this.ngRedux.subscribe(() => {
-                        const state = ngRedux.getState();
-                        if (state.loggedInUser && state.loggedInUser.user) {
-                            this.setAuthHeaders(state.loggedInUser.user);
-                        }
-                    });
-
-                    this.rolesState = this.ngRedux.select(['loggedInUser', 'roles']);
-                    this.rolesState.subscribe(userRoles => {
-                        if (userRoles) {
-                            this.hasRoles(['Administrator']).subscribe(payload => {
-                                this.ngRedux.dispatch({ type: IS_ADMIN, payload });
-                            });
-                        }
-                    });
-
                     if (user) {
-                        this.ngRedux.dispatch({ type: LOAD_USER, user });
-                        if (!this.api) {
-                            this.api = this.injector.get(VoidwellApi);
-                            this.api.getRoles();
-                        }
+                        this.store.dispatch(new LoadUserSuccess(user));
 
                         this.router.navigate([currentRoute], { queryParams: route.snapshot.queryParams });
                     }
                 })
                 .catch((err) => {
-                    this.ngRedux.dispatch({ type: UNLOAD_USER });
+                    this.store.dispatch(new LoadUserFailure({ error: err }));
                 });
         });
 
         this.mgr.events.addUserLoaded((user) => {
-            this.ngRedux.dispatch({ type: LOAD_USER, user });
+            this.store.dispatch(new LoadUserSuccess(user));
         });
 
         this.mgr.events.addUserSignedOut(() => {
@@ -94,7 +65,7 @@ export class VoidwellAuthService {
         });
 
         this.mgr.events.addAccessTokenExpiring((e) => {
-            this.ngRedux.dispatch({ type: RENEW_TOKEN });
+            this.store.dispatch(new RenewToken());
         });
 
         this.mgr.events.addAccessTokenExpired((e) => {
@@ -116,7 +87,6 @@ export class VoidwellAuthService {
     signOut() {
         localStorage.removeItem('voidwell-auth-redirect');
 
-        this.ngRedux.dispatch({ type: UNLOAD_USER });
         this.mgr.signoutRedirect().then(function () {
         }).catch(function (error) {
             return throwError(error);
@@ -138,32 +108,5 @@ export class VoidwellAuthService {
         }).catch(function (error) {
             return throwError(error);
         });
-    }
-
-    hasRoles(routeRoles: string[]): Observable<boolean> {
-        this.userRoleState = this.ngRedux.select(['loggedInUser', 'roles']);
-        return Observable.create((observer: Subject<boolean>) => {
-            this.userRoleState.subscribe(userRoles => {
-                if (routeRoles && userRoles) {
-                    let found = false;
-                    routeRoles.forEach(role => {
-                        if (userRoles && userRoles.indexOf(role) > -1) {
-                            found = true;
-                        }
-                    });
-                    observer.next(found);
-                }
-            });
-        }).pipe(take(1));
-    }
-
-    getAuthHeaders() {
-        return this.authHeaders;
-    };
-
-    private setAuthHeaders(user: any) {
-        this.authHeaders = new HttpHeaders()
-            .set('Authorization', user.token_type + ' ' + user.access_token)
-            .set('Content-Type', 'application/json');
     }
 }

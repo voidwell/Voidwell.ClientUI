@@ -1,14 +1,11 @@
 import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
-import { WithSubStore, select, dispatch } from '@angular-redux/store';
+import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { CHANGE_PLATFORM } from './../../reducers';
-import reducers from './../../planetside.reducers';
 import { MatSelectChange } from '@angular/material/select';
+import { AppState } from '../../../store/app.states';
+import { selectPlanetsideState } from '../../store/planetside.states';
+import { ChangePlatform } from '../../store/actions/planetside.actions';
 
-@WithSubStore({
-    basePathMethodName: 'getBasePath',
-    localReducer: reducers
-})
 @Component({
     selector: 'platform-control',
     templateUrl: './platform-control.template.html',
@@ -16,28 +13,23 @@ import { MatSelectChange } from '@angular/material/select';
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class PlanetsidePlatformControl implements OnDestroy {
-    @select(['platform', 'platform']) readonly platform$: Observable<string>;
+    public readonly platform$: Observable<string>;
 
     private platformSub: Subscription;
     public selectedValue: string;
 
-    constructor() {
-        this.platformSub = this.platform$.subscribe(platformValue => {
-            if (platformValue) {
-                this.selectedValue = platformValue;
-            }
-        })
+    constructor(private store : Store<AppState>) {
+        this.platformSub = this.store.select(selectPlanetsideState)
+            .subscribe(state => {
+                this.selectedValue = state.platform
+            });
     }
 
-    @dispatch() onValueChange(event: MatSelectChange) {
-        return { type: CHANGE_PLATFORM, value: event.value };
+    onValueChange(event: MatSelectChange) {
+        this.store.dispatch(new ChangePlatform({ platform: event.value }));
     }
 
     ngOnDestroy() {
         if (this.platformSub) this.platformSub.unsubscribe();
-    }
-
-    private getBasePath() {
-        return ['ps2'];
     }
 }

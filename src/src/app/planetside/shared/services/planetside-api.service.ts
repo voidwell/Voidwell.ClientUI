@@ -1,16 +1,12 @@
-﻿import { Observable, Subscription } from 'rxjs';
+﻿import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { Injectable, OnDestroy } from '@angular/core';
-import { WithSubStore, select } from '@angular-redux/store';
+import { Store } from '@ngrx/store';
 import { VoidwellAuthService } from './../../../shared/services/voidwell-auth.service';
 import { RequestCache } from './../../../shared/services/request-cache.service';
 import { ApiBase } from './../../../shared/services/api-base';
-import reducers from './../../planetside.reducers';
-
-@WithSubStore({
-    basePathMethodName: 'getBasePath',
-    localReducer: reducers
-})
+import { AppState } from '../../../store/app.states';
+import { selectPlanetsideState } from '../../store/planetside.states';
 
 @Injectable()
 export class PlanetsideApi extends ApiBase implements OnDestroy {
@@ -20,16 +16,13 @@ export class PlanetsideApi extends ApiBase implements OnDestroy {
     private platformSub: Subscription;
     private platform: string = 'pc';
 
-    @select('platform') readonly platform$: Observable<any>;
+    constructor(public authService: VoidwellAuthService, public http: HttpClient, public cache: RequestCache, public store : Store<AppState>) {
+        super(authService, http, cache, store);
 
-    constructor(public authService: VoidwellAuthService, public http: HttpClient, public cache: RequestCache) {
-        super(authService, http, cache);
-
-        this.platformSub = this.platform$.subscribe(platformState => {
-            if (platformState) {
-                this.platform = platformState.platform;
-            }
-        });
+        this.platformSub = this.store.select(selectPlanetsideState)
+            .subscribe(state => {
+                this.platform = state.platform
+            });
     }
 
     getNews() {
@@ -158,9 +151,5 @@ export class PlanetsideApi extends ApiBase implements OnDestroy {
 
     ngOnDestroy(): void {
         if (this.platformSub) this.platformSub.unsubscribe();
-    }
-
-    private getBasePath() {
-        return ['ps2'];
     }
 }

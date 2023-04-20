@@ -1,9 +1,9 @@
 ﻿import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
-import { NgRedux } from '@angular-redux/store';
+import { Store } from '@ngrx/store';
 import { VoidwellApi } from '../shared/services/voidwell-api.service';
-import { IAppState } from '../app.component';
+import { AppState, selectRegistrationState } from '../store/app.states';
 import { NgForm } from '@angular/forms';
+import { RegisterUser } from '../store/actions/registration.actions';
 
 @Component({
     selector: 'voidwell-register',
@@ -20,28 +20,27 @@ export class RegisterComponent {
     isLoading: boolean = false;
     selectedTabIndex: number = 0;
     securityQuestions: Array<string> = null;
-    registrationState: Observable<any>;
 
     registrationInfo: any;
 
-    constructor(private api: VoidwellApi, private ngRedux: NgRedux<IAppState>) {
-        this.registrationState = this.ngRedux.select('registration');
-        this.registrationState.subscribe(registration => {
-            if (registration) {
-                if (registration.isSuccess) {
-                    this.registrationSuccess = true;
+    constructor(private api: VoidwellApi, private store: Store<AppState>) {
+        this.store.select(selectRegistrationState)
+            .subscribe(registration => {
+                if (registration) {
+                    if (registration.isSuccess) {
+                        this.registrationSuccess = true;
+                    }
+                    if (registration.status === 'loading') {
+                        this.isLoading = true;
+                        this.errorMessage = null;
+                    } else {
+                        this.isLoading = false;
+                    }
+                    if (registration.status === 'error') {
+                        this.errorMessage = registration.error;
+                    }
                 }
-                if (registration.status === 'loading') {
-                    this.isLoading = true;
-                    this.errorMessage = null;
-                } else {
-                    this.isLoading = false;
-                }
-                if (registration.status === 'error') {
-                    this.errorMessage = registration.errorMessage;
-                }
-            }
-        });
+            });
     }
 
     onSubmitInformation(registerForm: NgForm) {
@@ -70,7 +69,7 @@ export class RegisterComponent {
 
             this.registrationInfo.securityQuestions = questions;
 
-            this.api.accountRegister(this.registrationInfo);
+            this.store.dispatch(new RegisterUser({ registrationForm: this.registrationInfo }));
         }
     }
 

@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { NgRedux } from '@angular-redux/store';
-import { Observable } from 'rxjs';
+import { Store } from '@ngrx/store';
 import { NavMenuService } from './../shared/services/nav-menu.service';
 import { SearchService } from './../shared/services/search.service';
-import { VoidwellAuthService } from './../shared/services/voidwell-auth.service';
-import { IAppState } from './../app.component';
+import { AppState, selectAuthState } from './../store/app.states';
+import { LogInUser, LogOutUser } from '../store/actions/auth.actions';
 
 @Component({
     selector: 'vw-header',
@@ -13,37 +12,32 @@ import { IAppState } from './../app.component';
 })
 
 export class VWHeaderComponent implements OnInit {
-    userState: Observable<any>;
     isLoggedIn: boolean = false;
     userName: string;
     userRoles: Array<string>;
 
-    constructor(public navMenuService: NavMenuService, public searchService: SearchService, private authService: VoidwellAuthService, private ngRedux: NgRedux<IAppState>) {
+    constructor(public navMenuService: NavMenuService, public searchService: SearchService, private store: Store<AppState>) {
     }
 
-    ngOnInit() {
-        let self = this; // Unused
-        
-        this.userState = this.ngRedux.select('loggedInUser');
-        this.userState.subscribe(user => {
-            if (user) {
-                this.isLoggedIn = user.isLoggedIn;
-                if (user.user) {
-                    this.userName = user.user.profile.name || '';
+    ngOnInit() {        
+        this.store.select(selectAuthState)
+            .subscribe(state => {
+                this.isLoggedIn = state.isAuthenticated;
+                if (state.user) {
+                    this.userName = state.user.profile.name || '';
                 }
-                if (user.roles) {
-                    this.userRoles = user.roles || [];
+                if (state.userRoles) {
+                    this.userRoles = state.userRoles;
                 }
-            }
-        });
+            });
     }
 
     signIn(): any {
-        this.authService.signIn();
+        this.store.dispatch(new LogInUser());
     }
 
     signOut(): any {
-        this.authService.signOut();
+        this.store.dispatch(new LogOutUser());
     }
 
     canAccessAdmin(): boolean {

@@ -1,16 +1,5 @@
-﻿import { Component, ViewContainerRef, ViewEncapsulation } from '@angular/core';
-import reducers from './app.reducers';
-import {
-    IUserLoginState,
-    IRegistrationState
-} from './reducers';
-import { NgRedux } from '@angular-redux/store';
+﻿import { Component, ViewEncapsulation } from '@angular/core';
 import { MatIconRegistry } from '@angular/material/icon';
-
-export interface IAppState {
-    loggedInUser: IUserLoginState;
-    registration: IRegistrationState;
-};
 
 @Component({
     selector: 'app',
@@ -20,18 +9,7 @@ export interface IAppState {
 })
 
 export class AppComponent {
-    constructor(private ngRedux: NgRedux<IAppState>,
-        private iconRegistry: MatIconRegistry,
-        public viewContainer: ViewContainerRef) {
+    constructor(private iconRegistry: MatIconRegistry) {
         this.iconRegistry.setDefaultFontSetClass('mdi');
-
-        ngRedux.configureStore(
-            reducers,
-            {
-                loggedInUser: null,
-                registration: null
-            },
-            null,
-            []);
     }
 }

@@ -1,9 +1,13 @@
 ﻿import { Observable, throwError, of } from 'rxjs';
 import { timeout, catchError, tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Store } from '@ngrx/store';
 import { VoidwellAuthService } from './../services/voidwell-auth.service';
 import { RequestCache } from './../services/request-cache.service';
+import { AppState, selectAuthState } from '../../store/app.states';
+import { User } from 'oidc-client';
 
 @Injectable()
 export class ApiBase {
@@ -12,8 +16,22 @@ export class ApiBase {
     private _requestTimeoutMessage = 'Request timed out';
 
     constructor(public authService: VoidwellAuthService,
-        public http: HttpClient, public cache: RequestCache) {
-        this.options = { headers: this.authService.getAuthHeaders() };
+        public http: HttpClient, public cache: RequestCache, public store: Store<AppState>) {
+
+        this.store.select(selectAuthState)
+            .subscribe(state => {
+                if (state.isAuthenticated) {
+                    this.setAuthHeaders(state.user);
+                }
+            });
+    }
+
+    private setAuthHeaders(user: User) {
+        this.options = {
+            headers: new HttpHeaders()
+                .set('Authorization', user.token_type + ' ' + user.access_token)
+                .set('Content-Type', 'application/json')
+        };
     }
 
     protected Get(url: string, isCached: boolean = false): Observable<any> {

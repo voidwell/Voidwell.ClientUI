@@ -207,7 +207,7 @@ export class ActivityPopulationCardComponent implements OnInit, OnChanges {
             .duration(1500)
             .attr('class', 'line')
             .attr('d', function(d) {
-                return d3.line()
+                return d3.line<any>()
                     .x(function(n) { return self.xScale(n.timestamp); })
                     .y(function(n) { return self.yScale(n.value); })
                     (d[1]);
