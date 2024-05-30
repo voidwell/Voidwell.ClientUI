@@ -1,0 +1,28 @@
+<div class="mt-8">
+    <ng-container [ngSwitch]="(isLoading$ | async)!">
+        <ng-container *ngSwitchCase="true">
+            <vw-spinner [loading]="(isLoading$ | async)!"></vw-spinner>
+        </ng-container>
+        <ng-container *ngSwitchCase="false">
+            <div class="flex gap-5">
+                <div class="flex-initial">
+                    <vw-ps2-news-post *ngFor="let newsPost of newsPosts$ | async" [newsPost]="newsPost"></vw-ps2-news-post>
+                </div>
+                <div class="flex-none w-52">
+                    <mat-card>
+                        <mat-card-header>
+                            <mat-card-title>Updates</mat-card-title>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <ul>
+                                <li class="text-nowrap text-ellipsis overflow-hidden" *ngFor="let item of updatePosts$ | async">
+                                    <a [href]="item.link" target="_blank" [title]="item.title">{{item.title}}</a>
+                                </li>
+                            </ul>
+                        </mat-card-content>
+                    </mat-card>
+                </div>
+            </div>
+        </ng-container>
+    </ng-container>
+</div>

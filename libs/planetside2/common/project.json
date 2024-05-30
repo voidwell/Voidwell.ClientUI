@@ -1,0 +1,30 @@
+{
+  "name": "planetside2-common",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/planetside2/common/src",
+  "prefix": "vw",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/libs/planetside2/common"],
+      "options": {
+        "tsConfig": "libs/planetside2/common/tsconfig.lib.json",
+        "project": "libs/planetside2/common/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/planetside2/common/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/planetside2/common/src/**/*.ts", "libs/planetside2/common/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": ["type:api", "scope:common-feature"]
+}

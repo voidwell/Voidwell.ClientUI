@@ -1,0 +1,35 @@
+{
+  "name": "common-navigation",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/common/navigation/src",
+  "prefix": "vw",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/libs/common/navigation"],
+      "options": {
+        "tsConfig": "libs/common/navigation/tsconfig.lib.json",
+        "project": "libs/common/navigation/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/common/navigation/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/common/navigation/src/**/*.ts", "libs/common/navigation/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "generators": {
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "tags": ["type:api", "scope:common"]
+}

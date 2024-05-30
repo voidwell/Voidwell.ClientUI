@@ -1,0 +1,24 @@
+﻿@import '../../../blackstone/styles/tokens/variables';
+
+.platform-control {
+    background: $color-primary-800;
+}
+
+.platform-control .platform-value * {
+    font-size: 15px;
+    line-height: 3rem;
+    vertical-align: middle;
+}
+
+.platform-control ::ng-deep .mat-mdc-select-arrow-wrapper * {
+    visibility: hidden;
+    border: none;
+}
+
+.platform-control ::ng-deep .mat-mdc-select-value-text {
+    color: #b4bfc3;
+}
+
+::ng-deep .platform-panel .mdc-list-item--selected .mdc-list-item__primary-text {
+    color: inherit;
+}

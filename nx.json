@@ -1,0 +1,68 @@
+{
+  "$schema": "./node_modules/nx/schemas/nx-schema.json",
+  "npmScope": "voidwell",
+  "defaultProject": "voidwell",
+  "targetDefaults": {
+    "build": {
+      "dependsOn": ["^build"],
+      "inputs": ["production", "^production"]
+    },
+    "lint": {
+      "inputs": ["default", "{workspaceRoot}/.eslintrc.json", "{workspaceRoot}/boundaries.eslintrc.json"]
+    }
+  },
+  "tasksRunnerOptions": {
+    "default": {
+      "runner": "nx/tasks-runners/default",
+      "options": {
+        "cacheableOperations": ["build", "lint"],
+        "cacheDirectory": "./nx-computation-cache",
+        "parallel": 5
+      }
+    },
+    "eslint": {
+      "runner": "./tools/runners/eslint-task-runner",
+      "options": {
+        "cache": true,
+        "cacheLocation": "cache/eslint"
+      }
+    }
+  },
+  "generators": {
+    "@nrwl/angular:application": {
+      "style": "scss",
+      "linter": "eslint",
+      "strict": true,
+      "routing": true,
+      "prefix": "vw"
+    },
+    "@nrwl/angular:library": {
+      "linter": "eslint",
+      "strict": true,
+      "prefix": "vw",
+      "buildable": true
+    },
+    "@nrwl/angular:component": {
+      "style": "scss"
+    }
+  },
+  "namedInputs": {
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [
+      "{workspaceRoot}/tsconfig.base.json",
+      "{workspaceRoot}/nx.json",
+      "{workspaceRoot}/package-lock.json"
+    ],
+    "production": [
+      "default",
+      "!{projectRoot}/.eslintrc.json",
+      "!{projectRoot}/**/?(*.)+(spec|test).[jt]s?(x)?(.snap)"
+    ],
+    "app": [
+      "production",
+      "{workspaceRoot}/csp.json",
+      "{workspaceRoot}/tools/scripts/index-transform.js"
+    ]
+  }
+}
+  

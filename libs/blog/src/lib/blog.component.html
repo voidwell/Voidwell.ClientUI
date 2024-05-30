@@ -1,0 +1,10 @@
+<div class="mt-8">
+    <ng-container [ngSwitch]="(isLoading$ | async)!">
+        <ng-container *ngSwitchCase="true">
+            <vw-spinner [loading]="(isLoading$ | async)!"></vw-spinner>
+        </ng-container>
+        <ng-container *ngSwitchCase="false">
+            <vw-blog-post *ngFor="let blogPost of blogPosts$ | async" [blogPost]="blogPost"></vw-blog-post>
+        </ng-container>
+    </ng-container>
+</div>

@@ -1,0 +1,36 @@
+mat-card.mat-mdc-card {
+    background: $color-primary-800;
+    color: inherit;
+    box-shadow: none !important;
+    border-radius: 2px;
+}
+
+mat-card .mat-mdc-card-title h1,
+mat-card .mat-mdc-card-title h2,
+mat-card .mat-mdc-card-title h3,
+mat-card .mat-mdc-card-title h4,
+mat-card .mat-mdc-card-title h5,
+mat-card .mat-mdc-card-title h6 {
+    margin: 0;
+}
+
+mat-card .mat-mdc-card-title {
+    font-size: inherit;
+    color: #fff;
+    opacity: 0.8;
+    font-weight: 600;
+}
+mat-card .mat-mdc-card-title a {
+    color: inherit;
+    text-decoration: none;
+}
+
+mat-card .mat-mdc-card-subtitle {
+    color: #fff;
+    opacity: 0.8;
+    font-size: 0.9em;
+}
+
+mat-card .mat-mdc-card-content {
+    font-size: 14px;
+}

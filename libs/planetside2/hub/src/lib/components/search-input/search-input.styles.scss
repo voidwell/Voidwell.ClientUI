@@ -1,0 +1,182 @@
+﻿@import '../../../blackstone/styles/tokens/variables';
+
+.search.focus {
+    overflow: hidden;
+}
+
+.search.focus .top-search-container {
+    background: #edeff0;
+}
+
+.top-search-container {
+    transition: all;
+    transition-duration: 0.3s;
+    position: relative;
+}
+
+.top-search-container {
+    background: $color-primary-800;
+}
+
+.top-search_input,
+.top-search_dropdown,
+.top-search_reset {
+    background: none;
+}
+
+.search.focus .top-search_reset {
+    color: #edeff0;
+}
+
+    .search.focus .top-search_reset:before {
+        transform: scale(0) rotate(180deg);
+    }
+
+    .search.focus .top-search_reset:after {
+        transform: scale(1) rotate(0);
+    }
+
+.top-search_input {
+    border: 0;
+    padding: 10px 20px 10px 20px;
+    border-radius: 0 2px 2px 0;
+    font-size: 15px;
+    color: #22313a;
+    font-family: inherit;
+    line-height: inherit;
+    margin: 0;
+}
+
+    .top-search_input.mat-input-element::placeholder {
+        color: #b4bfc3;
+        opacity: 1;
+    }
+
+.search.focus .top-search_input.mat-input-element::placeholder {
+    color: #22313a;
+    opacity: 1;
+}
+
+.top-search_reset {
+    position: relative;
+    font-size: 20px;
+    color: #b4bfc3;
+    cursor: pointer;
+    width: 50px;
+    display: block;
+    font-family: "Material Design Icons";
+    font-size: 24px;
+    line-height: 1;
+    font-style: normal;
+    text-rendering: auto;
+    float: left;
+    border-radius: 2px 0 0 2px;
+    -webkit-font-smoothing: antialiased;
+}
+
+    .top-search_reset:before, .top-search_reset:after {
+        position: absolute;
+        left: 13px;
+        top: 14px;
+
+        transition: all;
+        transition-duration: 0.3s;
+    }
+
+    .top-search_reset:before {
+        content: "\F0349";
+    }
+
+    .top-search_reset:after {
+        transform: scale(0) rotate(-180deg);
+        color: #22313a;
+        content: "\F004D";
+    }
+
+    .top-search_reset.loading:after {
+        animation: spin 0.5s infinite linear;
+        content: "\F0772";
+    }
+
+.top-search_clear {
+    position: absolute;
+    right: 0;
+    line-height: 50px;
+    font-size: 20px;
+    width: 50px;
+    color: #22313a;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+.top-search_dropdown {
+    border: 0;
+    border-radius: 0;
+    width: 100px;
+    font-size: 15px;
+    color: #22313a;
+    font-family: inherit;
+    line-height: inherit;
+    margin: 0;
+    float: left;
+    text-align: center;
+    font-weight: bold;
+
+    vertical-align: middle;
+    line-height: 3rem;
+}
+
+.top-search_dropdown ::ng-deep .mat-mdc-select-arrow-wrapper *{
+    visibility: hidden;
+    border: none;
+}
+
+.top-search_dropdown ::ng-deep .mat-mdc-select-value-text {
+    color: #b4bfc3;
+}
+
+.search.focus .top-search_dropdown ::ng-deep .mat-mdc-select-value-text {
+    color: #22313a;
+}
+
+::ng-deep {
+    .search-results .mdc-list-item__primary-text {
+        flex-grow: 1;
+    }
+    
+    .search-type-panel .mdc-list-item--selected .mdc-list-item__primary-text {
+        color: inherit;
+    }
+    
+    .search-option.mat-mdc-option {
+        border-bottom: 1px solid #ccc;
+        padding-top: 8px;
+        padding-bottom: 8px;
+        white-space: normal;
+        overflow: visible;
+        height: inherit;
+    }
+    
+    .search-option .mat-mdc-option-text {
+        display: block;
+    }
+    
+    .search-option.mat-mdc-option:last-child {
+        border-bottom-width: 0;
+    }
+    
+    .search-option .item-title,
+    .search-option .item-metadata {
+        display: block;
+        line-height: 1.5rem;
+    }    
+}

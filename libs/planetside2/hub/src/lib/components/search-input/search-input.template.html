@@ -1,0 +1,83 @@
+<div class="search" [ngClass]="{'focus': isFocused || inputControl.dirty}">
+    <div class="top-search-container text-nowrap flex" #searchContainer>
+        <button mat-icon-button *ngIf="inputControl.dirty" class="top-search_clear" (click)="clearSearch()">
+            <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
+        </button>
+        <i class="top-search_reset h-12" [ngClass]="{'loading': isSearching}"></i>
+        <mat-select class="top-search_dropdown h-12"
+            (selectionChange)="onSearchTypeChange($event)"
+            [value]="searchType"
+            hideSingleSelectionIndicator="true"
+            panelClass="search-type-panel">
+            <mat-option value="character">Player</mat-option>
+            <mat-option value="outfit">Outfit</mat-option>
+            <mat-option value="item">Weapon</mat-option>
+        </mat-select>
+        <input class="top-search_input outline-none h-12 grow"
+                #searchInput
+                [formControl]="inputControl"
+                type="text"
+                matInput
+                [matAutocomplete]="auto"
+                placeholder="Search for players, outfits, and weapons"
+                (keydown.enter)="$event.preventDefault()">
+    </div>
+    <mat-autocomplete #auto="matAutocomplete" class="search-results">
+        <mat-option *ngFor="let result of searchResults" class="search-option" [value]="result.name" (click)="resultClick(result)">
+            <ng-container [ngSwitch]="result.type">
+                <ng-container *ngSwitchCase="'character'">
+                    <ng-container *ngTemplateOutlet="characterResult;context:{$implicit:result}"></ng-container>
+                </ng-container>
+                <ng-container *ngSwitchCase="'outfit'">
+                    <ng-container *ngTemplateOutlet="outfitResult;context:{$implicit:result}"></ng-container>
+                </ng-container>
+                <ng-container *ngSwitchCase="'item'">
+                    <ng-container *ngTemplateOutlet="weaponResult;context:{$implicit:result}"></ng-container>
+                </ng-container>
+            </ng-container>
+        </mat-option>
+    </mat-autocomplete>
+</div>
+
+<ng-template #characterResult let-result>
+    <div class="item-title">
+        <span>{{result.name}}</span>
+        <div class="pull-right">
+            <strong>{{result.worldId | worldName}}</strong>
+        </div>
+        <div class="pull-left">
+            <mat-icon fontSet="mdi" fontIcon="mdi-account" [ngClass]="result.factionId | factionColor"></mat-icon>
+        </div>
+    </div>
+    <div class="item-metadata">
+        <div>Battle rank <strong>{{result.battleRank}}</strong></div>
+    </div>
+</ng-template>
+
+<ng-template #outfitResult let-result>
+    <div class="item-title">
+        <span *ngIf="result.alias">[{{result.alias}}]</span>
+        <span>{{result.name}}</span>
+        <div class="pull-right">
+            <strong>{{result.worldId | worldName}}</strong>
+        </div>
+        <div class="pull-left">
+            <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple" [ngClass]="result.factionId | factionColor"></mat-icon>
+        </div>
+    </div>
+    <div class="item-metadata">
+        <span><strong>{{result.memberCount}}</strong> members</span>
+    </div>
+</ng-template>
+
+<ng-template #weaponResult let-result>
+    <div class="item-title">
+        <span>{{result.name}}</span>
+        <div class="pull-right">
+            <strong>{{result.category}}</strong>
+        </div>
+        <div class="pull-left">
+            <mat-icon fontSet="mdi" fontIcon="mdi-target" [ngClass]="result.factionId | factionColor"></mat-icon>
+        </div>
+    </div>
+</ng-template>

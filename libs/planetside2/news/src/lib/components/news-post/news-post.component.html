@@ -1,0 +1,15 @@
+<mat-card class="flex-auto mb-6">
+  <mat-card-header class="mb-4">
+    <mat-card-title>
+      <h1>
+        <a [href]="newsPost.link" target="_blank">{{newsPost.title}}</a>
+      </h1>
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{newsPost.date | date:'EEE dd MMM yyyy'}} at {{newsPost.date | date:'HH:mm'}} - By {{newsPost.author}}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div [innerHtml]="newsPost.content"></div>
+  </mat-card-content>
+</mat-card>

@@ -263,3 +263,7 @@ __pycache__/
 /src/package-lock.json
 /src/dist
 /output
+
+/dist
+.angular
+/nx-computation-cache

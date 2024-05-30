@@ -1,0 +1,102 @@
+{
+    "root": true,
+    "ignorePatterns": ["/dist/**/*", "/cache/**/*"],
+    "plugins": ["@nrwl/nx"],
+    "extends": "./boundaries.eslintrc.json",
+    "overrides": [
+      {
+        "files": ["*.ts", "*.js"],
+        "plugins": ["simple-import-sort"],
+        "rules": {
+          "sort-imports": "off",
+          "simple-import-sort/imports": [
+            "warn",
+            {
+              "groups": [
+                [
+                  // Side effect imports. Examples:
+                  // import 'jest-preset-angular/setup-jest';
+                  "^\\u0000",
+                  // External packages. Examples:
+                  // import { Store } from '@ngrx/store';
+                  // import { Subscription } from 'rxjs';
+                  "^@?\\w",
+                  // Internal packages. Examples:
+                  // import { CommonAuthModule } from '@voidwell/common/auth';
+                  "^(@voidwell)(/.*|$)",
+                  // Relative imports. Examples:
+                  // import { configureAuth } from '../oidc-configuration';
+                  // import { userAuthenticated } from './auth.actions';
+                  "^\\."
+                ]
+              ]
+            }
+          ],
+          "no-restricted-globals": [
+            "error",
+            {
+              "name": "fdescribe",
+              "message": "Do not commit fdescribe. Use describe instead."
+            }
+          ],
+          "no-restricted-syntax": [
+            "warn",
+            {
+              "selector": "CallExpression[callee.object.name=\"console\"][callee.property.name=/^(trace|debug|log|warn|error)$/]",
+              "message": "Consider using static Log class from '@voidwell/common/logging' instead"
+            }
+          ]
+        }
+      },
+      {
+        "files": ["*.ts"],
+        "extends": ["plugin:@nrwl/nx/typescript", "plugin:@angular-eslint/base"],
+        "parserOptions": {
+          "project": "./tsconfig.*?.json"
+        },
+        "rules": {
+          "@typescript-eslint/explicit-member-accessibility": "off",
+          "@typescript-eslint/explicit-module-boundary-types": "off",
+          "@typescript-eslint/explicit-function-return-type": "off",
+          "@typescript-eslint/no-parameter-properties": "off",
+          "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "_" }],
+          "@typescript-eslint/no-use-before-define": ["warn", "nofunc"],
+          "@typescript-eslint/no-inferrable-types": "off",
+          "@typescript-eslint/no-non-null-assertion": "off",
+          "@angular-eslint/directive-selector": ["warn", { "type": "attribute", "prefix": "vw", "style": "camelCase" }],
+          "@angular-eslint/component-selector": ["warn", { "type": "element", "prefix": "vw", "style": "kebab-case" }],
+          "@angular-eslint/use-pipe-transform-interface": "warn",
+          "@angular-eslint/component-class-suffix": "warn",
+          "@angular-eslint/directive-class-suffix": "warn",
+          "@angular-eslint/no-input-rename": "warn",
+          "@angular-eslint/no-output-native": "warn",
+          "@angular-eslint/no-host-metadata-property": "warn",
+          "@angular-eslint/contextual-lifecycle": "error",
+          "@angular-eslint/no-conflicting-lifecycle": "error",
+          "@angular-eslint/no-empty-lifecycle-method": "error",
+          "@angular-eslint/no-inputs-metadata-property": "error",
+          "@angular-eslint/no-output-on-prefix": "error",
+          "@angular-eslint/no-output-rename": "error",
+          "@angular-eslint/no-outputs-metadata-property": "error",
+          "@angular-eslint/use-lifecycle-interface": "warn",
+          "quotes": ["warn", "single", { "avoidEscape": true, "allowTemplateLiterals": true }],
+          "max-len": "off"
+        }
+      },
+      {
+        "files": ["*.js"],
+        "extends": ["plugin:@nrwl/nx/javascript"],
+        "rules": {
+          "no-undef": "off"
+        }
+      },
+      {
+        "files": ["*.html"],
+        "extends": ["plugin:@nrwl/nx/angular-template"],
+        "rules": {
+          "@angular-eslint/template/no-negated-async": "off"
+        }
+      }
+    ]
+  }
+  

@@ -1,0 +1,30 @@
+{
+  "name": "blog",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/blog/src",
+  "prefix": "vw",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/libs/blog"],
+      "options": {
+        "tsConfig": "libs/blog/tsconfig.lib.json",
+        "project": "libs/blog/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/blog/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/blog/src/**/*.ts", "libs/blog/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": ["type:feature", "scope:blog"]
+}

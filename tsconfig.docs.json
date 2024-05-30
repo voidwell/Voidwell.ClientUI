@@ -1,0 +1,7 @@
+{
+  "include": [
+    "libs/**/common/**/components/**/*.component.ts",
+    "libs/**/common-components/**/components/**/*.@(component|directive).ts"
+  ],
+  "exclude": ["libs/**/*test.ts", "libs/**/*.spec.ts"]
+}

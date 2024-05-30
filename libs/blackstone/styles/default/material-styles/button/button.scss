@@ -1,0 +1,38 @@
+[mat-button].mat-button,
+[mat-raised-button].mat-raised-button,
+.mat-button-toggle,
+button.mat-button-toggle-button,
+.mat-button-toggle-group {
+    box-shadow: none !important;
+    color: #b4bfc3;
+}
+
+.mat-button-toggle {
+    opacity: 0.4;
+    color: #b4bfc3;
+    background-color: #394650;
+}
+.mat-button-toggle.mat-button-toggle-checked {
+    opacity: 1;
+}
+[mat-raised-button].mat-raised-button {
+    background-color: #394650;
+}
+[mat-raised-button].mat-raised-button.mat-warn {
+    background-color: #922424;
+}
+[mat-button].mat-button[disabled],
+[mat-raised-button].mat-raised-button[disabled] {
+    color: #b4bfc3;
+    opacity: 0.65;
+}
+
+
+[mat-button], [mat-icon-button] {
+    background: transparent;
+}
+
+.mat-mdc-icon-button.mat-mdc-button-base {
+    height: 40px;
+    width: 40px;
+}

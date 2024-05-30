@@ -1,0 +1,10 @@
+{
+  "extends": "./tsconfig.lib.json",
+  "angularCompilerOptions": {
+    "compilationMode": "partial"
+  },
+  "compilerOptions": {
+    "target": "ES2022",
+    "useDefineForClassFields": false
+  }
+}

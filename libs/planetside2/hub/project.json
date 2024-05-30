@@ -1,0 +1,30 @@
+{
+  "name": "planetside2-hub",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/planetside2/hub/src",
+  "prefix": "vw",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/libs/planetside2/hub"],
+      "options": {
+        "tsConfig": "libs/planetside2/hub/tsconfig.lib.json",
+        "project": "libs/planetside2/hub/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/planetside2/hub/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/planetside2/hub/src/**/*.ts", "libs/planetside2/hub/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": ["type:feature", "scope:planetside2"]
+}

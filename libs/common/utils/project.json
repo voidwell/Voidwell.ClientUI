@@ -1,0 +1,35 @@
+{
+  "name": "common-utils",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/common/utils/src",
+  "prefix": "vw",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/libs/common/utils"],
+      "options": {
+        "tsConfig": "libs/common/utils/tsconfig.lib.json",
+        "project": "libs/common/utils/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/common/utils/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/common/utils/src/**/*.ts", "libs/common/utils/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "tags": ["type:api", "scope:common"]
+}

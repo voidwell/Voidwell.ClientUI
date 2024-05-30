@@ -10,7 +10,6 @@ import { MatIconRegistry } from '@angular/material/icon';
 import { NgPipesModule } from 'ngx-pipes';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { FlexLayoutModule } from '@angular/flex-layout';
-
 import { MaterialLib } from './shared/materialLib.module';
 import { RequestCache } from './shared/services/request-cache.service';
 import { SharedComponentsModule } from './shared/components/shared-components.module';
@@ -22,7 +21,6 @@ import { VWLogoComponent } from './vw-header/vw-logo/vw-logo.component';
 import { VWNavigationComponent } from './vw-navigation/vw-navigation.component';
 import { VWFooterComponent } from './vw-footer/vw-footer.component';
 import { VoidwellPipesModule } from './shared/pipes/voidwellpipes.modules';
-
 import { routing, appRouterProviders } from './app.routes';
 import { AppComponent } from './app.component';
 import { reducers } from './store/app.states';

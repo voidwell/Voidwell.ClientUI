@@ -1,0 +1,172 @@
+{
+    "plugins": ["@nrwl/nx"],
+    "overrides": [
+      {
+        "files": ["*.ts", "*.js"],
+        "rules": {
+          "@nrwl/nx/enforce-module-boundaries": [
+            "error",
+            {
+              "enforceBuildableLibDependency": true,
+              "allowCircularSelfDependency": true,
+              "allow": [],
+              "depConstraints": [
+                {
+                  "sourceTag": "type:app",
+                  "onlyDependOnLibsWithTags": ["type:feature", "type:api", "type:util", "type:ui"]
+                },
+                {
+                  "sourceTag": "type:feature",
+                  "onlyDependOnLibsWithTags": ["type:api", "type:feature", "type:util", "type:ui"]
+                },
+                {
+                  "sourceTag": "type:ui",
+                  "onlyDependOnLibsWithTags": ["type:ui", "type:api", "type:util"]
+                },
+                {
+                  "sourceTag": "type:api",
+                  "onlyDependOnLibsWithTags": ["type:api", "type:util"]
+                },
+                {
+                  "sourceTag": "type:util",
+                  "onlyDependOnLibsWithTags": ["type:util"]
+                },
+                {
+                  "sourceTag": "scope:common",
+                  "onlyDependOnLibsWithTags": ["scope:common"]
+                },
+                {
+                  "sourceTag": "scope:common-feature",
+                  "onlyDependOnLibsWithTags": ["scope:common-feature", "scope:common"]
+                },
+                {
+                  "sourceTag": "scope:profiles",
+                  "onlyDependOnLibsWithTags": ["scope:profiles", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:profiles-client",
+                  "onlyDependOnLibsWithTags": [
+                    "scope:profiles",
+                    "scope:profiles-card",
+                    "scope:profiles-details",
+                    "scope:common",
+                    "scope:common-feature"
+                  ]
+                },
+                {
+                  "sourceTag": "scope:automation",
+                  "onlyDependOnLibsWithTags": ["scope:automation", "scope:common"]
+                },
+                {
+                  "sourceTag": "scope:events",
+                  "onlyDependOnLibsWithTags": [
+                    "scope:events",
+                    "scope:event-emails",
+                    "scope:events-calendar-sync",
+                    "scope:common",
+                    "scope:common-feature"
+                  ]
+                },
+                {
+                  "sourceTag": "scope:navigation",
+                  "onlyDependOnLibsWithTags": ["scope:navigation", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:user-settings",
+                  "onlyDependOnLibsWithTags": ["scope:user-settings", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:search",
+                  "onlyDependOnLibsWithTags": ["scope:search", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:ownership",
+                  "onlyDependOnLibsWithTags": ["scope:ownership", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:license-agreement",
+                  "onlyDependOnLibsWithTags": ["scope:license-agreement", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:compass",
+                  "onlyDependOnLibsWithTags": [
+                    "scope:compass",
+                    "scope:common",
+                    "scope:common-feature",
+                    "scope:user-settings",
+                    "scope:navigation"
+                  ]
+                },
+                {
+                  "sourceTag": "scope:events-calendar-sync",
+                  "onlyDependOnLibsWithTags": [
+                    "scope:events-calendar-sync",
+                    "scope:events",
+                    "scope:common",
+                    "scope:common-feature"
+                  ]
+                },
+                {
+                  "sourceTag": "scope:reporting-profile",
+                  "onlyDependOnLibsWithTags": ["scope:reporting-profile", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:esg-card",
+                  "onlyDependOnLibsWithTags": ["scope:esg-card", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:insight",
+                  "onlyDependOnLibsWithTags": [
+                    "scope:insight",
+                    "scope:common",
+                    "scope:common-feature",
+                    "scope:navigation",
+                    "scope:user-settings"
+                  ]
+                },
+                {
+                  "sourceTag": "scope:profiles-card",
+                  "onlyDependOnLibsWithTags": [
+                    "scope:profiles",
+                    "scope:profiles-card",
+                    "scope:common",
+                    "scope:common-feature"
+                  ]
+                },
+                {
+                  "sourceTag": "scope:custom-fields",
+                  "onlyDependOnLibsWithTags": ["scope:custom-fields", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:pwa",
+                  "onlyDependOnLibsWithTags": ["scope:pwa", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:notifications",
+                  "onlyDependOnLibsWithTags": ["scope:notifications", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:n6-admin",
+                  "onlyDependOnLibsWithTags": [
+                    "scope:n6-admin",
+                    "scope:common",
+                    "scope:common-feature",
+                    "scope:admin-common"
+                  ]
+                },
+                {
+                  "sourceTag": "scope:management-hub",
+                  "onlyDependOnLibsWithTags": ["scope:management-hub", "scope:common", "scope:common-feature"]
+                },
+                {
+                  "sourceTag": "scope:ai-panel",
+                  "onlyDependOnLibsWithTags": ["scope:ai-panel", "scope:common", "scope:common-feature"]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+  

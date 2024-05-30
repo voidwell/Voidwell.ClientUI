@@ -1,0 +1,32 @@
+.mat-table,
+.mat-paginator,
+.table-filter {
+    background: #2b3942;
+}
+
+mat-table.striped mat-row:nth-child(even) {
+    background: rgba(255,255,255,.025);
+}
+
+mat-table mat-row {
+    position: relative;
+    border-bottom-color: rgba(255,255,255,.025);
+}
+
+mat-table mat-row mat-cell.mat-cell {
+    color: inherit;
+}
+    mat-paginator.mat-paginator,
+    mat-table mat-header-row mat-header-cell.mat-header-cell {
+        border-bottom-width: 1px;
+        color: #b4bfc3;
+        font-weight: 500;
+    }
+mat-paginator .mat-paginator-increment,
+mat-paginator .mat-paginator-decrement {
+    border-color: #fff;
+}
+mat-paginator .mat-icon-button[disabled] .mat-paginator-increment,
+mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
+    border-color: #585858;
+}

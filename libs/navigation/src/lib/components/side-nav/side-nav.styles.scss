@@ -1,0 +1,43 @@
+.vw-navigation {
+  width: 100%;
+}
+
+.nav-margin {
+  padding-left: 40px;
+}
+
+.navigation-close {
+  display: none;
+  margin-top: -6px;
+  background: #1e2a31;
+  line-height: 70px;
+  color: #b4bfc3;
+}
+
+  .navigation-close button {
+      margin-left: -10px;
+      font-size: 21px;
+      vertical-align: middle;
+  }
+
+@media (min-width: 1280px) {
+  .vw-navigation {
+      position: absolute;
+      height: 100%;
+      top: 0;
+  }
+}
+
+@media (max-width: 1279px) {
+  .navigation-close {
+      display: block;
+  }
+}
+
+.toggle-button {
+  display: inline-block;
+  color: #8a9ba1;
+  padding: 0;
+  vertical-align: middle;
+  font-size: inherit;
+}

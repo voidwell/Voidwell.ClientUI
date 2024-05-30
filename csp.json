@@ -1,0 +1,41 @@
+[
+    {
+      "resource": "'self'",
+      "directives": [
+        "default-src",
+        "connect-src",
+        "script-src",
+        "style-src",
+        "img-src",
+        "frame-src",
+        "child-src",
+        "font-src",
+        "worker-src"
+      ]
+    },
+    {
+      "resource": "'unsafe-inline'",
+      "directives": ["style-src"]
+    },
+    {
+      "resource": "data:",
+      "directives": ["img-src", "font-src"]
+    },
+    {
+      "resource": "blob:",
+      "directives": ["worker-src"]
+    },
+    {
+      "resource": "https://*.voidwell.com",
+      "directives": ["default-src", "connect-src", "img-src", "frame-src"]
+    },
+    {
+      "resource": "https://assets-cdn.daybreakgames.com",
+      "directives": ["img-src"]
+    },
+    {
+      "resource": "https://i.imgur.com",
+      "directives": ["img-src"]
+    }
+  ]
+  

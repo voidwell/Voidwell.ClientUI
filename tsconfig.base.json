@@ -1,0 +1,93 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "rootDir": ".",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "es2015",
+    "module": "esnext",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2017",
+      "es2020",
+      "dom"
+    ],
+    "skipLibCheck": true,
+    "skipDefaultLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "esModuleInterop": true,
+    "baseUrl": ".",
+    "resolveJsonModule": true,
+    "paths": {
+      "@voidwell/common/components": [
+        "libs/common/components/src/index.ts"
+      ],
+      "@voidwell/common/http": [
+        "libs/common/http/src/index.ts"
+      ],
+      "@voidwell/common/navigation": [
+        "libs/common/navigation/src/index.ts"
+      ],
+      "@voidwell/common/router": [
+        "libs/common/router/src/index.ts"
+      ],
+      "@voidwell/common/utils": [
+        "libs/common/utils/src/index.ts"
+      ],
+      "@voidwell/navigation": [
+        "libs/navigation/src/index.ts"
+      ],
+      "@voidwell/header": [
+        "libs/header/src/index.ts"
+      ],
+      "@voidwell/blog": [
+        "libs/blog/src/index.ts"
+      ],
+      "@voidwell/blog/lazy": [
+        "libs/blog/lazy/src/index.ts"
+      ],
+      "@voidwell/planetside2/common": [
+        "libs/planetside2/common/src/index.ts"
+      ],
+      "@voidwell/planetside2/hub": [
+        "libs/planetside2/hub/src/index.ts"
+      ],
+      "@voidwell/planetside2/hub/lazy": [
+        "libs/planetside2/hub/lazy/src/index.ts"
+      ],
+      "@voidwell/planetside2/news": [
+        "libs/planetside2/news/src/index.ts"
+      ],
+      "@voidwell/planetside2/news/lazy": [
+        "libs/planetside2/news/lazy/src/index.ts"
+      ]
+    }
+  },
+  "include": [
+    "apps/**/*.ts",
+    "libs/**/*.ts",
+    "tools/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "tmp",
+    "cache",
+    "dist",
+    ".*",
+    "nx*"
+  ],
+  "angularCompilerOptions": {
+    "fullTemplateTypeCheck": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "optionalChainNotNullable": "suppress"
+      }
+    }
+  }
+}

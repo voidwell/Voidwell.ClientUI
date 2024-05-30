@@ -1,0 +1,30 @@
+{
+  "name": "planetside2-news",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/planetside2/news/src",
+  "prefix": "vw",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/libs/planetside2/news"],
+      "options": {
+        "tsConfig": "libs/planetside2/news/tsconfig.lib.json",
+        "project": "libs/planetside2/news/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/planetside2/news/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/planetside2/news/src/**/*.ts", "libs/planetside2/news/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": ["type:feature", "scope:planetside2"]
+}

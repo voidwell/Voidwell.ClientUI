@@ -1,0 +1,151 @@
+{
+    "name": "voidwell",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "projectType": "application",
+    "sourceRoot": "apps/voidwell/src",
+    "prefix": "vw",
+    "targets": {
+      "build": {
+        "executor": "@nrwl/angular:webpack-browser",
+        "inputs": ["app", "^production"],
+        "outputs": ["{options.outputPath}"],
+        "options": {
+          "outputPath": "dist/apps/voidwell",
+          "index": "apps/voidwell/src/index.html",
+          "main": "apps/voidwell/src/main.ts",
+          "indexFileTransformer": "./tools/scripts/index-transform.js",
+          "polyfills": "apps/voidwell/src/polyfills.ts",
+          "tsConfig": "apps/voidwell/tsconfig.app.json",
+          "aot": true,
+          "allowedCommonJsDependencies": [
+            "lodash",
+            "file-saver",
+            "raf",
+            "@babel/runtime-corejs3",
+            "core-js",
+            "pluralize",
+            "object-hash",
+            "flat",
+            "rgbcolor"
+          ],
+          "assets": [
+            "apps/voidwell/src/assets",
+            "apps/voidwell/src/manifest.json",
+            {
+              "glob": "ngsw-config.json",
+              "input": "apps/voidwell",
+              "output": "/"
+            }
+          ],
+          "styles": [
+            {
+              "input": "apps/voidwell/src/theme.scss",
+              "bundleName": "material-theme"
+            },
+            {
+              "input": "apps/voidwell/src/tailwind.scss",
+              "bundleName": "tailwind"
+            },
+            {
+              "input": "libs/blackstone/styles/blackstone.scss",
+              "bundleName": "blackstone",
+              "inject": true
+            },
+            {
+              "input": "node_modules/@mdi/font/css/materialdesignicons.min.css",
+              "bundleName": "mdi"
+            }
+          ],
+          "scripts": [],
+          "stylePreprocessorOptions": {
+            "includePaths": ["node_modules", "libs/blackstone/styles/tokens"]
+          },
+          "serviceWorker": true,
+          "ngswConfigPath": "apps/voidwell/ngsw-config.json"
+        },
+        "configurations": {
+          "development": {
+            "assets": [
+              "apps/voidwell/src/assets",
+              "apps/voidwell/src/manifest.json"
+            ],
+            "vendorChunk": true,
+            "extractLicenses": false,
+            "buildOptimizer": false,
+            "sourceMap": true,
+            "optimization": false,
+            "namedChunks": true
+          },
+          "production": {
+            "fileReplacements": [
+              {
+                "replace": "apps/voidwell/src/environments/environment.ts",
+                "with": "apps/voidwell/src/environments/environment.prod.ts"
+              }
+            ],
+            "optimization": {
+              "scripts": true,
+              "styles": {
+                "minify": true,
+                "inlineCritical": false
+              },
+              "fonts": true
+            },
+            "outputHashing": "all",
+            "sourceMap": true,
+            "namedChunks": false,
+            "extractLicenses": true,
+            "vendorChunk": false,
+            "buildOptimizer": true,
+            "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "2mb",
+                "maximumError": "6mb"
+              },
+              {
+                "type": "anyComponentStyle",
+                "maximumWarning": "16kb",
+                "maximumError": "25kb"
+              }
+            ]
+          }
+        },
+        "defaultConfiguration": "production"
+      },
+      "serve": {
+        "executor": "@nrwl/angular:webpack-dev-server",
+        "defaultConfiguration": "development",
+        "options": {
+          "proxyConfig": "proxy.conf.js"
+        },
+        "configurations": {
+          "production": {
+            "browserTarget": "voidwell:build:production"
+          },
+          "development": {
+            "browserTarget": "voidwell:build:development"
+          },
+          "https": {
+            "browserTarget": "voidwell:build:development",
+            "sslKey": "local/cert.key",
+            "sslCert": "local/cert.crt",
+            "disableHostCheck": true,
+            "host": "127.0.0.1",
+            "ssl": true
+          }
+        }
+      },
+      "lint": {
+        "executor": "@nrwl/linter:eslint",
+        "options": {
+          "eslintConfig": "../../.eslintrc.lib.json",
+          "lintFilePatterns": ["apps/voidwell/src/**/*.ts", "apps/voidwell/src/**/*.html"]
+        },
+        "outputs": ["{options.outputFile}"]
+      }
+    },
+    "tags": ["type:app", "scope:voidwell"],
+    "implicitDependencies": ["blackstone-styles"]
+  }
+  

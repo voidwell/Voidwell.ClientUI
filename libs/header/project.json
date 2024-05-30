@@ -1,0 +1,30 @@
+{
+  "name": "header",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/header/src",
+  "prefix": "vw",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/libs/header"],
+      "options": {
+        "tsConfig": "lisb/header/tsconfig.lib.json",
+        "project": "libs/header/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/header/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/header/src/**/*.ts", "libs/header/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "tags": ["type:feature", "scope:header"]
+}

@@ -1,0 +1,5 @@
+/dist
+/.angular
+/nx-computation-cache
+/node_modules
+.angular

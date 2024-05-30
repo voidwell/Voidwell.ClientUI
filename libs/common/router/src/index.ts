@@ -1,0 +1,11 @@
+export { provideAnonymousRoutes } from './lib/configuration/anonymous.route';
+export { provideAuthGuard } from './lib/configuration/auth.guard';
+export { provideAuthorizedRoutes } from './lib/configuration/authorized.route';
+export { provideRootGuard } from './lib/configuration/root.guard';
+export { provideChildRoutesGuard } from './lib/configuration/child-routes.guard';
+export { Route, Routes } from '@angular/router';
+export { RoutesConfig } from './lib/configuration/route.config';
+export * from './lib/+state/router.models';
+export * from './lib/+state/router.selectors';
+export * from './lib/+state/router.state';
+export * from './lib/common-router.module';

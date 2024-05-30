@@ -1,0 +1,28 @@
+<div class="flex items-center justify-center" *ngIf="loading">
+    <div class="spinner-card">
+        <svg [attr.width]="width" [attr.height]="height" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid" class="lds-dual-ring">
+            <ng-container *ngFor="let _ of [].constructor(ringCount); index as ringId">
+                <circle class="spinner-circle" cx="50" cy="50" fill="none" stroke-linecap="round" [attr.stroke-width]="strokeWidth">
+                    <animate
+                        attributeName="r"
+                        calcMode="linear"
+                        values="0; 50%"
+                        keyTimes="0;1"
+                        [attr.dur]="animDuration + 's'"
+                        [attr.begin]="getStartDuration(ringId)"
+                        repeatCount="indefinite">
+                    </animate>
+                    <animate
+                        attributeName="opacity"
+                        calcMode="linear"
+                        values="100%; 10%; 0"
+                        keyTimes="0; 0.3; 1"
+                        [attr.dur]="animDuration + 's'"
+                        [attr.begin]="getStartDuration(ringId)"
+                        repeatCount="indefinite">
+                    </animate>
+                </circle>
+            </ng-container>
+        </svg>
+    </div>
+</div>

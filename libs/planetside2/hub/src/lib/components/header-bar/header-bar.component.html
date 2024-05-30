@@ -1,0 +1,12 @@
+<div class="flex gap-4">
+  <vw-ps2-platform-control [platform]="(platformType$ | async)!" (platformChanged)="onPlatformChange($event)"></vw-ps2-platform-control>
+  <div class="grow">
+    <vw-ps2-search-input
+      [searchType]="(searchType$ | async)!"
+      [searchResults]="(searchResults$ | async)!"
+      [isSearching]="(isSearching$ | async)!"
+      (searchTypeChanged)="onSearchTypeChange($event)"
+      (searchQueryChanged)="onSearchQueryChange($event)">
+    </vw-ps2-search-input>
+  </div>
+</div>

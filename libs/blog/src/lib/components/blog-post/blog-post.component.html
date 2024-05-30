@@ -1,0 +1,15 @@
+<mat-card class="flex-auto mb-6">
+  <mat-card-header class="mb-4">
+    <mat-card-title>
+      <h1>
+        <a [routerLink]="blogPost.id">{{blogPost.title}}</a>
+      </h1>
+    </mat-card-title>
+    <mat-card-subtitle>
+      {{blogPost.publishDate | date:'EEE dd MMM yyyy'}} at {{blogPost.publishDate | date:'HH:mm'}} - By {{blogPost.author}}
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-content>
+    <div [innerHtml]="blogPost.content"></div>
+  </mat-card-content>
+</mat-card>

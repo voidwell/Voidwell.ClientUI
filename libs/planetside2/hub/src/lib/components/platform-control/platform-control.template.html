@@ -1,0 +1,16 @@
+<div class="platform-control h-12 m-0">
+    <mat-select
+        (selectionChange)="onValueChange($event)"
+        [value]="selectedValue"
+        hideSingleSelectionIndicator="true"
+        panelClass="platform-panel">
+        <mat-select-trigger class="platform-value block font-bold w-32 text-center">
+            <mat-icon fontSet="mdi" fontIcon="{{selectedValue!.icon}}"></mat-icon>
+            <span>{{selectedValue!.name}}</span>
+        </mat-select-trigger>
+        <mat-option *ngFor="let opt of platformOptions" [value]="opt">
+            <mat-icon fontSet="mdi" fontIcon="{{opt.icon}}"></mat-icon>
+            <span>{{opt.name}}</span>
+        </mat-option>
+    </mat-select>
+</div>

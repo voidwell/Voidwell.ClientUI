@@ -1,0 +1,11 @@
+<div class="vw-header">
+    <div class="logo">
+        <a routerLink="/" class="logo-button">
+            <vw-logo></vw-logo>
+        </a>
+        <a class="menu-button" (click)="toggleNav()">
+            <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
+        </a>
+    </div>
+    <router-outlet name="header"></router-outlet>
+</div>

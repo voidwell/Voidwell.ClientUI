@@ -1,0 +1,35 @@
+{
+  "name": "common-http",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "library",
+  "sourceRoot": "libs/common/http/src",
+  "prefix": "vw",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/libs/common/http"],
+      "options": {
+        "tsConfig": "libs/common/http/tsconfig.lib.json",
+        "project": "libs/common/http/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/common/http/tsconfig.lib.prod.json"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": ["libs/common/http/src/**/*.ts", "libs/common/http/src/**/*.html"]
+      },
+      "outputs": ["{options.outputFile}"]
+    }
+  },
+  "generators": {
+    "@schematics/angular:component": {
+      "style": "scss"
+    }
+  },
+  "tags": ["type:api", "scope:common"]
+}
