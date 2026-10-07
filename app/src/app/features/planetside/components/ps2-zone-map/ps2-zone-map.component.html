@@ -1,0 +1,5 @@
+﻿<vw-loader [loading]="isLoading"></vw-loader>
+<vw-error-message [message]="errorMessage"></vw-error-message>
+@if (!isLoading && !errorMessage) {
+  <div class="map" [class.overlay-hidden]="hideOverlay" leaflet [leafletOptions]="leafletOptions" [leafletFitBounds]="fitBounds" (leafletMapReady)="onMapReady($event)"></div>
+}

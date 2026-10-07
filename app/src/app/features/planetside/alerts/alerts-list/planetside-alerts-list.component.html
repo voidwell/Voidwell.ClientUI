@@ -1,0 +1,56 @@
+﻿<div class="content-container">
+  <div class="alerts-list-container">
+    <div>
+      <h3>Active Alerts</h3>
+      @if (getActiveAlerts().length === 0) {
+        <div class="no-alerts">
+          <strong>No alerts in progress</strong>
+        </div>
+      }
+      <div class="alerts-list in-progress">
+        @for (alert of getActiveAlerts() | orderBy: 'startDate'; track alert) {
+          <vw-alert-card [alert]="alert"></vw-alert-card>
+        }
+      </div>
+      <h3>Past Alerts</h3>
+      <vw-error-message [message]="errorMessage"></vw-error-message>
+      <div class="alerts-list">
+        <div class="paging-buttons">
+          <div class="filters">
+            <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onFilterChange($event)">
+              <mat-button-toggle [checked]="true">All</mat-button-toggle>
+              @for (world of worldService.worlds(); track world) {
+                <mat-button-toggle [value]="world.id">{{world.name}}</mat-button-toggle>
+              }
+            </mat-button-toggle-group>
+          </div>
+          @if (pageNumber > 0) {
+            <button mat-raised-button class="pull-left" (click)="previousAlerts()">
+              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+              <span>Page {{pageNumber}}</span>
+            </button>
+          }
+          <button mat-raised-button class="pull-right" (click)="nextAlerts()">
+            <span>Page {{pageNumber + 2}}</span>
+            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+          </button>
+        </div>
+        @for (alert of getPastAlerts() | orderBy: '-startDate'; track alert) {
+          <vw-alert-card [alert]="alert"></vw-alert-card>
+        }
+        <div class="paging-buttons">
+          @if (pageNumber > 0) {
+            <button mat-raised-button (click)="previousAlerts()">
+              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+              <span>Page {{pageNumber}}</span>
+            </button>
+          }
+          <button mat-raised-button class="pull-right" (click)="nextAlerts()">
+            <span>Page {{pageNumber + 2}}</span>
+            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

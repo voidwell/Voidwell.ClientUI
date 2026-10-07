@@ -1,40 +1,39 @@
-FROM node:12-alpine AS build-env
+# syntax=docker/dockerfile:1
 
-RUN apk update \
-  && apk add --update alpine-sdk python2 \
-  && yarn global add @angular/cli@9.1.6 \
-  && apk del alpine-sdk python2 \
-  && rm -rf /tmp/* /var/cache/apk/* *.tar.gz ~/.npm \
-  && npm cache clean --force \
-  && yarn cache clean \
-  && sed -i -e "s/bin\/ash/bin\/sh/" /etc/passwd
+# ---- Build the Angular app ----
+FROM node:22-alpine AS build
 
 WORKDIR /app
 
-COPY ./src/*.json /app/
-COPY ./src/*.lock /app/
+COPY app/package.json app/package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci
 
-RUN yarn install
+COPY app/angular.json app/tsconfig*.json ./
+COPY app/src ./src
+RUN npm run build:prod
 
-RUN npx ngcc --properties esm5 module main --create-ivy-entry-points
+# ---- Install server dependencies ----
+FROM node:22-alpine AS server-deps
 
-COPY ./src/src /app/src
+WORKDIR /server
 
-RUN yarn run build:prod
+COPY server/package.json server/package-lock.json ./
+RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev
 
-FROM node:12
-WORKDIR /app
-
-RUN mkdir -p /opt && cd /opt && curl -o- -L https://yarnpkg.com/install.sh | bash -s -- --version 0.23.3 && mv ~/.yarn /opt/yarn
-ENV PATH "$PATH:/opt/yarn/bin"
+# ---- Runtime ----
+FROM node:22-alpine
 
 ENV NODE_ENV=production
+WORKDIR /app
 
-RUN yarn add express
+COPY --from=server-deps /server/node_modules ./node_modules
+COPY server/server.js ./
+COPY --from=build /app/dist ./dist
 
-COPY --from=build-env /app/dist ./dist
-COPY ./src/server .
-
+USER node
 EXPOSE 5000
+
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s \
+  CMD wget -qO- http://127.0.0.1:${SERVER_PORT:-5000}/ >/dev/null || exit 1
 
 ENTRYPOINT ["node", "server.js"]

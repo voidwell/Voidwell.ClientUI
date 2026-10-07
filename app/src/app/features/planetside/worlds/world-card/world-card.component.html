@@ -1,0 +1,76 @@
+﻿<mat-card class="world-card">
+  <mat-card-title>
+    <div class="world-state">
+      @if (world.isOnline) {
+        <mat-icon fontSet="mdi" fontIcon="mdi-check-circle"></mat-icon>
+      }
+      @if (!world.isOnline) {
+        <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" class="offline"></mat-icon>
+      }
+    </div>
+    <a class="world-name" routerLink="{{world.id}}">{{world.name}}</a>
+    <div class="online-players">
+      <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
+      {{world.onlineCharacters}}
+    </div>
+  </mat-card-title>
+  <mat-card-content>
+    @for (zone of world.zoneStates; track zone) {
+      <div class="zone-state">
+        <span class="zone-state-icon">
+          @if (zone.isTracking) {
+            <mat-icon fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
+          }
+          @if (!zone.isTracking) {
+            <mat-icon fontSet="mdi" fontIcon="mdi-earth-off" class="offline"></mat-icon>
+          }
+        </span>
+        <a class="zone-name" routerLink="{{world.id}}/map/{{zone.id}}">{{zone.name}}</a>
+        <span class="zone-state-icon">
+          @if (zone.lockState && zone.lockState.state === 'LOCKED') {
+            <mat-icon [ngClass]="zone.lockState.triggeringFaction | factionColor" [title]="zone.lockState.timestamp | date" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+          }
+          @if (zone.alertState) {
+            <mat-icon class="zone-alert-icon" fontSet="mdi" fontIcon="mdi-alarm-light"></mat-icon>
+          }
+        </span>
+        <div class="zone-population">
+          <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon>
+          <span>{{zone.population.vs + zone.population.nc + zone.population.tr + zone.population.ns}}</span>
+          |
+          <span [ngClass]="1 | factionColor">{{zone.population.vs}}</span>
+          /
+          <span [ngClass]="2 | factionColor">{{zone.population.nc}}</span>
+          /
+          <span [ngClass]="3 | factionColor">{{zone.population.tr}}</span>
+          /
+          <span [ngClass]="4 | factionColor">{{zone.population.ns}}</span>
+        </div>
+        <div class="zone-state-description">
+          @if (zone.lockState && zone.lockState.triggeringFaction !== 0) {
+            <div>
+              @if (zone.lockState.state === 'LOCKED') {
+                <span>LOCKED</span>
+              }
+              @if (zone.lockState.state === 'UNLOCKED') {
+                <span>UNLOCKED</span>
+              }
+              {{getMinutes(zone.lockState.timestamp) | number}} minutes ago.
+            </div>
+          }
+        </div>
+      </div>
+    }
+  </mat-card-content>
+  <mat-card-footer>
+    <a mat-button routerLink="{{world.id}}/activity">
+      <mat-icon fontSet="mdi" fontIcon="mdi-radar"></mat-icon> Activity
+    </a>
+    <a mat-button routerLink="{{world.id}}/map/2">
+      <mat-icon fontSet="mdi" fontIcon="mdi-map"></mat-icon> Map
+    </a>
+    <a mat-button routerLink="{{world.id}}/players">
+      <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple"></mat-icon> Online Players
+    </a>
+  </mat-card-footer>
+</mat-card>

@@ -1,0 +1,71 @@
+﻿<div class="search" [ngClass]="{'focus': searchService.searchFocused || searchService.control.dirty}">
+  <div class ="top-search-flex" style="display: flex; flex-direction: row">
+    <platform-control class="platform-control" style="flex: none"></platform-control>
+    <div class="top-search-container" style="flex: 1 1 100%; max-width: 100%" #searchContainer>
+      @if (searchService.control.dirty) {
+        <button mat-icon-button class="top-search_clear" (click)="searchService.clearSearch()">
+          <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
+        </button>
+      }
+      <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching}"></i>
+      <mat-select class="top-search_dropdown"
+        [formControl]="searchService.categoryControl"
+        (openedChange)="searchService.dropdownToggled($event)"
+        panelClass="top-search_dropdown">
+        <mat-option value="character">Player</mat-option>
+        <mat-option value="outfit">Outfit</mat-option>
+        <mat-option value="item">Weapon</mat-option>
+      </mat-select>
+      <div class="top-search_input-container" style="flex: 1 1 100%; max-width: 100%">
+        <input class="top-search_input"
+          #searchInput
+          type="text"
+          matInput
+          [matAutocomplete]="auto"
+          [formControl]="searchService.control"
+          [placeholder]="searchService.placeholder"
+          (keydown.enter)="$event.preventDefault()">
+      </div>
+    </div>
+  </div>
+  <mat-autocomplete #auto="matAutocomplete" class="search-results">
+    @for (result of searchService.results; track result) {
+      <mat-option class="search-option" [value]="result.name" (click)="searchService.selectResult(result)">
+        <div class="item-title">
+          @if (result.alias) {
+            <span>[{{result.alias}}]</span>
+          }
+          <span>{{result.name}}</span>
+          <div class="pull-right">
+            @if (result.worldId) {
+              <strong>{{result.worldId | worldName}}</strong>
+            }
+          </div>
+          <div class="pull-left">
+            @if (result.type === 'character') {
+              <mat-icon fontSet="mdi" fontIcon="mdi-account" [ngClass]="result.factionId | factionColor"></mat-icon>
+            }
+            @if (result.type === 'item') {
+              <mat-icon fontSet="mdi" fontIcon="mdi-target" [ngClass]="result.factionId | factionColor"></mat-icon>
+            }
+            @if (result.type === 'outfit') {
+              <mat-icon fontSet="mdi" fontIcon="mdi-account-multiple" [ngClass]="result.factionId | factionColor"></mat-icon>
+            }
+          </div>
+        </div>
+        <div class="item-metadata">
+          @if (result.type === 'character') {
+            <div>
+              <span>Battle rank <strong>{{result.battleRank}}</strong></span>
+            </div>
+          }
+          @if (result.type === 'outfit') {
+            <div>
+              <span><strong>{{result.memberCount}}</strong> members</span>
+            </div>
+          }
+        </div>
+      </mat-option>
+    }
+  </mat-autocomplete>
+</div>

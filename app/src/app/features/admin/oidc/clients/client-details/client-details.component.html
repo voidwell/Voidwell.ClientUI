@@ -1,0 +1,176 @@
+﻿<div class="content-container">
+  <vw-loader [loading]="isLoading"></vw-loader>
+  <vw-error-message [message]="errorMessage"></vw-error-message>
+  @if (client && !isLoading) {
+    <div>
+      <form class="client-form" [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <mat-card>
+          <mat-card-content class="client-form-card">
+            <div class="form-title">
+              <mat-slide-toggle class="pull-right" formControlName="enabled">Enabled</mat-slide-toggle>
+              <span>{{client.clientId}}</span>
+            </div>
+            <div>
+              <label>Client Name</label>
+              <mat-form-field>
+                <input matInput formControlName="clientName">
+              </mat-form-field>
+            </div>
+            <div>
+              <label>Description</label>
+              <mat-form-field>
+                <input matInput formControlName="description">
+              </mat-form-field>
+            </div>
+            <div>
+              <label>Allowed Grant Types</label>
+              <mat-selection-list dense formControlName="allowedGrantTypes">
+                @for (grantType of GRANT_TYPES; track grantType) {
+                  <mat-list-option checkboxPosition="before"
+                    [value]="grantType"
+                    [disableRipple]="true">
+                    {{grantType}}
+                  </mat-list-option>
+                }
+              </mat-selection-list>
+            </div>
+            <br>
+              <mat-slide-toggle formControlName="allowAccessTokensViaBrowser">Allow access tokens via browser</mat-slide-toggle>
+              <br>
+                <div>
+                  <label>Allowed Scopes</label>
+                  <vw-entry-list formControlName="allowedScopes"
+                    placeholder="Scope"
+                    emptyMessage="No scopes added"
+                    [validation]="scopeValidation">
+                  </vw-entry-list>
+                </div>
+                <br>
+                  <div>
+                    <label>Redirect Uris</label>
+                    <vw-entry-list formControlName="redirectUris"
+                      placeholder="Redirect URI"
+                      emptyMessage="No redirect URIs added">
+                    </vw-entry-list>
+                  </div>
+                  <mat-slide-toggle formControlName="requireClientSecret">Require client secret</mat-slide-toggle>
+                  <mat-slide-toggle formControlName="requirePkce">Require PKCE</mat-slide-toggle>
+                  <mat-slide-toggle formControlName="allowPlainTextPkce">Allow plan text PKCE</mat-slide-toggle>
+                </mat-card-content>
+              </mat-card>
+              <mat-card>
+                <mat-card-content class="client-form-card">
+                  <div>
+                    <label>Post Logout Redirect Uris</label>
+                    <vw-entry-list formControlName="postLogoutRedirectUris"
+                      placeholder="Post logout redirect URI"
+                      emptyMessage="No redirect URIs added">
+                    </vw-entry-list>
+                  </div>
+                  <div>
+                    <label>Front Channel Logout Uri</label>
+                    <mat-form-field>
+                      <input matInput formControlName="frontChannelLogoutUri">
+                    </mat-form-field>
+                  </div>
+                  <mat-slide-toggle formControlName="frontChannelLogoutSessionRequired">Front channel logout session required</mat-slide-toggle>
+                  <div>
+                    <label>Back Channel Logout Uri</label>
+                    <mat-form-field>
+                      <input matInput formControlName="backChannelLogoutUri">
+                    </mat-form-field>
+                  </div>
+                  <mat-slide-toggle formControlName="backChannelLogoutSessionRequired">Back channel logout session required</mat-slide-toggle>
+                  <mat-slide-toggle formControlName="enableLocalLogin">Enable local login</mat-slide-toggle>
+                </mat-card-content>
+              </mat-card>
+              <mat-card>
+                <mat-card-content class="client-form-card">
+                  <div>
+                    <label>Identity Token Lifetime</label>
+                    <mat-form-field>
+                      <input matInput formControlName="identityTokenLifetime">
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <label>Access Token Lifetime</label>
+                    <mat-form-field>
+                      <input matInput formControlName="accessTokenLifetime">
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <label>Authorization Code Lifetime</label>
+                    <mat-form-field>
+                      <input matInput formControlName="authorizationCodeLifetime">
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <label>Access Token Type</label>
+                    <mat-form-field>
+                      <mat-select formControlName="accessTokenType">
+                        <mat-option value="0">Jwt</mat-option>
+                        <mat-option value="1">Reference</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <label>Allowed Cors Origins</label>
+                    <vw-entry-list formControlName="allowedCorsOrigins"
+                      placeholder="CORS origin"
+                      emptyMessage="No cors origins added">
+                    </vw-entry-list>
+                  </div>
+                  <div>
+                    <label>Absolute Refresh Token Lifetime</label>
+                    <mat-form-field>
+                      <input matInput formControlName="absoluteRefreshTokenLifetime">
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <label>Sliding Refresh Token Lifetime</label>
+                    <mat-form-field>
+                      <input matInput formControlName="slidingRefreshTokenLifetime">
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <label>Refresh Token Usage</label>
+                    <mat-form-field>
+                      <mat-select formControlName="refreshTokenUsage">
+                        <mat-option value="0">Reuse</mat-option>
+                        <mat-option value="1">One time only</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <div>
+                    <label>Refresh Token Expiration</label>
+                    <mat-form-field>
+                      <mat-select formControlName="refreshTokenExpiration">
+                        <mat-option value="0">Sliding</mat-option>
+                        <mat-option value="1">Absolute</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </div>
+                  <mat-slide-toggle formControlName="updateAccessTokenClaimsOnRefresh">Update access token claims on refresh</mat-slide-toggle>
+                  <mat-slide-toggle formControlName="includeJwtId">Include jwt id</mat-slide-toggle>
+                  <div>
+                    <label>Claims</label>
+                    <vw-entry-list formControlName="claims"
+                      placeholder="Claim"
+                      emptyMessage="No claims added">
+                    </vw-entry-list>
+                  </div>
+                  <mat-slide-toggle formControlName="alwaysSendClientClaims">Always send client claims</mat-slide-toggle>
+                  <mat-slide-toggle formControlName="clientClaimsPrefix">Prefix client claims</mat-slide-toggle>
+                </mat-card-content>
+              </mat-card>
+              <vw-secret-manager ownerType="client" [ownerId]="client.clientId" ></vw-secret-manager>
+              <mat-card>
+                <mat-card-actions>
+                  <button mat-raised-button (click)="saveConfiguration()">Save</button>
+                  <button mat-raised-button color="warn" (click)="deleteConfiguration()">Delete</button>
+                </mat-card-actions>
+              </mat-card>
+            </form>
+          </div>
+        }
+      </div>

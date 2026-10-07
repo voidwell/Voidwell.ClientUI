@@ -1,0 +1,50 @@
+<div class="vw-header">
+  <div class="logo">
+    <a routerLink="/" class="logo-button">
+      <vw-logo></vw-logo>
+    </a>
+    <a href="javascript:void(0);" class="menu-button" (click)="toggleNav()">
+      <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
+    </a>
+  </div>
+  <ul class="top-menu">
+    @if (searchService.isUsable) {
+      <li class="top-menu_search">
+        <button mat-icon-button (click)="focusSearch($event)">
+          <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+        </button>
+      </li>
+    }
+    <li class="top-menu_profile">
+      <button mat-icon-button [matMenuTriggerFor]="profilemenu">
+        <mat-icon fontSet="mdi" fontIcon="mdi-account-circle"></mat-icon>
+      </button>
+      <mat-menu #profilemenu="matMenu">
+        @if (isLoggedIn()) {
+          <button mat-menu-item routerLink="/account/settings">{{userName()}}</button>
+        }
+        @if (isLoggedIn()) {
+          <mat-divider></mat-divider>
+        }
+        @if (isLoggedIn() && canAccessAdmin()) {
+          <button mat-menu-item routerLink="/admin">Admin</button>
+        }
+        @if (isLoggedIn()) {
+          <button mat-menu-item (click)="signOut()">Logout</button>
+        }
+
+        @if (!isLoggedIn()) {
+          <button mat-menu-item routerLink="/account/register">Register</button>
+        }
+        @if (!isLoggedIn()) {
+          <button mat-menu-item (click)="signIn()">Login</button>
+        }
+      </mat-menu>
+    </li>
+  </ul>
+  @if (searchService.isUsable) {
+    <form class="top-search" [ngClass]="{'focus': searchService.searchFocused || searchService.control.dirty}">
+      <router-outlet name="search"></router-outlet>
+    </form>
+  }
+</div>

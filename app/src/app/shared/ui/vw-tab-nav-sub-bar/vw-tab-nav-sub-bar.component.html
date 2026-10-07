@@ -1,0 +1,31 @@
+﻿<div class="vw-tab-nav-sub-bar">
+  <!--
+  <nav mat-tab-nav-bar class="content-container">
+    <div class="pull-right">
+      <ng-content></ng-content>
+    </div>
+    <a mat-tab-link
+      *ngFor="let link of links"
+      [routerLink]="link.path"
+      routerLinkActive #rla="routerLinkActive"
+      [active]="rla.isActive">
+      {{link.display}}
+    </a>
+  </nav>
+  -->
+  <nav class="vw-nav content-container">
+    <div class="pull-right">
+      <ng-content></ng-content>
+    </div>
+    @for (link of links; track link) {
+      <a
+        [routerLink]="link.path"
+        routerLinkActive #rla="routerLinkActive"
+        [ngClass]="{ 'active': rla.isActive }">
+        @if (link.icon) {
+          <mat-icon fontSet="mdi" [fontIcon]="link.icon"></mat-icon>
+          }{{link.display}}
+        </a>
+      }
+    </nav>
+  </div>

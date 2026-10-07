@@ -1,0 +1,27 @@
+﻿<div class="content-container">
+  <div class="events-list-container">
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    @if (!isLoading) {
+      <div>
+        <h3>Active Events</h3>
+        @if (getActiveEvents().length === 0) {
+          <div class="no-events">
+            <strong>No events in progress</strong>
+          </div>
+        }
+        <div class="events-list in-progress">
+          @for (event of getActiveEvents() | orderBy: 'startDate'; track event) {
+            <vw-event-card [event]="event"></vw-event-card>
+          }
+        </div>
+        <h3>Past Events</h3>
+        <div class="events-list">
+          @for (event of getPastEvents() | orderBy: '-startDate'; track event) {
+            <vw-event-card [event]="event"></vw-event-card>
+          }
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,13 @@
+﻿<div style="display: flex; justify-content: center">
+  <div>
+    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-error-message [message]="errorMessage"></vw-error-message>
+    @if (!isLoading && !errorMessage) {
+      <div class="blog-card-list">
+        @for (blogPost of blogPosts; track blogPost) {
+          <vw-blog-card [post]="blogPost"></vw-blog-card>
+        }
+      </div>
+    }
+  </div>
+</div>

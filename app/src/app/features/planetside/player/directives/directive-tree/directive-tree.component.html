@@ -1,0 +1,25 @@
+<div class="mat-tab-tier-progress">
+  @for (tier of tree.tiers | slice:1:tree.tiers.length; track tier) {
+    <div class="mat-tab-tier">
+      @if (tier.tierId <= tree.currentDirectiveTierId) {
+        <div class="mat-tab-tier-completion" [style.width.%]="tier.completionPercent"></div>
+      }
+      @if (tier.tierId === tree.currentDirectiveTierId) {
+        <div class="mat-tab-tier-completion-text">{{tier.completionPercent - tier.completionPercent % 1 | number: '1.0-0'}}%</div>
+      }
+    </div>
+  }
+</div>
+<mat-tab-group mat-align-tabs="center" [selectedIndex]="tabIndex">
+  @for (tier of tree.tiers; track tier) {
+    <mat-tab>
+      <ng-template mat-tab-label>
+        <div class="directive-tier-header">
+          <div class="directive-tier-header-name">{{tier.name}}</div>
+          <img [src]="tier.imageId | dgcImageUrl" alt="" />
+        </div>
+      </ng-template>
+      <directive-tier [tier]="tier"></directive-tier>
+    </mat-tab>
+  }
+</mat-tab-group>

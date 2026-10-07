@@ -1,0 +1,34 @@
+﻿<div class="content-container">
+  <h3>Planetside</h3>
+  <vw-loader [loading]="isLoading"></vw-loader>
+  <vw-error-message [message]="errorMessage"></vw-error-message>
+  @for (service of planetsideServices; track service) {
+    <div>
+      <mat-card>
+        <mat-card-header>
+          <mat-card-title>
+            <mat-slide-toggle class="pull-right"
+              [checked]="service.isEnabled"
+              [disabled]="service.isLoading"
+              (change)="onServiceUpdate(service, $event)">
+              @if (service.platform !== 'pc') {
+                <span>({{service.platform}})</span>
+              }
+              <span>{{service.name}}</span>
+            </mat-slide-toggle>
+          </mat-card-title>
+        </mat-card-header>
+        @if (service.details || service.errorMessage) {
+          <mat-card-content class="layout-padding">
+            <vw-error-message [message]="service.errorMessage"></vw-error-message>
+            @if (service.details) {
+              <div>
+                <pre>{{service.details | json}}</pre>
+              </div>
+            }
+          </mat-card-content>
+        }
+      </mat-card>
+    </div>
+  }
+</div>

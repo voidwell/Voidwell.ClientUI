@@ -1,0 +1,50 @@
+﻿<div class="content-container">
+  <div class="zone-map">
+    <div class="map-container">
+      <ps2-zone-map [zoneId]="zoneId()" [ownership]="ownership()" [captureStream]="captureSub" [defendStream]="defendSub" [focusFacility]="focusFacilityEmitter" (score)="onScoreChange($event)"></ps2-zone-map>
+    </div>
+    <mat-card class="info-container">
+      <mat-card-content>
+        <vw-faction-bar [vs]="score[1]" [nc]="score[2]" [tr]="score[3]"></vw-faction-bar>
+      </mat-card-content>
+      <mat-card-footer>
+        <div class="map-log">
+          @if (getZoneLogs().length === 0) {
+            <div>
+              Waiting for activity...
+            </div>
+          }
+          @for (item of getZoneLogs(); track item) {
+            <div class="zone-event">
+              <span class="timestamp">{{item.timestamp | date:'mediumTime'}}</span>
+              @if (item.event === 'defend') {
+                <span>
+                  <mat-icon fontSet="mdi" fontIcon="mdi-shield" [ngClass]="item.faction.id | factionColor"></mat-icon>
+                  <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> defended <span class="facility-name" (click)="focusFacility(item.facilityId)">{{getFacilityName(item.facilityId)}}</span>
+                </span>
+              }
+              @if (item.event === 'capture') {
+                <span>
+                  <mat-icon fontSet="mdi" fontIcon="mdi-sword-cross" [ngClass]="item.faction.id | factionColor"></mat-icon>
+                  <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> captured <span class="facility-name" (click)="focusFacility(item.facilityId)">{{getFacilityName(item.facilityId)}}</span>
+                </span>
+              }
+              @if (item.event === 'continent_lock') {
+                <span>
+                  <mat-icon fontSet="mdi" fontIcon="mdi-lock" [ngClass]="item.faction.id | factionColor"></mat-icon>
+                  <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> locked {{item.zone}}
+                </span>
+              }
+              @if (item.event === 'continent_unlock') {
+                <span>
+                  <mat-icon fontSet="mdi" fontIcon="mdi-lock-open"></mat-icon>
+                  <span>{{item.zone}} is unlocked</span>
+                </span>
+              }
+            </div>
+          }
+        </div>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+</div>

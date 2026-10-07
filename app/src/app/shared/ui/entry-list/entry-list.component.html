@@ -1,0 +1,30 @@
+<label [attr.for]="inputId" class="vw-entry-list-label" #label>
+  @if (value.length === 0 && emptyMessage !== '') {
+    <div class="vw-entry-list-empty-message">
+      {{emptyMessage}}
+    </div>
+  }
+  @for (item of value; track item) {
+    <div>
+      <span class="vw-entry-list-remove-button" (click)="_onRemoveClick($event, item)">
+        <mat-icon fontSet="mdi" fontIcon="mdi-close-circle"></mat-icon>
+      </span>
+      <span class="vw-entry-list-item">{{item}}</span>
+    </div>
+  }
+  <div>
+    <mat-form-field>
+      <mat-label>{{placeholder}}</mat-label>
+      <input #input
+        matInput
+        class="vw-entry-list-input"
+        type="text"
+        [id]="inputId"
+        [disabled]="disabled">
+      </mat-form-field>
+      <button mat-icon-button
+        (click)="_onAddClick($event)">
+        <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
+      </button>
+    </div>
+  </label>

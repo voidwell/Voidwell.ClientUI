@@ -1,0 +1,13 @@
+﻿<mat-card style="flex: 1 1 auto">
+    <mat-card-title>
+        <h1>
+            <a [routerLink]="post.id" target="_blank">{{post.title}}</a>
+        </h1>
+    </mat-card-title>
+    <mat-card-subtitle>
+        {{post.publishDate | date:'EEE dd MMM yyyy'}} at {{post.publishDate | date:'HH:mm'}} - By {{post.authorName}}
+    </mat-card-subtitle>
+    <mat-card-content>
+        <div [innerHtml]="post.htmlContent"></div>
+    </mat-card-content>
+</mat-card>

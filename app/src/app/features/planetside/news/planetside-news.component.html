@@ -1,0 +1,33 @@
+﻿<div>
+  <vw-error-message [message]="errorMessage"></vw-error-message>
+  <vw-loader [loading]="isLoading"></vw-loader>
+  @if (!isLoading && !errorMessage) {
+    <div class="main-news-container">
+      <div class="news-content">
+        @if (!isNewsLoading) {
+          <div class="news-card-list">
+            @for (post of newsList; track post) {
+              <vw-news-card [post]="post"></vw-news-card>
+            }
+          </div>
+        }
+      </div>
+      <div class="updates-content">
+        <mat-card>
+          <mat-card-title>Updates</mat-card-title>
+          <mat-card-content>
+            @if (!isUpdatesLoading) {
+              <ul>
+                @for (item of updateList; track item) {
+                  <li>
+                    <a [href]="item.link" target="_blank" [title]="item.title">{{item.title}}</a>
+                  </li>
+                }
+              </ul>
+            }
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+  }
+</div>

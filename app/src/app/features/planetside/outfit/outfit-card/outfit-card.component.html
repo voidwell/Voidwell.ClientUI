@@ -1,0 +1,26 @@
+﻿@if (data) {
+  <mat-card class="outfit-card" [ngClass]="{'bg-vs': data.factionId===1, 'bg-nc': data.factionId===2, 'bg-tr': data.factionId===3}">
+    <mat-card-title>
+      <h1 class="outfit-name">@if (data.alias) {
+        <span>[{{data.alias}}]</span>
+      } {{data.name}}</h1>
+      <div class="stats pull-right">
+        <div>
+          {{data.memberCount}}
+          <label>Members</label>
+        </div>
+      </div>
+    </mat-card-title>
+    <mat-card-subtitle>
+      <div class="outfit-title">
+        Outfit of the {{data.factionName}} on {{data.worldName}}
+      </div>
+      <div class="outfit-created-date">
+        Created on {{data.createdDate | date:'MMM d, y h:mm:ss a'}}
+      </div>
+    </mat-card-subtitle>
+    <mat-card-footer>
+      <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+    </mat-card-footer>
+  </mat-card>
+}

@@ -1,0 +1,16 @@
+﻿<div class="content-container">
+  <vw-loader [loading]="isLoading"></vw-loader>
+  <vw-error-message [message]="errorMessage"></vw-error-message>
+  @if (!isLoading) {
+    <div class="directives">
+      <mat-accordion>
+        @for (category of outline.categories; track category) {
+          <mat-expansion-panel>
+            <mat-expansion-panel-header>{{category.name}}</mat-expansion-panel-header>
+            <directive-tree-list [trees]="category.trees"></directive-tree-list>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    </div>
+  }
+</div>

@@ -1,0 +1,4 @@
+﻿<div class="faction-bar" [ngClass]="1 | factionBackground" [style.width.%]="getWidth(vs)">{{vs | number: '.0-0'}}</div>
+<div class="faction-bar" [ngClass]="2 | factionBackground" [style.width.%]="getWidth(nc)">{{nc | number: '.0-0'}}</div>
+<div class="faction-bar" [ngClass]="3 | factionBackground" [style.width.%]="getWidth(tr)">{{tr | number: '.0-0'}}</div>
+<div class="faction-bar" [ngClass]="0 | factionBackground" [style.width.%]="getNeuturalScore()"></div>

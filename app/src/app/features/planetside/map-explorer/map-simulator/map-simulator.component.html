@@ -1,0 +1,20 @@
+﻿<div (keypress)="onKeypress($event)">
+  <div class="map-container">
+    <ps2-zone-map [zoneId]="zoneId()" [captureStream]="onFacilityCapture" (score)="onScoreChange($event)" (hexSelected)="onHexSelected($event)" [hideOverlay]="hideOverlay"></ps2-zone-map>
+    <button class="overlay-toggle" mat-raised-button (click)="hideOverlay = !hideOverlay">
+      @if (hideOverlay) {
+        <mat-icon fontSet="mdi" fontIcon="mdi-layers-off"></mat-icon>
+      }
+      @if (!hideOverlay) {
+        <mat-icon fontSet="mdi" fontIcon="mdi-layers-outline"></mat-icon>
+      }
+    </button>
+    @if (!hideOverlay) {
+      <div class="score-box">
+        <div class="bars-container">
+          <vw-faction-bar [vs]="score[1]" [nc]="score[2]" [tr]="score[3]"></vw-faction-bar>
+        </div>
+      </div>
+    }
+  </div>
+</div>

@@ -1,0 +1,12 @@
+﻿<div>
+  <h1>Server Status</h1>
+  <vw-loader [loading]="isLoading"></vw-loader>
+  <vw-error-message [message]="errorMessage"></vw-error-message>
+  @if (!isLoading && !errorMessage) {
+    <div>
+      @for (world of worlds | orderBy: 'name'; track world) {
+        <world-card [world]="world"></world-card>
+      }
+    </div>
+  }
+</div>

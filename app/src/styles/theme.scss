@@ -1,0 +1,23 @@
+@use '@angular/material' as mat;
+@use '@mat-datetimepicker/core/datetimepicker/datetimepicker-theme' as datetimepicker;
+
+html {
+  @include mat.theme((
+    color: (
+      primary: mat.$azure-palette,
+      tertiary: mat.$rose-palette,
+      theme-type: light
+    ),
+    typography: Roboto,
+    density: 0
+  ));
+}
+
+// The datetimepicker still themes itself from an M2 palette config
+$app-primary: mat.m2-define-palette(mat.$m2-indigo-palette);
+$app-accent: mat.m2-define-palette(mat.$m2-pink-palette);
+$datetimepicker-theme: mat.m2-define-light-theme((
+  color: (primary: $app-primary, accent: $app-accent)
+));
+
+@include datetimepicker.mat-datetimepicker-theme($datetimepicker-theme);

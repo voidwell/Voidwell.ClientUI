@@ -1,0 +1,36 @@
+﻿<div class="content-container">
+  <vw-loader [loading]="isLoading"></vw-loader>
+  @if (!isLoading) {
+    <div>
+      @if (errorMessage) {
+        <div>
+          <pre>{{errorMessage | json}}</pre>
+        </div>
+      }
+      <mat-form-field>
+        <input matInput #roleInput placeholder="Role name">
+      </mat-form-field>
+      <button mat-button (click)="addRole(roleInput.value)">Add role</button>
+      <mat-accordion>
+        @for (role of roles; track role) {
+          <mat-expansion-panel (opened)="getDetails(role)">
+            <mat-expansion-panel-header>
+              <mat-panel-title>
+                {{role.name}}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+            <vw-loader [loading]="isLoading"></vw-loader>
+            @if (!role.isLoading) {
+              <div class="role-details">
+                Details
+              </div>
+            }
+            <mat-action-row>
+              <button mat-raised-button color="warn" (click)="deleteRole(role)">Delete</button>
+            </mat-action-row>
+          </mat-expansion-panel>
+        }
+      </mat-accordion>
+    </div>
+  }
+</div>

@@ -1,0 +1,38 @@
+﻿<div class="event-card">
+  <div class="side-img" [ngClass]="{'planetside2': event.gameId === 'ps2'}"></div>
+  <div class="card-info">
+    <mat-card>
+      <mat-card-title>
+        <div class="title-container">
+          <div class="pull-right">
+            @if (isActiveEvent()) {
+              <span>
+                <vw-countdown [end]="event.endDate"></vw-countdown> Remaining
+              </span>
+            }
+            @if (!isActiveEvent()) {
+              <span>
+                {{event.startDate | date:'EEE dd MMM yyyy HH:mm'}}
+              </span>
+            }
+          </div>
+          <div class="pull-left">
+            <div class="title-text">{{event.name}}</div>
+            <div class="title-subtext">
+              <div>{{event.mapId | zoneName}}</div>
+            </div>
+          </div>
+        </div>
+      </mat-card-title>
+      <mat-card-subtitle>
+        {{event.description}}
+      </mat-card-subtitle>
+      <div class="teams">
+        @for (team of event.teams | orderBy: 'teamId'; track team) {
+          <span class="event-team">{{team.name}}</span>
+        }
+      </div>
+    </mat-card>
+  </div>
+  <a mat-button routerLink="{{event.id}}" class="card-link"></a>
+</div>
