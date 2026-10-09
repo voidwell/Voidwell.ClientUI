@@ -21,16 +21,16 @@ app/                 Angular workspace (package.json, angular.json)
   src/app/
     core/            singletons, loaded once; depends on nothing else
       api/           ApiClient, routes, request cache, every repository and its models
-      auth/          OIDC auth service and route guard
+      auth/          OIDC config, auth service and route guard
       layout/        header, navigation, footer, search and nav-menu services
       platform/      selected PS2 platform state (feeds the Ps2ApiClient)
-      store/         root NgRx state (auth, registration)
+      store/         root NgRx state (auth)
       util/          error-message helper
     shared/          reusable, stateless; may use core, never features
       ui/            loader, error message, tab bars, entry list, countdown
       pipes/  utils/
     features/        one folder per lazy-loaded route area; never import each other
-      account/  admin/  blog/
+      admin/  blog/
       planetside/    one folder per route area (player/, alerts/, worlds/ ...), plus
                      components/ widgets used by several areas, data/ reference-data services
                      and configs, pipes/ for the ps2 pipes
@@ -63,9 +63,22 @@ npm ci
 npm start            # dev server on http://localhost:5000
 ```
 
-The app talks to the Voidwell API at `api.<host>` and signs in against `auth.<host>` (see
-`app/src/app/core/api/api-routes.ts` and `core/auth/voidwell-auth.service.ts`), so
-run it behind a hostname that resolves those subdomains.
+The app talks to the Voidwell API at `api.<host>` (see `app/src/app/core/api/api-routes.ts`), so
+run it behind a hostname that resolves that subdomain.
+
+## Authentication
+
+Sign-in uses [angular-auth-oidc-client](https://github.com/damienbod/angular-auth-oidc-client) with the authorization
+code flow (PKCE) against Keycloak. Provider settings (authority, client ID, scopes) live in
+`app/src/app/core/auth/auth.config.ts`; `core/auth/voidwell-auth.service.ts` wraps the library and keeps the
+signed-in user in the NgRx `auth` slice.
+
+- The client is a public client with standard flow and PKCE (`S256`); the redirect and post-logout URI is the app
+  origin (`https://<host>/`). Tokens are renewed with refresh tokens, so `offline_access` must be allowed.
+- Roles come from the `roles` claim of the access token, which Keycloak adds when the `roles` scope is requested.
+  The UI only uses them to show or hide pages, so the API must enforce roles itself.
+- Registration, password reset and account management are handled by Keycloak: Register opens the registration form
+  (`prompt=create`) and the account name in the header links to the Keycloak account console.
 
 ## API layer
 
@@ -78,7 +91,6 @@ api/
   models/            request / response interfaces, one folder per backend
   ps2/               voidwell.clientui controllers (`ps2/*`), e.g. CharacterRepository
   platform/          Voidwell.Platform controllers (`platform/*`), e.g. PostRepository
-  auth/              account, user and OIDC administration controllers
 ```
 
 Daybreak requests go through `Ps2ApiClient`, which adds the `platform` query parameter (`pc`, `ps4us` or `ps4eu`)
