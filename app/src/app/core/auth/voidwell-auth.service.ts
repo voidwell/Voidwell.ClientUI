@@ -1,114 +1,90 @@
-﻿import { Injectable, inject } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { throwError } from 'rxjs';
+import { Injectable, inject } from '@angular/core';
+import { Observable, of } from 'rxjs';
+import { filter, map, switchMap, tap } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
-import { UserManager, UserManagerSettings, Log } from 'oidc-client';
-import { LoadUserFailure, LoadUserSuccess, RenewToken } from '../store/actions/auth.actions';
+import { EventTypes, LoginResponse, OidcSecurityService, PublicEventsService } from 'angular-auth-oidc-client';
+import { LoadUserFailure, LoadUserSuccess, RenewTokenFailure, RenewTokenSuccess } from '../store/actions/auth.actions';
 import { AppState } from '../store/app.states';
+import { AuthUser } from './auth-user.model';
 
 @Injectable()
 export class VoidwellAuthService {
-    private router = inject(Router);
-    private route = inject(ActivatedRoute);
+    private oidc = inject(OidcSecurityService);
+    private events = inject(PublicEventsService);
     private store = inject<Store<AppState>>(Store);
 
-    mgr: UserManager;
+    /**
+     * Completes a pending sign-in redirect (if any), restores the stored session
+     * and starts listening for token renewals. Runs before the first navigation.
+     */
+    initialize(): Observable<LoginResponse> {
+        this.listenForTokenEvents();
 
-    constructor() {
-        const route = this.route;
+        return this.oidc.checkAuth().pipe(
+            tap(response => {
+                if (response.isAuthenticated) {
+                    this.store.dispatch(new LoadUserSuccess(this.toUser(response.accessToken, response.userData)));
+                } else if (response.errorMessage) {
+                    this.store.dispatch(new LoadUserFailure({ error: response.errorMessage }));
+                }
+            }));
+    }
 
-        
-        const redirectUri = location.origin + '/';
-        const signInCallbackUri = redirectUri + 'signInCallback.html';
-        const silentCallbackUri = redirectUri + 'silentCallback.html';
+    signIn(): void {
+        this.oidc.authorize();
+    }
 
-        Log.logger = console;
-        Log.level = Log.WARN;
+    signOut(): void {
+        this.oidc.logoff().subscribe();
+    }
 
-        const settings: UserManagerSettings = {
-            client_id: 'voidwell-clientui',
-            authority: location.protocol + '//auth.' + location.host,
-            response_type: 'id_token token',
-            scope: 'openid email profile voidwell-api',
-            redirect_uri: signInCallbackUri,
-            post_logout_redirect_uri: redirectUri,
-            silent_redirect_uri: silentCallbackUri,
-            automaticSilentRenew: true
-        };
-        this.mgr = new UserManager(settings);
-        this.mgr.clearStaleState().then(function () {
-            Log.info('clearStateState success');
-        }).catch(function (e) {
-            Log.error('clearStateState error', e.message);
+    /** Called after a 401: refresh the session, or sign in again if that fails. */
+    checkSession(): void {
+        this.oidc.forceRefreshSession().subscribe({
+            error: () => {
+                this.oidc.logoffLocal();
+                this.signIn();
+            }
+        });
+    }
+
+    private listenForTokenEvents(): void {
+        this.events.registerForEvents().pipe(
+            filter(event => event.type === EventTypes.NewAuthenticationResult),
+            switchMap(() => this.currentUser())
+        ).subscribe(user => {
+            if (user) {
+                this.store.dispatch(new RenewTokenSuccess(user));
+            }
         });
 
-        this.route.url.subscribe(url => {
-            const currentRoute = location.pathname;
-
-            this.mgr.getUser()
-                .then((user) => {
-                    if (user) {
-                        this.store.dispatch(new LoadUserSuccess(user));
-
-                        this.router.navigate([currentRoute], { queryParams: route.snapshot.queryParams });
-                    }
-                })
-                .catch((err) => {
-                    this.store.dispatch(new LoadUserFailure({ error: err }));
-                });
-        });
-
-        this.mgr.events.addUserLoaded((user) => {
-            this.store.dispatch(new LoadUserSuccess(user));
-        });
-
-        this.mgr.events.addUserSignedOut(() => {
-            this.signOut();
-        });
-
-        this.mgr.events.addAccessTokenExpiring((e) => {
-            this.store.dispatch(new RenewToken());
-        });
-
-        this.mgr.events.addAccessTokenExpired((e) => {
-            this.signOut();
-        });
-
-        this.mgr.events.addSilentRenewError((e) => {
+        this.events.registerForEvents().pipe(
+            filter(event => event.type === EventTypes.SilentRenewFailed)
+        ).subscribe(() => {
+            this.store.dispatch(new RenewTokenFailure(null));
             this.checkSession();
         });
     }
 
-    signIn() {
-        this.mgr.signinRedirect().then(function () {
-        }).catch(function (error) {
-            return throwError(() => error);
-        });
+    private currentUser(): Observable<AuthUser | null> {
+        return this.oidc.getAccessToken().pipe(
+            switchMap(token => token
+                ? this.oidc.getUserData().pipe(map(data => this.toUser(token, data)))
+                : of(null)));
     }
 
-    signOut() {
-        localStorage.removeItem('voidwell-auth-redirect');
-
-        this.mgr.signoutRedirect().then(function () {
-        }).catch(function (error) {
-            return throwError(() => error);
-        });
-    };
-
-    checkSession() {
-        this.mgr.querySessionStatus()
-            .catch((e: Error & { error?: string }) => {
-                if (e.error === 'login_required') {
-                    this.revokeSession();
-                }
-            });
+    private toUser(accessToken: string, userData: { name?: string } | null): AuthUser {
+        return { accessToken, name: userData?.name ?? '', roles: this.readRoles(accessToken) };
     }
 
-    revokeSession() {
-        this.mgr.removeUser().then(() => {
-            this.signIn();
-        }).catch(function (error) {
-            return throwError(() => error);
-        });
+    /** Reads the `roles` claim from the access token payload. The API validates the signature. */
+    private readRoles(accessToken: string): string[] {
+        try {
+            const payload = accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+            const claims = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(payload), c => c.charCodeAt(0)))) as { roles?: string | string[] };
+            return [claims.roles ?? []].flat();
+        } catch {
+            return [];
+        }
     }
 }

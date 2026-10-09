@@ -1,9 +1,9 @@
-import { User } from 'oidc-client';
+import { AuthUser } from '../../auth/auth-user.model';
 import { AuthActionTypes, AuthActions } from '../actions/auth.actions';
 
 export interface AuthState {
     isAuthenticated: boolean;
-    user: User | null;
+    user: AuthUser | null;
     userRoles: string[];
     errorMessage: string | null;
 }
@@ -22,25 +22,21 @@ export function authReducer(state = initialState, action: AuthActions): AuthStat
                 ...state,
                 isAuthenticated: true,
                 user: action.payload,
+                userRoles: action.payload.roles,
                 errorMessage: null
+            };
+        }
+        case AuthActionTypes.RENEW_TOKEN_SUCCESS: {
+            return {
+                ...state,
+                user: action.payload,
+                userRoles: action.payload.roles
             };
         }
         case AuthActionTypes.LOAD_USER_FAILURE: {
             return {
                 ...initialState,
                 errorMessage: 'Failed to load user.'
-            };
-        }
-        case AuthActionTypes.LOAD_USER_ROLES_SUCCESS: {
-            return {
-                ...state,
-                userRoles: action.payload
-            };
-        }
-        case AuthActionTypes.LOAD_USER_ROLES_FAILURE: {
-            return {
-                ...state,
-                errorMessage: 'Failed to load roles for user.',
             };
         }
         case AuthActionTypes.LOG_OUT_USER:

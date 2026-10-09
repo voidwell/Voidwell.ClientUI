@@ -28,7 +28,7 @@ export class VWHeaderComponent {
     private authState = this.store.selectSignal(selectAuthState);
 
     readonly isLoggedIn = computed(() => this.authState().isAuthenticated);
-    readonly userName = computed(() => this.authState().user?.profile.name || '');
+    readonly userName = computed(() => this.authState().user?.name || '');
     readonly userRoles = computed(() => this.authState().userRoles);
 
     signIn(): void {

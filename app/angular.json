@@ -23,12 +23,9 @@
             "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
-            "allowedCommonJsDependencies": ["leaflet", "oidc-client", "dynamics.js", "tinycolor2"],
+            "allowedCommonJsDependencies": ["leaflet", "dynamics.js", "tinycolor2"],
             "assets": [
-              { "glob": "signInCallback.html", "input": "src" },
-              { "glob": "silentCallback.html", "input": "src" },
               { "glob": "**/*", "input": "node_modules/@mdi/font/fonts", "output": "/fonts" },
-              { "glob": "**/*", "input": "node_modules/oidc-client/dist", "output": "/oidc" },
               { "glob": "**/*", "input": "src/assets" }
             ],
             "styles": [

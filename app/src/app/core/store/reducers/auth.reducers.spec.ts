@@ -1,9 +1,9 @@
-import { User } from 'oidc-client';
+import { AuthUser } from '../../auth/auth-user.model';
 import { authReducer } from './auth.reducers';
-import { AuthActions, LoadUserFailure, LoadUserRolesSuccess, LoadUserSuccess, LogOutUser } from '../actions/auth.actions';
+import { AuthActions, LoadUserFailure, RenewTokenSuccess, LoadUserSuccess, LogOutUser } from '../actions/auth.actions';
 
 describe('authReducer', () => {
-    const user = { access_token: 'token' } as User;
+    const user = { accessToken: 'token', name: 'Test', roles: ['Blog'] } as AuthUser;
 
     it('starts unauthenticated', () => {
         const state = authReducer(undefined, { type: 'init' } as unknown as AuthActions);
@@ -17,15 +17,24 @@ describe('authReducer', () => {
         expect(state.user).toBe(user);
     });
 
-    it('stores roles on LoadUserRolesSuccess', () => {
-        const state = authReducer(undefined, new LoadUserRolesSuccess(['admin']));
-        expect(state.userRoles).toEqual(['admin']);
+    it('exposes the roles of the user', () => {
+        const state = authReducer(undefined, new LoadUserSuccess(user));
+        expect(state.userRoles).toEqual(['Blog']);
     });
 
     it('sets an error on LoadUserFailure', () => {
         const state = authReducer(undefined, new LoadUserFailure({ error: 'x' }));
         expect(state.isAuthenticated).toBe(false);
         expect(state.errorMessage).toBe('Failed to load user.');
+    });
+
+    it('replaces the user on RenewTokenSuccess', () => {
+        const loggedIn = authReducer(undefined, new LoadUserSuccess(user));
+        const renewed = { ...user, accessToken: 'new', roles: ['Administrator'] };
+        const state = authReducer(loggedIn, new RenewTokenSuccess(renewed));
+        expect(state.isAuthenticated).toBe(true);
+        expect(state.user).toBe(renewed);
+        expect(state.userRoles).toEqual(['Administrator']);
     });
 
     it('resets on LogOutUser', () => {

@@ -83,7 +83,7 @@ export class ApiClient {
 
         return {
             headers: new HttpHeaders()
-                .set('Authorization', `${state.user.token_type} ${state.user.access_token}`)
+                .set('Authorization', `Bearer ${state.user.accessToken}`)
                 .set('Content-Type', 'application/json')
         };
     }

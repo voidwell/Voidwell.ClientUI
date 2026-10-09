@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
-import { User } from 'oidc-client';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { provideStore, Store } from '@ngrx/store';
 import { ApiClient } from './api-client';
@@ -46,7 +45,7 @@ describe('ApiClient', () => {
     });
 
     it('sends the bearer token of the signed-in user when auth is requested', () => {
-        TestBed.inject(Store).dispatch(new LoadUserSuccess({ token_type: 'Bearer', access_token: 'abc' } as unknown as User));
+        TestBed.inject(Store).dispatch(new LoadUserSuccess({ accessToken: 'abc', name: 'Test', roles: [] }));
 
         api.get('/secure', { auth: true }).subscribe();
         api.get('/public').subscribe();

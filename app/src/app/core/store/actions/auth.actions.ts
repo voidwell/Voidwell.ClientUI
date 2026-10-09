@@ -1,5 +1,5 @@
 import { Action } from '@ngrx/store';
-import { User } from 'oidc-client';
+import { AuthUser } from '../../auth/auth-user.model';
 
 export enum AuthActionTypes {
     LOG_IN_USER = '[Auth] LOG_IN_USER',
@@ -8,10 +8,7 @@ export enum AuthActionTypes {
     LOG_OUT_USER = '[Auth] LOG_OUT_USER',
     RENEW_TOKEN = '[Auth] RENEW_TOKEN',
     RENEW_TOKEN_SUCCESS = '[Auth] RENEW_TOKEN_SUCCESS',
-    RENEW_TOKEN_FAILURE = '[Auth] RENEW_TOKEN_FAILURE',
-    LOAD_USER_ROLES = '[Auth] LOAD_USER_ROLES',
-    LOAD_USER_ROLES_SUCCESS = '[Auth] LOAD_USER_ROLES_SUCCESS',
-    LOAD_USER_ROLES_FAILURE = '[Auth] LOAD_USER_ROLES_FAILURE'
+    RENEW_TOKEN_FAILURE = '[Auth] RENEW_TOKEN_FAILURE'
 }
 
 export class LogInUser implements Action {
@@ -20,7 +17,7 @@ export class LogInUser implements Action {
 
 export class LoadUserSuccess implements Action {
     readonly type = AuthActionTypes.LOAD_USER_SUCCESS;
-    constructor(public payload: User ) { }
+    constructor(public payload: AuthUser) { }
 }
 
 export class LoadUserFailure implements Action {
@@ -38,26 +35,12 @@ export class RenewToken implements Action {
 
 export class RenewTokenSuccess implements Action {
     readonly type = AuthActionTypes.RENEW_TOKEN_SUCCESS;
-    constructor(public payload: User ) { }
+    constructor(public payload: AuthUser) { }
 }
 
 export class RenewTokenFailure implements Action {
     readonly type = AuthActionTypes.RENEW_TOKEN_FAILURE;
     constructor(public payload: unknown) { }
-}
-
-export class LoadUserRoles implements Action {
-    readonly type = AuthActionTypes.LOAD_USER_ROLES;
-}
-
-export class LoadUserRolesSuccess implements Action {
-    readonly type = AuthActionTypes.LOAD_USER_ROLES_SUCCESS;
-    constructor(public payload: string[]) { }
-}
-
-export class LoadUserRolesFailure implements Action {
-    readonly type = AuthActionTypes.LOAD_USER_ROLES_FAILURE;
-    constructor(public payload: { error: unknown }) { }
 }
 
 export type AuthActions =
@@ -67,7 +50,4 @@ export type AuthActions =
     | LogOutUser
     | RenewToken
     | RenewTokenSuccess
-    | RenewTokenFailure
-    | LoadUserRoles
-    | LoadUserRolesSuccess
-    | LoadUserRolesFailure;
+    | RenewTokenFailure;
