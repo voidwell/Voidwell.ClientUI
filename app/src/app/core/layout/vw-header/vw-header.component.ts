@@ -3,7 +3,8 @@ import { Store } from '@ngrx/store';
 import { NavMenuService } from '../nav-menu.service';
 import { SearchService } from '../search.service';
 import { AppState, selectAuthState } from '../../store/app.states';
-import { LogInUser, LogOutUser } from '../../store/actions/auth.actions';
+import { accountManagementUrl } from '../../auth/auth.config';
+import { LogInUser, LogOutUser, RegisterUser } from '../../store/actions/auth.actions';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { VWLogoComponent } from './vw-logo/vw-logo.component';
 import { MatIcon } from '@angular/material/icon';
@@ -27,12 +28,18 @@ export class VWHeaderComponent {
 
     private authState = this.store.selectSignal(selectAuthState);
 
+    readonly accountUrl = accountManagementUrl;
+
     readonly isLoggedIn = computed(() => this.authState().isAuthenticated);
     readonly userName = computed(() => this.authState().user?.name || '');
     readonly userRoles = computed(() => this.authState().userRoles);
 
     signIn(): void {
         this.store.dispatch(new LogInUser());
+    }
+
+    register(): void {
+        this.store.dispatch(new RegisterUser());
     }
 
     signOut(): void {

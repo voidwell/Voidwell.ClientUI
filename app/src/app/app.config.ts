@@ -9,7 +9,7 @@ import { VoidwellAuthService } from '@core/auth/voidwell-auth.service';
 import { NavMenuService } from '@core/layout/nav-menu.service';
 import { SearchService } from '@core/layout/search.service';
 import { reducers } from '@core/store/app.states';
-import { AuthEffects, RegistrationEffects } from '@core/store/effects';
+import { AuthEffects } from '@core/store/effects';
 import { appRouterProviders, routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -18,7 +18,7 @@ export const appConfig: ApplicationConfig = {
         provideRouter(routes, withComponentInputBinding()),
         provideHttpClient(withInterceptorsFromDi()),
         provideStore(reducers),
-        provideEffects(AuthEffects, RegistrationEffects),
+        provideEffects(AuthEffects),
         provideAuth(authConfig),
         provideAppInitializer(() => inject(VoidwellAuthService).initialize()),
         appRouterProviders,

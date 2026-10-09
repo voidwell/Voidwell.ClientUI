@@ -34,6 +34,10 @@ export class VoidwellAuthService {
         this.oidc.authorize();
     }
 
+    register(): void {
+        this.oidc.authorize(undefined, { customParams: { prompt: 'create' } });
+    }
+
     signOut(): void {
         this.oidc.logoff().subscribe();
     }

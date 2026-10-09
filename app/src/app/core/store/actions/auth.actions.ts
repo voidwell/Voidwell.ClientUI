@@ -3,6 +3,7 @@ import { AuthUser } from '../../auth/auth-user.model';
 
 export enum AuthActionTypes {
     LOG_IN_USER = '[Auth] LOG_IN_USER',
+    REGISTER_USER = '[Auth] REGISTER_USER',
     LOAD_USER_SUCCESS = '[Auth] LOAD_USER_SUCCESS',
     LOAD_USER_FAILURE = '[Auth] LOAD_USER_FAILURE',
     LOG_OUT_USER = '[Auth] LOG_OUT_USER',
@@ -13,6 +14,10 @@ export enum AuthActionTypes {
 
 export class LogInUser implements Action {
     readonly type = AuthActionTypes.LOG_IN_USER;
+}
+
+export class RegisterUser implements Action {
+    readonly type = AuthActionTypes.REGISTER_USER;
 }
 
 export class LoadUserSuccess implements Action {
@@ -45,6 +50,7 @@ export class RenewTokenFailure implements Action {
 
 export type AuthActions =
     | LogInUser
+    | RegisterUser
     | LoadUserSuccess
     | LoadUserFailure
     | LogOutUser

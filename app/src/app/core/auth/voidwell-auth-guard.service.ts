@@ -23,14 +23,6 @@ export class VoidwellAuthGuard implements CanActivate {
     canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
         localStorage.setItem('voidwell-auth-redirect', state.url);
 
-        const guestOnly = route.data['guestOnly'] as boolean;
-        if (guestOnly) {
-            if (this.isAuthenticated) {
-                return of(false);
-            }
-            return of(true);
-        }
-
         const routeRoles = route.data['roles'] as Array<string>;
         if (this.isAuthenticated) {
             if (routeRoles) {

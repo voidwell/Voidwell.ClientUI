@@ -3,13 +3,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
 import { Observable } from 'rxjs';
 import { Store, provideStore } from '@ngrx/store';
-import { ACCOUNT_API_URL, AUTH_ADMIN_API_URL, OIDC_ADMIN_API_URL, PLATFORM_API_URL, PS2_API_URL } from './api-routes';
+import { PLATFORM_API_URL, PS2_API_URL } from './api-routes';
 import { VoidwellAuthService } from '../auth/voidwell-auth.service';
 import { reducers } from '../store/app.states';
 import { PlatformServiceState, PlatformStoreUpdate } from './models/ps2/admin.model';
-import { AccountRepository } from './auth/account.repository';
-import { AuthAdminRepository } from './auth/auth-admin.repository';
-import { OidcAdminRepository } from './auth/oidc-admin.repository';
 import { CustomEventRepository } from './platform/custom-event.repository';
 import { PostRepository } from './platform/post.repository';
 import { UtilsRepository } from './platform/utils.repository';
@@ -204,25 +201,6 @@ describe('repositories', () => {
             { name: 'CustomEventRepository.deleteEvent', call: () => inject(CustomEventRepository).deleteEvent(1), method: 'DELETE', url: platform('gameevent/1') },
 
             { name: 'UtilsRepository.getServerTime', call: () => inject(UtilsRepository).getServerTime(), method: 'GET', url: platform('utils/time') }
-        ]);
-    });
-
-    describe('account and identity administration', () => {
-        run([
-            { name: 'AccountRepository.getSecurityQuestions', call: () => inject(AccountRepository).getSecurityQuestions(), method: 'GET', url: `${ACCOUNT_API_URL}/questions` },
-            { name: 'AccountRepository.getUserRoles', call: () => inject(AccountRepository).getUserRoles(), method: 'GET', url: `${ACCOUNT_API_URL}/roles` },
-            { name: 'AccountRepository.changePassword', call: () => inject(AccountRepository).changePassword({ oldPassword: 'a', newPassword: 'b' }), method: 'POST', url: `${ACCOUNT_API_URL}/changepassword` },
-            { name: 'AccountRepository.resetPasswordStart', call: () => inject(AccountRepository).resetPasswordStart({ email: 'e' }), method: 'POST', url: `${ACCOUNT_API_URL}/resetpasswordstart` },
-
-            { name: 'AuthAdminRepository.getUsers', call: () => inject(AuthAdminRepository).getUsers(), method: 'GET', url: `${AUTH_ADMIN_API_URL}/users` },
-            { name: 'AuthAdminRepository.getUser', call: () => inject(AuthAdminRepository).getUser('u1'), method: 'GET', url: `${AUTH_ADMIN_API_URL}/user/u1` },
-            { name: 'AuthAdminRepository.updateUserRoles', call: () => inject(AuthAdminRepository).updateUserRoles('u1', { roles: ['User'] }), method: 'PUT', url: `${AUTH_ADMIN_API_URL}/user/u1/roles`, body: { roles: ['User'] } },
-            { name: 'AuthAdminRepository.lockUser', call: () => inject(AuthAdminRepository).lockUser('u1', { isPermanant: true }), method: 'POST', url: `${AUTH_ADMIN_API_URL}/user/u1/lock` },
-            { name: 'AuthAdminRepository.createRole', call: () => inject(AuthAdminRepository).createRole({ name: 'Events' }), method: 'POST', url: `${AUTH_ADMIN_API_URL}/role`, body: { name: 'Events' } },
-
-            { name: 'OidcAdminRepository.getClients', call: () => inject(OidcAdminRepository).getClients('x', 2), method: 'GET', url: `${OIDC_ADMIN_API_URL}/client?search=x&page=2` },
-            { name: 'OidcAdminRepository.deleteClientSecret', call: () => inject(OidcAdminRepository).deleteClientSecret('c', 's'), method: 'DELETE', url: `${OIDC_ADMIN_API_URL}/client/c/secret/s` },
-            { name: 'OidcAdminRepository.getApiResources', call: () => inject(OidcAdminRepository).getApiResources('', 1), method: 'GET', url: `${OIDC_ADMIN_API_URL}/resource?search=&page=1` }
         ]);
     });
 

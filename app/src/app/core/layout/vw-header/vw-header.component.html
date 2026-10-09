@@ -21,7 +21,7 @@
       </button>
       <mat-menu #profilemenu="matMenu">
         @if (isLoggedIn()) {
-          <button mat-menu-item routerLink="/account/settings">{{userName()}}</button>
+          <a mat-menu-item [href]="accountUrl">{{userName()}}</a>
         }
         @if (isLoggedIn()) {
           <mat-divider></mat-divider>
@@ -34,7 +34,7 @@
         }
 
         @if (!isLoggedIn()) {
-          <button mat-menu-item routerLink="/account/register">Register</button>
+          <button mat-menu-item (click)="register()">Register</button>
         }
         @if (!isLoggedIn()) {
           <button mat-menu-item (click)="signIn()">Login</button>

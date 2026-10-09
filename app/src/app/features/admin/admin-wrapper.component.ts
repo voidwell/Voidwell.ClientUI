@@ -25,10 +25,7 @@ export class AdminWrapperComponent {
         { path: 'events', display: 'Events', roles: ['Administrator', 'Events'] },
         { path: 'psb', display: 'PSB', roles: ['Administrator', 'PSB'] },
         { path: 'blog', display: 'Blog', roles: ['Administrator', 'Blog'] },
-        { path: 'users', display: 'Users', roles: ['Administrator'] },
-        { path: 'roles', display: 'Roles', roles: ['Administrator'] },
-        { path: 'status', display: 'Status', roles: ['Administrator'] },
-        { path: 'oidc', display: 'OIDC', roles: ['Administrator'] }
+        { path: 'status', display: 'Status', roles: ['Administrator'] }
     ];
 
     getNavLinks(): NavLink[] {

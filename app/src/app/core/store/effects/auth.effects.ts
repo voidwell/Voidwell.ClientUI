@@ -15,6 +15,11 @@ export class AuthEffects {
         map(() => this.authService.signIn())),
         { dispatch: false });
 
+    RegisterUser = createEffect(() => this.actions.pipe(
+        ofType(AuthActionTypes.REGISTER_USER),
+        map(() => this.authService.register())),
+        { dispatch: false });
+
     LogOutUser = createEffect(() => this.actions.pipe(
         ofType(AuthActionTypes.LOG_OUT_USER),
         map(() => this.authService.signOut())),
