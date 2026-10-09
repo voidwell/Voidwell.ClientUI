@@ -1,5 +1,9 @@
 # Voidwell.ClientUI
 
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/voidwell/voidwell.clientui/build-test.yml?branch=main&style=for-the-badge)](https://github.com/voidwell/voidwell.clientui/actions/workflows/build-test.yml)
+[![Latest Release](https://img.shields.io/github/v/release/voidwell/voidwell.clientui?style=for-the-badge)](https://github.com/voidwell/voidwell.clientui/releases/latest)
+[![MIT License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
+
 The web front end for [Voidwell](https://voidwell.com): statistics, alerts, maps and more for PlanetSide 2.
 It is an Angular single-page app served by a small Express server.
 
@@ -72,7 +76,7 @@ api/
   api-client.ts      typed HTTP transport (auth header, timeout, caching, 401 handling)
   api-routes.ts      base URLs (`ps2`, `platform`, ...)
   models/            request / response interfaces, one folder per backend
-  ps2/               Voidwell.DaybreakGames controllers (`ps2/*`), e.g. CharacterRepository
+  ps2/               voidwell.clientui controllers (`ps2/*`), e.g. CharacterRepository
   platform/          Voidwell.Platform controllers (`platform/*`), e.g. PostRepository
   auth/              account, user and OIDC administration controllers
 ```
