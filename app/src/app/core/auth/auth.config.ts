@@ -6,7 +6,7 @@ import { OpenIdConfiguration, PassedInitialConfig } from 'angular-auth-oidc-clie
  * allowed. Token renewal uses refresh tokens, so `offline_access` must be allowed.
  */
 const oidcConfig: OpenIdConfiguration = {
-    authority: 'https://auth.voidwell.com',
+    authority: 'https://auth.voidwell.com/realms/voidwell',
     clientId: 'voidwell-clientui',
     redirectUrl: location.origin + '/',
     postLogoutRedirectUri: location.origin + '/',
