@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # ---- Build the Angular app ----
-FROM node:22-alpine AS build
+FROM node:26-alpine AS build
 
 WORKDIR /app
 
@@ -13,7 +13,7 @@ COPY app/src ./src
 RUN npm run build:prod
 
 # ---- Install server dependencies ----
-FROM node:22-alpine AS server-deps
+FROM node:26-alpine AS server-deps
 
 WORKDIR /server
 
@@ -21,7 +21,7 @@ COPY server/package.json server/package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci --omit=dev
 
 # ---- Runtime ----
-FROM node:22-alpine
+FROM node:26-alpine
 
 ENV NODE_ENV=production
 WORKDIR /app
