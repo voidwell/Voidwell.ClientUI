@@ -32,6 +32,82 @@ html {
     outline: #5d7079,
     outline-variant: #3e505a
   ));
+
+  // Component colors carried over from the pre-MDC styles in app.css.
+  @include mat.table-overrides((
+    background-color: #2b3942,
+    row-item-outline-color: rgba(255, 255, 255, .025),
+    header-headline-color: #b4bfc3,
+    header-headline-weight: 500
+  ));
+
+  @include mat.paginator-overrides((
+    container-background-color: #2b3942,
+    container-text-color: #b4bfc3,
+    container-text-weight: 500,
+    enabled-icon-color: #fff,
+    disabled-icon-color: #585858
+  ));
+
+  @include mat.tabs-overrides((
+    inactive-label-text-color: rgba(180, 191, 195, .6),
+    inactive-hover-label-text-color: rgba(180, 191, 195, .6),
+    inactive-focus-label-text-color: rgba(180, 191, 195, .6),
+    active-label-text-color: #b4bfc3,
+    active-hover-label-text-color: #b4bfc3,
+    active-focus-label-text-color: #b4bfc3,
+    active-indicator-color: #868686,
+    active-hover-indicator-color: #868686,
+    active-focus-indicator-color: #868686
+  ));
+
+  // The legacy underline field had no fill; keep the colors of its label, text and underline.
+  @include mat.form-field-overrides((
+    filled-container-color: transparent,
+    filled-input-text-color: #b4bfc3,
+    filled-caret-color: #b4bfc3,
+    filled-label-text-color: rgba(177, 188, 192, .47),
+    filled-hover-label-text-color: rgba(177, 188, 192, .47),
+    filled-focus-label-text-color: rgba(177, 188, 192, .47),
+    filled-active-indicator-color: #31424b,
+    filled-hover-active-indicator-color: #31424b,
+    filled-focus-active-indicator-color: #edeff0,
+    filled-focus-active-indicator-height: 1px,
+    filled-error-label-text-color: #ca1406,
+    filled-error-hover-label-text-color: #ca1406,
+    filled-error-focus-label-text-color: #ca1406
+  ));
+
+  @include mat.select-overrides((
+    enabled-trigger-text-color: rgba(255, 255, 255, .8)
+  ));
+
+  @include mat.dialog-overrides((
+    container-color: #19282F,
+    subhead-color: rgba(255, 255, 255, .8),
+    supporting-text-color: rgba(255, 255, 255, .8)
+  ));
+
+  @include mat.checkbox-overrides((
+    selected-icon-color: #525252,
+    selected-hover-icon-color: #525252,
+    selected-focus-icon-color: #525252,
+    selected-pressed-icon-color: #525252
+  ));
+
+  @include mat.button-overrides((
+    text-label-text-color: #b4bfc3,
+    text-disabled-label-text-color: #b4bfc3,
+    protected-container-color: #394650,
+    protected-label-text-color: #b4bfc3,
+    protected-disabled-container-color: #394650,
+    protected-disabled-label-text-color: #b4bfc3,
+    protected-container-elevation-shadow: none,
+    protected-hover-container-elevation-shadow: none,
+    protected-focus-container-elevation-shadow: none,
+    protected-pressed-container-elevation-shadow: none,
+    protected-disabled-container-elevation-shadow: none
+  ));
 }
 
 // The datetimepicker still themes itself from an M2 palette config

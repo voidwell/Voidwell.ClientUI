@@ -152,10 +152,15 @@
     visibility: hidden;
 }
 
-/* mat-select takes its text color from this token, not from the element's own color. */
+/* mat-select takes its text styles from these tokens, not from the element's own font and color. */
 .top-search_dropdown,
 .platform-control {
     --mat-select-enabled-trigger-text-color: #b4bfc3;
+    --mat-select-trigger-text-font: inherit;
+    --mat-select-trigger-text-size: 15px;
+    --mat-select-trigger-text-weight: bold;
+    --mat-select-trigger-text-line-height: 20px;
+    --mat-select-trigger-text-tracking: normal;
 }
 
 .search.focus .top-search_dropdown {
@@ -168,4 +173,26 @@
 
 .search.focus .top-search_dropdown {
     color: #22313a;
+}
+
+.search-option.mat-mdc-option {
+    border-bottom: 1px solid #ccc;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    overflow: visible;
+}
+
+.search-option ::ng-deep .mdc-list-item__primary-text {
+    display: block;
+    width: 100%;
+}
+
+.search-option.mat-mdc-option:last-child {
+    border-bottom-width: 0;
+}
+
+.search-option .item-title,
+.search-option .item-metadata {
+    display: block;
+    line-height: 2;
 }

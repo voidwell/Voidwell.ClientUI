@@ -2,12 +2,12 @@
     overflow: hidden;
 }
 
-.mat-table {
+.mat-mdc-table {
     max-height: 800px;
     overflow: auto;
 }
 
-.mat-table .mat-row {
+.mat-mdc-table .mat-mdc-row {
     min-height: 25px;
 }
 

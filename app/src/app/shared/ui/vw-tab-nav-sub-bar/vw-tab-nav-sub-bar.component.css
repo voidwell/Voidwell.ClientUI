@@ -4,13 +4,6 @@
     font-size: initial;
 }
 
-.vw-tab-nav-sub-bar .mat-tab-nav-bar .mat-tab-link {
-    font-size: 0.8em;
-    height: 36px;
-    padding: 0 12px;
-    min-width: 100px;
-}
-
 .vw-nav {
     overflow: hidden;
     position: relative;

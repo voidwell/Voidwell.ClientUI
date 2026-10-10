@@ -3,3 +3,16 @@
     position: relative;
     width: 120px;
 }
+
+mat-select-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+mat-select-trigger mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+}

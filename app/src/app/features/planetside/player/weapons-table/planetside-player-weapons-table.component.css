@@ -9,7 +9,6 @@ mat-table {
 }
 
 .mat-column-name,
-.mat-column-name .mat-button,
 .auraxium-meter-back {
     min-width: 160px;
 }
@@ -36,20 +35,10 @@ mat-table {
     color: inherit;
 }
 
-.mat-column-name .mat-button {
-    padding-top: 5px;
-    text-transform: none;
-    position: absolute;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    text-align: left;
-}
-
-.mat-table .mat-row {
+.mat-mdc-table .mat-mdc-row {
     min-height: 25px;
 }
 
-.mat-table .mat-row .mat-cell {
+.mat-mdc-table .mat-mdc-row .mat-mdc-cell {
     font-size: 12.8px;
 }
