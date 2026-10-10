@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, ViewChild, ElementRef, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, ViewChild, ElementRef, inject } from '@angular/core';
 import { fromEvent, throwError } from 'rxjs';
 import { catchError, debounceTime, distinctUntilChanged, finalize } from 'rxjs/operators';
 import { StoreRepository } from '@core/api/ps2/store.repository';
@@ -13,13 +13,13 @@ import { AsyncPipe, DatePipe } from '@angular/common';
 import { StoreRow, StoresTableDataSource } from './stores.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './stores.component.html',
     imports: [LoaderComponent, ErrorMessageComponent, MatFormField, MatInput, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatButton, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, AsyncPipe, DatePipe]
 })
 
 export class StoresComponent implements OnInit {
     private storeRepository = inject(StoreRepository);
+    private cdr = inject(ChangeDetectorRef);
 
     @ViewChild('filter', { static: true }) filter: ElementRef;
     
@@ -46,6 +46,7 @@ export class StoresComponent implements OnInit {
             }))
             .pipe(finalize(() => {
                 store.isLoading = false;
+                this.cdr.markForCheck();
             }))
             .subscribe(storeState => {
                 Object.assign(store, storeState);

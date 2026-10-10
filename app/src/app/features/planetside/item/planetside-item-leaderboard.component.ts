@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, ViewChild, inject } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
 import { PlanetsideItemComponent } from './planetside-item.component';
@@ -15,7 +15,6 @@ import { FactionColorPipe } from '../pipes/faction-color.pipe';
 import { ItemLeaderboardDataSource } from './planetside-item-leaderboard.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-item-leaderboard.component.html',
     styleUrls: ['./planetside-item-leaderboard.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, MatCard, MatCardFooter, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, RouterLink, NgClass, MatSortHeader, GradeComponent, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, AsyncPipe, DecimalPipe, FactionColorPipe]

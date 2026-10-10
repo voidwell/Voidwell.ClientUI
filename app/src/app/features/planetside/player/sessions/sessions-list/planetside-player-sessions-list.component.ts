@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject, effect, untracked } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, effect, untracked } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -16,7 +16,6 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { SessionsDataSource } from './planetside-player-sessions-list.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-player-sessions-list.component.html',
     styleUrls: ['./planetside-player-sessions-list.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatButton, RouterLink, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe]
@@ -25,6 +24,7 @@ import { SessionsDataSource } from './planetside-player-sessions-list.data-sourc
 export class PlanetsidePlayerSessionsListComponent {
     private planetsidePlayer = inject(PlanetsidePlayerComponent);
     private characterRepository = inject(CharacterRepository);
+    private cdr = inject(ChangeDetectorRef);
 
     isLoading: boolean;
     errorMessage: string = null;
@@ -54,6 +54,7 @@ export class PlanetsidePlayerSessionsListComponent {
                         }))
                         .pipe(finalize(() => {
                             this.isLoading = false;
+                            this.cdr.markForCheck();
                         }))
                         .subscribe(sessions => {
                             this.sessions = sessions.sort(this.sortSessions);

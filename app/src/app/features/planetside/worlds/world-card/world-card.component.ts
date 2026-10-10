@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { WorldOnlineState } from '@core/api/models/ps2/world-state.model';
 import { MatCard, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
@@ -8,7 +8,6 @@ import { MatButton } from '@angular/material/button';
 import { FactionColorPipe } from '../../pipes/faction-color.pipe';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'world-card',
     templateUrl: './world-card.component.html',
     styleUrls: ['./world-card.component.css'],

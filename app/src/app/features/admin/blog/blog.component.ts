@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, ViewChild, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
@@ -14,7 +14,6 @@ import { BlogTableDataSource } from './blog.data-source';
 import { BlogEditorDialog } from './blog-editor-dialog/blog-editor-dialog.component';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'voidwell-admin-blog',
     templateUrl: './blog.component.html',
     styleUrls: ['./blog.component.css'],
@@ -24,6 +23,7 @@ import { BlogEditorDialog } from './blog-editor-dialog/blog-editor-dialog.compon
 export class BlogComponent implements OnInit {
     private postRepository = inject(PostRepository);
     private dialog = inject(MatDialog);
+    private cdr = inject(ChangeDetectorRef);
 
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -44,6 +44,7 @@ export class BlogComponent implements OnInit {
                 this.dataSource = new BlogTableDataSource(this.blogPosts, this.paginator);
 
                 this.isLoading = false;
+                this.cdr.markForCheck();
             });
     }
 
@@ -52,6 +53,7 @@ export class BlogComponent implements OnInit {
 
         dialogRef.afterClosed().subscribe(result => {
             this.blogPosts.push(result);
+            this.cdr.markForCheck();
         });
     }
 

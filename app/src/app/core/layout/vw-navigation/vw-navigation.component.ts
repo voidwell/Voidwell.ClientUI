@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnDestroy, NgZone, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnDestroy, NgZone, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodeOutlet } from '@angular/material/tree';
@@ -108,7 +108,6 @@ const NAV_DATA: NavNode[] = [
 ];
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-navigation',
     templateUrl: './vw-navigation.component.html',
     styleUrls: ['./vw-navigation.component.css'],
@@ -118,6 +117,7 @@ export class VWNavigationComponent implements OnDestroy {
     navMenuService = inject(NavMenuService);
     zone = inject(NgZone);
     router = inject(Router);
+    private cdr = inject(ChangeDetectorRef);
 
     public sidenavState: boolean;
     public mobileQuery: MediaQueryList;
@@ -133,12 +133,18 @@ export class VWNavigationComponent implements OnDestroy {
 
         const database = new NavDatabase();
 
-        this.navMenuService.onToggle.subscribe(state => this.sidenavState = state);
+        this.navMenuService.onToggle.subscribe(state => {
+            this.sidenavState = state;
+            this.cdr.markForCheck();
+        });
 
         this.nestedTreeControl = new NestedTreeControl<NavNode>(this._getChildren);
         this.nestedDataSource = new MatTreeNestedDataSource();
 
-        database.dataChange.subscribe(data => this.nestedDataSource.data = data);
+        database.dataChange.subscribe(data => {
+            this.nestedDataSource.data = data;
+            this.cdr.markForCheck();
+        });
 
         this.mobileQuery = media.matchMedia('(max-width: 1279px)');
         this.mobileQueryListener = (mql) => {
@@ -165,6 +171,7 @@ export class VWNavigationComponent implements OnDestroy {
             if (activeParentNode && activeParentNode.children.length > 0) {
                 this.nestedTreeControl.expandDescendants(activeParentNode);
             }
+            this.cdr.markForCheck();
         });
     }
 

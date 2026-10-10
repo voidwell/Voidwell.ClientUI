@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpErrorResponse, provideHttpClient } from '@angular/common/http';
 import { HttpTestingController, provideHttpClientTesting } from '@angular/common/http/testing';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { provideStore, Store } from '@ngrx/store';
 import { ApiClient } from './api-client';
 import { VoidwellAuthService } from '../auth/voidwell-auth.service';
@@ -11,15 +12,18 @@ describe('ApiClient', () => {
     let api: ApiClient;
     let http: HttpTestingController;
     const authService = { checkSession: vi.fn() };
+    const snackBar = { open: vi.fn() };
 
     beforeEach(() => {
         authService.checkSession.mockReset();
+        snackBar.open.mockReset();
         TestBed.configureTestingModule({
             providers: [
                 provideHttpClient(),
                 provideHttpClientTesting(),
                 provideStore(reducers),
-                { provide: VoidwellAuthService, useValue: authService }
+                { provide: VoidwellAuthService, useValue: authService },
+                { provide: MatSnackBar, useValue: snackBar }
             ]
         });
         api = TestBed.inject(ApiClient);
@@ -86,6 +90,23 @@ describe('ApiClient', () => {
 
         expect(authService.checkSession).toHaveBeenCalledTimes(1);
         expect(error?.status).toBe(401);
+        expect(snackBar.open).not.toHaveBeenCalled();
+    });
+
+    it('shows a toast when a load fails', () => {
+        api.get('/broken').subscribe({ error: () => undefined });
+
+        http.expectOne('/broken').flush('boom', { status: 500, statusText: 'Server Error' });
+
+        expect(snackBar.open).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not show a toast when a write fails', () => {
+        api.post('/broken', {}).subscribe({ error: () => undefined });
+
+        http.expectOne('/broken').flush('boom', { status: 500, statusText: 'Server Error' });
+
+        expect(snackBar.open).not.toHaveBeenCalled();
     });
 
     it('rethrows other errors without checking the session', () => {

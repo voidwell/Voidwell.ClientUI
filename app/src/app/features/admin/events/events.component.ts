@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnDestroy, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
@@ -14,7 +14,6 @@ import { EventsTableDataSource } from './events.data-source';
 import { EventEditorDialog } from './event-editor-dialog/event-editor-dialog.component';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'voidwell-admin-events',
     templateUrl: './events.component.html',
     imports: [LoaderComponent, ErrorMessageComponent, MatButton, MatIcon, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DatePipe]
@@ -23,6 +22,7 @@ import { EventEditorDialog } from './event-editor-dialog/event-editor-dialog.com
 export class EventsComponent implements OnDestroy {
     private customEventRepository = inject(CustomEventRepository);
     private dialog = inject(MatDialog);
+    private cdr = inject(ChangeDetectorRef);
 
     isLoading: boolean = true;
     errorMessage: string = null;
@@ -40,6 +40,7 @@ export class EventsComponent implements OnDestroy {
                 this.dataSource = new EventsTableDataSource(this.events);
 
                 this.isLoading = false;
+                this.cdr.markForCheck();
             });
     }
 
@@ -57,12 +58,14 @@ export class EventsComponent implements OnDestroy {
                 if (this.events[i].id == result.id) {
                     this.events[i] = result;
                     this.dataSource.refresh();
+                    this.cdr.markForCheck();
                     return;
                 }
             }
 
             this.events.push(result);
             this.dataSource.refresh();
+            this.cdr.markForCheck();
         });
     }
 

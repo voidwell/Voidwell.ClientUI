@@ -1,4 +1,4 @@
-﻿import { Injectable, EventEmitter } from '@angular/core';
+﻿import { Injectable, EventEmitter, signal } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
 import { SearchResult } from '../api/models/ps2/reference.model';
@@ -14,13 +14,13 @@ export class SearchService {
     public onSearchOpen: EventEmitter<boolean> = new EventEmitter();
     public onEntry: Observable<SearchQuery>;
     public onClickResult: Observable<SearchResult>;
-    public isUsable: boolean = false;
-    public searchFocused: boolean = false;
+    public readonly isUsable = signal(false);
+    public readonly searchFocused = signal(false);
     public control: FormControl;
     public categoryControl: FormControl;
     public placeholder: string = '';
-    public isSearching: boolean = false;
-    public results: SearchResult[];
+    public readonly isSearching = signal(false);
+    public readonly results = signal<SearchResult[]>([]);
 
     private searchStateSub: Subscription;
     private onEntryEmitter: EventEmitter<SearchQuery> = new EventEmitter();
@@ -60,54 +60,54 @@ export class SearchService {
     }
 
     attach(placeholder: string = '') {
-        this.isUsable = true;
+        this.isUsable.set(true);
         this.placeholder = placeholder;
 
         this.searchStateSub = this.searchState.subscribe((state: SearchState) => {
-            this.results = state.data;
-            this.isSearching = state.isSearching;
+            this.results.set(state.data);
+            this.isSearching.set(state.isSearching);
         });
     }
 
     detach() {
-        this.isUsable = false;
+        this.isUsable.set(false);
         this.placeholder = '';
-        this.isSearching = false;
+        this.isSearching.set(false);
         this.control.reset();
         this.categoryControl.reset();
-        this.results = [];
+        this.results.set([]);
 
         this.searchStateSub.unsubscribe();
     }
 
     clearSearch() {
-        this.isSearching = false;
+        this.isSearching.set(false);
 
         if (this.control.dirty) {
             this.control.reset();
-            this.results = [];
+            this.results.set([]);
         }
     }
 
     focusSearch() {
-        this.searchFocused = true;
+        this.searchFocused.set(true);
         this.onSearchOpen.emit(true);
     }
 
     dropdownToggled(isOpened: boolean) {
         if (isOpened) {
-            this.searchFocused = true;
+            this.searchFocused.set(true);
         } else {
             this.focusSearch();
         }
     }
 
     onFocus() {
-        this.searchFocused = true;
+        this.searchFocused.set(true);
     }
 
     onBlur() {
-        this.searchFocused = false;
+        this.searchFocused.set(false);
     }
 }
 

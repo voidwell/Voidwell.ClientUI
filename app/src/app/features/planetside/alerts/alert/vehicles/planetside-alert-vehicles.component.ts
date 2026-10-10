@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
+﻿import { Component, OnInit, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
 import { PlanetsideCombatEventComponent } from '../../../components/combat-event/planetside-combat-event.component';
@@ -8,7 +8,6 @@ import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
 import { AlertVehiclesDataSource } from './planetside-alert-vehicles.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-alert-vehicles.component.html',
     styleUrls: ['./planetside-alert-vehicles.component.css'],
     imports: [MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatSortHeader, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, FactionColorPipe]

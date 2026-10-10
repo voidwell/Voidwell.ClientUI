@@ -1,9 +1,8 @@
-﻿import { Component, ChangeDetectionStrategy, Input, OnInit, ElementRef, ViewEncapsulation, inject } from '@angular/core';
+﻿import { Component, Input, OnInit, ElementRef, ViewEncapsulation, inject } from '@angular/core';
 import * as d3 from 'd3';
 import { WeaponInfoResult } from '@core/api/models/ps2/weapon.model';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-item-damage-card',
     templateUrl: './planetside-item-damage-card.component.html',
     styleUrls: ['./planetside-item-damage-card.component.css'],

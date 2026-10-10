@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, ElementRef, Injector, ViewChild, effect, inject, untracked, input } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, ElementRef, Injector, ViewChild, effect, inject, untracked, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
@@ -19,7 +19,6 @@ import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './population.component.html',
     styleUrls: ['./population.component.css'],
     imports: [MatCard, MatCardContent, MatButtonToggleGroup, MatButtonToggle, MatButton, LoaderComponent, MatFormField, MatInput, MatDatepickerInput, FormsModule, ReactiveFormsModule, MatDatepickerToggle, MatSuffix, MatDatepicker, MatIcon]
@@ -33,6 +32,7 @@ export class PopulationComponent implements OnInit {
     private worldRepository = inject(WorldRepository);
     private worldService = inject(WorldService);
     private injector = inject(Injector);
+    private cdr = inject(ChangeDetectorRef);
 
     @ViewChild('linegraph', { static: true }) graphElement: ElementRef<HTMLElement>;
 
@@ -91,6 +91,7 @@ export class PopulationComponent implements OnInit {
                 }
 
                 this.isLoading = false;
+                this.cdr.markForCheck();
             });
         }, { injector: this.injector });
     }
@@ -138,15 +139,18 @@ export class PopulationComponent implements OnInit {
         this.worldRepository.getPopulationHistory(worldIds)
             .pipe(catchError(error => {
                 this.errorMessage = getErrorMessage(error)
+                this.cdr.markForCheck();
                 return throwError(() => error);
             }))
             .pipe(finalize(() => {
                 this.isLoading = false;
+                this.cdr.markForCheck();
             }))
             .subscribe(data => {
                 this.stats = data;
                 this.graphWorlds = this.selectedWorlds.slice();
                 this.renderGraph();
+                this.cdr.markForCheck();
             });
     }
 

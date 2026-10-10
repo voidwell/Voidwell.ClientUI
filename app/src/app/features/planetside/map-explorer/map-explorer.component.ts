@@ -1,10 +1,9 @@
-import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
 import { ZoneService } from '../data/zone.service';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './map-explorer.component.html',
     imports: [VWTabNavSubBarComponent, RouterOutlet]
 })

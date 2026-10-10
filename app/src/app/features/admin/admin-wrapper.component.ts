@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject, computed } from '@angular/core';
+﻿import { Component, inject, computed } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { NavLink } from '@shared/ui/nav-link.model';
 import { AppState, selectAuthState } from '@core/store/app.states';
@@ -7,7 +7,6 @@ import { VWTabNavBarComponent } from '@shared/ui/vw-tab-nav-bar/vw-tab-nav-bar.c
 import { RouterOutlet } from '@angular/router';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'voidwell-admin-wrapper',
     templateUrl: './admin-wrapper.component.html',
     imports: [VWTabNavBarComponent, RouterOutlet]

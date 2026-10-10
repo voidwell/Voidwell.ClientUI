@@ -1,4 +1,4 @@
-﻿import { Input, Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, effect, input, signal } from '@angular/core';
+﻿import { ChangeDetectorRef, Input, Component, OnInit, OnDestroy, EventEmitter, effect, inject, input, signal } from '@angular/core';
 import { Observable, Subscription, interval} from 'rxjs';
 import { ZoneRegionOwnership } from '@core/api/models/ps2/map.model';
 import { CaptureLogRow } from '@core/api/models/ps2/combat-report.model';
@@ -11,7 +11,6 @@ import { DatePipe } from '@angular/common';
 import { toDate } from '@shared/utils/date';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'zone-replay-map',
     templateUrl: './replay-map.component.html',
     styleUrls: ['./replay-map.component.css'],
@@ -43,6 +42,8 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
     tickMultiplier: number = 100;
     multipliers = [50, 100, 200];
 
+    private cdr = inject(ChangeDetectorRef);
+
     progressWidth = 0;
     seekHoverWidth = 0;
 
@@ -64,6 +65,7 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
                 if (!timestamp) return;
 
                 this.seekToTime(new Date(timestamp));
+                this.cdr.markForCheck();
             });
         }
 
@@ -75,7 +77,10 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
     }
 
     onScoreChange(newScore: number[]) {
-        setTimeout(() => { this.replayScore = newScore }, 50);
+        setTimeout(() => {
+            this.replayScore = newScore;
+            this.cdr.markForCheck();
+        }, 50);
     }
 
     togglePlaying() {
@@ -140,6 +145,7 @@ export class ReplayMapComponent implements OnInit, OnDestroy {
     private tock() {
         const newTime = new Date(this.replayTime.getTime() + (this.tickSpeed * this.tickMultiplier));
         this.seekToTime(newTime);
+        this.cdr.markForCheck();
     }
 
     private getTimeSpanString(ms: number): string {

@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, ViewChild, inject, input } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, ViewChild, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -20,7 +20,6 @@ import { FactionColorPipe } from '../pipes/faction-color.pipe';
 import { BulkCharacterStatsDataSource } from './bulk-character-stats.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './bulk-character-stats.component.html',
     styleUrls: ['./bulk-character-stats.component.css'],
     imports: [MatCard, MatCardContent, MatFormField, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatChipInput, MatButton, LoaderComponent, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, FactionColorPipe]
@@ -30,6 +29,7 @@ export class BulkCharacterStatsComponent implements OnInit {
   readonly names = input<string>();
   private router = inject(Router);
   private characterRepository = inject(CharacterRepository);
+  private cdr = inject(ChangeDetectorRef);
 
   @ViewChild(MatSort, { static: true }) sort: MatSort;
 
@@ -96,10 +96,12 @@ export class BulkCharacterStatsComponent implements OnInit {
       }))
       .pipe(finalize(() => {
         this.isLoading = false;
+        this.cdr.markForCheck();
       }))
       .subscribe(data => {
         this.stats = data;
         this.dataSource = new BulkCharacterStatsDataSource(this.stats, this.sort);
+        this.cdr.markForCheck();
       });
   }
 

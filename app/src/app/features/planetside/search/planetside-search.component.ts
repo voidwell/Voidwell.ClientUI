@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, ElementRef, HostListener, ViewChild, OnDestroy, inject } from '@angular/core';
+﻿import { Component, ElementRef, HostListener, ViewChild, OnDestroy, inject } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { SearchService } from '@core/layout/search.service';
 import { NgClass } from '@angular/common';
@@ -13,7 +13,6 @@ import { FactionColorPipe } from '../pipes/faction-color.pipe';
 import { WorldNamePipe } from '../pipes/world-name.pipe';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-search.component.html',
     styleUrls: ['./planetside-search.component.css'],
     imports: [NgClass, PlanetsidePlatformControl, MatIconButton, MatIcon, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatInput, MatAutocompleteTrigger, MatAutocomplete, FactionColorPipe, WorldNamePipe]
@@ -40,7 +39,7 @@ export class PlanetsideSearchComponent implements OnDestroy {
 
     @HostListener('document:click', ['$event'])
     clickout(event: MouseEvent) {
-        if (!this.searchService.searchFocused) {
+        if (!this.searchService.searchFocused()) {
             return;
         }
 

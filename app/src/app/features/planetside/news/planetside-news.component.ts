@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FeedItem } from '@core/api/models/ps2/reference.model';
@@ -10,7 +10,6 @@ import { NewsCardComponent } from './news-card/news-card.component';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-news',
     templateUrl: './planetside-news.component.html',
     styleUrls: ['./planetside-news.component.css'],
@@ -19,6 +18,7 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 
 export class PlanetsideNewsComponent {
     private feedsRepository = inject(FeedsRepository);
+    private cdr = inject(ChangeDetectorRef);
 
     errorMessage: string = null;
     isLoading: boolean;
@@ -44,6 +44,7 @@ export class PlanetsideNewsComponent {
                 this.newsList = newsList;
                 this.isNewsLoading = false;
                 this.updateLoading();
+                this.cdr.markForCheck();
             });
 
         this.feedsRepository.getUpdates()
@@ -56,6 +57,7 @@ export class PlanetsideNewsComponent {
                 this.updateList = updateList;
                 this.isUpdatesLoading = false;
                 this.updateLoading();
+                this.cdr.markForCheck();
             });
     }
 

@@ -1,11 +1,10 @@
-import { Component, ChangeDetectionStrategy, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ElementRef, ViewChild } from '@angular/core';
 import * as d3 from 'd3';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
 import { DecimalPipe } from '@angular/common';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-player-stats-siege-card',
     templateUrl: './planetside-player-stats-siege-card.component.html',
     styleUrls: ['./planetside-player-stats-siege-card.component.css'],

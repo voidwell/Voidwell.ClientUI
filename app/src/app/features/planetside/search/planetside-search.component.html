@@ -1,4 +1,4 @@
-﻿<div class="search" [ngClass]="{'focus': searchService.searchFocused || searchService.control.dirty}">
+﻿<div class="search" [ngClass]="{'focus': searchService.searchFocused() || searchService.control.dirty}">
   <div class ="top-search-flex" style="display: flex; flex-direction: row">
     <platform-control class="platform-control" style="flex: none"></platform-control>
     <div class="top-search-container" style="flex: 1 1 100%; max-width: 100%" #searchContainer>
@@ -7,7 +7,7 @@
           <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
         </button>
       }
-      <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching}"></i>
+      <i class="top-search_reset" [ngClass]="{'loading': searchService.isSearching()}"></i>
       <mat-select class="top-search_dropdown"
         [formControl]="searchService.categoryControl"
         (openedChange)="searchService.dropdownToggled($event)"
@@ -29,7 +29,7 @@
     </div>
   </div>
   <mat-autocomplete #auto="matAutocomplete" class="search-results">
-    @for (result of searchService.results; track result) {
+    @for (result of searchService.results(); track result) {
       <mat-option class="search-option" [value]="result.name" (click)="searchService.selectResult(result)">
         <div class="item-title">
           @if (result.alias) {

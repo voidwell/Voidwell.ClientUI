@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject, signal, effect, input, untracked } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, signal, effect, input, untracked } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,7 +10,6 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { CharacterCardComponent } from './character-card/character-card.component';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-player',
     templateUrl: './planetside-player.component.html',
     imports: [LoaderComponent, ErrorMessageComponent, CharacterCardComponent, RouterOutlet]
@@ -20,6 +19,7 @@ export class PlanetsidePlayerComponent {
     private characterRepository = inject(CharacterRepository);
     readonly id = input<string>();
     private router = inject(Router);
+    private cdr = inject(ChangeDetectorRef);
 
     isLoading: boolean;
     errorMessage: string = null;
@@ -40,11 +40,13 @@ export class PlanetsidePlayerComponent {
                     .pipe(catchError(error => {
                         this.errorMessage = getErrorMessage(error)
                         this.isLoading = false;
+                        this.cdr.markForCheck();
                         return throwError(() => error);
                     }))
                     .subscribe(data => {
                         this.playerData.set(data);
                         this.isLoading = false;
+                        this.cdr.markForCheck();
                     });
             });
         });

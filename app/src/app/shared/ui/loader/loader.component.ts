@@ -1,7 +1,6 @@
-﻿import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-loader',
     templateUrl: './loader.component.html',
     styleUrls: ['./loader.component.css']

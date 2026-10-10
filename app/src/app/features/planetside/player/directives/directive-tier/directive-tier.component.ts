@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input, OnInit, HostBinding } from '@angular/core';
+import { Component, Input, OnInit, HostBinding } from '@angular/core';
 import { CharacterDirectivesOutlineTier } from '@core/api/models/ps2/character.model';
 import { NgClass, DatePipe } from '@angular/common';
 import { MatIcon } from '@angular/material/icon';
@@ -6,7 +6,6 @@ import { DirectiveObjectiveComponent } from '../directive-objective/directive-ob
 import { DgcImageUrlPipe } from '../../../pipes/dgc-image-url.pipe';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'directive-tier',
     templateUrl: './directive-tier.component.html',
     styleUrls: ['./directive-tier.component.css'],

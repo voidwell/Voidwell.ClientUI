@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, Input, Output, OnInit, OnDestroy, OnChanges, EventEmitter, effect, inject, untracked, input } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, Input, Output, OnInit, OnDestroy, OnChanges, EventEmitter, effect, inject, untracked, input } from '@angular/core';
 import { Subscription, Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import {
@@ -26,7 +26,6 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { LeafletDirective } from '@bluehalo/ngx-leaflet';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'ps2-zone-map',
     templateUrl: './ps2-zone-map.component.html',
     styleUrls: ['./ps2-zone-map.component.css'],
@@ -36,6 +35,7 @@ import { LeafletDirective } from '@bluehalo/ngx-leaflet';
 export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
     private zoneHelper = inject(ZoneHelper);
     private zoneService = inject(ZoneService);
+    private cdr = inject(ChangeDetectorRef);
 
     @Input() zoneId: number;
     @Input() captureStream: Observable<FacilityEvent>;
@@ -172,13 +172,16 @@ export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {
             .pipe(catchError(error => {
                 this.errorMessage = getErrorMessage(error)
                 this.isLoading = false;
+                this.cdr.markForCheck();
                 return throwError(() => error);
             }))
             .pipe(finalize(() => {
                 this.isLoading = false;
+                this.cdr.markForCheck();
             }))
             .subscribe(zoneMap => {
                 this.zoneMap = zoneMap;
+                this.cdr.markForCheck();
             });
 
         if (this.captureStream) {

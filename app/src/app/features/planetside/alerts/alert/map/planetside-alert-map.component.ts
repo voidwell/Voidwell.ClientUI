@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, EventEmitter, inject, Injector, effect, untracked, signal } from '@angular/core';
+﻿import { Component, OnInit, EventEmitter, inject, Injector, effect, untracked, signal } from '@angular/core';
 import { PlanetsideCombatEventComponent } from '../../../components/combat-event/planetside-combat-event.component';
 import { ZoneRegionOwnership } from '@core/api/models/ps2/map.model';
 import { AlertResult } from '@core/api/models/ps2/alert.model';
@@ -14,7 +14,6 @@ import { FactionCodePipe } from '../../../pipes/faction-code.pipe';
 import { AlertMapDataSource, CaptureFilter } from './planetside-alert-map.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-alert-map.component.html',
     styleUrls: ['./planetside-alert-map.component.css'],
     imports: [ReplayMapComponent, MatButtonToggle, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, NgClass, RouterLink, FactionBarComponent, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DatePipe, FactionColorPipe, FactionCodePipe]

@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
@@ -7,7 +7,6 @@ import { EventCardComponent } from '../event-card/event-card.component';
 import { NgArrayPipesModule } from 'ngx-pipes';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-events-list.component.html',
     styleUrls: ['./planetside-events-list.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, EventCardComponent, NgArrayPipesModule]
@@ -15,6 +14,7 @@ import { NgArrayPipesModule } from 'ngx-pipes';
 
 export class PlanetsideEventsListComponent {
     private customEventRepository = inject(CustomEventRepository);
+    private cdr = inject(ChangeDetectorRef);
 
     errorMessage: string = null;
     isLoading: boolean;
@@ -30,6 +30,7 @@ export class PlanetsideEventsListComponent {
                 this.events = events;
 
                 this.isLoading = false;
+                this.cdr.markForCheck();
             });
     }
 

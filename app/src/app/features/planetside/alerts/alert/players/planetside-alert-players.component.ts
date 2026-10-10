@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, ElementRef, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
 import { fromEvent } from 'rxjs';
@@ -13,7 +13,6 @@ import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
 import { AlertPlayersDataSource } from './planetside-alert-players.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-alert-players.component.html',
     styleUrls: ['./planetside-alert-players.component.css'],
     imports: [MatFormField, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatSortHeader, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, FactionColorPipe]
@@ -22,6 +21,7 @@ import { AlertPlayersDataSource } from './planetside-alert-players.data-source';
 export class PlanetsideAlertPlayersComponent implements OnInit {
     private parentEventComponent = inject(PlanetsideCombatEventComponent);
     private injector = inject(Injector);
+    private cdr = inject(ChangeDetectorRef);
 
     @ViewChild(MatSort, { static: true }) sort: MatSort;
     @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
@@ -44,6 +44,7 @@ export class PlanetsideAlertPlayersComponent implements OnInit {
                 });
 
                 this.dataSource = new AlertPlayersDataSource(alert.log.stats.participants, this.sort, this.paginator);
+                this.cdr.markForCheck();
 
                 fromEvent(this.filter.nativeElement, 'keyup')
                     .pipe(debounceTime(150))

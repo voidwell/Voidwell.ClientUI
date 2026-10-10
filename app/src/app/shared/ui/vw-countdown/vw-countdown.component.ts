@@ -1,10 +1,9 @@
-﻿import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, Input, OnInit, inject } from '@angular/core';
 import { interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { toDate } from '@shared/utils/date';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-countdown',
     template: '<span>{{remaining}}</span>'
 })
@@ -12,6 +11,7 @@ import { toDate } from '@shared/utils/date';
 export class VWCountdownComponent implements OnInit {
     @Input({ transform: toDate }) end: Date;
 
+    private cdr = inject(ChangeDetectorRef);
     private diff: number;
     public remaining: string;
 
@@ -55,6 +55,7 @@ export class VWCountdownComponent implements OnInit {
             this.tock();
         })).subscribe((x) => {
             this.remaining = this.hms();
+            this.cdr.markForCheck();
 
             if (this.diff < 0) {
                 tick.unsubscribe();

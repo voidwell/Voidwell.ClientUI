@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, inject } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { RankingsRepository } from '@core/api/ps2/rankings.repository';
@@ -14,7 +14,6 @@ import { WorldNamePipe } from '../pipes/world-name.pipe';
 import { PlayerRanksDataSource } from './player-ranks.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './player-ranks.component.html',
     styleUrls: ['./player-ranks.component.css'],
     imports: [MatCard, MatCardContent, MatCardFooter, LoaderComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, FactionColorPipe, WorldNamePipe]
@@ -22,6 +21,7 @@ import { PlayerRanksDataSource } from './player-ranks.data-source';
 
 export class PlayerRanksComponent implements OnInit {
     private rankingsRepository = inject(RankingsRepository);
+    private cdr = inject(ChangeDetectorRef);
 
     isLoading: boolean;
     errorMessage: string = null;
@@ -39,6 +39,7 @@ export class PlayerRanksComponent implements OnInit {
             }))
             .pipe(finalize(() => {
                 this.isLoading = false;
+                this.cdr.markForCheck();
             }))
             .subscribe(data => {
                 this.playerRankings = data;

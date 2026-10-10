@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -14,13 +14,13 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/m
 import { JsonPipe } from '@angular/common';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './services.component.html',
     imports: [LoaderComponent, ErrorMessageComponent, MatCard, MatCardHeader, MatCardTitle, MatSlideToggle, MatCardContent, JsonPipe]
 })
 
 export class ServicesComponent {
     private servicesRepository = inject(ServicesRepository);
+    private cdr = inject(ChangeDetectorRef);
 
     isLoading: boolean;
     errorMessage: string;
@@ -37,6 +37,7 @@ export class ServicesComponent {
             }))
             .pipe(finalize(() => {
                 this.isLoading = false;
+                this.cdr.markForCheck();
             }))
             .subscribe(services => {
                 this.planetsideServices = services;
@@ -63,6 +64,7 @@ export class ServicesComponent {
             }))
             .pipe(finalize(() => {
                 service.isLoading = false;
+                this.cdr.markForCheck();
             }))
             .subscribe(serviceState => {
                 Object.assign(service, serviceState);

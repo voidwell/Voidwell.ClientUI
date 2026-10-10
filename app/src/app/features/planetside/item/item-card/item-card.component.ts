@@ -1,11 +1,10 @@
-﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+﻿import { Component, inject } from '@angular/core';
 import { PlanetsideItemComponent } from '../planetside-item.component';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardFooter } from '@angular/material/card';
 import { NgClass } from '@angular/common';
 import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'item-card',
     templateUrl: './item-card.component.html',
     styleUrls: ['./item-card.component.css'],

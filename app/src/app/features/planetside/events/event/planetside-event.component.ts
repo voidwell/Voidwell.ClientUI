@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, forwardRef, inject, effect, input, untracked } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, forwardRef, inject, effect, input, untracked } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -17,7 +17,6 @@ import { ZoneNamePipe } from '../../pipes/zone-name.pipe';
 import { WorldNamePipe } from '../../pipes/world-name.pipe';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-event.component.html',
     styleUrls: ['./planetside-event.component.css'],
     providers: [{ provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideEventComponent) }],
@@ -26,6 +25,7 @@ import { WorldNamePipe } from '../../pipes/world-name.pipe';
 
 export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<CustomEventDetails> {
     private customEventRepository = inject(CustomEventRepository);
+    private cdr = inject(ChangeDetectorRef);
     readonly eventId = input<string>();
 
     isLoading: boolean = true;
@@ -55,6 +55,7 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<Cus
                     .pipe(catchError(error => {
                         this.errorMessage = getErrorMessage(error)
                         this.isLoading = false;
+                        this.cdr.markForCheck();
                         return throwError(() => error);
                     }))
                     .subscribe(data => this.setup(data));
@@ -65,6 +66,7 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<Cus
     private setup(data: CustomEventDetails) {
         this.event.set(data);
         this.isLoading = false;
+        this.cdr.markForCheck();
     }
 
     private getEndDate(alert: { startDate?: string }): Date {

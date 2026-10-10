@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject, effect, input, untracked } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, effect, input, untracked } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
 import { throwError } from 'rxjs';
@@ -14,7 +14,6 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { OutfitMembersDataSource } from './planetside-outfit.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-outfit',
     templateUrl: './planetside-outfit.component.html',
     styleUrls: ['./planetside-outfit.component.css'],
@@ -25,6 +24,7 @@ export class PlanetsideOutfitComponent {
     private outfitRepository = inject(OutfitRepository);
     readonly id = input<string>();
     private router = inject(Router);
+    private cdr = inject(ChangeDetectorRef);
 
     isLoading: boolean;
     errorMessage: string = null;
@@ -54,6 +54,7 @@ export class PlanetsideOutfitComponent {
                     }))
                     .pipe(finalize(() => {
                         this.isLoading = false;
+                        this.cdr.markForCheck();
                     }))
                     .subscribe(data => {
                         this.outfitData = data;
@@ -66,6 +67,7 @@ export class PlanetsideOutfitComponent {
                     }))
                     .pipe(finalize(() => {
                         this.isLoadingMembers = false;
+                        this.cdr.markForCheck();
                     }))
                     .subscribe(data => {
                         this.members = data;

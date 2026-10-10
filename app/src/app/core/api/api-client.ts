@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Store } from '@ngrx/store';
 import { Observable, of, throwError } from 'rxjs';
 import { catchError, tap, timeout } from 'rxjs/operators';
@@ -29,11 +30,12 @@ export class ApiClient {
     private http = inject(HttpClient);
     private cache = inject(RequestCache);
     private authService = inject(VoidwellAuthService);
+    private snackBar = inject(MatSnackBar);
     private authState = inject<Store<AppState>>(Store).selectSignal(selectAuthState);
 
     get<T>(url: string, options: RequestOptions = {}): Observable<T> {
         const fullUrl = this.buildUrl(url, options.params);
-        return this.send(fullUrl, () => this.http.get<T>(fullUrl, this.httpOptions(options)), options.cache);
+        return this.send(fullUrl, () => this.http.get<T>(fullUrl, this.httpOptions(options)), options.cache, true);
     }
 
     post<TResponse = void, TBody = unknown>(url: string, body: TBody | null, options: RequestOptions = {}): Observable<TResponse> {
@@ -51,7 +53,7 @@ export class ApiClient {
         return this.send(fullUrl, () => this.http.delete<T>(fullUrl, this.httpOptions(options)));
     }
 
-    private send<T>(cacheKey: string, request: () => Observable<T>, isCached = false): Observable<T> {
+    private send<T>(cacheKey: string, request: () => Observable<T>, isCached = false, notifyOnError = false): Observable<T> {
         if (isCached) {
             const cached = this.cache.get(cacheKey);
             if (cached) {
@@ -64,6 +66,8 @@ export class ApiClient {
             catchError(error => {
                 if (error.status === 401) {
                     this.authService.checkSession();
+                } else if (notifyOnError) {
+                    this.notifyLoadFailed(error);
                 }
                 return throwError(() => error);
             }));
@@ -73,6 +77,14 @@ export class ApiClient {
         }
 
         return response;
+    }
+
+    /** Toasts a failed load. A 401 is skipped because the session check signs the user in again. */
+    private notifyLoadFailed(error: { status?: number }): void {
+        const message = error.status === 0
+            ? 'Unable to reach the server. Check your connection and try again.'
+            : 'Something went wrong while loading data. Please try again.';
+        this.snackBar.open(message, 'Dismiss', { duration: 6000 });
     }
 
     private httpOptions(options: RequestOptions): { headers?: HttpHeaders } {

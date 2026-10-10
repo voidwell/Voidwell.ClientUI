@@ -8,7 +8,7 @@
     </a>
   </div>
   <ul class="top-menu">
-    @if (searchService.isUsable) {
+    @if (searchService.isUsable()) {
       <li class="top-menu_search">
         <button mat-icon-button (click)="focusSearch($event)">
           <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
@@ -42,8 +42,8 @@
       </mat-menu>
     </li>
   </ul>
-  @if (searchService.isUsable) {
-    <form class="top-search" [ngClass]="{'focus': searchService.searchFocused || searchService.control.dirty}">
+  @if (searchService.isUsable()) {
+    <form class="top-search" [ngClass]="{'focus': searchService.searchFocused() || searchService.control.dirty}">
       <router-outlet name="search"></router-outlet>
     </form>
   }

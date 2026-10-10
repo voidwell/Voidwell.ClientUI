@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+﻿import { Component, Input } from '@angular/core';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
 import { NgClass, DatePipe } from '@angular/common';
 import { MatCard, MatCardTitle, MatCardSubtitle } from '@angular/material/card';
@@ -9,7 +9,6 @@ import { NgArrayPipesModule } from 'ngx-pipes';
 import { ZoneNamePipe } from '../../pipes/zone-name.pipe';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-event-card',
     templateUrl: './event-card.component.html',
     styleUrls: ['./event-card.component.css'],

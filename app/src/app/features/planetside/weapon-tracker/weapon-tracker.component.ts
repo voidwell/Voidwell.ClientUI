@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, inject, input } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, ElementRef, ViewChild, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
@@ -77,7 +77,6 @@ const categoryOptions = [
 ];
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './weapon-tracker.component.html',
     styleUrls: ['./weapon-tracker.component.css'],
     imports: [MatCard, MatCardContent, MatFormField, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatAutocompleteTrigger, MatChipInput, MatAutocomplete, MatButton, LoaderComponent, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, AsyncPipe]
@@ -91,6 +90,7 @@ export class WeaponTrackerComponent implements OnInit {
     readonly weapons = input<string>();
     private router = inject(Router);
     private oracleRepository = inject(OracleRepository);
+    private cdr = inject(ChangeDetectorRef);
 
     @ViewChild('linegraph', { static: true }) graphElement: ElementRef<HTMLElement>;
     @ViewChild('weaponInput') weaponInput: ElementRef<HTMLInputElement>;
@@ -224,6 +224,7 @@ export class WeaponTrackerComponent implements OnInit {
             }))
             .pipe(finalize(() => {
                 this.isLoading = false;
+                this.cdr.markForCheck();
             }))
             .subscribe(data => {
                 this.stats = data;
@@ -481,6 +482,7 @@ export class WeaponTrackerComponent implements OnInit {
                 }),
                 finalize(() => {
                     this.isLoading = false;
+                    this.cdr.markForCheck();
                 }));
     }
 

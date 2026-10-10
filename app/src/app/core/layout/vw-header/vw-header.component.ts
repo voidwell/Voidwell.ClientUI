@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, computed } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { NavMenuService } from '../nav-menu.service';
 import { SearchService } from '../search.service';
@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-header',
     templateUrl: './vw-header.component.html',
     styleUrls: ['./vw-header.component.css'],

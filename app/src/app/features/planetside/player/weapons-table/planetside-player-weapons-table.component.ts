@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, Input, OnInit, ViewChild } from '@angular/core';
+﻿import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
 import { CharacterDetailsWeaponStat } from '@core/api/models/ps2/character.model';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
@@ -8,7 +8,6 @@ import { DecimalPipe } from '@angular/common';
 import { PlayerWeaponsDataSource } from './planetside-player-weapons-table.data-source';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-player-weapons-table',
     templateUrl: './planetside-player-weapons-table.component.html',
     styleUrls: ['./planetside-player-weapons-table.component.css'],

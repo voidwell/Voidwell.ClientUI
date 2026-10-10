@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, forwardRef, inject, effect, input, untracked } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, forwardRef, inject, effect, input, untracked } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -18,7 +18,6 @@ import { ZoneNamePipe } from '../../pipes/zone-name.pipe';
 import { WorldNamePipe } from '../../pipes/world-name.pipe';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-alert.component.html',
     styleUrls: ['./planetside-alert.component.css'],
     providers: [{ provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideAlertComponent) }],
@@ -27,6 +26,7 @@ import { WorldNamePipe } from '../../pipes/world-name.pipe';
 
 export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent<AlertResult> {
     private alertRepository = inject(AlertRepository);
+    private cdr = inject(ChangeDetectorRef);
     readonly worldId = input<string>();
     readonly instanceId = input<string>();
 
@@ -61,6 +61,7 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent<Ale
                     }))
                     .pipe(finalize(() => {
                         this.isLoading = false;
+                        this.cdr.markForCheck();
                     }))
                     .subscribe(data => {
                         this.event.set(data);

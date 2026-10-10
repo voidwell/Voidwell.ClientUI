@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { WorldService } from '../../data/world.service';
 import { AlertRepository } from '@core/api/ps2/alert.repository';
 import { AlertView, toAlertView } from '../../components/alert-card/alert-view';
@@ -10,7 +10,6 @@ import { MatIcon } from '@angular/material/icon';
 import { NgArrayPipesModule } from 'ngx-pipes';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-alerts-list.component.html',
     styleUrls: ['./planetside-alerts-list.component.css'],
     imports: [AlertCardComponent, ErrorMessageComponent, MatButtonToggleGroup, MatButtonToggle, MatButton, MatIcon, NgArrayPipesModule]
@@ -18,6 +17,7 @@ import { NgArrayPipesModule } from 'ngx-pipes';
 
 export class PlanetsideAlertsListComponent {
     private alertRepository = inject(AlertRepository);
+    private cdr = inject(ChangeDetectorRef);
     worldService = inject(WorldService);
 
     errorMessage: string = null;
@@ -79,6 +79,7 @@ export class PlanetsideAlertsListComponent {
                 }
 
                 this.isLoading = false;
+                this.cdr.markForCheck();
             });
     }
 

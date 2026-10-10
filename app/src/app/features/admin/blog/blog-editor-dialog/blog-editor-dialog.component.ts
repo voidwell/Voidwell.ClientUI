@@ -1,4 +1,4 @@
-﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BlogPost, BlogPostRequest } from '@core/api/models/platform/post.model';
 import { PostRepository } from '@core/api/platform/post.repository';
@@ -9,7 +9,6 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'blog-editor-dialog',
     templateUrl: './blog-editor-dialog.component.html',
     imports: [
@@ -23,6 +22,7 @@ import { FormsModule } from '@angular/forms';
 export class BlogEditorDialog {
     dialogRef = inject<MatDialogRef<BlogEditorDialog>>(MatDialogRef);
     private postRepository = inject(PostRepository);
+    private cdr = inject(ChangeDetectorRef);
     data = inject<{ entry?: BlogPost }>(MAT_DIALOG_DATA, { optional: true });
 
     public entry: BlogPost | null = null;
@@ -40,6 +40,7 @@ export class BlogEditorDialog {
             this.postRepository.getEditablePost(existing.id)
                 .subscribe(editable => {
                     this.form = { id: editable.id, title: editable.title, markdownContent: editable.markdownContent, tags: editable.tags };
+                    this.cdr.markForCheck();
                 });
         }
     }
@@ -56,6 +57,7 @@ export class BlogEditorDialog {
                 .subscribe(result => {
                     this.entry = result;
                     Object.assign(this.data.entry, result);
+                    this.cdr.markForCheck();
                 });
         } else {
             this.postRepository.createPost(request)
@@ -63,6 +65,7 @@ export class BlogEditorDialog {
                     this.entry = result;
                     this.form.id = result.id;
                     this.updateList = true;
+                    this.cdr.markForCheck();
                 });
         }
     }

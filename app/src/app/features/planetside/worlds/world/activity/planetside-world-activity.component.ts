@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, inject, effect, untracked } from '@angular/core';
+import { Component, inject, effect, untracked } from '@angular/core';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
 import { CombatReportClassStats, CombatReportParticipantStats } from '@core/api/models/ps2/combat-report.model';
 import { WorldActivity } from '@core/api/models/ps2/world.model';
@@ -33,7 +33,6 @@ export interface ActivityView extends Omit<WorldActivity, 'activityPeriodStart' 
 }
 
 @Component({
-    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-world-activity.component.html',
     styleUrls: ['./planetside-world-activity.component.css'],
     imports: [LoaderComponent, AlertCardComponent, ActivityPopulationCardComponent, MatCard, MatCardTitle, MatCardContent, NgClass, RouterLink, DecimalPipe, NgArrayPipesModule, DgcImageUrlPipe, FactionColorPipe]
