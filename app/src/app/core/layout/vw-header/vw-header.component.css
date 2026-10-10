@@ -162,3 +162,16 @@ ul.top-menu {
     line-height: 45px;
     margin: -7px 0 0 5px;
 }
+
+/* mat-icon is a fixed 24px box, so size it explicitly to keep the larger glyph from being clipped. */
+.top-menu .top-menu_profile mat-icon {
+    font-size: 45px;
+    width: 45px;
+    height: 45px;
+}
+
+.top-menu .top-menu_profile button {
+    width: 56px;
+    height: 56px;
+    padding: 5px;
+}

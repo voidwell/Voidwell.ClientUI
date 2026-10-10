@@ -13,6 +13,9 @@
 .top-search-container {
     transition: all;
     transition-duration: 0.3s;
+    display: flex;
+    align-items: center;
+    position: relative;
 }
 
 .top-search-container,
@@ -51,12 +54,12 @@
     margin: 0;
 }
 
-    .top-search_input.mat-input-element::placeholder {
+    .top-search_input::placeholder {
         color: #b4bfc3;
         opacity: 1;
     }
 
-.search.focus .top-search_input.mat-input-element::placeholder {
+.search.focus .top-search_input::placeholder {
     color: #22313a;
     opacity: 1;
 }
@@ -69,12 +72,12 @@
     width: 50px;
     height: 50px;
     display: block;
+    flex: none;
     font-family: "Material Design Icons";
     font-size: 24px;
     line-height: 1;
     font-style: normal;
     text-rendering: auto;
-    float: left;
     border-radius: 2px 0 0 2px;
     -webkit-font-smoothing: antialiased;
 }
@@ -89,18 +92,18 @@
     }
 
     .top-search_reset:before {
-        content: "\F349";
+        content: "\F0349"; /* mdi-magnify; MDI 7 renumbered its codepoints */
     }
 
     .top-search_reset:after {
         transform: scale(0) rotate(-180deg);
         color: #22313a;
-        content: "\F04D";
+        content: "\F004D"; /* mdi-arrow-left */
     }
 
     .top-search_reset.loading:after {
         animation: spin 0.5s infinite linear;
-        content: "\F771";
+        content: "\F0772"; /* mdi-loading */
     }
 
 .top-search_clear {
@@ -135,7 +138,7 @@
     font-family: inherit;
     line-height: inherit;
     margin: 0;
-    float: left;
+    flex: none;
     text-align: center;
     font-weight: bold;
 }
@@ -144,17 +147,25 @@
     width: 110px;
 }
 
-.top-search_dropdown ::ng-deep .mat-select-arrow-wrapper *,
-.platform-control ::ng-deep .mat-select-arrow-wrapper * {
+.top-search_dropdown ::ng-deep .mat-mdc-select-arrow-wrapper,
+.platform-control ::ng-deep .mat-mdc-select-arrow-wrapper {
     visibility: hidden;
-    border: none;
 }
 
-.top-search_dropdown ::ng-deep .mat-select-value-text,
-.platform-control ::ng-deep .mat-select-value-text {
+/* mat-select takes its text color from this token, not from the element's own color. */
+.top-search_dropdown,
+.platform-control {
+    --mat-select-enabled-trigger-text-color: #b4bfc3;
+}
+
+.search.focus .top-search_dropdown {
+    --mat-select-enabled-trigger-text-color: #22313a;
+}
+
+.top-search_dropdown {
     color: #b4bfc3;
 }
 
-.search.focus .top-search_dropdown ::ng-deep .mat-select-value-text {
+.search.focus .top-search_dropdown {
     color: #22313a;
 }

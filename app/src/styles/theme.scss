@@ -6,10 +6,31 @@ html {
     color: (
       primary: mat.$azure-palette,
       tertiary: mat.$rose-palette,
-      theme-type: light
+      theme-type: dark
     ),
-    typography: Roboto,
+    // Roboto is loaded from index.html; the fallback keeps text sans-serif if it fails to load.
+    typography: (
+      plain-family: (Roboto, sans-serif),
+      brand-family: (Roboto, sans-serif)
+    ),
     density: 0
+  ));
+
+  // Match the app's dark blue-grey palette (see app.css).
+  @include mat.theme-overrides((
+    background: #22313a,
+    surface: #22313a,
+    surface-dim: #1e2a31,
+    surface-container-lowest: #1e2a31,
+    surface-container-low: #2b3942,
+    surface-container: #2b3942,
+    surface-container-high: #32434d,
+    surface-container-highest: #384a55,
+    on-background: #edeff0,
+    on-surface: #edeff0,
+    on-surface-variant: #b4bfc3,
+    outline: #5d7079,
+    outline-variant: #3e505a
   ));
 }
 
