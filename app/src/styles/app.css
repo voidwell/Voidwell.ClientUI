@@ -35,7 +35,6 @@ small {
 }
 
 html {
-    font-size: 10px;
     display: block;
     font-family: sans-serif;
     -ms-text-size-adjust: 100%;
@@ -442,37 +441,52 @@ mat-icon[fonticon] {
 }
 
 
-mat-card.mat-card {
+/* MDC cards pad each section instead of the card; restore the legacy layout of
+   one 16px card padding with edge-to-edge footers. */
+mat-card.mat-mdc-card {
     background: #2b3942;
     color: inherit;
     box-shadow: none !important;
     border-radius: 2px;
+    padding: 16px;
 }
 
-mat-card .mat-card-title h1,
-mat-card .mat-card-title h2,
-mat-card .mat-card-title h3,
-mat-card .mat-card-title h4,
-mat-card .mat-card-title h5,
-mat-card .mat-card-title h6 {
+mat-card.mat-mdc-card .mat-mdc-card-header,
+mat-card.mat-mdc-card .mat-mdc-card-content {
+    padding: 0;
+}
+
+mat-card.mat-mdc-card .mat-mdc-card-footer {
+    display: block;
+    margin: 0 -16px -16px -16px;
+}
+
+mat-card .mat-mdc-card-title h1,
+mat-card .mat-mdc-card-title h2,
+mat-card .mat-mdc-card-title h3,
+mat-card .mat-mdc-card-title h4,
+mat-card .mat-mdc-card-title h5,
+mat-card .mat-mdc-card-title h6 {
     margin: 0;
 }
 
-mat-card .mat-card-title {
+mat-card .mat-mdc-card-title {
     font-size: inherit;
     color: #fff;
     opacity: 0.8;
+    margin-bottom: 8px;
 }
-mat-card .mat-card-title a {
+mat-card .mat-mdc-card-title a {
     color: inherit;
     text-decoration: none;
 }
 
-mat-card .mat-card-subtitle {
+mat-card .mat-mdc-card-subtitle {
     color: #fff;
     opacity: 0.8;
     font-size: 0.9em;
     line-height: 1.33333333em;
+    margin-bottom: 16px;
 }
 
 .mat-dialog-container,
@@ -521,4 +535,19 @@ mat-checkbox.mat-checkbox.mat-checkbox-checked .mat-checkbox-background,
 
 .mat-expansion-panel .mat-expansion-panel .mat-expansion-panel-content {
     background: #253037;
+}
+
+/* The platform picker panel renders in an overlay, so it can't be styled from its component. */
+.platform-dropdown .mat-mdc-option {
+    min-height: 40px;
+    padding: 0 12px;
+    white-space: nowrap;
+}
+
+.platform-dropdown .mat-mdc-option .mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+    margin-right: 8px;
 }

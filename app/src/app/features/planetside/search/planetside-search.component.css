@@ -152,10 +152,15 @@
     visibility: hidden;
 }
 
-/* mat-select takes its text color from this token, not from the element's own color. */
+/* mat-select takes its text styles from these tokens, not from the element's own font and color. */
 .top-search_dropdown,
 .platform-control {
     --mat-select-enabled-trigger-text-color: #b4bfc3;
+    --mat-select-trigger-text-font: inherit;
+    --mat-select-trigger-text-size: 15px;
+    --mat-select-trigger-text-weight: bold;
+    --mat-select-trigger-text-line-height: 20px;
+    --mat-select-trigger-text-tracking: normal;
 }
 
 .search.focus .top-search_dropdown {

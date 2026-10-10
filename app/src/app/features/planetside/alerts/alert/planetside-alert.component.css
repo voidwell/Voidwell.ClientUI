@@ -87,7 +87,7 @@ vw-faction-bar ::ng-deep .faction-bar {
     min-height: 230px;
 }
 
-    .card-info .mat-card {
+    .card-info .mat-mdc-card {
         display: block;
     }
 

@@ -31,7 +31,7 @@
     margin: 15px;
 }
 
-.card-row.card-row-stretch .mat-card {
+.card-row.card-row-stretch .mat-mdc-card {
     flex: 1;
     margin-bottom: 10px;
 }

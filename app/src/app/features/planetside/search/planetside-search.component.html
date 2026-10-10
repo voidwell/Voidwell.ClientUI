@@ -11,7 +11,8 @@
       <mat-select class="top-search_dropdown"
         [formControl]="searchService.categoryControl"
         (openedChange)="searchService.dropdownToggled($event)"
-        panelClass="top-search_dropdown">
+        panelClass="top-search_dropdown"
+        hideSingleSelectionIndicator>
         <mat-option value="character">Player</mat-option>
         <mat-option value="outfit">Outfit</mat-option>
         <mat-option value="item">Weapon</mat-option>

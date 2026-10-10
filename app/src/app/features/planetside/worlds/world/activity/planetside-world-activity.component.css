@@ -17,12 +17,12 @@
     margin: 15px;
 }
 
-.card-row.card-row-stretch ::ng-deep .mat-card {
+.card-row.card-row-stretch ::ng-deep .mat-mdc-card {
     flex: 1;
     margin-bottom: 10px;
 }
 
-::ng-deep .mat-card-title {
+::ng-deep .mat-mdc-card-title {
     font-size: 18px;
 }
 
