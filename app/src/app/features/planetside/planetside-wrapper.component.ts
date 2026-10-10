@@ -11,7 +11,6 @@ import { SearchResult } from '@core/api/models/ps2/reference.model';
 @Component({
     selector: 'voidwell-planetside-wrapper',
     templateUrl: './planetside-wrapper.component.html',
-    styleUrls: ['./planetside-wrapper.component.css'],
     encapsulation: ViewEncapsulation.None,
     imports: [RouterOutlet]
 })

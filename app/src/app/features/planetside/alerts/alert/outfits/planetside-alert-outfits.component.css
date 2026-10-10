@@ -2,16 +2,16 @@
     overflow-x: auto;
 }
 
-.mat-table {
+.mat-mdc-table {
     max-height: 800px;
     min-width: 1100px;
 }
 
-    .mat-table .mat-row {
+    .mat-mdc-table .mat-mdc-row {
         min-height: 25px;
     }
 
-        .mat-table .mat-row .mat-cell {
+        .mat-mdc-table .mat-mdc-row .mat-mdc-cell {
             font-size: 0.8em;
         }
 

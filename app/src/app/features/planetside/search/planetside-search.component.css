@@ -174,3 +174,25 @@
 .search.focus .top-search_dropdown {
     color: #22313a;
 }
+
+.search-option.mat-mdc-option {
+    border-bottom: 1px solid #ccc;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    overflow: visible;
+}
+
+.search-option ::ng-deep .mdc-list-item__primary-text {
+    display: block;
+    width: 100%;
+}
+
+.search-option.mat-mdc-option:last-child {
+    border-bottom-width: 0;
+}
+
+.search-option .item-title,
+.search-option .item-metadata {
+    display: block;
+    line-height: 2;
+}

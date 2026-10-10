@@ -214,25 +214,12 @@ img.inverse-img {
         font-size: 1em;
     }
 
-.mat-tab-nav-bar {
-    border: none;
+/* Material component colors live in theme.scss as token overrides. */
+.mat-mdc-dialog-container {
+    --mat-form-field-filled-label-text-color: #fff;
+    --mat-form-field-filled-hover-label-text-color: #fff;
+    --mat-form-field-filled-focus-label-text-color: #fff;
 }
-
-.mat-input-underline {
-    border-color: #3A4C58;
-}
-
-    .mat-input-underline .mat-input-ripple {
-        background: #3A4C58;
-    }
-
-.mat-dialog-container {
-    background: #19282F;
-}
-
-    .mat-dialog-container .mat-input-placeholder {
-        color: #fff;
-    }
 
 
 
@@ -275,7 +262,7 @@ img.inverse-img {
     padding: 0 50px;
 }
 
-.table-filter .mat-form-field {
+.table-filter .mat-mdc-form-field {
     width: 100%;
 }
 
@@ -292,45 +279,8 @@ img.inverse-img {
     float: left;
 }
 
-.mat-tab-group .mat-tab-label,
-.mat-form-field .mat-input-element {
-    color: #b4bfc3;
-}
-.mat-tab-group .mat-tab-label.mat-tab-disabled {
+.mat-mdc-tab-group .mat-mdc-tab.mat-mdc-tab-disabled {
     opacity: 0.2;
-}
-
-.mat-form-field .mat-input-element {
-    caret-color: #b4bfc3;
-}
-
-.mat-form-field .mat-form-field-placeholder,
-.mat-form-field .mat-form-field-label,
-.mat-form-field.mat-focused .mat-form-field-placeholder,
-.mat-form-field.mat-focused .mat-form-field-label {
-    color: rgba(177,188,192,.47);
-}
-
-.mat-form-field .mat-form-field-underline,
-.mat-form-field .mat-form-field-ripple {
-    background-color: #31424b;
-}
-.mat-form-field .mat-form-field-ripple {
-    height: 1px !important;
-}
-.mat-form-field.mat-focused .mat-form-field-ripple {
-    background-color: #edeff0;
-}
-.mat-form-field-invalid .mat-form-field-placeholder {
-    color: #ca1406;
-}
-
-.mat-tab-link,
-.mat-tab-label {
-    color: #fff;
-}
-.mat-ink-bar {
-    background-color: #868686 !important;
 }
 
 
@@ -369,8 +319,6 @@ img.inverse-img {
 
 
 
-.mat-table,
-.mat-paginator,
 .table-filter {
     background: #2b3942;
 }
@@ -381,29 +329,12 @@ mat-table.striped mat-row:nth-child(even) {
 
 mat-table mat-row {
     position: relative;
-    border-bottom-color: rgba(255,255,255,.025);
 }
 
-mat-table mat-row mat-cell.mat-cell {
+mat-table mat-row.mat-mdc-row {
     color: inherit;
 }
-    mat-paginator.mat-paginator,
-    mat-table mat-header-row mat-header-cell.mat-header-cell {
-        border-bottom-width: 1px;
-        color: #b4bfc3;
-        font-weight: 500;
-    }
-mat-paginator .mat-paginator-increment,
-mat-paginator .mat-paginator-decrement {
-    border-color: #fff;
-}
-mat-paginator .mat-icon-button[disabled] .mat-paginator-increment,
-mat-paginator .mat-icon-button[disabled] .mat-paginator-decrement {
-    border-color: #585858;
-}
 
-[mat-button].mat-button,
-[mat-raised-button].mat-raised-button,
 .mat-button-toggle,
 button.mat-button-toggle-button,
 .mat-button-toggle-group {
@@ -419,15 +350,12 @@ button.mat-button-toggle-button,
 .mat-button-toggle.mat-button-toggle-checked {
     opacity: 1;
 }
-[mat-raised-button].mat-raised-button {
-    background-color: #394650;
+.mat-mdc-raised-button.mat-warn {
+    --mat-button-protected-container-color: #922424;
+    --mat-button-protected-disabled-container-color: #922424;
 }
-[mat-raised-button].mat-raised-button.mat-warn {
-    background-color: #922424;
-}
-[mat-button].mat-button[disabled],
-[mat-raised-button].mat-raised-button[disabled] {
-    color: #b4bfc3;
+.mat-mdc-button[disabled],
+.mat-mdc-raised-button[disabled] {
     opacity: 0.65;
 }
 
@@ -489,28 +417,11 @@ mat-card .mat-mdc-card-subtitle {
     margin-bottom: 16px;
 }
 
-.mat-dialog-container,
-.mat-select-value {
+.mat-mdc-dialog-container {
     color: rgba(255,255,255,0.8);
 }
 
-.mat-dialog-container label:not(.mat-checkbox-layout):not(.mat-slide-toggle-label) {
-    display: inline-block;
-    width: 150px;
-    opacity: 0.5;
-}
-
-
-mat-checkbox.mat-checkbox.mat-checkbox-checked .mat-checkbox-background,
-.mat-list-item-content mat-pseudo-checkbox.mat-pseudo-checkbox.mat-pseudo-checkbox-checked {
-    background-color: #525252;
-}
-
-.mat-list-item-content .mat-list-text {
-    color: #8a9ba1;
-}
-
-.mat-menu-item.active {
+.mat-mdc-menu-item.active .mat-mdc-menu-item-text {
     font-weight: bold;
 }
 .mat-expansion-panel {

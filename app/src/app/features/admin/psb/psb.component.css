@@ -1,12 +1,12 @@
-﻿.mat-table .mat-row {
+﻿.mat-mdc-table .mat-mdc-row {
     min-height: 25px;
 }
 
-.mat-table .mat-row .mat-cell {
+.mat-mdc-table .mat-mdc-row .mat-mdc-cell {
     font-size: 11.2px;
 }
 
-.mat-cell a {
+.mat-mdc-cell a {
     text-decoration: none;
     color: inherit;
     font-weight: bold;
