@@ -50,7 +50,7 @@ export class VWLogoComponent implements OnInit, OnDestroy {
             clonedEls.push(clonedEl);
         }
     
-        const _loop3 = function _loop3(_i3: number) {
+        const _loop3 = (_i3: number) => {
             const clonedEl = clonedEls[_i3];
             const d = Math.random() * 100;
     
@@ -74,7 +74,7 @@ export class VWLogoComponent implements OnInit, OnDestroy {
             }, d + 100);
 
             setTimeout(() => {
-                this.effectElement.nativeElement.removeChild(clonedEl);
+                clonedEl.remove();
             }, d + 150);
         };
     
