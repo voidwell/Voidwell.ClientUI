@@ -77,18 +77,22 @@ export class VoidwellAuthService {
                 : of(null)));
     }
 
-    private toUser(accessToken: string, userData: { name?: string } | null): AuthUser {
-        return { accessToken, name: userData?.name ?? '', roles: this.readRoles(accessToken) };
+    private toUser(accessToken: string, userData: { display_name?: string } | null): AuthUser {
+        const claims = this.readClaims(accessToken);
+        return {
+            accessToken,
+            name: userData?.display_name ?? claims.display_name ?? '',
+            roles: [claims.roles ?? []].flat()
+        };
     }
 
-    /** Reads the `roles` claim from the access token payload. The API validates the signature. */
-    private readRoles(accessToken: string): string[] {
+    /** Reads the claims from the access token payload. The API validates the signature. */
+    private readClaims(accessToken: string): { display_name?: string; roles?: string | string[] } {
         try {
             const payload = accessToken.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-            const claims = JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(payload), c => c.charCodeAt(0)))) as { roles?: string | string[] };
-            return [claims.roles ?? []].flat();
+            return JSON.parse(new TextDecoder().decode(Uint8Array.from(atob(payload), c => c.charCodeAt(0))));
         } catch {
-            return [];
+            return {};
         }
     }
 }
