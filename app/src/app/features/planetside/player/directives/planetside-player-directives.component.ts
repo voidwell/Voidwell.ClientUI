@@ -1,4 +1,4 @@
-import { Component, inject, effect, untracked } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, effect, untracked } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { PlanetsidePlayerComponent } from '../planetside-player.component';
@@ -11,6 +11,7 @@ import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader } from '@angul
 import { DirectiveTreeListComponent } from './directive-tree-list/directive-tree-list.component';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-player-directives.component.html',
     styleUrls: ['./planetside-player-directives.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, DirectiveTreeListComponent]

@@ -1,4 +1,4 @@
-﻿import { Component, signal } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, signal } from '@angular/core';
 import { AlertResult } from '@core/api/models/ps2/alert.model';
 import { CustomEventDetails } from '@core/api/models/platform/custom-event.model';
 

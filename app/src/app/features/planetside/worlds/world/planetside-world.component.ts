@@ -1,4 +1,4 @@
-﻿import { Component, inject, signal, effect, input, untracked, numberAttribute, OnDestroy } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject, signal, effect, input, untracked, numberAttribute, OnDestroy } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { Observable, Subscription, timer } from 'rxjs';
 import { WorldNamePipe } from '../../pipes';
@@ -22,6 +22,7 @@ type FactionKey = 'vs' | 'nc' | 'tr' | 'ns';
 const FACTION_KEYS: FactionKey[] = ['vs', 'nc', 'tr', 'ns'];
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-world.component.html',
     styleUrls: ['./planetside-world.component.css'],
     imports: [LoaderComponent, MatCard, MatCardTitle, MatIcon, MatCardContent, RouterLink, NgClass, MatCardFooter, VWTabNavSubBarComponent, RouterOutlet, DecimalPipe, DatePipe, FactionColorPipe, WorldNamePipe_1]

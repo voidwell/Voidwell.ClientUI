@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Subscription } from 'rxjs';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
@@ -14,6 +14,7 @@ import { EventsTableDataSource } from './events.data-source';
 import { EventEditorDialog } from './event-editor-dialog/event-editor-dialog.component';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'voidwell-admin-events',
     templateUrl: './events.component.html',
     imports: [LoaderComponent, ErrorMessageComponent, MatButton, MatIcon, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DatePipe]

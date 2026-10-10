@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ElementRef, Injector, ViewChild, effect, inject, untracked, input } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnInit, ElementRef, Injector, ViewChild, effect, inject, untracked, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
@@ -19,6 +19,7 @@ import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular
 import { MatIcon } from '@angular/material/icon';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './population.component.html',
     styleUrls: ['./population.component.css'],
     imports: [MatCard, MatCardContent, MatButtonToggleGroup, MatButtonToggle, MatButton, LoaderComponent, MatFormField, MatInput, MatDatepickerInput, FormsModule, ReactiveFormsModule, MatDatepickerToggle, MatSuffix, MatDatepicker, MatIcon]

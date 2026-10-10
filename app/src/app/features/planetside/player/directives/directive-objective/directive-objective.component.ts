@@ -1,10 +1,11 @@
-import { Component, Input, OnInit, HostBinding } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnInit, HostBinding } from '@angular/core';
 import { CharacterDirectivesOutlineDirective } from '@core/api/models/ps2/character.model';
 import { MatTooltip } from '@angular/material/tooltip';
 import { DecimalPipe, DatePipe } from '@angular/common';
 import { DgcImageUrlPipe } from '../../../pipes/dgc-image-url.pipe';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'directive-objective',
     templateUrl: './directive-objective.component.html',
     styleUrls: ['./directive-objective.component.css'],

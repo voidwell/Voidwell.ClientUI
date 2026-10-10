@@ -1,8 +1,9 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, computed, inject, input } from '@angular/core';
 import { NgClass } from '@angular/common';
 import { PerformanceGrades } from '../../data/performance-grades.service';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-grade',
     template: '<span class="vw-grade" [ngClass]="gradeClass()" [attr.title]="deltaTitle()">{{grade()}}</span>',
     styleUrls: ['./vw-grade.component.css'],

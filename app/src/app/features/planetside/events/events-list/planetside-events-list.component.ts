@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
@@ -7,6 +7,7 @@ import { EventCardComponent } from '../event-card/event-card.component';
 import { NgArrayPipesModule } from 'ngx-pipes';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-events-list.component.html',
     styleUrls: ['./planetside-events-list.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, EventCardComponent, NgArrayPipesModule]

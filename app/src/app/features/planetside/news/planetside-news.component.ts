@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FeedItem } from '@core/api/models/ps2/reference.model';
@@ -10,6 +10,7 @@ import { NewsCardComponent } from './news-card/news-card.component';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-news',
     templateUrl: './planetside-news.component.html',
     styleUrls: ['./planetside-news.component.css'],

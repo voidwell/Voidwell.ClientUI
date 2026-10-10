@@ -1,4 +1,4 @@
-﻿import { Component, ViewEncapsulation, OnDestroy, inject, effect, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, ViewEncapsulation, OnDestroy, inject, effect, untracked } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
@@ -9,6 +9,7 @@ import { SearchRepository } from '@core/api/ps2/search.repository';
 import { SearchResult } from '@core/api/models/ps2/reference.model';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'voidwell-planetside-wrapper',
     templateUrl: './planetside-wrapper.component.html',
     styleUrls: ['./planetside-wrapper.component.css'],

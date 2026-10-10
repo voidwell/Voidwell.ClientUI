@@ -1,4 +1,4 @@
-﻿import { Component, forwardRef, inject, effect, input, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, forwardRef, inject, effect, input, untracked } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -17,6 +17,7 @@ import { ZoneNamePipe } from '../../pipes/zone-name.pipe';
 import { WorldNamePipe } from '../../pipes/world-name.pipe';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-event.component.html',
     styleUrls: ['./planetside-event.component.css'],
     providers: [{ provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideEventComponent) }],

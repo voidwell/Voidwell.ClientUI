@@ -1,9 +1,10 @@
-﻿import { Component, Input, OnInit } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 import { interval } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { toDate } from '@shared/utils/date';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-countdown',
     template: '<span>{{remaining}}</span>'
 })

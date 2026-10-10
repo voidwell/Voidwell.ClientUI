@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { BlogPost, BlogPostRequest } from '@core/api/models/platform/post.model';
 import { PostRepository } from '@core/api/platform/post.repository';
@@ -9,6 +9,7 @@ import { MatInput } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'blog-editor-dialog',
     templateUrl: './blog-editor-dialog.component.html',
     imports: [

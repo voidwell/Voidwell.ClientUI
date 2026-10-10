@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnInit, ViewChild, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 import { Subscription } from 'rxjs';
@@ -14,6 +14,7 @@ import { BlogTableDataSource } from './blog.data-source';
 import { BlogEditorDialog } from './blog-editor-dialog/blog-editor-dialog.component';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'voidwell-admin-blog',
     templateUrl: './blog.component.html',
     styleUrls: ['./blog.component.css'],

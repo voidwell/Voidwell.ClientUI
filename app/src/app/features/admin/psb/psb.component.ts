@@ -1,4 +1,4 @@
-﻿import { Component, ElementRef, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, ElementRef, ViewChild, OnInit, OnDestroy, inject } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
 import { Subscription, fromEvent, throwError } from 'rxjs';
@@ -17,6 +17,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { PsbTableDataSource } from './psb.data-source';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './psb.component.html',
     styleUrls: ['./psb.component.css'],
     imports: [MatButton, LoaderComponent, ErrorMessageComponent, MatFormField, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, DatePipe]

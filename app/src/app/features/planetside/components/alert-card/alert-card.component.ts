@@ -1,4 +1,4 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { AlertView } from './alert-view';
 import { NgClass, DecimalPipe, DatePipe } from '@angular/common';
 import { MatCard, MatCardTitle, MatCardSubtitle } from '@angular/material/card';
@@ -10,6 +10,7 @@ import { ZoneNamePipe } from '../../pipes/zone-name.pipe';
 import { WorldNamePipe } from '../../pipes/world-name.pipe';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-alert-card',
     templateUrl: './alert-card.component.html',
     styleUrls: ['./alert-card.component.css'],

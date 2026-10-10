@@ -1,4 +1,4 @@
-﻿import { Component, inject, signal, effect, input, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject, signal, effect, input, untracked } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
@@ -10,6 +10,7 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { CharacterCardComponent } from './character-card/character-card.component';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-player',
     templateUrl: './planetside-player.component.html',
     imports: [LoaderComponent, ErrorMessageComponent, CharacterCardComponent, RouterOutlet]

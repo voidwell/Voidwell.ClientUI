@@ -1,4 +1,4 @@
-﻿import { Component, EventEmitter, OnDestroy, effect, inject, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, EventEmitter, OnDestroy, effect, inject, untracked } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Observable, Subscription } from 'rxjs';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
@@ -48,6 +48,7 @@ const SocketConfig = {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-world-map.component.html',
     styleUrls: ['./planetside-world-map.component.css'],
     imports: [VWTabNavSubBarComponent, RouterOutlet]

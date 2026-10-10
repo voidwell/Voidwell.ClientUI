@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { CharacterDirectivesOutlineTree } from '@core/api/models/ps2/character.model';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelContent } from '@angular/material/expansion';
 import { NgClass } from '@angular/common';
@@ -7,6 +7,7 @@ import { DirectiveTreeComponent } from '../directive-tree/directive-tree.compone
 import { DgcImageUrlPipe } from '../../../pipes/dgc-image-url.pipe';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'directive-tree-list',
     templateUrl: './directive-tree-list.component.html',
     styleUrls: ['./directive-tree-list.component.css'],

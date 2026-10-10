@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -14,6 +14,7 @@ import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/m
 import { JsonPipe } from '@angular/common';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './services.component.html',
     imports: [LoaderComponent, ErrorMessageComponent, MatCard, MatCardHeader, MatCardTitle, MatSlideToggle, MatCardContent, JsonPipe]
 })

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ViewChild, inject, input } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnInit, ViewChild, inject, input } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -20,6 +20,7 @@ import { FactionColorPipe } from '../pipes/faction-color.pipe';
 import { BulkCharacterStatsDataSource } from './bulk-character-stats.data-source';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './bulk-character-stats.component.html',
     styleUrls: ['./bulk-character-stats.component.css'],
     imports: [MatCard, MatCardContent, MatFormField, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatChipInput, MatButton, LoaderComponent, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, FactionColorPipe]

@@ -1,4 +1,4 @@
-﻿import { Input, Component, OnInit, OnDestroy, EventEmitter, effect, input, signal } from '@angular/core';
+﻿import { Input, Component, ChangeDetectionStrategy, OnInit, OnDestroy, EventEmitter, effect, input, signal } from '@angular/core';
 import { Observable, Subscription, interval} from 'rxjs';
 import { ZoneRegionOwnership } from '@core/api/models/ps2/map.model';
 import { CaptureLogRow } from '@core/api/models/ps2/combat-report.model';
@@ -11,6 +11,7 @@ import { DatePipe } from '@angular/common';
 import { toDate } from '@shared/utils/date';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'zone-replay-map',
     templateUrl: './replay-map.component.html',
     styleUrls: ['./replay-map.component.css'],

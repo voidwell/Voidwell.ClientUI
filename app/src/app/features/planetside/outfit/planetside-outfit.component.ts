@@ -1,4 +1,4 @@
-﻿import { Component, inject, effect, input, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject, effect, input, untracked } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
 import { throwError } from 'rxjs';
@@ -14,6 +14,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { OutfitMembersDataSource } from './planetside-outfit.data-source';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'planetside-outfit',
     templateUrl: './planetside-outfit.component.html',
     styleUrls: ['./planetside-outfit.component.css'],

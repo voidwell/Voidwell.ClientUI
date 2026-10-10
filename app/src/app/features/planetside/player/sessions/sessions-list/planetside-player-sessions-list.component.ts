@@ -1,4 +1,4 @@
-﻿import { Component, inject, effect, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject, effect, untracked } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
@@ -16,6 +16,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 import { SessionsDataSource } from './planetside-player-sessions-list.data-source';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-player-sessions-list.component.html',
     styleUrls: ['./planetside-player-sessions-list.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatButton, RouterLink, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe]

@@ -1,9 +1,10 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { FeedItem } from '@core/api/models/ps2/reference.model';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { DatePipe } from '@angular/common';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-news-card',
     templateUrl: './news-card.component.html',
     styleUrls: ['./news-card.component.css'],

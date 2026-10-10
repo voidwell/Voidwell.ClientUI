@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ElementRef, ViewChild, inject, input } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
@@ -77,6 +77,7 @@ const categoryOptions = [
 ];
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './weapon-tracker.component.html',
     styleUrls: ['./weapon-tracker.component.css'],
     imports: [MatCard, MatCardContent, MatFormField, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatAutocompleteTrigger, MatChipInput, MatAutocomplete, MatButton, LoaderComponent, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, AsyncPipe]

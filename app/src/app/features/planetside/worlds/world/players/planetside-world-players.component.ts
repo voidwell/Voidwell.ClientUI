@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
 import { OnlineCharacter } from '@core/api/models/ps2/character.model';
 import { MatCard, MatCardContent, MatCardFooter } from '@angular/material/card';
@@ -9,6 +9,7 @@ import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
 import { FactionNamePipe } from '../../../pipes/faction-name.pipe';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-world-players.component.html',
     styleUrls: ['./planetside-world-players.component.css'],
     imports: [MatCard, MatCardContent, NgClass, MatCardFooter, RouterLink, DatePipe, NgArrayPipesModule, NgObjectPipesModule, FactionColorPipe, FactionNamePipe]

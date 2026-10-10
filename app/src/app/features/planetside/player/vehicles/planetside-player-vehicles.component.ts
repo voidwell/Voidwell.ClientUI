@@ -1,4 +1,4 @@
-import { Component, inject, effect, untracked, input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, inject, effect, untracked, input } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { RouterLink } from '@angular/router';
 import { PlanetsidePlayerComponent } from '../planetside-player.component';
@@ -17,6 +17,7 @@ import { VehiclesDataSource, VehicleRow } from './planetside-player-vehicles.dat
 import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-player-vehicles.component.html',
     styleUrls: ['./planetside-player-vehicles.component.css'],
     imports: [LoaderComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatButton, RouterLink, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter, PlanetsidePlayerWeaponsTableComponent, DecimalPipe, DgcImageUrlPipe]

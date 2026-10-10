@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy, inject, effect, untracked, input } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnDestroy, inject, effect, untracked, input } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
 import { RouterLink } from '@angular/router';
 import { Subscription, throwError } from 'rxjs';
@@ -30,6 +30,7 @@ interface SessionStats {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-player-session.component.html',
     styleUrls: ['./planetside-player-session.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, MatCard, MatCardTitle, MatCardContent, MatCardFooter, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIcon, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe, DgcImageUrlPipe, FactionColorPipe, ZoneNamePipe]

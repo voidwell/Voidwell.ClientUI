@@ -1,8 +1,9 @@
-﻿import { Component, Input } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
 import { NgClass, DecimalPipe } from '@angular/common';
 import { FactionBackgroundPipe } from '../../pipes/faction-background.pipe';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-faction-bar',
     templateUrl: './faction-bar.component.html',
     styleUrls: ['./faction-bar.component.css'],

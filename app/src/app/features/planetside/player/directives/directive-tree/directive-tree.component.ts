@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnInit } from '@angular/core';
 import { CharacterDirectivesOutlineTree } from '@core/api/models/ps2/character.model';
 import { MatTabGroup, MatTab, MatTabLabel } from '@angular/material/tabs';
 import { DirectiveTierComponent } from '../directive-tier/directive-tier.component';
@@ -6,6 +6,7 @@ import { SlicePipe, DecimalPipe } from '@angular/common';
 import { DgcImageUrlPipe } from '../../../pipes/dgc-image-url.pipe';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'directive-tree',
     templateUrl: './directive-tree.component.html',
     styleUrls: ['./directive-tree.component.css'],

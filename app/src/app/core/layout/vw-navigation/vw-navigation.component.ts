@@ -1,4 +1,4 @@
-﻿import { Component, OnDestroy, NgZone, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnDestroy, NgZone, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
 import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodeOutlet } from '@angular/material/tree';
@@ -108,6 +108,7 @@ const NAV_DATA: NavNode[] = [
 ];
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-navigation',
     templateUrl: './vw-navigation.component.html',
     styleUrls: ['./vw-navigation.component.css'],

@@ -1,4 +1,4 @@
-﻿import { Component, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { WorldOnlineState } from '@core/api/models/ps2/world-state.model';
@@ -10,6 +10,7 @@ import { WorldCardComponent } from './world-card/world-card.component';
 import { NgArrayPipesModule } from 'ngx-pipes';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-world-wrapper.component.html',
     styleUrls: ['./planetside-world-wrapper.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, WorldCardComponent, NgArrayPipesModule]

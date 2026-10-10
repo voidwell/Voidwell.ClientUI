@@ -1,4 +1,4 @@
-import { Component, Input, ElementRef, ViewChild, OnChanges, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ElementRef, ViewChild, OnChanges, OnInit } from '@angular/core';
 import * as d3 from 'd3';
 import { PopulationPeriod } from '@core/api/models/ps2/common.model';
 import { MatCard, MatCardTitle, MatCardFooter } from '@angular/material/card';
@@ -26,6 +26,7 @@ interface FactionLabel {
 }
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'activity-population-card',
     templateUrl: './activity-population-card.component.html',
     styleUrls: ['./activity-population-card.component.css'],

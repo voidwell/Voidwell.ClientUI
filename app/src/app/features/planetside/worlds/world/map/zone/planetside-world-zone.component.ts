@@ -1,4 +1,4 @@
-﻿import { Component, EventEmitter, inject, signal, effect, input, numberAttribute, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, EventEmitter, inject, signal, effect, input, numberAttribute, untracked } from '@angular/core';
 import { Observable } from 'rxjs';
 import { PlanetsideWorldMapComponent } from '../planetside-world-map.component';
 import { ZoneHelper } from '../../../../data/zone-helper.service';
@@ -11,6 +11,7 @@ import { NgClass, DatePipe } from '@angular/common';
 import { FactionColorPipe } from '../../../../pipes/faction-color.pipe';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-world-zone.component.html',
     styleUrls: ['./planetside-world-zone.component.css'],
     imports: [Ps2ZoneMapComponent, MatCard, MatCardContent, FactionBarComponent, MatCardFooter, MatIcon, NgClass, DatePipe, FactionColorPipe]

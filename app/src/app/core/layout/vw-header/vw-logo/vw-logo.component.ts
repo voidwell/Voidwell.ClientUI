@@ -1,8 +1,9 @@
-import { Component, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, ViewChild, ElementRef, OnInit, OnDestroy } from '@angular/core';
 import dynamics from 'dynamics.js';
 import tinycolor from 'tinycolor2';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'vw-logo',
     templateUrl: './vw-logo.component.html',
     styleUrls: ['./vw-logo.component.css']

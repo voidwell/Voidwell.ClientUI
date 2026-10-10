@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { RankingsRepository } from '@core/api/ps2/rankings.repository';
@@ -14,6 +14,7 @@ import { WorldNamePipe } from '../pipes/world-name.pipe';
 import { PlayerRanksDataSource } from './player-ranks.data-source';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './player-ranks.component.html',
     styleUrls: ['./player-ranks.component.css'],
     imports: [MatCard, MatCardContent, MatCardFooter, LoaderComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, FactionColorPipe, WorldNamePipe]

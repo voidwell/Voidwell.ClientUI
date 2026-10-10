@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, inject } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnInit, inject } from '@angular/core';
 import { BlogPost } from '@core/api/models/platform/post.model';
 import { PostRepository } from '@core/api/platform/post.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
@@ -6,6 +6,7 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { BlogCardComponent } from '../blog-card/blog-card.component';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'voidwell-blog-post-list',
     templateUrl: './blog-post-list.component.html',
     styleUrls: ['./blog-post-list.component.css'],

@@ -1,4 +1,4 @@
-﻿import { Component, OnInit, ElementRef, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, OnInit, ElementRef, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
 import { fromEvent } from 'rxjs';
@@ -13,6 +13,7 @@ import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
 import { AlertPlayersDataSource } from './planetside-alert-players.data-source';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-alert-players.component.html',
     styleUrls: ['./planetside-alert-players.component.css'],
     imports: [MatFormField, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatSortHeader, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, FactionColorPipe]

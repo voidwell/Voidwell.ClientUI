@@ -1,4 +1,4 @@
-﻿import { Component, inject, signal, effect, input, untracked } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, inject, signal, effect, input, untracked } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { throwError, of } from "rxjs";
 import { toObservable } from '@angular/core/rxjs-interop';
@@ -10,6 +10,7 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { ItemCardComponent } from './item-card/item-card.component';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './planetside-item.component.html',
     styleUrls: ['./planetside-item.component.css'],
     imports: [LoaderComponent, ErrorMessageComponent, ItemCardComponent, RouterOutlet]

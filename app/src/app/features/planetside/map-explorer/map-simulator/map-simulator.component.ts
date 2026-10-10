@@ -1,4 +1,4 @@
-﻿import { Component, EventEmitter, ChangeDetectorRef, inject, input, numberAttribute } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, EventEmitter, ChangeDetectorRef, inject, input, numberAttribute } from '@angular/core';
 import { ZoneRegion } from '../../components/ps2-zone-map/models';
 import { FacilityEvent, Ps2ZoneMapComponent } from '../../components/ps2-zone-map/ps2-zone-map.component';
 import { MatButton } from '@angular/material/button';
@@ -6,6 +6,7 @@ import { MatIcon } from '@angular/material/icon';
 import { FactionBarComponent } from '../../components/faction-bar/faction-bar.component';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     templateUrl: './map-simulator.component.html',
     styleUrls: ['./map-simulator.component.css'],
     imports: [Ps2ZoneMapComponent, MatButton, MatIcon, FactionBarComponent]

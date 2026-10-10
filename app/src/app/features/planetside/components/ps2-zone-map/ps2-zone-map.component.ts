@@ -1,4 +1,4 @@
-﻿import { Component, Input, Output, OnInit, OnDestroy, OnChanges, EventEmitter, effect, inject, untracked, input } from '@angular/core';
+﻿import { Component, ChangeDetectionStrategy, Input, Output, OnInit, OnDestroy, OnChanges, EventEmitter, effect, inject, untracked, input } from '@angular/core';
 import { Subscription, Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import {
@@ -26,6 +26,7 @@ import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.co
 import { LeafletDirective } from '@bluehalo/ngx-leaflet';
 
 @Component({
+    changeDetection: ChangeDetectionStrategy.Eager,
     selector: 'ps2-zone-map',
     templateUrl: './ps2-zone-map.component.html',
     styleUrls: ['./ps2-zone-map.component.css'],
