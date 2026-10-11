@@ -2,7 +2,8 @@
   <div class="alerts-list-container mt-2.5">
     <div>
       <h3>Active Alerts</h3>
-      @if (getActiveAlerts().length === 0) {
+      <vw-loader variant="alerts" [rows]="1" [loading]="isActiveLoading"></vw-loader>
+      @if (!isActiveLoading && getActiveAlerts().length === 0) {
         <div class="no-alerts text-center">
           <strong>No alerts in progress</strong>
         </div>
@@ -35,8 +36,11 @@
             <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
           </button>
         </div>
-        @for (alert of getPastAlerts() | orderBy: '-startDate'; track alert) {
-          <vw-alert-card [alert]="alert"></vw-alert-card>
+        <vw-loader variant="alerts" [rows]="5" [loading]="isLoading"></vw-loader>
+        @if (!isLoading) {
+          @for (alert of getPastAlerts() | orderBy: '-startDate'; track alert) {
+            <vw-alert-card [alert]="alert"></vw-alert-card>
+          }
         }
         <div class="paging-buttons mb-2.5 text-center">
           @if (pageNumber > 0) {

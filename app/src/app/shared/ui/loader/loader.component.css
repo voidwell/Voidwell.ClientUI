@@ -45,6 +45,21 @@
     height: 12px;
 }
 
+.skeleton-alert {
+    min-width: 400px;
+}
+
+.skeleton-alert-image {
+    width: 160px;
+    height: 160px;
+    border-radius: 0;
+}
+
+.skeleton-bar {
+    height: 14px;
+    margin-top: 36px;
+}
+
 .skeleton-card {
     background: rgba(255, 255, 255, 0.025);
     border-radius: 4px;

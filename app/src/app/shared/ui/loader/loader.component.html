@@ -22,6 +22,18 @@
           </div>
         }
       }
+      @case ('alerts') {
+        @for (item of items; track item) {
+          <div class="skeleton-alert flex flex-nowrap mb-4">
+            <div class="skeleton skeleton-alert-image flex-none"></div>
+            <div class="skeleton-card grow p-4">
+              <div class="skeleton skeleton-line skeleton-title mb-2.5"></div>
+              <div class="skeleton skeleton-line skeleton-subtitle mb-5"></div>
+              <div class="skeleton skeleton-line skeleton-bar"></div>
+            </div>
+          </div>
+        }
+      }
       @case ('lines') {
         @for (item of items; track item; let i = $index) {
           <div class="skeleton skeleton-line mb-2.5" [style.width.%]="lineWidths[i % lineWidths.length]"></div>

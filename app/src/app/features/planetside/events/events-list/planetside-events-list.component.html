@@ -1,11 +1,11 @@
 ﻿<div class="content-container">
   <div class="events-list-container mt-2.5">
-    <vw-loader variant="list" [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
-    @if (!isLoading) {
+    @if (!errorMessage) {
       <div>
         <h3>Active Events</h3>
-        @if (getActiveEvents().length === 0) {
+        <vw-loader variant="alerts" [rows]="1" [loading]="isLoading"></vw-loader>
+        @if (!isLoading && getActiveEvents().length === 0) {
           <div class="no-events text-center">
             <strong>No events in progress</strong>
           </div>
@@ -16,6 +16,7 @@
           }
         </div>
         <h3>Past Events</h3>
+        <vw-loader variant="alerts" [rows]="5" [loading]="isLoading"></vw-loader>
         <div class="events-list flex flex-col">
           @for (event of getPastEvents() | orderBy: '-startDate'; track event) {
             <vw-event-card [event]="event"></vw-event-card>

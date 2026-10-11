@@ -1,4 +1,7 @@
 ﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { EMPTY } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { getErrorMessage } from '@core/util/error-message';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
@@ -26,6 +29,12 @@ export class PlanetsideEventsListComponent {
         this.events = [];
 
         this.customEventRepository.getEventsByGame("ps2")
+            .pipe(catchError(error => {
+                this.errorMessage = getErrorMessage(error);
+                this.isLoading = false;
+                this.cdr.markForCheck();
+                return EMPTY;
+            }))
             .subscribe(events => {
                 this.events = events;
 

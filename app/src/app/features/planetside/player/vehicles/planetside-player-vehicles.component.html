@@ -35,7 +35,7 @@
               <ng-container matColumnDef="kdr">
                 <mat-header-cell *matHeaderCellDef>Gunner K/D Ratio</mat-header-cell>
                 <mat-cell *matCellDef="let vehicle">
-                  <div class="kdr-block">
+                  <div class="kdr-block my-0 mr-0 ml-px">
                     <div><strong>{{vehicle.stats.kills / vehicle.stats.deaths | number: '.2-2'}}</strong>:1 K/D</div>
                     <small>{{vehicle.stats.kills | number}} / {{vehicle.stats.deaths | number}}</small>
                   </div>

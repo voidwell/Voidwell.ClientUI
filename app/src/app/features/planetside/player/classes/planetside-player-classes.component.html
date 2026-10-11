@@ -35,7 +35,7 @@
               <ng-container matColumnDef="kdr">
                 <mat-header-cell *matHeaderCellDef>K/D Ratio</mat-header-cell>
                 <mat-cell *matCellDef="let profile">
-                  <div class="kdr-block">
+                  <div class="kdr-block my-0 mr-0 ml-px">
                     <div><strong>{{profile.stats.kills / profile.stats.deaths | number: '.2-2'}}</strong>:1 K/D</div>
                     <small>{{profile.stats.kills | number}} / {{profile.stats.deaths | number}}</small>
                   </div>
@@ -61,7 +61,7 @@
           </div>
         }
         @if (profile) {
-          <div class="single-class">
+          <div class="single-class mt-6">
             <mat-card>
               <mat-card-header>
                 <mat-card-title class="class-title">

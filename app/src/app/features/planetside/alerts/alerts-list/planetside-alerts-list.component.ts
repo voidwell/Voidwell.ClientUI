@@ -1,4 +1,8 @@
 ﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
+import { EMPTY } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { getErrorMessage } from '@core/util/error-message';
+import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { WorldService } from '../../data/world.service';
 import { AlertRepository } from '@core/api/ps2/alert.repository';
 import { AlertView, toAlertView } from '../../components/alert-card/alert-view';
@@ -12,7 +16,7 @@ import { NgArrayPipesModule } from 'ngx-pipes';
 @Component({
     templateUrl: './planetside-alerts-list.component.html',
     styleUrls: ['./planetside-alerts-list.component.css'],
-    imports: [AlertCardComponent, ErrorMessageComponent, MatButtonToggleGroup, MatButtonToggle, MatButton, MatIcon, NgArrayPipesModule]
+    imports: [AlertCardComponent, LoaderComponent, ErrorMessageComponent, MatButtonToggleGroup, MatButtonToggle, MatButton, MatIcon, NgArrayPipesModule]
 })
 
 export class PlanetsideAlertsListComponent {
@@ -22,6 +26,7 @@ export class PlanetsideAlertsListComponent {
 
     errorMessage: string = null;
     isLoading: boolean;
+    isActiveLoading = true;
     pageNumber = 0;
 
     private alerts: AlertView[] = [];
@@ -71,7 +76,15 @@ export class PlanetsideAlertsListComponent {
         this.isLoading = true;
 
         this.alertRepository.getAlerts(this.pageNumber, this.pageWorldId || undefined)
+            .pipe(catchError(error => {
+                this.errorMessage = getErrorMessage(error);
+                this.isLoading = false;
+                this.isActiveLoading = false;
+                this.cdr.markForCheck();
+                return EMPTY;
+            }))
             .subscribe(alerts => {
+                this.errorMessage = null;
                 this.alerts = alerts.map(toAlertView);
 
                 if (this.pageNumber === 0 && !this.pageWorldId) {
@@ -79,6 +92,7 @@ export class PlanetsideAlertsListComponent {
                 }
 
                 this.isLoading = false;
+                this.isActiveLoading = false;
                 this.cdr.markForCheck();
             });
     }
