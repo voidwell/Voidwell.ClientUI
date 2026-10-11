@@ -144,3 +144,12 @@ ul {
     margin-bottom: 0;
     list-style-type: none;
 }
+.mat-nested-tree-node {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+    .mat-nested-tree-node > ul {
+        flex: 0 0 100%;
+    }
