@@ -48,10 +48,8 @@
 .vw-siege .siege-level {
   left: 0;
   right: 0;
-  text-align: center;
 }
 
 .gauge-container {
     width: 206px;
-    text-align: center;
 }

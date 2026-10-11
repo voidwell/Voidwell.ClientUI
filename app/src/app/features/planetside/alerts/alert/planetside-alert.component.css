@@ -28,7 +28,6 @@ vw-faction-bar ::ng-deep .faction-bar {
 }
 
 .date-info {
-    text-align: right;
     float: right;
 }
 
@@ -95,6 +94,3 @@ vw-faction-bar ::ng-deep .faction-bar {
     overflow: hidden;
 }
 
-.duration {
-    text-align: right;
-}

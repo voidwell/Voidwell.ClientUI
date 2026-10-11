@@ -1,8 +1,5 @@
 ﻿
 
-.no-alerts {
-    text-align: center;
-}
 
 
 vw-alert-card {
@@ -11,7 +8,6 @@ vw-alert-card {
 
 .paging-buttons {
     position: relative;
-    text-align: center;
 }
 
     .paging-buttons .filters {

@@ -14,7 +14,6 @@
     right: 0;
     bottom: 0;
     left: 0;
-    text-align: right;
     vertical-align: middle;
     z-index: 100;
 }
@@ -80,6 +79,3 @@
         width: 100%;
     }
 
-.duration {
-    text-align: right;
-}

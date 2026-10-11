@@ -16,7 +16,6 @@
 
 .directive-tier-requirements,
 .directive-tier-rewards {
-    text-align: center;
     color: #fff;
     height: 100px;
     background: rgba(0, 0, 0, 0.1);
@@ -46,9 +45,6 @@
     float: left;
 }
 
-.requirement-bars  {
-    text-align: center;
-}
 .requirement-bars .bar {
     display: inline-block;
     width: 18px;

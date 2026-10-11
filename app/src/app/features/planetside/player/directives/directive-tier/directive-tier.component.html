@@ -1,7 +1,7 @@
 <div class="directive-tier-info flex flex-wrap">
   <div class="directive-tier-requirements">
     <h3>Requirements</h3>
-    <div class="requirement-bars">
+    <div class="requirement-bars text-center">
       @for (bar of requirementBars; track bar) {
         <div class="bar" [ngClass]="{'completed': bar+1 <= requirementsCompleted}"></div>
       }
@@ -17,7 +17,7 @@
       </div>
     }
   </div>
-  <div class="directive-tier-rewards m-0.5 p-2.5 grow shrink basis-75">
+  <div class="directive-tier-rewards m-0.5 p-2.5 grow shrink basis-75 text-center">
     <h3>Rewards</h3>
     <div class="directive-tier-rewards-list pb-2.5">
       <div class="directive-reward">

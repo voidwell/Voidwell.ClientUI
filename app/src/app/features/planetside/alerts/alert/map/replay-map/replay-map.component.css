@@ -13,7 +13,6 @@
     bottom: 30px;
     left: 0;
     right: 0;
-    text-align: center;
     z-index: 999;
 }
 
@@ -53,7 +52,6 @@ vw-faction-bar {
 
     .time-settings .replay-time {
         color: rgba(255, 255, 255, 0.8);
-        text-align: center;
         float: right;
         padding-right: 10px;
     }

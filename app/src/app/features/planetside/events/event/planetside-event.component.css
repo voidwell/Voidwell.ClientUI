@@ -12,7 +12,6 @@
 }
 
 .event-times {
-    text-align: center;
     overflow: hidden;
     width: auto;
 }
@@ -51,7 +50,6 @@
 
 .remaining-timer {
     display: block;
-    text-align: center;
     font-size: 1.5em;
     overflow: hidden;
     width: auto;

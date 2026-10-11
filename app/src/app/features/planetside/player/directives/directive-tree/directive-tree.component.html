@@ -5,7 +5,7 @@
         <div class="mat-tab-tier-completion" [style.width.%]="tier.completionPercent"></div>
       }
       @if (tier.tierId === tree.currentDirectiveTierId) {
-        <div class="mat-tab-tier-completion-text">{{tier.completionPercent - tier.completionPercent % 1 | number: '1.0-0'}}%</div>
+        <div class="mat-tab-tier-completion-text text-center">{{tier.completionPercent - tier.completionPercent % 1 | number: '1.0-0'}}%</div>
       }
     </div>
   }

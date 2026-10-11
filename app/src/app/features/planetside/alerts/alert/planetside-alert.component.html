@@ -10,14 +10,14 @@
             <mat-card class="card-info flex grow">
               <mat-card-title>
                 <div class="title">
-                  <div class="date-info">
+                  <div class="date-info text-right">
                     <div>{{activeEvent.startDate | date:'MMM d, y h:mm:ss a'}}</div>
                     @if (isActive(activeEvent)) {
                       <small class="remaining-timer">
                         <vw-countdown [end]="getEndDate(activeEvent)"></vw-countdown> Remaining
                       </small>
                     }
-                    <div class="duration">Duration: {{getDurationMinutes(activeEvent) | number:'.0-0'}} Minutes</div>
+                    <div class="duration text-right">Duration: {{getDurationMinutes(activeEvent) | number:'.0-0'}} Minutes</div>
                   </div>
                   <div class="event-name">
                     <h1>{{activeEvent.metagameEvent?.name}}</h1>

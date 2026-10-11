@@ -3,7 +3,7 @@
     <div>
       <h3>Active Alerts</h3>
       @if (getActiveAlerts().length === 0) {
-        <div class="no-alerts">
+        <div class="no-alerts text-center">
           <strong>No alerts in progress</strong>
         </div>
       }
@@ -15,7 +15,7 @@
       <h3>Past Alerts</h3>
       <vw-error-message [message]="errorMessage"></vw-error-message>
       <div class="alerts-list flex flex-col">
-        <div class="paging-buttons mb-2.5">
+        <div class="paging-buttons mb-2.5 text-center">
           <div class="filters">
             <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onFilterChange($event)">
               <mat-button-toggle [checked]="true">All</mat-button-toggle>
@@ -38,7 +38,7 @@
         @for (alert of getPastAlerts() | orderBy: '-startDate'; track alert) {
           <vw-alert-card [alert]="alert"></vw-alert-card>
         }
-        <div class="paging-buttons mb-2.5">
+        <div class="paging-buttons mb-2.5 text-center">
           @if (pageNumber > 0) {
             <button mat-raised-button (click)="previousAlerts()">
               <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>

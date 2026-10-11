@@ -7,7 +7,7 @@
     @if (directive.objective && !directive.completionDate) {
       <div class="directive-objective-progress">
         <div class="progress-outer">
-          <div class="progress-state" [style.width.%]="(directive.progress || 0) / directive.objective.goalValue * 100">{{(directive.progress || 0) / directive.objective.goalValue * 100 | number: '1.0-0'}}%</div>
+          <div class="progress-state text-right" [style.width.%]="(directive.progress || 0) / directive.objective.goalValue * 100">{{(directive.progress || 0) / directive.objective.goalValue * 100 | number: '1.0-0'}}%</div>
         </div>
         <div class="progress-count flex flex-col">
           <div class="progress-goal">{{directive.progress}} / {{directive.objective.goalValue}}</div>

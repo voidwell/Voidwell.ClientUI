@@ -12,11 +12,11 @@
           </div>
           <div>
             @if (!activeEvent.endDate) {
-              <div class="remaining-timer p-2.5">
+              <div class="remaining-timer p-2.5 text-center">
                 <vw-countdown [end]="getEndDate(activeEvent)"></vw-countdown> Remaining
               </div>
             }
-            <div class="event-times mb-1 flex justify-around">
+            <div class="event-times mb-1 flex justify-around text-center">
               <div class="time-start">
                 <div>{{activeEvent.startDate | date:'MMM d, y h:mm:ss a'}}</div>
                 <div><small>Start</small></div>

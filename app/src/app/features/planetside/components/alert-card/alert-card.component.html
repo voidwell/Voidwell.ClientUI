@@ -17,7 +17,7 @@
                 </span>
               }
             </div>
-            <div class="duration">Duration: {{(alert.endDate.getTime() - alert.startDate.getTime()) / 60000 | number:'.0-0'}} Minutes</div>
+            <div class="duration text-right">Duration: {{(alert.endDate.getTime() - alert.startDate.getTime()) / 60000 | number:'.0-0'}} Minutes</div>
           </div>
           @if (!focusEvent) {
             <div class="pull-left">
@@ -44,5 +44,5 @@
       <vw-faction-bar [vs]="alert.lastFactionVs" [nc]="alert.lastFactionNc" [tr]="alert.lastFactionTr" [neutural]="isNeuturalMetagame(alert)"></vw-faction-bar>
     </mat-card>
   </div>
-  <a mat-button routerLink="/ps2/alerts/{{alert.worldId}}/{{alert.metagameInstanceId}}" class="card-link pr-4"></a>
+  <a mat-button routerLink="/ps2/alerts/{{alert.worldId}}/{{alert.metagameInstanceId}}" class="card-link pr-4 text-right"></a>
 </div>

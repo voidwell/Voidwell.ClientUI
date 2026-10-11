@@ -32,7 +32,6 @@
         display: inline-block;
         text-decoration: none;
         width: 130px;
-        text-align: center;
     }
 
 @media (min-width: 767px) {
