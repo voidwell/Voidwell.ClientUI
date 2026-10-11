@@ -9,7 +9,7 @@ describe('BlogPostListComponent loader', () => {
         const posts = new Subject<BlogPost[]>();
         TestBed.configureTestingModule({ providers: [{ provide: PostRepository, useValue: { getPosts: () => posts } }] });
         const fixture = TestBed.createComponent(BlogPostListComponent);
-        const loader = () => fixture.nativeElement.querySelector('svg.lds-dual-ring');
+        const loader = () => fixture.nativeElement.querySelector('.skeleton-container');
 
         fixture.detectChanges();
         expect(loader()).not.toBeNull();
