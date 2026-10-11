@@ -18,7 +18,6 @@
 
 .bars-container {
     width: 350px;
-    margin: 0 auto;
 }
 
 vw-faction-bar {
@@ -36,6 +35,5 @@ vw-faction-bar {
     top: 80px;
     left: 10px;
     min-width: 0px;
-    padding: 5px;
     z-index: 999;
 }

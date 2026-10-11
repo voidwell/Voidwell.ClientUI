@@ -4,7 +4,7 @@
   <vw-error-message [message]="dataSource.errorMessage$ | async"></vw-error-message>
   <div [hidden]="dataSource.loading$ | async">
 
-    <div class="table-filter">
+    <div class="table-filter px-13 py-0">
       <mat-form-field>
         <input matInput #filter placeholder="Filter stores">
       </mat-form-field>

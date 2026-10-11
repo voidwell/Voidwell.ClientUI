@@ -1,5 +1,5 @@
 ﻿@if (player(); as playerData) {
-  <mat-card class="character-card" [ngClass]="{'bg-vs': playerData.factionId===1, 'bg-nc': playerData.factionId===2, 'bg-tr': playerData.factionId===3}">
+  <mat-card class="character-card mb-8" [ngClass]="{'bg-vs': playerData.factionId===1, 'bg-nc': playerData.factionId===2, 'bg-tr': playerData.factionId===3}">
     <mat-card-title>
       <h1 class="player-name">{{playerData.name}}</h1>
       <div class="stats pull-right">

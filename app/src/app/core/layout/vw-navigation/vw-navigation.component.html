@@ -6,13 +6,13 @@
       [ngClass]="{'snapped': !mobileQuery.matches}"
       (closedStart)="closed()">
       <mat-nav-list>
-        <div class="navigation-close nav-margin">
+        <div class="navigation-close nav-margin pl-10 -mt-1.5">
           <button mat-icon-button (click)="closed()">
             <mat-icon fontSet="mdi" fontIcon="mdi-arrow-left"></mat-icon>
           </button>
         </div>
-        <div class="navigation-toggles"></div>
-        <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="nav-list nav-margin">
+        <div class="navigation-toggles mx-0 mt-8 mb-15 p-0"></div>
+        <mat-tree [dataSource]="nestedDataSource" [treeControl]="nestedTreeControl" class="nav-list nav-margin pl-10">
           <mat-tree-node *matTreeNodeDef="let node" matTreeNodeToggle>
             <a routerLink="{{node.url}}"
               routerLinkActive #rla="routerLinkActive"

@@ -1,6 +1,4 @@
-﻿.alerts-list-container {
-    margin-top: 10px;
-}
+﻿
 
 .no-alerts {
     text-align: center;
@@ -16,7 +14,6 @@ vw-alert-card {
 }
 
 .paging-buttons {
-    margin-bottom: 10px;
     position: relative;
     text-align: center;
 }

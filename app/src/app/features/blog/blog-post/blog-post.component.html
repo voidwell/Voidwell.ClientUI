@@ -2,7 +2,7 @@
   <vw-loader [loading]="isLoading"></vw-loader>
   <vw-error-message [message]="errorMessage"></vw-error-message>
   @if (!isLoading && !errorMessage) {
-    <div class="blog-post">
+    <div class="blog-post mb-4">
       <vw-blog-card [post]="blogPost"></vw-blog-card>
     </div>
   }

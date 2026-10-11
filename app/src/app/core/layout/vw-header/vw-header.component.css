@@ -1,6 +1,5 @@
 .vw-header {
     user-select: none;
-    padding: 40px 45px;
     display: block;
 
     -webkit-user-select: none;
@@ -80,9 +79,7 @@
 
 .top-menu {
     list-style: none;
-    padding: 0;
     float: right;
-    margin-left: 20px;
 }
 
 ul.top-menu {
@@ -108,7 +105,6 @@ ul.top-menu {
 }
 
 .top-search {
-    margin: 2px 0;
     overflow: hidden;
     visibility: visible;
     transition: all;

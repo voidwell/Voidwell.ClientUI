@@ -6,7 +6,7 @@
           <div class="directive-tree-header-name">{{tree.name}}</div>
           <img [src]="tree.imageId | dgcImageUrl" alt="" />
         </div>
-        <div class="directive-tree-header-stats">
+        <div class="directive-tree-header-stats my-auto mr-0 ml-auto">
           @if (!tree.completionDate) {
             <div class="requirement-bars">
               @for (bar of getRequirementBarCount(tree); track bar) {
@@ -14,7 +14,7 @@
               }
             </div>
           }
-          <div class="directive-reward">
+          <div class="directive-reward mx-5 my-0">
             <mat-icon fontSet="mdi" fontIcon="mdi-star-circle-outline"></mat-icon>
             <span>{{getTreeDirectivePoints(tree)}}</span>
           </div>

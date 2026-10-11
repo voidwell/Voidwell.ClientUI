@@ -19,7 +19,7 @@
                 <mat-cell *matCellDef="let vehicle">
                   <div class="vehicle-title">
                     <img class="pull-left" [src]="vehicle.imageId | dgcImageUrl" alt=""/>
-                    <div class="name-block">
+                    <div class="name-block my-0 mr-0 ml-px">
                       <strong>{{vehicle.name}}</strong>
                       <small>{{vehicle.stats.pilotScore + vehicle.stats.score | number}}</small>
                     </div>
@@ -56,7 +56,7 @@
               <ng-container matColumnDef="gobutton">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell *matCellDef="let vehicle">
-                  <a mat-button routerLink="{{vehicle.id}}" class="goto-button">
+                  <a mat-button routerLink="{{vehicle.id}}" class="goto-button pt-1 pr-4">
                     <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
                   </a>
                 </mat-cell>
@@ -76,7 +76,7 @@
                 </mat-card-title>
               </mat-card-header>
               <mat-card-content>
-                <div class="vehicle-data">
+                <div class="vehicle-data mr-10">
                   <h3>As Pilot</h3>
                   <div>
                     <span class="label">K/D Ratio:</span>
@@ -129,7 +129,7 @@
                     <span class="value">{{vehicle.stats.pilotKills - vehicle.stats.kills | number}}</span>
                   </div>
                 </div>
-                <div class="vehicle-data">
+                <div class="vehicle-data mr-10">
                   <h3>As Gunner</h3>
                   <div>
                     <span class="label">K/D Ratio:</span>

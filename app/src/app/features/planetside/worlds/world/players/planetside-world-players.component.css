@@ -4,9 +4,6 @@
     display: inline-block;
 }
 
-.online-players {
-    margin-top: 25px;
-}
 
 .header-row {
     border-bottom-width: 1px;
@@ -19,7 +16,6 @@
 }
 
 .player-row {
-    padding: 1px;
     background: #2b3942;
     border-bottom-color: rgba(255,255,255,.025);
 }
@@ -28,9 +24,6 @@
         background: rgba(255,255,255,.025);
     }
 
-.player-totals {
-    margin-bottom: 25px;
-}
 
 .total-row {
     font-weight: bold;

@@ -35,7 +35,6 @@
 .directive-objective-info {
     display: inline-block;
     vertical-align: top;
-    margin-left: 5px;
 }
 
 .directive-objective-progress .progress-count {

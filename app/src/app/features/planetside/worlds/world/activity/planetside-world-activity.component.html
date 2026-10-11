@@ -1,6 +1,6 @@
 <vw-loader [loading]="isLoading"></vw-loader>
 @if (!isLoading && activity) {
-  <div class="world-activity">
+  <div class="world-activity mt-6">
     <div class="alerts-list">
       @for (alert of alerts | orderBy: 'startDate'; track alert) {
         <vw-alert-card [alert]="alert" [focusEvent]="true"></vw-alert-card>
@@ -9,7 +9,7 @@
     <div>
       <activity-population-card [data]="activity.historicalPopulations"></activity-population-card>
     </div>
-    <div class="card-grid">
+    <div class="card-grid -m-4">
       <mat-card class="card world-stats">
         <mat-card-title>Statistics</mat-card-title>
         <mat-card-content>
@@ -217,7 +217,7 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="card-grid">
+    <div class="card-grid -m-4">
       <mat-card class="card top-weapons">
         <mat-card-title>Top Weapons</mat-card-title>
         <mat-card-content>
@@ -269,7 +269,7 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="card-grid">
+    <div class="card-grid -m-4">
       <mat-card class="card experience-stats">
         <mat-card-title>Experience</mat-card-title>
         <mat-card-content>

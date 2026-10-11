@@ -3,7 +3,7 @@
     <mat-card-title>Siege Level</mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="gauge-container">
+    <div class="gauge-container mx-auto my-0">
       <div #siegegauge id="siege-gauge"></div>
       <div class="gauge-icons">
         <mat-icon fontSet="mdi" class="shield-icon" fontIcon="mdi-shield"></mat-icon>
@@ -13,11 +13,11 @@
     </div>
   </mat-card-content>
   <mat-card-footer>
-    <div class="info-item">
+    <div class="info-item px-8 py-4">
         <small>Captured</small>
         <h3>{{captured | number}}</h3>
     </div>
-    <div class="info-item">
+    <div class="info-item px-8 py-4">
         <small>Defended</small>
         <h3>{{defended | number}}</h3>
     </div>

@@ -135,14 +135,10 @@ a {
 
 .content {
     max-width: 1300px;
-    margin: 0 auto;
 }
 
 
 
-.info-item {
-    padding: 15px 30px;
-}
 
     .info-item:nth-child(odd) {
         background: rgba(255, 255, 255, 0.025);
@@ -259,7 +255,6 @@ img.inverse-img {
 
 .table-filter {
     text-align: right;
-    padding: 0 50px;
 }
 
 .table-filter .mat-mdc-form-field {
@@ -296,9 +291,6 @@ img.inverse-img {
 
 
 
-.dialog-action-footer {
-    margin-top: 25px;
-}
 
 
 

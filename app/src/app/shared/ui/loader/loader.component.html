@@ -1,29 +1,29 @@
 @if (loading) {
-  <div class="skeleton-container" role="status" aria-busy="true" aria-label="Loading">
+  <div class="skeleton-container m-4" role="status" aria-busy="true" aria-label="Loading">
     @switch (variant) {
       @case ('list') {
         @for (item of items; track item) {
-          <div class="skeleton-row">
+          <div class="skeleton-row mb-4">
             <div class="skeleton skeleton-avatar"></div>
             <div class="skeleton-lines">
-              <div class="skeleton skeleton-line" style="width: 40%"></div>
-              <div class="skeleton skeleton-line" style="width: 70%"></div>
+              <div class="skeleton skeleton-line mb-2.5" style="width: 40%"></div>
+              <div class="skeleton skeleton-line mb-2.5" style="width: 70%"></div>
             </div>
           </div>
         }
       }
       @case ('table') {
-        <div class="skeleton skeleton-line skeleton-table-header"></div>
+        <div class="skeleton skeleton-line skeleton-table-header mb-2.5"></div>
         @for (item of items; track item) {
-          <div class="skeleton skeleton-line skeleton-table-row"></div>
+          <div class="skeleton skeleton-line skeleton-table-row mb-2.5"></div>
         }
       }
       @default {
-        <div class="skeleton-card">
-          <div class="skeleton skeleton-line skeleton-title"></div>
-          <div class="skeleton skeleton-line" style="width: 90%"></div>
-          <div class="skeleton skeleton-line" style="width: 75%"></div>
-          <div class="skeleton skeleton-line" style="width: 60%"></div>
+        <div class="skeleton-card p-4">
+          <div class="skeleton skeleton-line skeleton-title mb-5"></div>
+          <div class="skeleton skeleton-line mb-2.5" style="width: 90%"></div>
+          <div class="skeleton skeleton-line mb-2.5" style="width: 75%"></div>
+          <div class="skeleton skeleton-line mb-2.5" style="width: 60%"></div>
         </div>
       }
     }

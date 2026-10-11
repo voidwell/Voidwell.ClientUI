@@ -1,12 +1,5 @@
-﻿.outfit-stats {
-    margin-top: 10px;
-    margin-bottom: 5px;
-}
+﻿
 
-.members-list {
-    margin-top: 5px;
-    margin-bottom: 10px;
-}
 
 .label {
     opacity: 0.8;
@@ -21,9 +14,6 @@
     display: inline-block;
 }
 
-.outfit-card-content {
-    padding: 15px;
-}
 
 .character-name a {
     text-decoration: none;

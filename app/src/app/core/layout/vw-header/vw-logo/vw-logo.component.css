@@ -13,8 +13,6 @@ img,
 .logo-wrapper {
     display: inline-block;
     position: relative;
-    margin-right: auto;
-    margin-left: auto;
     line-height: 30px;
     color: #edeff0;
     font-weight: 700;

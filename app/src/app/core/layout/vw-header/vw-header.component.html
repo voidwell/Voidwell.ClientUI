@@ -1,4 +1,4 @@
-<div class="vw-header">
+<div class="vw-header px-11 py-10">
   <div class="logo">
     <a routerLink="/" class="logo-button">
       <vw-logo></vw-logo>
@@ -7,7 +7,7 @@
       <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
     </a>
   </div>
-  <ul class="top-menu">
+  <ul class="top-menu ml-5 p-0">
     @if (searchService.isUsable()) {
       <li class="top-menu_search">
         <button mat-icon-button (click)="focusSearch($event)">
@@ -43,7 +43,7 @@
     </li>
   </ul>
   @if (searchService.isUsable()) {
-    <form class="top-search" [ngClass]="{'focus': searchService.searchFocused() || searchService.control.dirty}">
+    <form class="top-search mx-0 my-0.5" [ngClass]="{'focus': searchService.searchFocused() || searchService.control.dirty}">
       <router-outlet name="search"></router-outlet>
     </form>
   }

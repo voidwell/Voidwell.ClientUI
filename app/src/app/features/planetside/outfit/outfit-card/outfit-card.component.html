@@ -1,5 +1,5 @@
 ﻿@if (data) {
-  <mat-card class="outfit-card" [ngClass]="{'bg-vs': data.factionId===1, 'bg-nc': data.factionId===2, 'bg-tr': data.factionId===3}">
+  <mat-card class="outfit-card mb-8" [ngClass]="{'bg-vs': data.factionId===1, 'bg-nc': data.factionId===2, 'bg-tr': data.factionId===3}">
     <mat-card-title>
       <h1 class="outfit-name">@if (data.alias) {
         <span>[{{data.alias}}]</span>

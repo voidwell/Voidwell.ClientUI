@@ -1,6 +1,4 @@
-﻿.player-session {
-    margin-top: 5px;
-}
+﻿
 
 .session-log {
     overflow: hidden;
@@ -28,7 +26,6 @@
 
 .weapon-image {
     width: 100px;
-    padding: 3px 0;
 }
 .weapon-image img {
     vertical-align: middle;

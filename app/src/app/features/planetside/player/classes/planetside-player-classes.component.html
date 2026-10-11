@@ -4,7 +4,7 @@
     @if (!isLoading) {
       <div>
         @if (!profile) {
-          <div class="class-list">
+          <div class="class-list mt-6">
             <mat-table #table [dataSource]="profilesDataSource" class="striped">
               <ng-container matColumnDef="rank">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -19,7 +19,7 @@
                 <mat-cell *matCellDef="let profile">
                   <div class="class-title">
                     <img class="pull-left" [src]="profile.imageId | dgcImageUrl" />
-                    <div class="name-block">
+                    <div class="name-block my-0 mr-0 ml-px">
                       <strong>{{profile.name}}</strong>
                       <small>{{profile.stats.score | number}}</small>
                     </div>
@@ -50,7 +50,7 @@
               <ng-container matColumnDef="gobutton">
                 <mat-header-cell *matHeaderCellDef></mat-header-cell>
                 <mat-cell *matCellDef="let profile">
-                  <a mat-button routerLink="{{profile.profileTypeId}}" class="goto-button">
+                  <a mat-button routerLink="{{profile.profileTypeId}}" class="goto-button pt-1 pr-4">
                     <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
                   </a>
                 </mat-cell>

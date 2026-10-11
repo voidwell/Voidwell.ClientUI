@@ -6,7 +6,7 @@
     <div>
       <vw-loader variant="table" [rows]="8" [loading]="isLoadingMembers"></vw-loader>
       @if (!isLoadingMembers || !errorMessage) {
-        <div class="outfit-stats">
+        <div class="outfit-stats mt-2.5 mb-1">
           <!--
           <mat-card class="outfit-totals">
             <mat-card-header>
@@ -14,7 +14,7 @@
                 Total
               </mat-card-title>
             </mat-card-header>
-            <mat-card-content class="outfit-card-content">
+            <mat-card-content class="outfit-card-content p-4">
               <div>
                 <span class="label">Kills:</span>
                 <span class="value">{{members | pluck: 'lifetimeStats.weaponKills' | sum | number}}</span>
@@ -63,7 +63,7 @@
                 Average
               </mat-card-title>
             </mat-card-header>
-            <mat-card-content class="outfit-card-content">
+            <mat-card-content class="outfit-card-content p-4">
               <div>
                 <span class="label">Kills:</span>
                 <span class="value">{{members | pluck: 'lifetimeStats.weaponKills' | avg | number: '.0-0'}}</span>
@@ -124,7 +124,7 @@
                 Median
               </mat-card-title>
             </mat-card-header>
-            <mat-card-content class="outfit-card-content">
+            <mat-card-content class="outfit-card-content p-4">
               <div>
                 <span class="label">Kills:</span>
                 <span class="value">{{members | pluck: 'lifetimeStats.weaponKills' | median | number: '.0-0'}}</span>
@@ -183,7 +183,7 @@
         </div>
       }
       @if (!isLoadingMembers || !errorMessage) {
-        <div class="members-list">
+        <div class="members-list mt-1 mb-2.5">
           <mat-table #table [dataSource]="dataSource" class="striped" matSort>
             <ng-container matColumnDef="name">
               <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>

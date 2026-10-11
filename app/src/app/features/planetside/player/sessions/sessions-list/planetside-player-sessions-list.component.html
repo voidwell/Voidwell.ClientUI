@@ -2,7 +2,7 @@
   <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
   <vw-error-message [message]="errorMessage"></vw-error-message>
   @if (!isLoading) {
-    <div class="session-list">
+    <div class="session-list mt-4">
       <mat-table #table [dataSource]="dataSource" class="striped">
         <ng-container matColumnDef="sessionId">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
@@ -23,7 +23,7 @@
         <ng-container matColumnDef="gobutton">
           <mat-header-cell *matHeaderCellDef></mat-header-cell>
           <mat-cell *matCellDef="let session">
-            <a mat-button routerLink="{{session.id}}" class="goto-button">
+            <a mat-button routerLink="{{session.id}}" class="goto-button pt-1 pr-4">
               <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
             </a>
           </mat-cell>

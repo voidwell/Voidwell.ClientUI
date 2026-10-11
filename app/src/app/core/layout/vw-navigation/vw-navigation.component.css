@@ -2,13 +2,9 @@
     width: 100%;
 }
 
-.nav-margin {
-    padding-left: 40px;
-}
 
 .navigation-close {
     display: none;
-    margin-top: -6px;
     background: #1e2a31;
     line-height: 70px;
     color: #b4bfc3;
@@ -22,8 +18,6 @@
 
 .navigation-toggles {
     list-style: none;
-    padding: 0;
-    margin: 30px 0 60px;
     height: 42px;
 }
 

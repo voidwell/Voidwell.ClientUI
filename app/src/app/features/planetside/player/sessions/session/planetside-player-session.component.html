@@ -1,4 +1,4 @@
-﻿<div class="content-container player-session">
+﻿<div class="content-container player-session mt-1">
   <vw-loader [loading]="isLoading"></vw-loader>
   <vw-error-message [message]="errorMessage"></vw-error-message>
   @if (!isLoading && !errorMessage) {
@@ -25,39 +25,39 @@
           <mat-card-title>Stats</mat-card-title>
           <mat-card-footer>
             <div class="stats-list">
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">KDR</span>
                 <span class="value">{{sessionStats.kills / sessionStats.deaths | number: '.2-2'}}</span>
               </div>
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">HSR</span>
                 <span class="value">{{sessionStats.headshots / sessionStats.kills * 100 | number: '.1-1'}}%</span>
               </div>
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">Kills</span>
                 <span class="value">{{sessionStats.kills | number}}</span>
               </div>
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">Deaths</span>
                 <span class="value">{{sessionStats.deaths | number}}</span>
               </div>
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">Suicides</span>
                 <span class="value">{{sessionStats.suicides | number}}</span>
               </div>
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">Teamkills</span>
                 <span class="value">{{sessionStats.teamkills | number}}</span>
               </div>
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">Headshots</span>
                 <span class="value">{{sessionStats.headshots | number}}</span>
               </div>
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">Captured</span>
                 <span class="value">{{sessionStats.facilitiesCaptured | number}}</span>
               </div>
-              <div class="info-item">
+              <div class="info-item px-8 py-4">
                 <span class="label">Defended</span>
                 <span class="value">{{sessionStats.facilitiesDefended | number}}</span>
               </div>
@@ -108,7 +108,7 @@
                           </a>
                         </div>
                         <div class="event-col">
-                          <div class="weapon-image">
+                          <div class="weapon-image px-0 py-1">
                             <img [src]="event.weapon.imageId | dgcImageUrl" alt="" />
                           </div>
                           <div class="weapon-details">
@@ -138,7 +138,7 @@
                           </a>
                         </div>
                         <div class="event-col">
-                          <div class="weapon-image">
+                          <div class="weapon-image px-0 py-1">
                             <img [src]="event.weapon.imageId | dgcImageUrl" alt="" />
                           </div>
                           <div class="weapon-details">

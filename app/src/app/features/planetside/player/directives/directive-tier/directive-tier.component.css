@@ -22,10 +22,8 @@
 .directive-tier-rewards {
     text-align: center;
     color: #fff;
-    padding: 10px;
     height: 100px;
     background: rgba(0, 0, 0, 0.1);
-    margin: 2px;
     flex: 1 1 300px;
     overflow: hidden;
 }
@@ -33,7 +31,6 @@
 .directive-tier-rewards-list {
     white-space: nowrap;
     overflow-x: auto;
-    padding-bottom: 10px;
 }
 
 .directive-tier-rewards-list > div {

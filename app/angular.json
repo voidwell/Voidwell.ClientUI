@@ -31,6 +31,7 @@
             "styles": [
               "node_modules/@mdi/font/css/materialdesignicons.css",
               "node_modules/leaflet/dist/leaflet.css",
+              "src/styles/tailwind.css",
               "src/styles/theme.scss",
               "src/styles/app.css",
               "src/styles/planetside.css"

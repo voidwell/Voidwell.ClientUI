@@ -23,12 +23,10 @@
 .card-grid {
     display: flex;
     flex-wrap: wrap;
-    margin: -15px;
 }
 
 .card {
     flex: 1 1 auto;
-    margin: 15px;
 }
 
 .card-row.card-row-stretch .mat-mdc-card {

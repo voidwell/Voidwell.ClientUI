@@ -1,6 +1,4 @@
-.world-activity {
-    margin-top: 25px;
-}
+
 
 .align-left {
     text-align: left !important;
@@ -9,7 +7,6 @@
 .card-grid {
     display: flex;
     flex-wrap: wrap;
-    margin: -15px;
 }
 
 ::ng-deep .card {

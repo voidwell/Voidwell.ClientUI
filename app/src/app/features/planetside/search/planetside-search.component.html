@@ -1,6 +1,6 @@
 ﻿<div class="search" [ngClass]="{'focus': searchService.searchFocused() || searchService.control.dirty}">
   <div class ="top-search-flex" style="display: flex; flex-direction: row">
-    <platform-control class="platform-control" style="flex: none"></platform-control>
+    <platform-control class="platform-control m-0 px-0 py-4" style="flex: none"></platform-control>
     <div class="top-search-container" style="flex: 1 1 100%; max-width: 100%" #searchContainer>
       @if (searchService.control.dirty) {
         <button mat-icon-button class="top-search_clear" (click)="searchService.clearSearch()">
@@ -18,7 +18,7 @@
         <mat-option value="item">Weapon</mat-option>
       </mat-select>
       <div class="top-search_input-container" style="flex: 1 1 100%; max-width: 100%">
-        <input class="top-search_input"
+        <input class="top-search_input m-0 px-5 py-2.5"
           #searchInput
           type="text"
           matInput

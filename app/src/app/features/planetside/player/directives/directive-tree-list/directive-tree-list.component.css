@@ -30,7 +30,6 @@
 }
 
 .directive-tree-header-stats {
-    margin: auto 0 auto auto;
     display: flex;
     align-items: center;
 }
@@ -38,7 +37,6 @@
 .directive-reward {
     display: inline-flex;
     align-items: center;
-    margin: 0 20px;
     width: 60px;
 }    
 .directive-reward mat-icon

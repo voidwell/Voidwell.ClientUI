@@ -1,7 +1,7 @@
 ﻿<vw-loader [loading]="isLoading"></vw-loader>
 <mat-card class="world-card">
   <mat-card-title>
-    <div class="world-state">
+    <div class="world-state mr-1">
       @if (world && world.isOnline) {
         <mat-icon fontSet="mdi" fontIcon="mdi-check-circle"></mat-icon>
       }
@@ -12,7 +12,7 @@
     <span class="world-name">{{worldId() | worldName}}</span>
   </mat-card-title>
   @if (!isLoading && world) {
-    <mat-card-content class="world-card-content">
+    <mat-card-content class="world-card-content mt-1">
       @for (zone of world.zoneStates; track zone) {
         <div class="zone-state">
           <span class="zone-state-icon">

@@ -1,6 +1,5 @@
 ﻿.weapon-description-card {
     max-width: 380px;
-    margin-right: 20px;
 }
 .weapon-description-card img {
     display: block;
@@ -17,9 +16,6 @@
     opacity: 0.8;
     width: 130px;
     display: inline-block;
-}
-.info-row {
-    padding: 8px;
 }
 
 .card-row {

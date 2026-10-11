@@ -2,7 +2,7 @@
   <div class="directive-objective-image">
     <img [src]="directive.imageId | dgcImageUrl" alt="" />
   </div>
-  <div class="directive-objective-info">
+  <div class="directive-objective-info ml-1">
     <div class="directive-objective-name">{{directive.name}}</div>
     @if (directive.objective && !directive.completionDate) {
       <div class="directive-objective-progress">
