@@ -4,10 +4,10 @@
   @if (!isLoading && !errorMessage) {
     <div>
       <div class="alert-header mx-0 mt-2.5 mb-8">
-        <div class="alert-header-content">
-          <div class="side-img" [ngClass]="{'indar': activeEvent.zoneId === 2, 'hossin': activeEvent.zoneId === 4, 'amerish': activeEvent.zoneId === 6, 'esamir': activeEvent.zoneId === 8, 'oshur': activeEvent.zoneId === 344}"></div>
-          <div class="card-info">
-            <mat-card class="card-info">
+        <div class="alert-header-content flex flex-nowrap">
+          <div class="side-img flex flex-none" [ngClass]="{'indar': activeEvent.zoneId === 2, 'hossin': activeEvent.zoneId === 4, 'amerish': activeEvent.zoneId === 6, 'esamir': activeEvent.zoneId === 8, 'oshur': activeEvent.zoneId === 344}"></div>
+          <div class="card-info flex grow">
+            <mat-card class="card-info flex grow">
               <mat-card-title>
                 <div class="title">
                   <div class="date-info">

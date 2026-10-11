@@ -4,10 +4,6 @@
     text-align: center;
 }
 
-.events-list {
-    display: flex;
-    flex-flow: column;
-}
 
     .events-list.in-progress {
         flex-flow: row wrap;

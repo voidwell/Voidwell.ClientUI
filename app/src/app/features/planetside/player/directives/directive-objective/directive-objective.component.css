@@ -17,15 +17,10 @@
 }
 
 .directive-objective-container {
-    display: flex;
     white-space: nowrap;
     overflow-x: auto;
 }
 
-.directive-objective-image {
-    display: flex;
-    align-items: center;
-}
 
 .directive-objective-image img {
     height: auto;
@@ -37,10 +32,6 @@
     vertical-align: top;
 }
 
-.directive-objective-progress .progress-count {
-    display: flex;
-    flex-direction: column;
-}
 
 .directive-objective-progress .progress-count .progress-remaining {
     color: rgba(255, 255, 255, 0.4);

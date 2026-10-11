@@ -1,7 +1,7 @@
 @if (player(); as playerData) {
   <div class="voidwell-character-stats">
-    <div class="card-grid -m-4">
-      <mat-card class="vw-character-overview card m-4">
+    <div class="card-grid -m-4 flex flex-wrap">
+      <mat-card class="vw-character-overview card m-4 flex-auto">
         <mat-card-title>General</mat-card-title>
         <mat-card-content>
           <div>
@@ -43,7 +43,7 @@
         </mat-card-content>
       </mat-card>
       @if (playerData.outfit) {
-        <mat-card class="vw-character-outfit card m-4">
+        <mat-card class="vw-character-outfit card m-4 flex-auto">
           <mat-card-title>Outfit</mat-card-title>
           <mat-card-content>
             <div [ngClass]="playerData.factionId | factionColor" class="outfit-header">
@@ -76,9 +76,9 @@
         </mat-card>
       }
     </div>
-    <div class="card-grid -m-4">
-      <planetside-player-stats-siege-card class="siege-container card m-4" [captured]="playerData.lifetimeStats.facilityCaptureCount" [defended]="playerData.lifetimeStats.facilityDefendedCount"></planetside-player-stats-siege-card>
-      <mat-card class="vw-character-kdr card m-4">
+    <div class="card-grid -m-4 flex flex-wrap">
+      <planetside-player-stats-siege-card class="siege-container card m-4 flex-auto" [captured]="playerData.lifetimeStats.facilityCaptureCount" [defended]="playerData.lifetimeStats.facilityDefendedCount"></planetside-player-stats-siege-card>
+      <mat-card class="vw-character-kdr card m-4 flex-auto">
         <mat-card-title>Overall KD Performance</mat-card-title>
         <mat-card-content>
           <div class="kdr-data">
@@ -122,7 +122,7 @@
           </div>
         </mat-card-footer>
       </mat-card>
-      <mat-card class="vw-character-weapons card m-4">
+      <mat-card class="vw-character-weapons card m-4 flex-auto">
         <mat-card-title>Overall Weapon Performance</mat-card-title>
         <mat-card-content>
           <div class="weapon-data">
@@ -168,7 +168,7 @@
           </div>
         </mat-card-footer>
       </mat-card>
-      <mat-card class="vw-character-ivi card m-4">
+      <mat-card class="vw-character-ivi card m-4 flex-auto">
         <mat-card-title>Infantry vs Infantry</mat-card-title>
         <mat-card-content>
           <div class="ivi-data">

@@ -22,18 +22,13 @@
     position: absolute;
     height: 130px;
     width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 0 12.5%;
 }
 
 .mat-tab-tier-progress .mat-tab-tier {
-    display: inline-flex;
     border-top: dashed 1px #1b557f;
     margin-top: 23px;
     position: relative;
-    flex: 1;
 }
 
 .mat-tab-tier-progress .mat-tab-tier .mat-tab-tier-completion {

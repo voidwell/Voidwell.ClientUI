@@ -1,9 +1,9 @@
 ﻿<div class="content-container">
-  <div class="zone-map">
-    <div class="map-container">
+  <div class="zone-map flex flex-row flex-nowrap">
+    <div class="map-container flex">
       <ps2-zone-map [zoneId]="zoneId()" [ownership]="ownership()" [captureStream]="captureSub" [defendStream]="defendSub" [focusFacility]="focusFacilityEmitter" (score)="onScoreChange($event)"></ps2-zone-map>
     </div>
-    <mat-card class="info-container">
+    <mat-card class="info-container flex flex-col flex-nowrap">
       <mat-card-content>
         <vw-faction-bar [vs]="score[1]" [nc]="score[2]" [tr]="score[3]"></vw-faction-bar>
       </mat-card-content>

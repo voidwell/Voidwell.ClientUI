@@ -15,8 +15,6 @@
     text-align: center;
     overflow: hidden;
     width: auto;
-    display: flex;
-    justify-content: space-around;
 }
 
     .event-times small {

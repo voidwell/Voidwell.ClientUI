@@ -29,14 +29,8 @@
     background: #310a32 !important;
 }
 
-.directive-tree-header-stats {
-    display: flex;
-    align-items: center;
-}
 
 .directive-reward {
-    display: inline-flex;
-    align-items: center;
     width: 60px;
 }    
 .directive-reward mat-icon

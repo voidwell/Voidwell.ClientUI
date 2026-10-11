@@ -1,6 +1,6 @@
-<div class="mat-tab-tier-progress">
+<div class="mat-tab-tier-progress flex justify-center items-center">
   @for (tier of tree.tiers | slice:1:tree.tiers.length; track tier) {
-    <div class="mat-tab-tier">
+    <div class="mat-tab-tier inline-flex flex-1">
       @if (tier.tierId <= tree.currentDirectiveTierId) {
         <div class="mat-tab-tier-completion" [style.width.%]="tier.completionPercent"></div>
       }

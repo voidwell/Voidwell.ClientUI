@@ -1,7 +1,5 @@
 ﻿.alert-card {
     position: relative;
-    display: flex;
-    flex-wrap: nowrap;
     min-width: 400px;
 }
 
@@ -38,8 +36,6 @@
     }
 
 .side-img {
-    display: flex;
-    flex: 0 0 auto;
     width: 160px;
     min-height: 160px;
     max-height: 315px;
@@ -77,8 +73,6 @@
 }
 
 .card-info {
-    display: flex;
-    flex: 1;
     position: relative;
 }
 

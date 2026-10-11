@@ -1,4 +1,4 @@
-<div class="directive-tier-info">
+<div class="directive-tier-info flex flex-wrap">
   <div class="directive-tier-requirements">
     <h3>Requirements</h3>
     <div class="requirement-bars">
@@ -17,7 +17,7 @@
       </div>
     }
   </div>
-  <div class="directive-tier-rewards m-0.5 p-2.5">
+  <div class="directive-tier-rewards m-0.5 p-2.5 grow shrink basis-75">
     <h3>Rewards</h3>
     <div class="directive-tier-rewards-list pb-2.5">
       <div class="directive-reward">
@@ -33,7 +33,7 @@
     </div>
   </div>
 </div>
-<div class="directive-item-list">
+<div class="directive-item-list flex flex-wrap">
   @for (directive of tier.directives; track directive) {
     <directive-objective [directive]="directive"></directive-objective>
   }

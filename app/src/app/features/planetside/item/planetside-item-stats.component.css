@@ -9,17 +9,9 @@
     margin-bottom: 20px;
 }
 
-.weapon-info-card {
-    flex: 1;
-}
 .weapon-info-card .label {
     opacity: 0.8;
     width: 130px;
     display: inline-block;
 }
 
-.card-row {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-}

@@ -45,22 +45,13 @@
     border-radius: 4px;
 }
 
-.skeleton-row {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
 
 .skeleton-avatar {
-    flex: 0 0 48px;
     width: 48px;
     height: 48px;
     border-radius: 50%;
 }
 
-.skeleton-lines {
-    flex: 1;
-}
 
 .skeleton-table-header {
     height: 36px;

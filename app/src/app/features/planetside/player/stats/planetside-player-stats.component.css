@@ -20,14 +20,7 @@
     width: auto;
 }
 
-.card-grid {
-    display: flex;
-    flex-wrap: wrap;
-}
 
-.card {
-    flex: 1 1 auto;
-}
 
 .card-row.card-row-stretch .mat-mdc-card {
     flex: 1;

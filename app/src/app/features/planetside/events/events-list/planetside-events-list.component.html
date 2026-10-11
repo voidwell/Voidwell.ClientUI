@@ -10,13 +10,13 @@
             <strong>No events in progress</strong>
           </div>
         }
-        <div class="events-list in-progress">
+        <div class="events-list in-progress flex flex-col">
           @for (event of getActiveEvents() | orderBy: 'startDate'; track event) {
             <vw-event-card [event]="event"></vw-event-card>
           }
         </div>
         <h3>Past Events</h3>
-        <div class="events-list">
+        <div class="events-list flex flex-col">
           @for (event of getPastEvents() | orderBy: '-startDate'; track event) {
             <vw-event-card [event]="event"></vw-event-card>
           }

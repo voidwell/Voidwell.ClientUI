@@ -61,11 +61,6 @@
     min-height: initial;
 }
 
-.event-col {
-    flex-grow: 1;
-    flex-basis: 0;
-    align-self: center;
-}
 
 .event-col a {
     text-decoration: none;

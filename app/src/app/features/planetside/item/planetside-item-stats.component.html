@@ -1,6 +1,6 @@
 ﻿<div>
   @if (weaponData(); as weaponData) {
-    <div class="card-row">
+    <div class="card-row flex flex-row flex-wrap">
       <mat-card class="weapon-description-card pull-left mr-5">
         <mat-card-content class="layout-padding">
           <img [src]="weaponData.imageId | dgcImageUrl" />
@@ -14,7 +14,7 @@
           }
         </mat-card-content>
       </mat-card>
-      <mat-card class="weapon-info-card">
+      <mat-card class="weapon-info-card flex-1">
         <mat-card-content class="layout-padding">
           <div class="info-row p-2">
             <span class="label">Type</span>

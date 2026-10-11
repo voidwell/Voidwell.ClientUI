@@ -7,14 +7,14 @@
           <strong>No alerts in progress</strong>
         </div>
       }
-      <div class="alerts-list in-progress">
+      <div class="alerts-list in-progress flex flex-col">
         @for (alert of getActiveAlerts() | orderBy: 'startDate'; track alert) {
           <vw-alert-card [alert]="alert"></vw-alert-card>
         }
       </div>
       <h3>Past Alerts</h3>
       <vw-error-message [message]="errorMessage"></vw-error-message>
-      <div class="alerts-list">
+      <div class="alerts-list flex flex-col">
         <div class="paging-buttons mb-2.5">
           <div class="filters">
             <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onFilterChange($event)">

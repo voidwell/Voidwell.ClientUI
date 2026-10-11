@@ -7,7 +7,6 @@
 .vw-nav {
     overflow: hidden;
     position: relative;
-    flex-shrink: 0;
 }
 
 .vw-nav a {

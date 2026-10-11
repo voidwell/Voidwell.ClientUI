@@ -83,7 +83,7 @@
                   <mat-cell *matCellDef="let event">
                     @if (event.eventType==='Login' || event.eventType==='Logout') {
                       <div>
-                        <div class="event-col col-session-state">
+                        <div class="event-col col-session-state grow basis-0 self-center">
                           @if (event.eventType==='Login') {
                             <div>Player logged in</div>
                           }
@@ -95,19 +95,19 @@
                     }
                     @if (event.eventType==='BattleRankUp') {
                       <div style="display: flex; justify-content: flex-start; align-items: stretch">
-                        <div class="event-col col-battle-rank-up">
+                        <div class="event-col col-battle-rank-up grow basis-0 self-center">
                           <mat-icon fontSet="mdi" class="rank-up-icon" fontIcon="mdi-arrow-up-thick"></mat-icon> Ranked up to {{event.battleRank}}
                         </div>
                       </div>
                     }
                     @if (event.eventType==='Death') {
                       <div style="display: flex; justify-content: space-between">
-                        <div class="event-col">
+                        <div class="event-col grow basis-0 self-center">
                           <a routerLink="/ps2/player/{{event.attacker.id}}">
                             <span [class]="event.attacker.factionId | factionColor">{{event.attacker.name || event.attacker.id}}</span>
                           </a>
                         </div>
-                        <div class="event-col">
+                        <div class="event-col grow basis-0 self-center">
                           <div class="weapon-image px-0 py-1">
                             <img [src]="event.weapon.imageId | dgcImageUrl" alt="" />
                           </div>
@@ -123,7 +123,7 @@
                             }
                           </div>
                         </div>
-                        <div class="event-col">
+                        <div class="event-col grow basis-0 self-center">
                           <a routerLink="/ps2/player/{{event.victim.id}}">
                             <span [class]="event.victim.factionId | factionColor">{{event.victim.name || event.victim.id}}</span>
                           </a>
@@ -132,12 +132,12 @@
                     }
                     @if (event.eventType==='VehicleDestroy') {
                       <div style="display: flex; justify-content: space-between">
-                        <div class="event-col">
+                        <div class="event-col grow basis-0 self-center">
                           <a routerLink="/ps2/player/{{event.attacker.id}}">
                             <span [class]="event.attacker.factionId | factionColor">{{event.attacker.name || event.attacker.id}}</span>
                           </a>
                         </div>
-                        <div class="event-col">
+                        <div class="event-col grow basis-0 self-center">
                           <div class="weapon-image px-0 py-1">
                             <img [src]="event.weapon.imageId | dgcImageUrl" alt="" />
                           </div>
@@ -148,7 +148,7 @@
                             }
                           </div>
                         </div>
-                        <div class="event-col col-player-vehicle">
+                        <div class="event-col col-player-vehicle grow basis-0 self-center">
                           <div class="col-player-vehicle-wrapper">
                             <div class="emphasis">
                               <div [class]="event.factionId | factionColor">{{event.victimVehicle.name}}</div>
@@ -167,7 +167,7 @@
                     }
                     @if (event.eventType==='FacilityCapture' || event.eventType==='FacilityDefend') {
                       <div>
-                        <div class="event-col col-facility-state">
+                        <div class="event-col col-facility-state grow basis-0 self-center">
                           @if (event.eventType==='FacilityCapture') {
                             <div>
                               <mat-icon fontSet="mdi" class="sword-icon" fontIcon="mdi-sword"></mat-icon> Captured {{event.facility.name}}

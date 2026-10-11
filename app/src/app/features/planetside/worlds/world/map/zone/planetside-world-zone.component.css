@@ -1,18 +1,12 @@
-﻿.zone-map {
-    display: flex;
-    flex-flow: row nowrap;
-}
+﻿
 
 .map-container {
-    display: flex;
     min-width: 800px;
     height: 600px;
 }
 
 .info-container {
-    display: flex;
     vertical-align: top;
-    flex-flow: column nowrap;
     width: 100%;
 }
 
