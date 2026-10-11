@@ -8,7 +8,7 @@ WORKDIR /app
 COPY app/package.json app/package-lock.json ./
 RUN --mount=type=cache,target=/root/.npm npm ci
 
-COPY app/angular.json app/tsconfig*.json ./
+COPY app/angular.json app/tsconfig*.json app/.postcssrc.json ./
 COPY app/src ./src
 RUN npm run build:prod
 

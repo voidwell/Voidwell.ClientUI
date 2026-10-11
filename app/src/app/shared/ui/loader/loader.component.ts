@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-export type LoaderVariant = 'card' | 'list' | 'table';
+export type LoaderVariant = 'card' | 'cards' | 'list' | 'table';
 
 @Component({
     selector: 'vw-loader',

@@ -1,5 +1,5 @@
 @if (loading) {
-  <div class="skeleton-container m-4" role="status" aria-busy="true" aria-label="Loading">
+  <div class="skeleton-container" [class.m-4]="variant !== 'cards'" role="status" aria-busy="true" aria-label="Loading">
     @switch (variant) {
       @case ('list') {
         @for (item of items; track item) {
@@ -9,6 +9,16 @@
               <div class="skeleton skeleton-line mb-2.5" style="width: 40%"></div>
               <div class="skeleton skeleton-line mb-2.5" style="width: 70%"></div>
             </div>
+          </div>
+        }
+      }
+      @case ('cards') {
+        @for (item of items; track item) {
+          <div class="skeleton-card p-4 mb-4">
+            <div class="skeleton skeleton-line skeleton-title mb-2.5"></div>
+            <div class="skeleton skeleton-line skeleton-subtitle mb-5"></div>
+            <div class="skeleton skeleton-line mb-2.5"></div>
+            <div class="skeleton skeleton-line mb-2.5" style="width: 85%"></div>
           </div>
         }
       }
