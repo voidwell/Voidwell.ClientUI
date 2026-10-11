@@ -1,6 +1,6 @@
 @if (playerData) {
   <div class="content-container">
-    <vw-loader [loading]="isLoading"></vw-loader>
+    <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
     @if (!isLoading) {
       <div>
         @if (!vehicle) {

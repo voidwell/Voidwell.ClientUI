@@ -1,12 +1,77 @@
-﻿.loader-container {
+.skeleton-container {
+    min-width: 300px;
     margin: 15px;
 }
-.loader-wrapper {
-    text-align: center;
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background: #2b3942;
+    border-radius: 4px;
 }
-.loader-wrapper .inner-ring {
-    stroke: #1d3975;
+
+/* Shimmer sweep, as seen on Facebook */
+.skeleton::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+    animation: skeleton-shimmer 1.5s infinite;
 }
-.loader-wrapper .outer-ring {
-    stroke: #3a4d75;
+
+@keyframes skeleton-shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton::after {
+        animation: none;
+    }
+}
+
+.skeleton-line {
+    height: 14px;
+    margin-bottom: 10px;
+}
+
+.skeleton-title {
+    width: 35%;
+    height: 22px;
+    margin-bottom: 18px;
+}
+
+.skeleton-card {
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.025);
+    border-radius: 4px;
+}
+
+.skeleton-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.skeleton-avatar {
+    flex: 0 0 48px;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.skeleton-lines {
+    flex: 1;
+}
+
+.skeleton-table-header {
+    height: 36px;
+    background: #394650;
+}
+
+.skeleton-table-row {
+    height: 28px;
 }

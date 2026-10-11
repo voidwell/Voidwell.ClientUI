@@ -4,7 +4,7 @@
   <outfit-card [data]="outfitData"></outfit-card>
   @if (!isLoading) {
     <div>
-      <vw-loader [loading]="isLoadingMembers"></vw-loader>
+      <vw-loader variant="table" [rows]="8" [loading]="isLoadingMembers"></vw-loader>
       @if (!isLoadingMembers || !errorMessage) {
         <div class="outfit-stats">
           <!--

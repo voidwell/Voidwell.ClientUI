@@ -1,4 +1,6 @@
-﻿import { Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
+
+export type LoaderVariant = 'card' | 'list' | 'table';
 
 @Component({
     selector: 'vw-loader',
@@ -8,18 +10,10 @@
 
 export class LoaderComponent {
     @Input() loading: boolean;
+    @Input() variant: LoaderVariant = 'card';
+    @Input() set rows(value: number) {
+        this.items = Array.from({ length: value }, (_, i) => i);
+    }
 
-    private height: string = '150px';
-    private width: string = '150px';
-
-    private outerStrokeWidth: number = 1;
-    private innerStrokeWidth: number = 1;
-
-    private innerRadius: number = 35;
-    private outerRadius: number = 40;
-
-    private innerDash = this.innerRadius * Math.PI / 4;
-    private outerDash = this.outerRadius * Math.PI / 2;
-    private innerDashArray: string = this.innerDash + " " + this.innerDash + " " + this.innerDash + " " + this.innerDash;
-    private outerDashArray: string = this.outerDash + " " + this.outerDash;
+    items: number[] = [0, 1, 2, 3, 4];
 }

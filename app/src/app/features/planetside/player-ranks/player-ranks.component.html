@@ -5,7 +5,7 @@
       This page was inspired by <a href="http://melbalabs.com/ps2ranks">http://melbalabs.com/ps2ranks</a>!
     </mat-card-content>
     <mat-card-footer>
-      <vw-loader [loading]="isLoading"></vw-loader>
+      <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
       @if (errorMessage) {
         <div class="error-text">{{errorMessage}}</div>
       }

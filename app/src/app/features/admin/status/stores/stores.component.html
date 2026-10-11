@@ -1,6 +1,6 @@
 ﻿<div class="content-container">
   <h3>Planetside</h3>
-  <vw-loader [loading]="dataSource.loading$ | async"></vw-loader>
+  <vw-loader variant="table" [rows]="8" [loading]="dataSource.loading$ | async"></vw-loader>
   <vw-error-message [message]="dataSource.errorMessage$ | async"></vw-error-message>
   <div [hidden]="dataSource.loading$ | async">
 

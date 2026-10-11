@@ -7,7 +7,7 @@
             <small>May take a few seconds to load</small>
         </div>
 
-        <vw-loader [loading]="isLoading"></vw-loader>
+        <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
         <vw-error-message [message]="errorMessage"></vw-error-message>
 
         <div [hidden]="!sessions || isLoading">
