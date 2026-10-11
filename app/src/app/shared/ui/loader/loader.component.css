@@ -1,4 +1,4 @@
-.skeleton-container {
+.skeleton-container:not(.skeleton-embedded) {
     min-width: 300px;
 }
 

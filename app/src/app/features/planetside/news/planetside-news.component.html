@@ -1,9 +1,9 @@
 ﻿<div>
   <vw-error-message [message]="errorMessage"></vw-error-message>
-  <vw-loader variant="list" [loading]="isLoading"></vw-loader>
-  @if (!isLoading && !errorMessage) {
+  @if (!errorMessage) {
     <div class="main-news-container pt-4 flex">
-      <div class="news-content">
+      <div class="news-content flex-1 min-w-0">
+        <vw-loader variant="cards" [rows]="3" [loading]="isNewsLoading"></vw-loader>
         @if (!isNewsLoading) {
           <div class="news-card-list">
             @for (post of newsList; track post) {
@@ -16,6 +16,7 @@
         <mat-card>
           <mat-card-title>Updates</mat-card-title>
           <mat-card-content>
+            <vw-loader variant="lines" [rows]="6" [loading]="isUpdatesLoading"></vw-loader>
             @if (!isUpdatesLoading) {
               <ul>
                 @for (item of updateList; track item) {

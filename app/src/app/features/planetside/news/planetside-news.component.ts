@@ -21,7 +21,6 @@ export class PlanetsideNewsComponent {
     private cdr = inject(ChangeDetectorRef);
 
     errorMessage: string = null;
-    isLoading: boolean;
     isNewsLoading: boolean;
     isUpdatesLoading: boolean;
 
@@ -30,38 +29,31 @@ export class PlanetsideNewsComponent {
 
     constructor() {
         this.errorMessage = null;
-        this.isLoading = true;
         this.isNewsLoading = true;
         this.isUpdatesLoading = true;
 
         this.feedsRepository.getNews()
             .pipe(catchError(error => {
                 this.errorMessage = getErrorMessage(error);
-                this.isLoading = false;
+                this.isNewsLoading = false;
                 return of([] as FeedItem[]);
             }))
             .subscribe(newsList => {
                 this.newsList = newsList;
                 this.isNewsLoading = false;
-                this.updateLoading();
                 this.cdr.markForCheck();
             });
 
         this.feedsRepository.getUpdates()
             .pipe(catchError(error => {
                 this.errorMessage = getErrorMessage(error);
-                this.isLoading = false;
+                this.isUpdatesLoading = false;
                 return of([] as FeedItem[]);
             }))
             .subscribe(updateList => {
                 this.updateList = updateList;
                 this.isUpdatesLoading = false;
-                this.updateLoading();
                 this.cdr.markForCheck();
             });
-    }
-
-    private updateLoading() {
-        this.isLoading = this.isNewsLoading && this.isUpdatesLoading;
     }
 }

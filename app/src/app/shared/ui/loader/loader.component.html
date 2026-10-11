@@ -1,5 +1,5 @@
 @if (loading) {
-  <div class="skeleton-container" [class.m-4]="variant !== 'cards'" role="status" aria-busy="true" aria-label="Loading">
+  <div class="skeleton-container" [class.m-4]="!embedded" [class.skeleton-embedded]="embedded" role="status" aria-busy="true" aria-label="Loading">
     @switch (variant) {
       @case ('list') {
         @for (item of items; track item) {
@@ -20,6 +20,11 @@
             <div class="skeleton skeleton-line mb-2.5"></div>
             <div class="skeleton skeleton-line mb-2.5" style="width: 85%"></div>
           </div>
+        }
+      }
+      @case ('lines') {
+        @for (item of items; track item; let i = $index) {
+          <div class="skeleton skeleton-line mb-2.5" [style.width.%]="lineWidths[i % lineWidths.length]"></div>
         }
       }
       @case ('table') {
