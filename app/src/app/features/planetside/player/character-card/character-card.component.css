@@ -1,4 +1,9 @@
-﻿.character-card {
+﻿:host {
+    display: block;
+}
+
+.character-card {
+    height: 100%;
     color: #edeff0;
 }
 
@@ -7,29 +12,66 @@
     font-size: initial;
 }
 
-.stats, .player-name {
+/* Keep the tab bar pinned to the bottom when the card stretches to match Quick Stats. */
+.character-card mat-card-content {
+    flex: 1 1 auto;
+}
+
+.player-name {
     display: inline-block;
     vertical-align: top;
 }
 
-.stats > div {
-    display: inline-block;
-    text-align: center;
-    text-align: right;
-    font-size: 1.2em;
+.player-summary,
+.player-outfit {
+    font-size: 14px;
 }
 
-.stats > div:not(:last-child) {
-    margin-right: 50px;
+.outfit-link {
+    color: inherit;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+    text-underline-offset: 3px;
 }
 
-.stats label {
-    display: block;
-    font-size: 0.7em;
-    opacity: 0.5;
-    text-transform: uppercase;
+.outfit-link:hover {
+    opacity: 0.8;
 }
 
+.faction-icon {
+    color: #b0b3b5;
+}
+
+.faction-icon.faction-vs {
+    color: #b565e6;
+}
+
+.faction-icon.faction-nc {
+    color: #4a90e2;
+}
+
+.faction-icon.faction-tr {
+    color: #e85a5a;
+}
+
+.player-divider {
+    width: 1px;
+    height: 16px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.player-summary,
+.player-outfit {
+    line-height: 20px;
+}
+
+.player-summary .mat-icon,
+.player-outfit .mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+}
 
 .bg-vs {
     background: #3f1f66;

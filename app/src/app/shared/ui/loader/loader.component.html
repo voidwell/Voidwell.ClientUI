@@ -41,6 +41,11 @@
           <div class="skeleton skeleton-line" style="width: 70%"></div>
         </div>
       }
+      @case ('rows') {
+        @for (item of items; track item) {
+          <div class="skeleton skeleton-row-bar mb-2.5"></div>
+        }
+      }
       @case ('lines') {
         @for (item of items; track item; let i = $index) {
           <div class="skeleton skeleton-line mb-2.5" [style.width.%]="lineWidths[i % lineWidths.length]"></div>

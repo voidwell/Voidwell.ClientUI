@@ -1,0 +1,39 @@
+<mat-card class="vw-character-recent-sessions">
+  <mat-card-title class="card-title">
+    <span>Recent Sessions</span>
+    <a class="view-all" routerLink="/ps2/player/{{player().id}}/sessions">View All &rarr;</a>
+  </mat-card-title>
+  <mat-card-content>
+    @if (sessions(); as rows) {
+      <table>
+        <thead>
+          <tr>
+            <th>Date / Time</th>
+            <th class="num">Kills</th>
+            <th class="num">K/D</th>
+            <th class="num">Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows; track row.id) {
+            <tr>
+              <td>
+                <a class="date" routerLink="/ps2/player/{{player().id}}/sessions/{{row.id}}">{{row.loginDate | date: 'MMM d, y'}}</a>
+                <span class="time muted">{{row.loginDate | date: 'h:mm a'}}</span>
+              </td>
+              <td class="num">{{row.kills === null ? '—' : (row.kills | number)}}</td>
+              <td class="num">{{row.kdr === null ? '—' : (row.kdr | number: '1.2-2')}}</td>
+              <td class="num">{{row.duration / 3600000 | number: '1.1-1'}}h</td>
+            </tr>
+          } @empty {
+            <tr>
+              <td colspan="4" class="muted">No sessions recorded</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>

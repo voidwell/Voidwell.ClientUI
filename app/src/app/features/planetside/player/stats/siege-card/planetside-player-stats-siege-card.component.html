@@ -1,25 +1,46 @@
 <mat-card class="vw-siege">
-  <mat-card-header>
-    <mat-card-title>Siege Level</mat-card-title>
-  </mat-card-header>
+  <mat-card-title class="card-title">
+    <span>Siege Level</span>
+    <span class="lean" [class.lean-attack]="lean() === 'Attacker'" [class.lean-defend]="lean() === 'Defender'">{{lean()}}</span>
+  </mat-card-title>
   <mat-card-content>
-    <div class="gauge-container mx-auto my-0 text-center">
-      <div #siegegauge id="siege-gauge"></div>
-      <div class="gauge-icons">
-        <mat-icon fontSet="mdi" class="shield-icon" fontIcon="mdi-shield"></mat-icon>
-        <div class="siege-level text-center">{{siegeLevel | number: '.2-2'}}</div>
-        <mat-icon fontSet="mdi" class="sword-icon" fontIcon="mdi-sword"></mat-icon>
+    <div class="gauge">
+      <svg viewBox="0 0 160 96" role="img" [attr.aria-label]="'Siege level ' + (siegeLevel | number: '1.2-2')">
+        <defs>
+          <linearGradient id="siege-gradient" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#3b82f6"></stop>
+            <stop offset="55%" stop-color="#8b5cf6"></stop>
+            <stop offset="100%" stop-color="#f97316"></stop>
+          </linearGradient>
+        </defs>
+        <path class="track" pathLength="100" d="M 15 85 A 65 65 0 0 1 145 85"></path>
+        <path class="progress" pathLength="100" d="M 15 85 A 65 65 0 0 1 145 85"
+          [style.stroke-dasharray]="(shown() ? gaugeValue() : 0) + ' 100'"></path>
+        <g class="marker" [style.transform]="'rotate(' + (shown() ? gaugeValue() * 1.8 : 0) + 'deg)'">
+          <circle cx="15" cy="85" r="7"></circle>
+        </g>
+        <text class="level" x="80" y="78" text-anchor="middle">{{siegeLevel | number: '1.2-2'}}</text>
+      </svg>
+      <div class="ends">
+        <span class="end"><mat-icon fontSet="mdi" fontIcon="mdi-shield"></mat-icon>Defend</span>
+        <span class="end">Attack<mat-icon fontSet="mdi" fontIcon="mdi-sword"></mat-icon></span>
+      </div>
+    </div>
+    <div class="tiles">
+      <div class="tile">
+        <span class="tile-icon capture"><mat-icon fontSet="mdi" fontIcon="mdi-flag-variant"></mat-icon></span>
+        <div>
+          <div class="tile-label">Captured</div>
+          <div class="tile-value">{{captured() | number}}</div>
+        </div>
+      </div>
+      <div class="tile">
+        <span class="tile-icon defend"><mat-icon fontSet="mdi" fontIcon="mdi-shield-check"></mat-icon></span>
+        <div>
+          <div class="tile-label">Defended</div>
+          <div class="tile-value">{{defended() | number}}</div>
+        </div>
       </div>
     </div>
   </mat-card-content>
-  <mat-card-footer>
-    <div class="info-item px-8 py-4">
-        <small>Captured</small>
-        <h3>{{captured | number}}</h3>
-    </div>
-    <div class="info-item px-8 py-4">
-        <small>Defended</small>
-        <h3>{{defended | number}}</h3>
-    </div>
-  </mat-card-footer>
 </mat-card>

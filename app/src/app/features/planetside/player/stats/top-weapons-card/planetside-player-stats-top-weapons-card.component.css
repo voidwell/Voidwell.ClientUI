@@ -1,0 +1,63 @@
+:host {
+    display: block;
+}
+
+mat-card {
+    height: 100%;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.view-all {
+    font-size: 13px;
+    font-weight: 400;
+    color: #6dbbff;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+th {
+    padding: 8px 0;
+    font-size: 12px;
+    font-weight: 400;
+    text-align: left;
+    opacity: 0.7;
+}
+
+td {
+    padding: 10px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.num {
+    text-align: right;
+}
+
+.muted {
+    opacity: 0.7;
+}
+
+a {
+    color: inherit;
+}
+
+.weapon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.weapon-image {
+    width: 64px;
+    height: 24px;
+    object-fit: contain;
+    flex: none;
+}

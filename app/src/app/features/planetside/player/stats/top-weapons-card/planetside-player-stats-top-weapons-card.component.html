@@ -1,0 +1,37 @@
+<mat-card class="vw-character-top-weapons">
+  <mat-card-title class="card-title">
+    <span>Top Weapons</span>
+    <a class="view-all" routerLink="/ps2/player/{{player().id}}/weapons">View All &rarr;</a>
+  </mat-card-title>
+  <mat-card-content>
+    <table>
+      <thead>
+        <tr>
+          <th>Weapon</th>
+          <th class="num">Kills</th>
+          <th class="num">Accuracy</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (weapon of weapons(); track weapon.itemId) {
+          <tr>
+            <td>
+              <span class="weapon">
+                @if (weapon.imageId) {
+                  <img class="weapon-image" [src]="weapon.imageId | dgcImageUrl" alt="" (error)="hideImage($event)" />
+                }
+                <a routerLink="/ps2/item/{{weapon.itemId}}">{{weapon.name || 'Unknown (' + weapon.itemId + ')'}}</a>
+              </span>
+            </td>
+            <td class="num">{{weapon.stats.kills | number}}</td>
+            <td class="num">{{weapon.stats.hitCount / weapon.stats.fireCount * 100 | number: '1.1-1'}}%</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="3" class="muted">No weapon kills yet</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </mat-card-content>
+</mat-card>

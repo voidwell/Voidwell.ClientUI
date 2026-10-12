@@ -8,24 +8,123 @@ mat-card {
     overflow: hidden;
 }
 
-.kdr-data {
+mat-card-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.hero {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.hero-value {
+    font-size: 40px;
+    font-weight: 500;
+    line-height: 1.1;
     color: #fff;
 }
 
-.kdr-data .label {
-    opacity: 0.8;
-    width: 120px;
+.hero-label {
+    margin-top: 2px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8a9ba1;
+}
+
+.spread {
+    text-align: right;
+}
+
+.spread-value {
     display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
 }
 
-.value {
-    opacity: 1;
+.spread-value.positive {
+    color: #6fd48a;
+    background: rgba(56, 142, 60, 0.2);
 }
 
-.value.positive {
-    color: #388E3C;
+.spread-value.negative {
+    color: #ff8a8a;
+    background: rgba(255, 82, 82, 0.18);
 }
 
-.value.negative {
-    color: #FF5252;
+.spread-label {
+    margin-top: 4px;
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: #8a9ba1;
+}
+
+.bar {
+    display: flex;
+    height: 8px;
+    margin-top: 20px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.bar-fill {
+    height: 100%;
+}
+
+.bar-legend {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 6px;
+    font-size: 11px;
+    color: #8a9ba1;
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.tile {
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.tile-label {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.tile-value {
+    margin-top: 4px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
+}
+
+.tile-note {
+    margin-top: 2px;
+    font-size: 11px;
+    opacity: 0.6;
+}
+
+.bar-fill.kills {
+    background: #3b82f6;
+}
+
+.bar-fill.deaths {
+    background: #ef4444;
 }

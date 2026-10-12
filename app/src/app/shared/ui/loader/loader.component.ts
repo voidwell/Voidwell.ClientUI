@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-export type LoaderVariant = 'card' | 'cards' | 'alerts' | 'lines' | 'list' | 'panel' | 'table';
+export type LoaderVariant = 'card' | 'cards' | 'alerts' | 'lines' | 'list' | 'panel' | 'rows' | 'table';
 
 @Component({
     selector: 'vw-loader',
@@ -19,6 +19,6 @@ export class LoaderComponent {
     lineWidths = [90, 75, 85, 60, 80, 70];
 
     get embedded(): boolean {
-        return this.variant === 'cards' || this.variant === 'alerts' || this.variant === 'lines' || this.variant === 'panel';
+        return this.variant === 'cards' || this.variant === 'alerts' || this.variant === 'lines' || this.variant === 'panel' || this.variant === 'rows';
     }
 }

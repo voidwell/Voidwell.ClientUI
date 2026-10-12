@@ -1,0 +1,29 @@
+@if (player(); as playerData) {
+  <mat-card class="vw-character-quick-stats">
+    <mat-card-title>Quick Stats</mat-card-title>
+    <mat-card-content>
+      <div class="stat-row flex items-center gap-3">
+        <mat-icon fontSet="mdi" fontIcon="mdi-crosshairs-gps"></mat-icon>
+        <span class="label grow">K/D Ratio</span>
+        <span class="value">{{playerData.lifetimeStats.kills / playerData.lifetimeStats.deaths | number: '.2-2'}}</span>
+      </div>
+      <div class="stat-row flex items-center gap-3">
+        <mat-icon fontSet="mdi" fontIcon="mdi-skull"></mat-icon>
+        <span class="label grow">Kills</span>
+        <span class="value">{{playerData.lifetimeStats.kills | number}}</span>
+      </div>
+      <div class="stat-row flex items-center gap-3">
+        <mat-icon fontSet="mdi" fontIcon="mdi-skull-outline"></mat-icon>
+        <span class="label grow">Deaths</span>
+        <span class="value">{{playerData.lifetimeStats.deaths | number}}</span>
+      </div>
+      <div class="stat-row flex items-center gap-3">
+        <mat-icon fontSet="mdi" fontIcon="mdi-clock-outline"></mat-icon>
+        <span class="label grow">Playtime</span>
+        <span class="value">{{playerData.times.minutesPlayed / 60 | number: '1.0-0'}}h</span>
+      </div>
+    </mat-card-content>
+  </mat-card>
+} @else {
+  <vw-loader variant="panel" [loading]="true"></vw-loader>
+}

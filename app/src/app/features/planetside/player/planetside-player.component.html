@@ -1,7 +1,10 @@
 ﻿<div>
     <vw-error-message [message]="errorMessage"></vw-error-message>
     <div [hidden]="errorMessage">
-        <character-card></character-card>
+        <div class="flex flex-wrap gap-4 mb-4">
+            <character-card class="flex-1 basis-96"></character-card>
+            <planetside-player-quick-stats-card class="flex-none w-64" [player]="playerData()"></planetside-player-quick-stats-card>
+        </div>
         <router-outlet></router-outlet>
     </div>
 </div>

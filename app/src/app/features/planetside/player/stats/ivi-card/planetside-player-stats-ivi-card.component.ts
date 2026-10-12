@@ -1,6 +1,6 @@
 import { Component, input } from '@angular/core';
 import { InfantryStats } from '@core/api/models/ps2/character.model';
-import { MatCard, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
+import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { DecimalPipe } from '@angular/common';
 import { GradeComponent } from '../../../components/vw-grade/vw-grade.component';
 
@@ -8,7 +8,7 @@ import { GradeComponent } from '../../../components/vw-grade/vw-grade.component'
     selector: 'planetside-player-stats-ivi-card',
     templateUrl: './planetside-player-stats-ivi-card.component.html',
     styleUrls: ['./planetside-player-stats-ivi-card.component.css'],
-    imports: [MatCard, MatCardTitle, MatCardContent, MatCardFooter, DecimalPipe, GradeComponent]
+    imports: [MatCard, MatCardTitle, MatCardContent, DecimalPipe, GradeComponent]
 })
 
 export class PlanetsidePlayerStatsIviCardComponent {

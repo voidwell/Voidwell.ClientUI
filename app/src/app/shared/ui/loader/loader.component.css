@@ -31,6 +31,11 @@
     }
 }
 
+.skeleton-row-bar {
+    height: 30px;
+    background: #36464f; /* lighter than the card the rows usually sit in */
+}
+
 .skeleton-line {
     height: 14px;
 }

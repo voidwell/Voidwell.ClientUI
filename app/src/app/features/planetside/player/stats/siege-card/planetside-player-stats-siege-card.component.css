@@ -8,49 +8,159 @@
     height: 100%;
 }
 
-.vw-siege #siege-gauge {
-  margin-top: 15px;
-  margin-bottom: -50px;
+.vw-siege mat-card-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: flex-start;
 }
 
-    .vw-siege #siege-gauge ::ng-deep g.arc {
-        fill: steelblue;
-    }
-
-    .vw-siege #siege-gauge ::ng-deep g.pointer {
-        fill: #e85116;
-        stroke: #b64011;
-    }
-
-    .vw-siege #siege-gauge ::ng-deep g.label text {
-        text-anchor: middle;
-        font-size: 0.7em;
-        fill: #8a9ba1;
-    }
-
-.vw-siege .gauge-icons {
-  position: relative;
-  height: 3.4em;
+.card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
-.vw-siege .sword-icon,
-.vw-siege .shield-icon,
-.vw-siege .siege-level {
-  position: absolute;
-  font-size: 1.4em;
-  color: #b4bfc3;
-}
-.vw-siege .shield-icon {
-  left: 24px;
-}
-.vw-siege .sword-icon {
-  right: 24px;
-}
-.vw-siege .siege-level {
-  left: 0;
-  right: 0;
+.lean {
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    background: rgba(255, 255, 255, 0.08);
+    color: #b4bfc3;
 }
 
-.gauge-container {
-    width: 206px;
+.lean-attack {
+    background: rgba(249, 115, 22, 0.18);
+    color: #fdba74;
+}
+
+.lean-defend {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+}
+
+.gauge {
+    margin: 0 auto;
+    max-width: 260px;
+    width: 100%;
+}
+
+.gauge svg {
+    display: block;
+    width: 100%;
+    overflow: visible;
+}
+
+.track,
+.progress {
+    fill: none;
+    stroke-width: 12;
+    stroke-linecap: round;
+}
+
+.track {
+    stroke: rgba(255, 255, 255, 0.08);
+}
+
+.progress {
+    stroke: url(#siege-gradient);
+    transition: stroke-dasharray 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.marker {
+    transform-origin: 80px 85px;
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.marker circle {
+    fill: #fff;
+    stroke: #2b3942;
+    stroke-width: 3;
+    filter: drop-shadow(0 0 3px rgba(255, 255, 255, 0.6));
+}
+
+.level {
+    font-size: 26px;
+    font-weight: 500;
+    fill: #fff;
+}
+
+.ends {
+    display: flex;
+    justify-content: space-between;
+    margin-top: -2px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: #8a9ba1;
+}
+
+.end {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.end .mat-icon {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.tile {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.04);
+}
+
+.tile-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    flex: none;
+}
+
+.tile-icon .mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.tile-icon.capture {
+    background: rgba(249, 115, 22, 0.18);
+    color: #fdba74;
+}
+
+.tile-icon.defend {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+}
+
+.tile-label {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.tile-value {
+    font-size: 20px;
+    font-weight: 500;
+    color: #fff;
 }

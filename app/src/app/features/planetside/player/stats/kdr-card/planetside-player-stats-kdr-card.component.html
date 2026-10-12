@@ -1,42 +1,47 @@
 <mat-card class="vw-character-kdr">
   <mat-card-title>Overall KD Performance</mat-card-title>
   <mat-card-content>
-    <div class="kdr-data">
+    <div class="hero">
       <div>
-        <span class="label">Kill/Death ratio</span>
-        <span class="value">{{stats().kills / stats().deaths | number: '.2-2'}}</span>
+        <div class="hero-value">{{stats().kills / stats().deaths | number: '.2-2'}}</div>
+        <div class="hero-label">Kill / Death Ratio</div>
       </div>
-      <div>
-        <span class="label">Headshot ratio</span>
-        <span class="value">{{stats().headshots / stats().kills * 100 | number: '.2-2'}}%</span>
-      </div>
-      <div>
-        <span class="label">KD Spread</span>
-        <span class="value" [ngClass]="{'positive': stats().kills - stats().deaths > 0, 'negative': stats().kills-stats().deaths < 0}">
+      <div class="spread">
+        <span class="spread-value" [ngClass]="{'positive': stats().kills - stats().deaths > 0, 'negative': stats().kills - stats().deaths < 0}">
           @if (stats().kills - stats().deaths > 0) {
             <span>+</span>
           }
           <span>{{stats().kills - stats().deaths | number}}</span>
         </span>
+        <div class="spread-label">KD Spread</div>
+      </div>
+    </div>
+    <div class="bar" role="img" aria-label="Kills compared with deaths">
+      <div class="bar-fill kills" [style.width.%]="stats().kills / (stats().kills + stats().deaths) * 100"></div>
+      <div class="bar-fill deaths" [style.width.%]="stats().deaths / (stats().kills + stats().deaths) * 100"></div>
+    </div>
+    <div class="bar-legend">
+      <span>Kills</span>
+      <span>Deaths</span>
+    </div>
+    <div class="tiles">
+      <div class="tile">
+        <div class="tile-label">Kills</div>
+        <div class="tile-value">{{stats().kills | number}}</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Deaths</div>
+        <div class="tile-value">{{stats().deaths | number}}</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Headshots</div>
+        <div class="tile-value">{{stats().headshots | number}}</div>
+        <div class="tile-note">{{stats().headshots / stats().kills * 100 | number: '.2-2'}}% of kills</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Assists</div>
+        <div class="tile-value">{{stats().assistCount | number}}</div>
       </div>
     </div>
   </mat-card-content>
-  <mat-card-footer>
-    <div class="info-item px-8 py-4">
-      <small>Kills</small>
-      <h3>{{stats().kills | number}}</h3>
-    </div>
-    <div class="info-item px-8 py-4">
-      <small>Deaths</small>
-      <h3>{{stats().deaths | number}}</h3>
-    </div>
-    <div class="info-item px-8 py-4">
-      <small>Headshots</small>
-      <h3>{{stats().headshots | number}}</h3>
-    </div>
-    <div class="info-item px-8 py-4">
-      <small>Assists</small>
-      <h3>{{stats().assistCount | number}}</h3>
-    </div>
-  </mat-card-footer>
 </mat-card>

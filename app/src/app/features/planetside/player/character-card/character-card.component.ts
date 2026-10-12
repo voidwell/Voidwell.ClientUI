@@ -1,7 +1,9 @@
 ﻿import { Component, inject } from '@angular/core';
 import { PlanetsidePlayerComponent } from '../planetside-player.component';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardFooter } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 import { NgClass, DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
 
@@ -9,7 +11,7 @@ import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-na
     selector: 'character-card',
     templateUrl: './character-card.component.html',
     styleUrls: ['./character-card.component.css'],
-    imports: [LoaderComponent, MatCard, NgClass, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardFooter, VWTabNavSubBarComponent, DatePipe]
+    imports: [LoaderComponent, MatIcon, RouterLink, MatCard, NgClass, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardFooter, VWTabNavSubBarComponent, DatePipe]
 })
 
 export class CharacterCardComponent {
@@ -19,7 +21,6 @@ export class CharacterCardComponent {
 
     navLinks = [
         { path: 'stats', display: 'Stats' },
-        { path: 'classes', display: 'Classes' },
         { path: 'vehicles', display: 'Vehicles' },
         { path: 'weapons', display: 'Weapons' },
         { path: 'sessions', display: 'Sessions' },

@@ -2,9 +2,7 @@
   <div class="voidwell-character-stats flex flex-col gap-4">
     <div class="card-grid flex flex-wrap gap-4">
       <planetside-player-stats-overview-card class="card flex-auto" [player]="playerData"></planetside-player-stats-overview-card>
-      @if (playerData.outfit) {
-        <planetside-player-stats-outfit-card class="card flex-auto" [player]="playerData"></planetside-player-stats-outfit-card>
-      }
+      <planetside-player-stats-class-usage-card class="card flex-auto" [player]="playerData"></planetside-player-stats-class-usage-card>
     </div>
     <div class="card-grid flex flex-wrap gap-4">
       <planetside-player-stats-siege-card class="siege-container card flex-auto" [captured]="playerData.lifetimeStats.facilityCaptureCount" [defended]="playerData.lifetimeStats.facilityDefendedCount"></planetside-player-stats-siege-card>
@@ -12,17 +10,25 @@
       <planetside-player-stats-weapons-card class="card flex-auto" [stats]="playerData.lifetimeStats"></planetside-player-stats-weapons-card>
       <planetside-player-stats-ivi-card class="card flex-auto" [stats]="playerData.infantryStats"></planetside-player-stats-ivi-card>
     </div>
+    <div class="card-grid flex flex-wrap gap-4">
+      <planetside-player-stats-recent-sessions-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-recent-sessions-card>
+      <planetside-player-stats-top-weapons-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-top-weapons-card>
+    </div>
   </div>
 } @else {
   <div class="voidwell-character-stats flex flex-col gap-4">
     <div class="card-grid flex flex-wrap gap-4">
       <vw-loader class="vw-character-overview card flex-auto basis-75" variant="panel" [loading]="true"></vw-loader>
-      <vw-loader class="vw-character-outfit card flex-auto basis-75" variant="panel" [loading]="true"></vw-loader>
+      <vw-loader class="vw-character-class-usage card flex-auto basis-75" variant="panel" [loading]="true"></vw-loader>
     </div>
     <div class="card-grid flex flex-wrap gap-4">
       @for (item of [0, 1, 2, 3]; track item) {
         <vw-loader class="card flex-auto basis-56 max-w-112" variant="panel" [loading]="true"></vw-loader>
       }
+    </div>
+    <div class="card-grid flex flex-wrap gap-4">
+      <vw-loader class="card flex-1 basis-96" variant="panel" [loading]="true"></vw-loader>
+      <vw-loader class="card flex-1 basis-96" variant="panel" [loading]="true"></vw-loader>
     </div>
   </div>
 }

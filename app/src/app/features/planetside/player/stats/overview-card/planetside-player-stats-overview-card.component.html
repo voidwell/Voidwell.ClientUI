@@ -1,41 +1,46 @@
 <mat-card class="vw-character-overview">
   <mat-card-title>General</mat-card-title>
   <mat-card-content>
-    <div>
-      <span class="label">Created on:</span>
-      <span class="value">{{player().times.createdDate | date:'MMM d, y h:mm:ss a'}}</span>
+    <div class="hero">
+      <div>
+        <div class="hero-value">{{player().lifetimeStats.score | number}}</div>
+        <div class="hero-label">Score</div>
+      </div>
+      <div class="spm">
+        <span class="spm-value">{{player().lifetimeStats.score / player().times.minutesPlayed | number: '.1-1'}}</span>
+        <div class="spm-label">Score / Min</div>
+      </div>
     </div>
-    <div>
-      <span class="label">Certs:</span>
-      <span class="value">{{player().certsEarned | number}}</span>
+    <div class="tiles">
+      <div class="tile">
+        <div class="tile-label">Certs</div>
+        <div class="tile-value">{{player().certsEarned | number}}</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Medals</div>
+        <div class="tile-value">{{player().lifetimeStats.medalCount | number}}</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Dominations</div>
+        <div class="tile-value">{{player().lifetimeStats.dominationCount | number}}</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Revenge</div>
+        <div class="tile-value">{{player().lifetimeStats.revengeCount | number}}</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Vehicle Kills</div>
+        <div class="tile-value">{{player().lifetimeStats.vehicleKills | number}}</div>
+      </div>
+      <div class="tile">
+        <div class="tile-label">Hours Played</div>
+        <div class="tile-value">{{player().lifetimeStats.playTime / 3600 | number: '.1-1'}}</div>
+        <div class="tile-note">({{player().times.minutesPlayed / 60 | number: '.1-1'}})</div>
+      </div>
     </div>
-    <div>
-      <span class="label">Medal count:</span>
-      <span class="value">{{player().lifetimeStats.medalCount | number}}</span>
-    </div>
-    <div>
-      <span class="label">Dominations:</span>
-      <span class="value">{{player().lifetimeStats.dominationCount | number}}</span>
-    </div>
-    <div>
-      <span class="label">Revenge:</span>
-      <span class="value">{{player().lifetimeStats.revengeCount | number}}</span>
-    </div>
-    <div>
-      <span class="label">Vehicle kills:</span>
-      <span class="value">{{player().lifetimeStats.vehicleKills | number}}</span>
-    </div>
-    <div>
-      <span class="label">Score:</span>
-      <span class="value">{{player().lifetimeStats.score | number}}</span>
-    </div>
-    <div>
-      <span class="label">SPM:</span>
-      <span class="value">{{player().lifetimeStats.score / player().times.minutesPlayed | number: '.1-1'}}</span>
-    </div>
-    <div>
-      <span class="label">Hours Played</span>
-      <span class="value">{{player().lifetimeStats.playTime / 3600 | number:'.1-1'}} ({{player().times.minutesPlayed / 60 | number:'.1-1'}})</span>
+    <div class="created">
+      <mat-icon fontSet="mdi" fontIcon="mdi-calendar-blank-outline"></mat-icon>
+      <span>Created on {{player().times.createdDate | date:'MMM d, y h:mm:ss a'}}</span>
     </div>
   </mat-card-content>
 </mat-card>
