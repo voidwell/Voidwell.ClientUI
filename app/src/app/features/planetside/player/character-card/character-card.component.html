@@ -1,5 +1,5 @@
 ﻿@if (player(); as playerData) {
-  <mat-card class="character-card mb-8" [ngClass]="{'bg-vs': playerData.factionId===1, 'bg-nc': playerData.factionId===2, 'bg-tr': playerData.factionId===3}">
+  <mat-card class="character-card mb-4" [ngClass]="{'bg-vs': playerData.factionId===1, 'bg-nc': playerData.factionId===2, 'bg-tr': playerData.factionId===3}">
     <mat-card-title>
       <h1 class="player-name">{{playerData.name}}</h1>
       <div class="stats pull-right">
@@ -23,4 +23,6 @@
       <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
     </mat-card-footer>
   </mat-card>
+} @else {
+  <vw-loader class="block mb-4" variant="panel" [loading]="true"></vw-loader>
 }

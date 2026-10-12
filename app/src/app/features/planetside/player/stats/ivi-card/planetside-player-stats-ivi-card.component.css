@@ -1,0 +1,42 @@
+:host {
+    display: block;
+    max-width: 450px;
+}
+
+mat-card {
+    height: 100%;
+    overflow: hidden;
+}
+
+.ivi-info {
+    color: #fff;
+}
+
+.ivi-data .label {
+    opacity: 0.8;
+    width: 120px;
+    display: inline-block;
+}
+
+.value {
+    opacity: 1;
+}
+
+.ivi-data .ivi-score {
+    font-size: 13px;
+}
+
+.ivi-data .ivi-score h3 {
+    color: #fff;
+    margin: 3px 0;
+    font-weight: 400;
+}
+
+.info-item .title {
+    width: 70px;
+}
+
+.info-item .value {
+    width: 60px;
+    text-align: right;
+}

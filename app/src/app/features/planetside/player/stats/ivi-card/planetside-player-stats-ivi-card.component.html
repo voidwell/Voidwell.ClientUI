@@ -1,0 +1,47 @@
+<mat-card class="vw-character-ivi">
+  <mat-card-title>Infantry vs Infantry</mat-card-title>
+  <mat-card-content>
+    <div class="ivi-data">
+      <div class="ivi-score text-center">
+        <h3>{{stats().iviScore | number}}</h3>
+        <small>IVI Score</small>
+      </div>
+      <div class="ivi-info">
+        <div>
+          <span class="label">KDR padding:</span>
+          <span class="value">{{stats().kdrPadding | number: '.3-3'}}</span>
+        </div>
+        <div>
+          <span class="label">Sanctioned kills:</span>
+          <span class="value">{{stats().kills | number}}</span>
+        </div>
+        <div>
+          <span class="label">Weapons:</span>
+          <span class="value">{{stats().weapons | number}} / {{stats().unsanctionedWeapons | number}}</span>
+        </div>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <div class="info-item px-8 py-4">
+      <span class="pull-left title">Accuracy</span>
+      <span class="pull-right value">{{stats().accuracy * 100 | number: '.3-3'}}%</span>
+      <vw-grade [delta]="stats().accuracyDelta"></vw-grade>
+    </div>
+    <div class="info-item px-8 py-4">
+      <span class="pull-left title">HSR</span>
+      <span class="pull-right value">{{stats().headshotRatio * 100 | number: '.3-3'}}%</span>
+      <vw-grade [delta]="stats().headshotRatioDelta"></vw-grade>
+    </div>
+    <div class="info-item px-8 py-4">
+      <span class="pull-left title">KDR</span>
+      <span class="pull-right value">{{stats().killDeathRatio | number: '.3-3'}}</span>
+      <vw-grade [delta]="stats().killDeathRatioDelta"></vw-grade>
+    </div>
+    <div class="info-item px-8 py-4">
+      <span class="pull-left title">KpM</span>
+      <span class="pull-right value">{{stats().killsPerMinute | number: '.3-3'}}</span>
+      <vw-grade [delta]="stats().killsPerMinuteDelta"></vw-grade>
+    </div>
+  </mat-card-footer>
+</mat-card>

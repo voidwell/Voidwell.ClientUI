@@ -1,6 +1,7 @@
 :host {
     display: block;
     position: relative;
+    max-width: 450px;
 }
 
 .vw-siege {
@@ -9,7 +10,7 @@
 
 .vw-siege #siege-gauge {
   margin-top: 15px;
-  margin-bottom: -5px;
+  margin-bottom: -50px;
 }
 
     .vw-siege #siege-gauge ::ng-deep g.arc {
@@ -29,7 +30,7 @@
 
 .vw-siege .gauge-icons {
   position: relative;
-  height: 1.4em;
+  height: 3.4em;
 }
 
 .vw-siege .sword-icon,

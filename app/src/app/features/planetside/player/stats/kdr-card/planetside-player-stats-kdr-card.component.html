@@ -1,0 +1,42 @@
+<mat-card class="vw-character-kdr">
+  <mat-card-title>Overall KD Performance</mat-card-title>
+  <mat-card-content>
+    <div class="kdr-data">
+      <div>
+        <span class="label">Kill/Death ratio</span>
+        <span class="value">{{stats().kills / stats().deaths | number: '.2-2'}}</span>
+      </div>
+      <div>
+        <span class="label">Headshot ratio</span>
+        <span class="value">{{stats().headshots / stats().kills * 100 | number: '.2-2'}}%</span>
+      </div>
+      <div>
+        <span class="label">KD Spread</span>
+        <span class="value" [ngClass]="{'positive': stats().kills - stats().deaths > 0, 'negative': stats().kills-stats().deaths < 0}">
+          @if (stats().kills - stats().deaths > 0) {
+            <span>+</span>
+          }
+          <span>{{stats().kills - stats().deaths | number}}</span>
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <div class="info-item px-8 py-4">
+      <small>Kills</small>
+      <h3>{{stats().kills | number}}</h3>
+    </div>
+    <div class="info-item px-8 py-4">
+      <small>Deaths</small>
+      <h3>{{stats().deaths | number}}</h3>
+    </div>
+    <div class="info-item px-8 py-4">
+      <small>Headshots</small>
+      <h3>{{stats().headshots | number}}</h3>
+    </div>
+    <div class="info-item px-8 py-4">
+      <small>Assists</small>
+      <h3>{{stats().assistCount | number}}</h3>
+    </div>
+  </mat-card-footer>
+</mat-card>

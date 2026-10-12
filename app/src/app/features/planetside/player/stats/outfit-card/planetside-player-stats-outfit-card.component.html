@@ -1,0 +1,31 @@
+<mat-card class="vw-character-outfit">
+  <mat-card-title>Outfit</mat-card-title>
+  <mat-card-content>
+    <div [ngClass]="player().factionId | factionColor" class="outfit-header">
+      <a class="link-text" routerLink="/ps2/outfit/{{player().outfit.id}}">
+        @if (player().outfit.alias) {
+          <span>[{{player().outfit.alias}}]</span>
+        }
+        <span>{{player().outfit.name}}</span>
+      </a>
+    </div>
+    <div>
+      <div>
+        <span class="label">Rank:</span>
+        <span class="value">{{player().outfit.rank}}</span>
+      </div>
+      <div>
+        <span class="label">Member count:</span>
+        <span class="value">{{player().outfit.memberCount}}</span>
+      </div>
+      <div>
+        <span class="label">Joined:</span>
+        <span class="value" title="{{player().outfit.memberSinceDate | date:'MMM d, y h:mm:ss a'}}">{{player().outfit.memberSinceDate | date:'MMM d, y h:mm:ss a':'UTC'}} UTC</span>
+      </div>
+      <div>
+        <span class="label">Created:</span>
+        <span class="value" title="{{player().outfit.createdDate | date:'MMM d, y h:mm:ss a'}}">{{player().outfit.createdDate | date:'MMM d, y h:mm:ss a':'UTC'}} UTC</span>
+      </div>
+    </div>
+  </mat-card-content>
+</mat-card>

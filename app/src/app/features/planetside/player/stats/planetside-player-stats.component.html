@@ -1,220 +1,28 @@
 @if (player(); as playerData) {
-  <div class="voidwell-character-stats">
-    <div class="card-grid -m-4 flex flex-wrap">
-      <mat-card class="vw-character-overview card m-4 flex-auto">
-        <mat-card-title>General</mat-card-title>
-        <mat-card-content>
-          <div>
-            <span class="label">Created on:</span>
-            <span class="value">{{playerData.times.createdDate | date:'MMM d, y h:mm:ss a'}}</span>
-          </div>
-          <div>
-            <span class="label">Certs:</span>
-            <span class="value">{{playerData.certsEarned | number}}</span>
-          </div>
-          <div>
-            <span class="label">Medal count:</span>
-            <span class="value">{{playerData.lifetimeStats.medalCount | number}}</span>
-          </div>
-          <div>
-            <span class="label">Dominations:</span>
-            <span class="value">{{playerData.lifetimeStats.dominationCount | number}}</span>
-          </div>
-          <div>
-            <span class="label">Revenge:</span>
-            <span class="value">{{playerData.lifetimeStats.revengeCount | number}}</span>
-          </div>
-          <div>
-            <span class="label">Vehicle kills:</span>
-            <span class="value">{{playerData.lifetimeStats.vehicleKills | number}}</span>
-          </div>
-          <div>
-            <span class="label">Score:</span>
-            <span class="value">{{playerData.lifetimeStats.score | number}}</span>
-          </div>
-          <div>
-            <span class="label">SPM:</span>
-            <span class="value">{{playerData.lifetimeStats.score / playerData.times.minutesPlayed | number: '.1-1'}}</span>
-          </div>
-          <div>
-            <span class="label">Hours Played</span>
-            <span class="value">{{playerData.lifetimeStats.playTime / 3600 | number:'.1-1'}} ({{playerData.times.minutesPlayed / 60 | number:'.1-1'}})</span>
-          </div>
-        </mat-card-content>
-      </mat-card>
+  <div class="voidwell-character-stats flex flex-col gap-4">
+    <div class="card-grid flex flex-wrap gap-4">
+      <planetside-player-stats-overview-card class="card flex-auto" [player]="playerData"></planetside-player-stats-overview-card>
       @if (playerData.outfit) {
-        <mat-card class="vw-character-outfit card m-4 flex-auto">
-          <mat-card-title>Outfit</mat-card-title>
-          <mat-card-content>
-            <div [ngClass]="playerData.factionId | factionColor" class="outfit-header">
-              <a class="link-text" routerLink="/ps2/outfit/{{playerData.outfit.id}}">
-                @if (playerData.outfit.alias) {
-                  <span>[{{playerData.outfit.alias}}]</span>
-                }
-                <span>{{playerData.outfit.name}}</span>
-              </a>
-            </div>
-            <div>
-              <div>
-                <span class="label">Rank:</span>
-                <span class="value">{{playerData.outfit.rank}}</span>
-              </div>
-              <div>
-                <span class="label">Member count:</span>
-                <span class="value">{{playerData.outfit.memberCount}}</span>
-              </div>
-              <div>
-                <span class="label">Joined:</span>
-                <span class="value" title="{{playerData.outfit.memberSinceDate | date:'MMM d, y h:mm:ss a'}}">{{playerData.outfit.memberSinceDate | date:'MMM d, y h:mm:ss a':'UTC'}} UTC</span>
-              </div>
-              <div>
-                <span class="label">Created:</span>
-                <span class="value" title="{{playerData.outfit.createdDate | date:'MMM d, y h:mm:ss a'}}">{{playerData.outfit.createdDate | date:'MMM d, y h:mm:ss a':'UTC'}} UTC</span>
-              </div>
-            </div>
-          </mat-card-content>
-        </mat-card>
+        <planetside-player-stats-outfit-card class="card flex-auto" [player]="playerData"></planetside-player-stats-outfit-card>
       }
     </div>
-    <div class="card-grid -m-4 flex flex-wrap">
-      <planetside-player-stats-siege-card class="siege-container card m-4 flex-auto" [captured]="playerData.lifetimeStats.facilityCaptureCount" [defended]="playerData.lifetimeStats.facilityDefendedCount"></planetside-player-stats-siege-card>
-      <mat-card class="vw-character-kdr card m-4 flex-auto">
-        <mat-card-title>Overall KD Performance</mat-card-title>
-        <mat-card-content>
-          <div class="kdr-data">
-            <div class="layout-margin">
-              <div>
-                <span class="label">Kill/Death ratio</span>
-                <span class="value">{{playerData.lifetimeStats.kills / playerData.lifetimeStats.deaths | number: '.2-2'}}</span>
-              </div>
-              <div>
-                <span class="label">Headshot ratio</span>
-                <span class="value">{{playerData.lifetimeStats.headshots / playerData.lifetimeStats.kills * 100 | number: '.2-2'}}%</span>
-              </div>
-              <div>
-                <span class="label">KD Spread</span>
-                <span class="value" [ngClass]="{'positive': playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths > 0, 'negative': playerData.lifetimeStats.kills-playerData.lifetimeStats.deaths < 0}">
-                  @if (playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths > 0) {
-                    <span>+</span>
-                  }
-                  <span>{{playerData.lifetimeStats.kills - playerData.lifetimeStats.deaths | number}}</span>
-                </span>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-        <mat-card-footer>
-          <div class="info-item px-8 py-4">
-            <small>Kills</small>
-            <h3>{{playerData.lifetimeStats.kills | number}}</h3>
-          </div>
-          <div class="info-item px-8 py-4">
-            <small>Deaths</small>
-            <h3>{{playerData.lifetimeStats.deaths | number}}</h3>
-          </div>
-          <div class="info-item px-8 py-4">
-            <small>Headshots</small>
-            <h3>{{playerData.lifetimeStats.headshots | number}}</h3>
-          </div>
-          <div class="info-item px-8 py-4">
-            <small>Assists</small>
-            <h3>{{playerData.lifetimeStats.assistCount | number}}</h3>
-          </div>
-        </mat-card-footer>
-      </mat-card>
-      <mat-card class="vw-character-weapons card m-4 flex-auto">
-        <mat-card-title>Overall Weapon Performance</mat-card-title>
-        <mat-card-content>
-          <div class="weapon-data">
-            <div>
-              <span class="label">Accuracy:</span>
-              <span class="value">{{playerData.lifetimeStats.hitCount / playerData.lifetimeStats.fireCount * 100 | number: '.2-2'}}%</span>
-            </div>
-            <div>
-              <span class="label">Shots per kill:</span>
-              <span class="value">{{playerData.lifetimeStats.fireCount / playerData.lifetimeStats.kills | number: '.2-2'}}</span>
-            </div>
-            <div>
-              <span class="label">Landed per kill:</span>
-              <span class="value">{{playerData.lifetimeStats.hitCount / playerData.lifetimeStats.kills | number: '.2-2'}}</span>
-            </div>
-            <div>
-              <span class="label">Damage spread:</span>
-              <span class="value" [ngClass]="{'positive': playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy > 0, 'negative': playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy < 0}">
-                @if (playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy > 0) {
-                  <span>+</span>
-                }
-                <span>{{playerData.lifetimeStats.damageGiven-playerData.lifetimeStats.damageTakenBy | number}}</span>
-              </span>
-            </div>
-          </div>
-        </mat-card-content>
-        <mat-card-footer>
-          <div class="info-item px-8 py-4">
-            <small>Shots Fired</small>
-            <h3>{{playerData.lifetimeStats.fireCount | number}}</h3>
-          </div>
-          <div class="info-item px-8 py-4">
-            <small>Shots Hit</small>
-            <h3>{{playerData.lifetimeStats.hitCount | number}}</h3>
-          </div>
-          <div class="info-item px-8 py-4">
-            <small>Damage Given</small>
-            <h3>{{playerData.lifetimeStats.damageGiven | number}}</h3>
-          </div>
-          <div class="info-item px-8 py-4">
-            <small>Damage Taken</small>
-            <h3>{{playerData.lifetimeStats.damageTakenBy | number}}</h3>
-          </div>
-        </mat-card-footer>
-      </mat-card>
-      <mat-card class="vw-character-ivi card m-4 flex-auto">
-        <mat-card-title>Infantry vs Infantry</mat-card-title>
-        <mat-card-content>
-          <div class="ivi-data">
-            <div class="ivi-score text-center">
-              <h3>{{playerData.infantryStats.iviScore | number}}</h3>
-              <small>IVI Score</small>
-            </div>
-            <div class="ivi-info">
-              <div>
-                <span class="label">KDR padding:</span>
-                <span class="value">{{playerData.infantryStats.kdrPadding | number: '.3-3'}}</span>
-              </div>
-              <div>
-                <span class="label">Sanctioned kills:</span>
-                <span class="value">{{playerData.infantryStats.kills | number}}</span>
-              </div>
-              <div>
-                <span class="label">Weapons:</span>
-                <span class="value">{{playerData.infantryStats.weapons | number}} / {{playerData.infantryStats.unsanctionedWeapons | number}}</span>
-              </div>
-            </div>
-          </div>
-        </mat-card-content>
-        <mat-card-footer>
-          <div class="info-item px-8 py-4">
-            <span class="pull-left title">Accuracy</span>
-            <span class="pull-right value">{{playerData.infantryStats.accuracy * 100 | number: '.3-3'}}%</span>
-            <vw-grade [delta]="playerData.infantryStats.accuracyDelta"></vw-grade>
-          </div>
-          <div class="info-item px-8 py-4">
-            <span class="pull-left title">HSR</span>
-            <span class="pull-right value">{{playerData.infantryStats.headshotRatio * 100 | number: '.3-3'}}%</span>
-            <vw-grade [delta]="playerData.infantryStats.headshotRatioDelta"></vw-grade>
-          </div>
-          <div class="info-item px-8 py-4">
-            <span class="pull-left title">KDR</span>
-            <span class="pull-right value">{{playerData.infantryStats.killDeathRatio | number: '.3-3'}}</span>
-            <vw-grade [delta]="playerData.infantryStats.killDeathRatioDelta"></vw-grade>
-          </div>
-          <div class="info-item px-8 py-4">
-            <span class="pull-left title">KpM</span>
-            <span class="pull-right value">{{playerData.infantryStats.killsPerMinute | number: '.3-3'}}</span>
-            <vw-grade [delta]="playerData.infantryStats.killsPerMinuteDelta"></vw-grade>
-          </div>
-        </mat-card-footer>
-      </mat-card>
+    <div class="card-grid flex flex-wrap gap-4">
+      <planetside-player-stats-siege-card class="siege-container card flex-auto" [captured]="playerData.lifetimeStats.facilityCaptureCount" [defended]="playerData.lifetimeStats.facilityDefendedCount"></planetside-player-stats-siege-card>
+      <planetside-player-stats-kdr-card class="card flex-auto" [stats]="playerData.lifetimeStats"></planetside-player-stats-kdr-card>
+      <planetside-player-stats-weapons-card class="card flex-auto" [stats]="playerData.lifetimeStats"></planetside-player-stats-weapons-card>
+      <planetside-player-stats-ivi-card class="card flex-auto" [stats]="playerData.infantryStats"></planetside-player-stats-ivi-card>
+    </div>
+  </div>
+} @else {
+  <div class="voidwell-character-stats flex flex-col gap-4">
+    <div class="card-grid flex flex-wrap gap-4">
+      <vw-loader class="vw-character-overview card flex-auto basis-75" variant="panel" [loading]="true"></vw-loader>
+      <vw-loader class="vw-character-outfit card flex-auto basis-75" variant="panel" [loading]="true"></vw-loader>
+    </div>
+    <div class="card-grid flex flex-wrap gap-4">
+      @for (item of [0, 1, 2, 3]; track item) {
+        <vw-loader class="card flex-auto basis-56 max-w-112" variant="panel" [loading]="true"></vw-loader>
+      }
     </div>
   </div>
 }

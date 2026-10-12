@@ -1,0 +1,17 @@
+:host {
+    display: block;
+}
+
+mat-card {
+    height: 100%;
+}
+
+.label {
+    opacity: 0.8;
+    width: 130px;
+    display: inline-block;
+}
+
+.value {
+    opacity: 1;
+}

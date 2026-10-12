@@ -1,0 +1,31 @@
+:host {
+    display: block;
+    max-width: 450px;
+}
+
+mat-card {
+    height: 100%;
+    overflow: hidden;
+}
+
+.kdr-data {
+    color: #fff;
+}
+
+.kdr-data .label {
+    opacity: 0.8;
+    width: 120px;
+    display: inline-block;
+}
+
+.value {
+    opacity: 1;
+}
+
+.value.positive {
+    color: #388E3C;
+}
+
+.value.negative {
+    color: #FF5252;
+}

@@ -1,7 +1,6 @@
 ﻿<div>
-    <vw-loader [loading]="isLoading"></vw-loader>
     <vw-error-message [message]="errorMessage"></vw-error-message>
-    <div [hidden]="isLoading || errorMessage">
+    <div [hidden]="errorMessage">
         <character-card></character-card>
         <router-outlet></router-outlet>
     </div>

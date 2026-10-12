@@ -1,0 +1,46 @@
+<mat-card class="vw-character-weapons">
+  <mat-card-title>Overall Weapon Performance</mat-card-title>
+  <mat-card-content>
+    <div class="weapon-data">
+      <div>
+        <span class="label">Accuracy:</span>
+        <span class="value">{{stats().hitCount / stats().fireCount * 100 | number: '.2-2'}}%</span>
+      </div>
+      <div>
+        <span class="label">Shots per kill:</span>
+        <span class="value">{{stats().fireCount / stats().kills | number: '.2-2'}}</span>
+      </div>
+      <div>
+        <span class="label">Landed per kill:</span>
+        <span class="value">{{stats().hitCount / stats().kills | number: '.2-2'}}</span>
+      </div>
+      <div>
+        <span class="label">Damage spread:</span>
+        <span class="value" [ngClass]="{'positive': stats().damageGiven-stats().damageTakenBy > 0, 'negative': stats().damageGiven-stats().damageTakenBy < 0}">
+          @if (stats().damageGiven-stats().damageTakenBy > 0) {
+            <span>+</span>
+          }
+          <span>{{stats().damageGiven-stats().damageTakenBy | number}}</span>
+        </span>
+      </div>
+    </div>
+  </mat-card-content>
+  <mat-card-footer>
+    <div class="info-item px-8 py-4">
+      <small>Shots Fired</small>
+      <h3>{{stats().fireCount | number}}</h3>
+    </div>
+    <div class="info-item px-8 py-4">
+      <small>Shots Hit</small>
+      <h3>{{stats().hitCount | number}}</h3>
+    </div>
+    <div class="info-item px-8 py-4">
+      <small>Damage Given</small>
+      <h3>{{stats().damageGiven | number}}</h3>
+    </div>
+    <div class="info-item px-8 py-4">
+      <small>Damage Taken</small>
+      <h3>{{stats().damageTakenBy | number}}</h3>
+    </div>
+  </mat-card-footer>
+</mat-card>
