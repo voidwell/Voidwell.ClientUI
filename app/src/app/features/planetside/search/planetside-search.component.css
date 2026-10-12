@@ -139,6 +139,23 @@
     width: 110px;
 }
 
+.top-search_dropdown {
+    display: flex;
+    align-items: center;
+    padding-top: 2px;
+}
+
+.top-search_dropdown ::ng-deep .mat-mdc-select-trigger {
+    width: 100%;
+    height: auto;
+    line-height: inherit;
+}
+
+.top-search_dropdown ::ng-deep .mat-mdc-select-value,
+.top-search_dropdown ::ng-deep .mat-mdc-select-min-line {
+    line-height: inherit;
+}
+
 .top-search_dropdown ::ng-deep .mat-mdc-select-arrow-wrapper,
 .platform-control ::ng-deep .mat-mdc-select-arrow-wrapper {
     visibility: hidden;

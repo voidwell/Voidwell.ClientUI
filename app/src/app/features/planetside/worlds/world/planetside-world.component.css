@@ -13,10 +13,14 @@
     width: 100px;
 }
 
-.world-state,
-.world-name,
-.online-players {
+.world-name {
     display: inline-block;
+}
+
+.world-state,
+.online-players {
+    display: inline-flex;
+    align-items: center;
 }
 
 .world-state,
@@ -43,6 +47,12 @@
 .zone-state .zone-state-description {
     display: inline-block;
     line-height: 24px;
+    vertical-align: middle;
+}
+
+.zone-state .zone-state-icon .mat-icon,
+.zone-state .zone-population .mat-icon {
+    vertical-align: middle;
 }
 
 .zone-state .zone-population {
