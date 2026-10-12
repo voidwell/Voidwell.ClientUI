@@ -104,11 +104,21 @@
 
 .top-search_clear {
     position: absolute;
+    top: 0;
     right: 0;
-    line-height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    height: 50px;
     font-size: 20px;
     width: 50px;
     color: #22313a;
+}
+
+.top-search_clear .mat-icon {
+    height: 24px;
+    line-height: 24px;
 }
 
 @keyframes spin {
