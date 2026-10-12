@@ -1,5 +1,6 @@
 ﻿.alert-card {
     position: relative;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
     min-width: 400px;
 }
 
@@ -78,5 +79,6 @@
 
     .card-info .mat-mdc-card {
         width: 100%;
+        box-shadow: none;
     }
 

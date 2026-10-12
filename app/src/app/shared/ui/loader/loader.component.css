@@ -47,6 +47,11 @@
 
 .skeleton-alert {
     min-width: 400px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+}
+
+.skeleton-alert .skeleton-card {
+    box-shadow: none;
 }
 
 .skeleton-alert-image {
@@ -63,6 +68,7 @@
 .skeleton-card {
     background: rgba(255, 255, 255, 0.025);
     border-radius: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
 }
 
 
