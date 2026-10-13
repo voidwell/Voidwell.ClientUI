@@ -89,6 +89,7 @@ describe('repositories', () => {
             { name: 'CharacterRepository.getCharacter', call: () => inject(CharacterRepository).getCharacter('c1'), method: 'GET', url: ps2('character/c1') },
             { name: 'CharacterRepository.getSessions', call: () => inject(CharacterRepository).getSessions('c1'), method: 'GET', url: ps2('character/c1/sessions?page=0') },
             { name: 'CharacterRepository.getSession', call: () => inject(CharacterRepository).getSession('c1', 9), method: 'GET', url: ps2('character/c1/sessions/9') },
+            { name: 'CharacterRepository.getLatestSessions', call: () => inject(CharacterRepository).getLatestSessions('c1'), method: 'GET', url: ps2('character/c1/sessions/latest') },
             { name: 'CharacterRepository.getLiveSession', call: () => inject(CharacterRepository).getLiveSession('c1'), method: 'GET', url: ps2('character/c1/sessions/live') },
             { name: 'CharacterRepository.getOnlineState', call: () => inject(CharacterRepository).getOnlineState('c1'), method: 'GET', url: ps2('character/c1/state') },
             { name: 'CharacterRepository.getDirectives', call: () => inject(CharacterRepository).getDirectives('c1'), method: 'GET', url: ps2('character/c1/directives') },

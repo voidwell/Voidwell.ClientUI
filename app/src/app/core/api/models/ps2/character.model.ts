@@ -292,6 +292,16 @@ export interface PlayerSessionSummary {
     duration: number;
 }
 
+/** A session row of `GET ps2/character/{characterId}/sessions/latest`, with kills and deaths already counted. */
+export interface LatestPlayerSessionSummary {
+    id: string;
+    loginDate: IsoDateString;
+    logoutDate?: IsoDateString;
+    duration: number;
+    kills: number;
+    deaths: number;
+}
+
 export type PlayerSessionEventType =
     'Death' | 'FacilityCapture' | 'FacilityDefend' | 'BattleRankUp' | 'VehicleDestroy' | 'Login' | 'Logout';
 

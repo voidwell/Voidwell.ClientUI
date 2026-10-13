@@ -6,6 +6,7 @@ import {
     CharacterDetails,
     CharacterDirectivesOutline,
     CharacterWeaponDetails,
+    LatestPlayerSessionSummary,
     OnlineCharacter,
     PlayerSession,
     PlayerSessionSummary,
@@ -24,6 +25,11 @@ export class CharacterRepository {
 
     getSessions(characterId: string, page = 0): Observable<PlayerSessionSummary[]> {
         return this.api.get<PlayerSessionSummary[]>(`${this.url}/${characterId}/sessions`, { params: { page } });
+    }
+
+    /** The character's five newest sessions, each with its kills and deaths. */
+    getLatestSessions(characterId: string): Observable<LatestPlayerSessionSummary[]> {
+        return this.api.get<LatestPlayerSessionSummary[]>(`${this.url}/${characterId}/sessions/latest`);
     }
 
     getSession(characterId: string, sessionId: number | string): Observable<PlayerSession> {

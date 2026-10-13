@@ -21,8 +21,8 @@
                 <a class="date" routerLink="/ps2/player/{{player().id}}/sessions/{{row.id}}">{{row.loginDate | date: 'MMM d, y'}}</a>
                 <span class="time muted">{{row.loginDate | date: 'h:mm a'}}</span>
               </td>
-              <td class="num">{{row.kills === null ? '—' : (row.kills | number)}}</td>
-              <td class="num">{{row.kdr === null ? '—' : (row.kdr | number: '1.2-2')}}</td>
+              <td class="num">{{row.kills | number}}</td>
+              <td class="num">{{row.kdr | number: '1.2-2'}}</td>
               <td class="num">{{row.duration / 3600000 | number: '1.1-1'}}h</td>
             </tr>
           } @empty {
