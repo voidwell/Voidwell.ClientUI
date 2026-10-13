@@ -1,0 +1,19 @@
+.blog-editor-field {
+    display: block;
+    width: 100%;
+}
+
+.blog-editor-markdown {
+    font-family: Consolas, Menlo, Monaco, 'Courier New', monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+    resize: vertical;
+}
+
+.blog-editor-actions {
+    display: flex;
+}
+
+.blog-editor-spacer {
+    flex: 1 1 auto;
+}

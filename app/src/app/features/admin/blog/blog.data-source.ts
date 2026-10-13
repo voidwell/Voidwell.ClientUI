@@ -1,17 +1,20 @@
-﻿import { DataSource } from '@angular/cdk/collections';
+import { DataSource } from '@angular/cdk/collections';
 import { MatPaginator } from '@angular/material/paginator';
-import { Observable, of, merge } from 'rxjs';
+import { Observable, BehaviorSubject, merge } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BlogPost } from '@core/api/models/platform/post.model';
 
 export class BlogTableDataSource extends DataSource<BlogPost> {
+    private dataSubject: BehaviorSubject<BlogPost[]>;
+
     constructor(public data: BlogPost[], private paginator: MatPaginator) {
         super();
+
+        this.dataSubject = new BehaviorSubject(this.data);
     }
 
     connect(): Observable<BlogPost[]> {
-        const first = of(this.data);
-        return merge(first, this.paginator.page).pipe(map(() => {
+        return merge(this.dataSubject, this.paginator.page).pipe(map(() => {
             if (this.data == null || this.data.length == 0) {
                 return [];
             }
@@ -21,6 +24,10 @@ export class BlogTableDataSource extends DataSource<BlogPost> {
             const startIndex = this.paginator.pageIndex * this.paginator.pageSize;
             return data.splice(startIndex, this.paginator.pageSize);
         }));
+    }
+
+    refresh() {
+        this.dataSubject.next(this.data);
     }
 
     disconnect() { }
