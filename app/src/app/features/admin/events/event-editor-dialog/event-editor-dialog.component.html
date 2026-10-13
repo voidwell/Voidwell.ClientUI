@@ -13,7 +13,7 @@
   <div>
     <mat-form-field>
       <mat-select placeholder="Server" formControlName="serverId">
-        @for (server of servers; track server) {
+        @for (server of servers(); track server.id) {
           <mat-option [value]="server.id">
             {{server.name}}
           </mat-option>
