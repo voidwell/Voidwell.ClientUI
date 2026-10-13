@@ -1,8 +1,12 @@
 ﻿import { Component, OnInit, OnChanges, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomEvent, CustomEventTeam } from '@core/api/models/platform/custom-event.model';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
+import { WorldRepository } from '@core/api/ps2/world.repository';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { NgClass } from '@angular/common';
@@ -50,20 +54,20 @@ export class EventEditorDialog implements OnInit, OnChanges {
     private formBuilder = inject(FormBuilder);
     dialogRef = inject<MatDialogRef<EventEditorDialog>>(MatDialogRef);
     private customEventRepository = inject(CustomEventRepository);
+    private worldRepository = inject(WorldRepository);
     data = inject<{ event?: CustomEvent }>(MAT_DIALOG_DATA);
 
     form: FormGroup;
     event: CustomEvent;
 
-    servers = [
-        { id: "1", name: "Connery" },
-        { id: "10", name: "Miller" },
-        { id: "13", name: "Cobalt" },
-        { id: "17", name: "Emerald" },
-        { id: "19", name: "Jaeger" },
-        { id: "25", name: "Briggs" },
-        { id: "40", name: "SolTech" }
-    ];
+    /** The worlds of the selected platform, as served by the API. */
+    servers = toSignal(
+        this.worldRepository.getWorlds().pipe(
+            map(worlds => worlds
+                .map(world => ({ id: world.id.toString(), name: world.name ?? world.id.toString() }))
+                .sort((a, b) => a.name.localeCompare(b.name))),
+            catchError(() => of([] as { id: string, name: string }[]))),
+        { initialValue: [] as { id: string, name: string }[] });
 
     maps = [
         { id: "2", name: "Indar" },

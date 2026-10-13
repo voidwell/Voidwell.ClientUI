@@ -3,6 +3,8 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
+import { WorldRepository } from '@core/api/ps2/world.repository';
+import { of } from 'rxjs';
 import { EventEditorDialog } from './event-editor-dialog.component';
 
 describe('EventEditorDialog date pickers', () => {
@@ -21,7 +23,8 @@ describe('EventEditorDialog date pickers', () => {
                 provideAnimationsAsync(),
                 { provide: MatDialogRef, useValue: { close: vi.fn() } },
                 { provide: MAT_DIALOG_DATA, useValue: { event } },
-                { provide: CustomEventRepository, useValue: {} }
+                { provide: CustomEventRepository, useValue: {} },
+                { provide: WorldRepository, useValue: { getWorlds: () => of([{ id: 17, name: 'Emerald' }, { id: 1, name: 'Connery' }]) } }
             ]
         });
     });
@@ -49,5 +52,14 @@ describe('EventEditorDialog date pickers', () => {
         await fixture.whenStable();
 
         expect(document.querySelector('mat-datetimepicker-calendar')).not.toBeNull();
+    });
+
+    it('lists the worlds served by the API as servers, sorted by name', () => {
+        const fixture = TestBed.createComponent(EventEditorDialog);
+
+        expect(fixture.componentInstance.servers()).toEqual([
+            { id: '1', name: 'Connery' },
+            { id: '17', name: 'Emerald' }
+        ]);
     });
 });
