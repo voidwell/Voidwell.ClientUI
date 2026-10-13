@@ -10,7 +10,9 @@ import { MatFormField, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { MatDatetimepickerModule } from '@mat-datetimepicker/core';
+import { DatetimeAdapter, MAT_DATETIME_FORMATS, MatDatetimepickerModule } from '@mat-datetimepicker/core';
+import { MAT_MOMENT_DATETIME_FORMATS, MomentDatetimeAdapter } from '@mat-datetimepicker/moment';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 /** A team row of the event editor: the team plus whether it takes part. */
@@ -35,6 +37,13 @@ interface TeamSelection extends CustomEventTeam {
         MatIcon,
         NgClass,
         MatButton,
+    ],
+    // The date pickers' adapter is provided here rather than at the root so that
+    // moment and the picker only load with the admin pages that use them.
+    providers: [
+        provideMomentDateAdapter(),
+        { provide: DatetimeAdapter, useClass: MomentDatetimeAdapter },
+        { provide: MAT_DATETIME_FORMATS, useValue: MAT_MOMENT_DATETIME_FORMATS },
     ],
 })
 export class EventEditorDialog implements OnInit, OnChanges {

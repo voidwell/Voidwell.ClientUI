@@ -11,7 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { DatePipe } from '@angular/common';
 import { BlogTableDataSource } from './blog.data-source';
-import { BlogEditorDialog } from './blog-editor-dialog/blog-editor-dialog.component';
+import { BlogEditorDialog, BlogEditorDialogData, BlogEditorDialogResult } from './blog-editor-dialog/blog-editor-dialog.component';
 
 @Component({
     selector: 'voidwell-admin-blog',
@@ -30,7 +30,6 @@ export class BlogComponent implements OnInit {
     errorMessage: string = null;
     blogPosts: BlogPost[] = [];
     isLoading: boolean;
-    isCreating: boolean;
     getBlogPostsRequest: Subscription;
     dataSource: BlogTableDataSource;
 
@@ -49,25 +48,40 @@ export class BlogComponent implements OnInit {
     }
 
     newPost() {
-        const dialogRef = this.dialog.open(BlogEditorDialog);
-
-        dialogRef.afterClosed().subscribe(result => {
-            this.blogPosts.push(result);
-            this.cdr.markForCheck();
-        });
+        this.openEditor({});
     }
 
     onEdit(entry: BlogPost) {
+        this.openEditor({ entry });
+    }
 
-        const dialogRef = this.dialog.open(BlogEditorDialog, {
-            data: {
-                entry: entry
-            }
+    private openEditor(data: BlogEditorDialogData) {
+        const dialogRef = this.dialog.open<BlogEditorDialog, BlogEditorDialogData, BlogEditorDialogResult>(BlogEditorDialog, {
+            data,
+            width: '900px',
+            maxWidth: '95vw',
+            disableClose: true,
+            autoFocus: 'first-tabbable'
         });
 
         dialogRef.afterClosed().subscribe(result => {
-            
+            if (!result) {
+                return;
+            }
+
+            if (result.action === 'deleted') {
+                this.blogPosts.splice(0, this.blogPosts.length, ...this.blogPosts.filter(p => p.id !== result.id));
+            } else {
+                const idx = this.blogPosts.findIndex(p => p.id === result.post.id);
+                if (idx > -1) {
+                    this.blogPosts[idx] = { ...this.blogPosts[idx], ...result.post };
+                } else {
+                    this.blogPosts.unshift(result.post);
+                }
+            }
+
+            this.dataSource.refresh();
+            this.cdr.markForCheck();
         });
     }
 }
-

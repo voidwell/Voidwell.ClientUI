@@ -1,0 +1,51 @@
+.blog-editor-field {
+    display: block;
+    width: 100%;
+}
+
+.blog-editor-markdown {
+    font-family: Consolas, Menlo, Monaco, 'Courier New', monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+    resize: vertical;
+}
+
+.blog-editor-actions {
+    display: flex;
+}
+
+.blog-editor-spacer {
+    flex: 1 1 auto;
+}
+
+.blog-editor-tabs {
+    margin-bottom: 8px;
+}
+
+.blog-editor-tabs .blog-editor-field {
+    margin-top: 12px;
+}
+
+.blog-editor-preview {
+    margin-top: 12px;
+    padding: 12px 16px;
+    min-height: 300px;
+    max-height: 60vh;
+    overflow-y: auto;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 4px;
+    overflow-wrap: break-word;
+}
+
+.blog-editor-preview-empty {
+    opacity: 0.6;
+    font-style: italic;
+}
+
+:host ::ng-deep .blog-editor-preview :is(img, video) {
+    max-width: 100%;
+}
+
+:host ::ng-deep .blog-editor-preview pre {
+    overflow-x: auto;
+}
