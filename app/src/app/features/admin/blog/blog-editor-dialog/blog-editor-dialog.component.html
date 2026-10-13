@@ -12,11 +12,23 @@
     <mat-error>A title is required</mat-error>
   </mat-form-field>
 
-  <mat-form-field class="blog-editor-field">
-    <mat-label>Content (Markdown)</mat-label>
-    <textarea matInput name="markdownContent" class="blog-editor-markdown" rows="20"
-              [(ngModel)]="markdownContent" [disabled]="isLoading || isSaving"></textarea>
-  </mat-form-field>
+  <mat-tab-group class="blog-editor-tabs" animationDuration="0ms" mat-stretch-tabs="false"
+                 [selectedIndex]="selectedTab" (selectedIndexChange)="onTabChange($event)">
+    <mat-tab label="Write">
+      <mat-form-field class="blog-editor-field">
+        <mat-label>Content (Markdown)</mat-label>
+        <textarea matInput name="markdownContent" class="blog-editor-markdown" rows="20"
+                  [(ngModel)]="markdownContent" [disabled]="isLoading || isSaving"></textarea>
+      </mat-form-field>
+    </mat-tab>
+    <mat-tab label="Preview">
+      @if (previewHtml) {
+        <div class="blog-editor-preview" [innerHTML]="previewHtml"></div>
+      } @else {
+        <div class="blog-editor-preview blog-editor-preview-empty">Nothing to preview</div>
+      }
+    </mat-tab>
+  </mat-tab-group>
 </mat-dialog-content>
 
 <mat-dialog-actions class="blog-editor-actions">

@@ -8,7 +8,9 @@ import { MatButton } from '@angular/material/button';
 import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatProgressBar } from '@angular/material/progress-bar';
+import { MatTabGroup, MatTab } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
+import { marked } from 'marked';
 
 export interface BlogEditorDialogData {
     entry?: BlogPost;
@@ -33,6 +35,8 @@ export type BlogEditorDialogResult =
         MatError,
         MatInput,
         MatProgressBar,
+        MatTabGroup,
+        MatTab,
         FormsModule,
         MatButton,
     ],
@@ -47,6 +51,10 @@ export class BlogEditorDialog {
     title = '';
     markdownContent = '';
     private tags: BlogPostTag[] | undefined;
+
+    /** 0 is the markdown editor, 1 is the rendered preview. */
+    selectedTab = 0;
+    previewHtml = '';
 
     isLoading = false;
     isSaving = false;
@@ -87,6 +95,16 @@ export class BlogEditorDialog {
 
     get canSave(): boolean {
         return !this.isLoading && !this.isSaving && this.title.trim().length > 0;
+    }
+
+    onTabChange(index: number) {
+        this.selectedTab = index;
+
+        // Render only when switching to the preview rather than on every keystroke.
+        // Angular sanitizes the result when it is bound through [innerHTML].
+        if (index === 1) {
+            this.previewHtml = marked.parse(this.markdownContent ?? '', { async: false });
+        }
     }
 
     onSave() {
