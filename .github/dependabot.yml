@@ -35,6 +35,10 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    ignore:
+      # Odd-numbered Node releases never become LTS; bump the Node major by hand to an LTS line.
+      - dependency-name: node
+        update-types: ["version-update:semver-major"]
 
   - package-ecosystem: github-actions
     directory: /
