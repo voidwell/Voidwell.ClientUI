@@ -1,0 +1,13 @@
+<section>
+  <button type="button" class="platform-section-header" [attr.aria-expanded]="expanded()" [attr.aria-controls]="contentId" (click)="toggle()">
+    <mat-icon fontSet="mdi" [fontIcon]="platform().icon" class="md-icon"></mat-icon>
+    <h4 class="platform-section-name">{{platform().name}}</h4>
+    @if (count() !== undefined) {
+      <span class="platform-section-count">{{count()}}</span>
+    }
+    <mat-icon fontSet="mdi" fontIcon="mdi-chevron-down" class="md-icon platform-section-chevron" [class.collapsed]="!expanded()"></mat-icon>
+  </button>
+  <div class="platform-section-content" [id]="contentId" [hidden]="!expanded()">
+    <ng-content></ng-content>
+  </div>
+</section>

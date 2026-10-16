@@ -5,14 +5,14 @@ import { WorldOnlineState } from '@core/api/models/ps2/world-state.model';
 import { WorldStateRepository } from '@core/api/ps2/world-state.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { WorldCardComponent } from './world-card/world-card.component';
 import { NgArrayPipesModule } from 'ngx-pipes';
 
 @Component({
     templateUrl: './planetside-world-wrapper.component.html',
     styleUrls: ['./planetside-world-wrapper.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, WorldCardComponent, NgArrayPipesModule]
+    imports: [LoaderComponent, ErrorCardComponent, WorldCardComponent, NgArrayPipesModule]
 })
 
 export class PlanetsideWorldWrapperComponent {

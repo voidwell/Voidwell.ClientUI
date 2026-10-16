@@ -1,6 +1,8 @@
 ﻿<div class="content-container player-session mt-1">
   <vw-loader [loading]="isLoading"></vw-loader>
-  <vw-error-message [message]="errorMessage"></vw-error-message>
+  @if (errorMessage) {
+    <vw-error-card></vw-error-card>
+  }
   @if (!isLoading && !errorMessage) {
     <div>
       <div class="session-info">

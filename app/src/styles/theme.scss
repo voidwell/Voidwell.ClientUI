@@ -1,6 +1,8 @@
 @use '@angular/material' as mat;
 @use '@mat-datetimepicker/core/datetimepicker/datetimepicker-theme' as datetimepicker;
 
+$button-radius: 2px;
+
 html {
   @include mat.theme((
     color: (
@@ -16,7 +18,7 @@ html {
     density: 0
   ));
 
-  // Match the app's dark blue-grey palette (see app.css).
+  // Match the app's dark blue-grey palette (see app.scss).
   @include mat.theme-overrides((
     background: #22313a,
     surface: #22313a,
@@ -33,7 +35,7 @@ html {
     outline-variant: #3e505a
   ));
 
-  // Component colors carried over from the pre-MDC styles in app.css.
+  // Component colors carried over from the pre-MDC styles in app.scss.
   @include mat.table-overrides((
     background-color: #2b3942,
     row-item-outline-color: rgba(255, 255, 255, .025),
@@ -95,7 +97,13 @@ html {
     selected-pressed-icon-color: #525252
   ));
 
+  // Rectangular buttons; Material 3 defaults to a fully rounded pill.
   @include mat.button-overrides((
+    text-container-shape: $button-radius,
+    protected-container-shape: $button-radius,
+    filled-container-shape: $button-radius,
+    outlined-container-shape: $button-radius,
+    tonal-container-shape: $button-radius,
     text-label-text-color: #b4bfc3,
     text-disabled-label-text-color: #b4bfc3,
     protected-container-color: #394650,

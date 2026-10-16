@@ -1,6 +1,9 @@
 ﻿<div class="content-container">
   <div class="alerts-list-container mt-2.5">
-    <div>
+    @if (errorMessage) {
+      <vw-error-card></vw-error-card>
+    }
+    <div [hidden]="errorMessage">
       <h3>Active Alerts</h3>
       <vw-loader variant="alerts" [rows]="1" [loading]="isActiveLoading"></vw-loader>
       @if (!isActiveLoading && getActiveAlerts().length === 0) {
@@ -14,7 +17,6 @@
         }
       </div>
       <h3>Past Alerts</h3>
-      <vw-error-message [message]="errorMessage"></vw-error-message>
       <div class="alerts-list flex flex-col">
         <div class="paging-buttons mb-2.5 text-center">
           <div class="filters">

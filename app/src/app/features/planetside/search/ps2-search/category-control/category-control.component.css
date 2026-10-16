@@ -1,0 +1,18 @@
+.category-control {
+    display: inline-block;
+    width: 100px;
+    height: 100%;
+}
+
+.category-control .mat-mdc-select-trigger {
+    height: 100%;
+}
+
+.category-control mat-select {
+    --mat-select-trigger-text-weight: bold;
+}
+
+.focus .category-control mat-select {
+    --mat-select-enabled-trigger-text-color: #22313a;
+    --mat-select-enabled-arrow-color: #22313a;
+}

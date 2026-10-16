@@ -1,50 +1,30 @@
-<div class="vw-header px-11 py-10">
-  <div class="logo">
-    <a routerLink="/" class="logo-button text-center">
-      <vw-logo></vw-logo>
-    </a>
-    <a href="javascript:void(0);" class="menu-button" (click)="toggleNav()">
-      <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
-    </a>
-  </div>
-  <ul class="top-menu ml-5 p-0">
+<div class="vw-header px-11 py-8">
+  <div class="flex items-center">
+    <div class="logo flex items-center">
+      <div class="inline-block pr-6">
+        <button mat-icon-button class="menu-button md-icon-button" (click)="toggleNav()">
+          <mat-icon fontSet="mdi" fontIcon="mdi-menu"></mat-icon>
+        </button>
+      </div>
+      <a routerLink="/" class="logo-button inline-block text-center">
+        <vw-logo></vw-logo>
+      </a>
+    </div>
     @if (searchService.isUsable()) {
-      <li class="top-menu_search">
-        <button mat-icon-button (click)="focusSearch($event)">
+      <div class="search-outlet text-center flex-grow mx-16"
+        [ngClass]="{'focus': searchService.searchFocused() || searchService.control.dirty}">
+        <form>
+          <router-outlet name="search"></router-outlet>
+        </form>
+      </div>
+    }
+    <div class="flex items-center ml-auto">
+      @if (searchService.isUsable()) {
+        <button mat-icon-button class="search-button md-icon-button ml-auto mr-4" (click)="focusSearch($event)">
           <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
         </button>
-      </li>
-    }
-    <li class="top-menu_profile">
-      <button mat-icon-button [matMenuTriggerFor]="profilemenu">
-        <mat-icon fontSet="mdi" fontIcon="mdi-account-circle"></mat-icon>
-      </button>
-      <mat-menu #profilemenu="matMenu">
-        @if (isLoggedIn()) {
-          <a mat-menu-item [href]="accountUrl">{{userName()}}</a>
-        }
-        @if (isLoggedIn()) {
-          <mat-divider></mat-divider>
-        }
-        @if (isLoggedIn() && canAccessAdmin()) {
-          <button mat-menu-item routerLink="/admin">Admin</button>
-        }
-        @if (isLoggedIn()) {
-          <button mat-menu-item (click)="signOut()">Logout</button>
-        }
-
-        @if (!isLoggedIn()) {
-          <button mat-menu-item (click)="register()">Register</button>
-        }
-        @if (!isLoggedIn()) {
-          <button mat-menu-item (click)="signIn()">Login</button>
-        }
-      </mat-menu>
-    </li>
-  </ul>
-  @if (searchService.isUsable()) {
-    <form class="top-search mx-0 my-0.5" [ngClass]="{'focus': searchService.searchFocused() || searchService.control.dirty}">
-      <router-outlet name="search"></router-outlet>
-    </form>
-  }
+      }
+      <vw-profile ></vw-profile>
+    </div>
+  </div>
 </div>

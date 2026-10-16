@@ -1,8 +1,12 @@
 ﻿<div class="content-container">
   <vw-loader [loading]="isLoading"></vw-loader>
-  <vw-error-message [message]="errorMessage"></vw-error-message>
-  <outfit-card [data]="outfitData"></outfit-card>
-  @if (!isLoading) {
+  @if (errorMessage) {
+    <vw-error-card></vw-error-card>
+  }
+  @if (!errorMessage) {
+    <outfit-card [data]="outfitData"></outfit-card>
+  }
+  @if (!isLoading && !errorMessage) {
     <div>
       <vw-loader variant="table" [rows]="8" [loading]="isLoadingMembers"></vw-loader>
       @if (!isLoadingMembers || !errorMessage) {

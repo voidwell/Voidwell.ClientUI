@@ -1,12 +1,12 @@
 ﻿import { ChangeDetectorRef, Component, OnDestroy, NgZone, inject } from '@angular/core';
 import { Router, RouterLinkActive, RouterLink } from '@angular/router';
 import { MediaMatcher } from '@angular/cdk/layout';
-import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodeOutlet } from '@angular/material/tree';
+import { MatTreeNestedDataSource, MatTree, MatTreeNodeDef, MatTreeNodeToggle, MatNestedTreeNode, MatTreeNodeOutlet } from '@angular/material/tree';
 import { NestedTreeControl } from '@angular/cdk/tree';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NavMenuService } from '../nav-menu.service';
 import { MatSidenavContainer, MatSidenav, MatSidenavContent } from '@angular/material/sidenav';
-import { NgClass } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { MatNavList } from '@angular/material/list';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
@@ -111,7 +111,7 @@ const NAV_DATA: NavNode[] = [
     selector: 'vw-navigation',
     templateUrl: './vw-navigation.component.html',
     styleUrls: ['./vw-navigation.component.css'],
-    imports: [MatSidenavContainer, MatSidenav, NgClass, MatNavList, MatIconButton, MatIcon, MatTree, MatTreeNodeDef, MatTreeNode, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodeOutlet, MatSidenavContent]
+    imports: [MatSidenavContainer, MatSidenav, NgClass, NgTemplateOutlet, MatNavList, MatIconButton, MatIcon, MatTree, MatTreeNodeDef, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodeOutlet, MatSidenavContent]
 })
 export class VWNavigationComponent implements OnDestroy {
     navMenuService = inject(NavMenuService);

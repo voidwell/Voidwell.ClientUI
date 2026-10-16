@@ -7,7 +7,7 @@ import { AlertRepository } from '@core/api/ps2/alert.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { AlertResult } from '@core/api/models/ps2/alert.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { NgClass, DecimalPipe, DatePipe } from '@angular/common';
 import { MatCard, MatCardTitle, MatCardSubtitle, MatCardContent } from '@angular/material/card';
 import { VWCountdownComponent } from '@shared/ui/vw-countdown/vw-countdown.component';
@@ -21,7 +21,7 @@ import { WorldNamePipe } from '../../pipes/world-name.pipe';
     templateUrl: './planetside-alert.component.html',
     styleUrls: ['./planetside-alert.component.css'],
     providers: [{ provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideAlertComponent) }],
-    imports: [LoaderComponent, ErrorMessageComponent, NgClass, MatCard, MatCardTitle, VWCountdownComponent, MatIcon, MatCardSubtitle, MatCardContent, FactionBarComponent, VWTabNavSubBarComponent, RouterOutlet, DecimalPipe, DatePipe, ZoneNamePipe, WorldNamePipe]
+    imports: [LoaderComponent, ErrorCardComponent, NgClass, MatCard, MatCardTitle, VWCountdownComponent, MatIcon, MatCardSubtitle, MatCardContent, FactionBarComponent, VWTabNavSubBarComponent, RouterOutlet, DecimalPipe, DatePipe, ZoneNamePipe, WorldNamePipe]
 })
 
 export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent<AlertResult> {

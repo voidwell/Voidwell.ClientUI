@@ -1,7 +1,9 @@
 ﻿<div class="item-leaderboard">
     <vw-loader variant="table" [rows]="8" [loading]="dataSource.loading$ | async"></vw-loader>
-    <vw-error-message [message]="errorMessage"></vw-error-message>
-    <div [hidden]="dataSource.loading$ | async">
+    @if (errorMessage) {
+      <vw-error-card></vw-error-card>
+    }
+    <div [hidden]="(dataSource.loading$ | async) || errorMessage">
         <mat-card>
             <mat-card-footer>
                 <mat-table #table [dataSource]="dataSource" class="striped" matSort matSortActive="kills" matSortDirection="desc" matSortStart="desc" matSortDisableClear>

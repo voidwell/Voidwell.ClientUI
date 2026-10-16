@@ -7,7 +7,7 @@ import { OutfitDetails, OutfitMemberDetails } from '@core/api/models/ps2/outfit.
 import { OutfitRepository } from '@core/api/ps2/outfit.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { OutfitCardComponent } from './outfit-card/outfit-card.component';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { DecimalPipe, DatePipe } from '@angular/common';
@@ -17,7 +17,7 @@ import { OutfitMembersDataSource } from './planetside-outfit.data-source';
     selector: 'planetside-outfit',
     templateUrl: './planetside-outfit.component.html',
     styleUrls: ['./planetside-outfit.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, OutfitCardComponent, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe]
+    imports: [LoaderComponent, ErrorCardComponent, OutfitCardComponent, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe]
 })
 
 export class PlanetsideOutfitComponent {

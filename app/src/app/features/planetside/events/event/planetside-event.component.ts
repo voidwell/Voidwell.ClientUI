@@ -7,7 +7,7 @@ import { CustomEventRepository } from '@core/api/platform/custom-event.repositor
 import { getErrorMessage } from '@core/util/error-message';
 import { CustomEventDetails } from '@core/api/models/platform/custom-event.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatCard, MatCardContent, MatCardFooter } from '@angular/material/card';
 import { VWCountdownComponent } from '@shared/ui/vw-countdown/vw-countdown.component';
 import { FactionBarComponent } from '../../components/faction-bar/faction-bar.component';
@@ -20,7 +20,7 @@ import { WorldNamePipe } from '../../pipes/world-name.pipe';
     templateUrl: './planetside-event.component.html',
     styleUrls: ['./planetside-event.component.css'],
     providers: [{ provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideEventComponent) }],
-    imports: [LoaderComponent, ErrorMessageComponent, MatCard, MatCardContent, VWCountdownComponent, FactionBarComponent, MatCardFooter, VWTabNavSubBarComponent, RouterOutlet, DatePipe, ZoneNamePipe, WorldNamePipe]
+    imports: [LoaderComponent, ErrorCardComponent, MatCard, MatCardContent, VWCountdownComponent, FactionBarComponent, MatCardFooter, VWTabNavSubBarComponent, RouterOutlet, DatePipe, ZoneNamePipe, WorldNamePipe]
 })
 
 export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<CustomEventDetails> {

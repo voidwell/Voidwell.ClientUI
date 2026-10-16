@@ -1,5 +1,6 @@
 import { ApplicationConfig, provideAppInitializer, inject, provideZoneChangeDetection } from '@angular/core';
 import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { provideNativeDateAdapter } from '@angular/material/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { provideStore } from '@ngrx/store';
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
         provideAnimationsAsync(),
         provideRouter(routes, withComponentInputBinding()),
         provideHttpClient(withInterceptorsFromDi()),
+        provideNativeDateAdapter(),
         provideStore(reducers),
         provideEffects(AuthEffects),
         provideAuth(authConfig),
