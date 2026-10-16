@@ -1,0 +1,16 @@
+.vw-profile {
+    display: inline-block;
+}
+
+.vw-profile button {
+    color: #edeff0;
+    --mat-icon-button-state-layer-size: 55px;
+    padding: 5px;
+}
+
+.vw-profile mat-icon {
+    font-size: 45px;
+    width: 45px;
+    height: 45px;
+    line-height: 45px;
+}

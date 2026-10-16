@@ -1,0 +1,24 @@
+<mat-card>
+  <mat-card-content class="error-card-content">
+    <svg class="error-card-logo" [attr.viewBox]="viewBox" aria-hidden="true">
+      <defs>
+        <path [attr.id]="pathId" [attr.d]="logoPath" />
+        @for (shard of shards; track $index) {
+          <clipPath [attr.id]="clipId($index)">
+            <polygon [attr.points]="shard.points" />
+          </clipPath>
+        }
+      </defs>
+      <g fill="currentColor">
+        @for (shard of shards; track $index) {
+          <g [attr.transform]="shard.transform" [attr.opacity]="shard.opacity">
+            <g [attr.clip-path]="clipUrl($index)">
+              <use [attr.href]="'#' + pathId" />
+            </g>
+          </g>
+        }
+      </g>
+    </svg>
+    <span>{{message()}}</span>
+  </mat-card-content>
+</mat-card>

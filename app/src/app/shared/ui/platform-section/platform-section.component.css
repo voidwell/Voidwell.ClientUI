@@ -1,0 +1,55 @@
+:host {
+    display: block;
+    margin-top: 24px;
+}
+
+.platform-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 12px;
+    padding: 0 0 8px;
+    border: 0;
+    border-bottom: 1px solid #3e505a;
+    background: none;
+    color: #b4bfc3;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.platform-section-header:hover,
+.platform-section-header:focus-visible {
+    color: #edeff0;
+}
+
+.platform-section-name {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+
+.platform-section-count {
+    padding: 0 8px;
+    border-radius: 10px;
+    background: #2b3942;
+    font-size: 12px;
+    line-height: 20px;
+}
+
+.platform-section-chevron {
+    margin-left: auto;
+    transition: transform 0.2s;
+}
+
+.platform-section-chevron.collapsed {
+    transform: rotate(-90deg);
+}
+
+/* Keep the content in the DOM while collapsed, so its state (tables, toggles) is kept. */
+.platform-section-content[hidden] {
+    display: none;
+}

@@ -6,13 +6,13 @@ import { catchError, finalize } from 'rxjs/operators';
 import { WeaponInfoRepository } from '@core/api/ps2/weapon-info.repository';
 import { WeaponInfoResult } from '@core/api/models/ps2/weapon.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { ItemCardComponent } from './item-card/item-card.component';
 
 @Component({
     templateUrl: './planetside-item.component.html',
     styleUrls: ['./planetside-item.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, ItemCardComponent, RouterOutlet]
+    imports: [LoaderComponent, ErrorCardComponent, ItemCardComponent, RouterOutlet]
 })
 
 export class PlanetsideItemComponent {

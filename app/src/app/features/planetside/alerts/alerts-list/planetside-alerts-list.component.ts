@@ -8,7 +8,7 @@ import { AlertRepository } from '@core/api/ps2/alert.repository';
 import { AlertView, toAlertView } from '../../components/alert-card/alert-view';
 import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
 import { AlertCardComponent } from '../../components/alert-card/alert-card.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { NgArrayPipesModule } from 'ngx-pipes';
@@ -16,7 +16,7 @@ import { NgArrayPipesModule } from 'ngx-pipes';
 @Component({
     templateUrl: './planetside-alerts-list.component.html',
     styleUrls: ['./planetside-alerts-list.component.css'],
-    imports: [AlertCardComponent, LoaderComponent, ErrorMessageComponent, MatButtonToggleGroup, MatButtonToggle, MatButton, MatIcon, NgArrayPipesModule]
+    imports: [AlertCardComponent, LoaderComponent, ErrorCardComponent, MatButtonToggleGroup, MatButtonToggle, MatButton, MatIcon, NgArrayPipesModule]
 })
 
 export class PlanetsideAlertsListComponent {

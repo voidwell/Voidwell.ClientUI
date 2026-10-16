@@ -5,14 +5,14 @@ import { getErrorMessage } from '@core/util/error-message';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { EventCardComponent } from '../event-card/event-card.component';
 import { NgArrayPipesModule } from 'ngx-pipes';
 
 @Component({
     templateUrl: './planetside-events-list.component.html',
     styleUrls: ['./planetside-events-list.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, EventCardComponent, NgArrayPipesModule]
+    imports: [LoaderComponent, ErrorCardComponent, EventCardComponent, NgArrayPipesModule]
 })
 
 export class PlanetsideEventsListComponent {

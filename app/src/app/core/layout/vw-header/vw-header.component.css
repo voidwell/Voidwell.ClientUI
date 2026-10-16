@@ -1,3 +1,8 @@
+:host {
+    display: block;
+    background-color: #1e2a31;
+}
+
 .vw-header {
     user-select: none;
     display: block;
@@ -9,7 +14,7 @@
     -webkit-touch-callout: none;
 }
 
-.vw-header, .top-search {
+.vw-header, .search-outlet {
     position: relative;
 }
 
@@ -22,22 +27,15 @@
     clear: both;
 }
 
-.logo {
-    height: 52px;
+.logo .logo-button {
     display: inline-block;
-    vertical-align: middle;
+    text-decoration: none;
+    width: 130px;
 }
-
-    .logo .logo-button {
-        display: inline-block;
-        text-decoration: none;
-        width: 130px;
-    }
 
 @media (min-width: 767px) {
     .logo {
-        width: 223px;
-        float: left;
+        width: 130px;
     }
 }
 
@@ -53,90 +51,49 @@
     }
 }
 
-@media (min-width: 1280px) {
-    .logo .menu-button {
-        display: none;
-    }
-}
-
 @media (max-width: 1279px) {
     .logo .menu-button {
-        font-size: 21px;
-        color: #edeff0;
-        float: left;
-        width: 45px;
-        height: 40px;
-        line-height: 52px;
-        cursor: pointer;
-        -webkit-transition: opacity;
-        -o-transition: opacity;
-        transition: opacity;
-        -webkit-transition-duration: .2s;
-        transition-duration: .2s;
+        display: inline-block;
     }
 }
 
-.top-menu {
-    list-style: none;
-    float: right;
-}
-
-ul.top-menu {
-    margin-top: 0;
-    margin-bottom: 9px;
-}
-
-.top-menu > li {
-    display: inline-block;
-    margin-top: 10px;
-    vertical-align: top;
-    min-width: 50px;
-}
-
-.top-menu > li > button {
-    font-size: 24px;
-    line-height: 36px;
-    color: #edeff0;
-    display: block;
-    text-align: center;
-    z-index: 1;
-    position: relative;
-}
-
-.top-search {
+.search-outlet {
     overflow: hidden;
     visibility: visible;
     transition: all;
     transition-duration: 0.3s;
 }
 
-.top-menu .top-menu_search {
+.search-button,
+.menu-button {
     display: none;
+    position: relative;
+    z-index: 1;
+    color: #edeff0;
 }
 
 @media (max-width: 991px) {
-    .top-search {
+    .search-outlet {
         margin: 40px 40px 0;
         position: absolute;
         width: calc(100% - 40px);
         left: 0;
         top: 0;
-        background-color: #1e2a31;
-        z-index: 1;
+        z-index: 2;
         opacity: 0;
         -webkit-transform: translate3d(0,-65px,0);
         transform: translate3d(0,-65px,0);
     }
 
-    .top-search.focus {
+    .search-outlet.focus {
         opacity: 1;
         filter: alpha(opacity=100);
         -webkit-transform: translate3d(0, 0, 0);
         transform: translate3d(0, 0, 0);
     }
 
-    .top-menu .top-menu_search {
-        display: inline-block;
+    .search-button {
+        display: inline-flex;
     }
 
     .logo {
@@ -146,27 +103,8 @@ ul.top-menu {
 }
 
 @media (max-width: 767px) {
-    .top-search {
+    .search-outlet {
         margin: 20px 20px 0;
         width: calc(100% - 40px);
     }
-}
-
-.top-menu .top-menu_profile button {
-    font-size: 45px;
-    line-height: 45px;
-    margin: -11px 0 0 5px;
-}
-
-/* mat-icon is a fixed 24px box, so size it explicitly to keep the larger glyph from being clipped. */
-.top-menu .top-menu_profile mat-icon {
-    font-size: 45px;
-    width: 45px;
-    height: 45px;
-}
-
-.top-menu .top-menu_profile button {
-    width: 56px;
-    height: 56px;
-    padding: 5px;
 }
