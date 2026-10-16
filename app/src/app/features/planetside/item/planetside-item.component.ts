@@ -21,7 +21,7 @@ export class PlanetsideItemComponent {
     readonly id = input<string>();
 
     errorMessage: string = null;
-    isLoading: boolean = true;
+    readonly isLoading = signal(true);
 
     readonly itemId = signal<string | null>(null);
     /** `itemId` as a stream, for the leaderboard's table data source. */
@@ -36,7 +36,7 @@ export class PlanetsideItemComponent {
                 this.errorMessage = null;
                 this.itemId.set(id);
                 this.weaponData.set(null);
-                this.isLoading = true;
+                this.isLoading.set(true);
 
                 this.weaponInfoRepository.getWeaponInfo(id)
                     .pipe(
@@ -48,7 +48,7 @@ export class PlanetsideItemComponent {
                             return throwError(() => error);
                         }),
                         finalize(() => {
-                            this.isLoading = false;
+                            this.isLoading.set(false);
                             this.cdr.markForCheck();
                         })
                     )
