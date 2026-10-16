@@ -10,12 +10,15 @@ type ServiceRow = PlatformServiceState & { isLoading?: boolean; errorMessage?: s
 import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
+import { PlatformSectionComponent } from '@shared/ui/platform-section/platform-section.component';
+import { PlatformGroup, groupByPlatform } from '@shared/utils/platforms';
 import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
 import { JsonPipe } from '@angular/common';
 
 @Component({
     templateUrl: './services.component.html',
-    imports: [LoaderComponent, ErrorMessageComponent, MatCard, MatCardHeader, MatCardTitle, MatSlideToggle, MatCardContent, JsonPipe]
+    imports: [LoaderComponent, ErrorMessageComponent, ErrorCardComponent, PlatformSectionComponent, MatCard, MatCardHeader, MatCardTitle, MatSlideToggle, MatCardContent, JsonPipe]
 })
 
 export class ServicesComponent {
@@ -24,7 +27,7 @@ export class ServicesComponent {
 
     isLoading: boolean;
     errorMessage: string;
-    planetsideServices: ServiceRow[] = [];
+    serviceGroups: PlatformGroup<ServiceRow>[] = [];
 
     constructor() {
         this.isLoading = true;
@@ -40,7 +43,7 @@ export class ServicesComponent {
                 this.cdr.markForCheck();
             }))
             .subscribe(services => {
-                this.planetsideServices = services;
+                this.serviceGroups = groupByPlatform(services);
             });
     }
 

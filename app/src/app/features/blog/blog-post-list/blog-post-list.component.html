@@ -1,7 +1,9 @@
 ﻿<div style="display: flex; justify-content: center">
   <div class="w-full">
     <vw-loader variant="cards" [rows]="3" [loading]="isLoading"></vw-loader>
-    <vw-error-message [message]="errorMessage"></vw-error-message>
+    @if (errorMessage) {
+      <vw-error-card></vw-error-card>
+    }
     @if (!isLoading && !errorMessage) {
       <div class="blog-card-list">
         @for (blogPost of blogPosts; track blogPost) {

@@ -9,16 +9,15 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { VWLogoComponent } from './vw-logo/vw-logo.component';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
-import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
-import { MatDivider } from '@angular/material/list';
 import { FormsModule } from '@angular/forms';
 import { NgClass } from '@angular/common';
+import { VWProfileComponent } from './vw-profile/vw-profile.component';
 
 @Component({
     selector: 'vw-header',
     templateUrl: './vw-header.component.html',
     styleUrls: ['./vw-header.component.css'],
-    imports: [RouterLink, VWLogoComponent, MatIcon, MatIconButton, MatMenuTrigger, MatMenu, MatMenuItem, MatDivider, FormsModule, NgClass, RouterOutlet]
+    imports: [RouterLink, VWLogoComponent, VWProfileComponent, MatIcon, MatIconButton, FormsModule, NgClass, RouterOutlet]
 })
 
 export class VWHeaderComponent {

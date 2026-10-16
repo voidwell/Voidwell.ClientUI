@@ -22,14 +22,14 @@ export interface FacilityEvent {
 }
 import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { LeafletDirective } from '@bluehalo/ngx-leaflet';
 
 @Component({
     selector: 'ps2-zone-map',
     templateUrl: './ps2-zone-map.component.html',
     styleUrls: ['./ps2-zone-map.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, LeafletDirective]
+    imports: [LoaderComponent, ErrorCardComponent, LeafletDirective]
 })
 
 export class Ps2ZoneMapComponent implements OnInit, OnDestroy, OnChanges {

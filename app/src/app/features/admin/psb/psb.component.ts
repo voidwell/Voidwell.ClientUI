@@ -8,7 +8,7 @@ import { PsbUtilityRepository } from '@core/api/ps2/psb-utility.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { MatButton } from '@angular/material/button';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatFormField } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
@@ -19,7 +19,7 @@ import { PsbTableDataSource } from './psb.data-source';
 @Component({
     templateUrl: './psb.component.html',
     styleUrls: ['./psb.component.css'],
-    imports: [MatButton, LoaderComponent, ErrorMessageComponent, MatFormField, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, DatePipe]
+    imports: [MatButton, LoaderComponent, ErrorCardComponent, MatFormField, MatInput, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, DatePipe]
 })
 
 export class PsbComponent implements OnInit, OnDestroy {

@@ -1,3 +1,7 @@
+:host {
+    display: inline-block;
+}
+
 .vw-logo {
     display: inline-block;
     position: relative;
@@ -39,15 +43,10 @@ img,
 @media (max-width: 991px) {
     .vw-logo {
         position: absolute;
-        left: 0;
-        right: 0;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
         text-align: center;
         margin: 0;
-        margin-left: auto;
-        margin-right: auto;
-    }
-
-    .logo-image {
-        height: 32px;
     }
 }

@@ -1,7 +1,32 @@
-﻿.vw-navigation {
-    width: 100%;
+﻿/* Sidenav */
+
+.mat-drawer {
+    width: 270px;
+    background-color: #22313a;
+    z-index: 101;
 }
 
+/* On desktop the drawer is pinned under the header instead of pushing the content. */
+.mat-drawer.snapped {
+    position: absolute;
+    top: 0;
+    background-color: transparent;
+}
+
+.mat-drawer-container {
+    color: inherit;
+    background-color: transparent;
+}
+
+.mat-drawer-side {
+    border: none;
+}
+
+.mat-sidenav-content {
+    margin-left: 0 !important;
+}
+
+/* Close button, only shown where the drawer overlays the page */
 
 .navigation-close {
     display: none;
@@ -10,15 +35,37 @@
     color: #b4bfc3;
 }
 
-    .navigation-close button {
-        margin-left: -10px;
-        font-size: 21px;
-        vertical-align: middle;
-    }
+.navigation-close button {
+    margin-left: -10px;
+    font-size: 21px;
+    vertical-align: middle;
+}
 
-.navigation-toggles {
-    list-style: none;
-    height: 42px;
+@media (max-width: 1279px) {
+    .navigation-close {
+        display: block;
+    }
+}
+
+/* Tree */
+
+.mat-tree {
+    background: none;
+}
+
+.mat-tree .mat-nested-tree-node {
+    font-size: inherit;
+    min-height: initial;
+}
+
+.mat-nested-tree-node {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.mat-nested-tree-node > ul {
+    flex: 0 0 100%;
 }
 
 ul {
@@ -27,123 +74,27 @@ ul {
     margin: 0;
 }
 
-.mat-sidenav-content {
-    margin-left: 0 !important;
-}
-
-.mat-drawer {
-    width: 270px;
-    background-color: #22313a;
-    z-index: 101;
-}
-
-.mat-drawer.snapped {
-    position: absolute;
-    top: 154px;
-}
-
-.mat-drawer-container {
-    color: inherit;
-}
-
-.mat-drawer-container,
-.mat-drawer.snapped {
-    background-color: transparent;
-}
-
-.mat-drawer-side {
-    border: none;
-}
-
-.mat-tree .mat-tree-node,
-.mat-tree .mat-nested-tree-node {
-    font-size: inherit;
-    min-height: initial;
-}
-
-.mat-tree-node > a,
-.mat-nested-tree-node > a {
-    padding: 16px 0 16px 0;
-    display: inline-block;
-    position: relative;
-    color: #8a9ba1;
-    transition: all;
-    -webkit-transition-duration: .3s;
-    transition-duration: .3s;
-    -webkit-transition: all;
-    -o-transition: all;
-    text-decoration: none;
-    line-height: 22px;
-}
-
-    .mat-tree-node > a.active,
-    .mat-nested-tree-node > a.active {
-        color: #edeff0;
-        font-weight: 700;
-    }
-
-    .mat-tree-node > a .mat-icon,
-    .mat-nested-tree-node > a .mat-icon {
-        font-size: 22px;
-        vertical-align: middle;
-        margin-right: 15px;
-        height: auto;
-    }
-
-    .mat-nested-tree-node > ul > .mat-tree-node > a {
-        margin-left: 50px;
-        line-height: 8px;
-    }
-
 .nav-node-invisible {
     display: none;
 }
 
-
-@media (min-width: 1280px) {
-    .vw-navigation {
-        position: absolute;
-        height: 100%;
-        top: 0;
-    }
+.mat-tree a {
+    position: relative;
+    color: #8a9ba1;
+    text-decoration: none;
+    line-height: 22px;
 }
 
-@media (max-width: 1279px) {
-    .navigation-close {
-        display: block;
-    }
+.mat-tree a.active {
+    color: #edeff0;
+    font-weight: 700;
+}
 
-    .navigation-toggles {
-        display: none;
-    }
+.mat-nested-tree-node > ul > .mat-nested-tree-node > a {
+    margin-left: 50px;
+    line-height: 8px;
 }
 
 .toggle-button {
-    display: inline-block;
     color: #8a9ba1;
 }
-
-
-
-
-
-
-.mat-tree {
-    background: none;
-}
-
-.example-tree ul,
-.example-tree li {
-    margin-top: 0;
-    margin-bottom: 0;
-    list-style-type: none;
-}
-.mat-nested-tree-node {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-}
-
-    .mat-nested-tree-node > ul {
-        flex: 0 0 100%;
-    }

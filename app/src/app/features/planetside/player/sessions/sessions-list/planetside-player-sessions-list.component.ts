@@ -7,7 +7,7 @@ import { CharacterRepository } from '@core/api/ps2/character.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { CharacterDetails, PlayerSessionSummary } from '@core/api/models/ps2/character.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { MatButton } from '@angular/material/button';
 import { RouterLink } from '@angular/router';
@@ -18,7 +18,7 @@ import { SessionsDataSource } from './planetside-player-sessions-list.data-sourc
 @Component({
     templateUrl: './planetside-player-sessions-list.component.html',
     styleUrls: ['./planetside-player-sessions-list.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatButton, RouterLink, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe]
+    imports: [LoaderComponent, ErrorCardComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatButton, RouterLink, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe]
 })
 
 export class PlanetsidePlayerSessionsListComponent {

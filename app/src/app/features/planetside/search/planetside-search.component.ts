@@ -1,34 +1,23 @@
-﻿import { Component, ElementRef, HostListener, ViewChild, OnDestroy, inject } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, HostListener, ViewChild, inject } from '@angular/core';
 import { SearchService } from '@core/layout/search.service';
 import { NgClass } from '@angular/common';
 import { PlanetsidePlatformControl } from './platform-control/platform-control.component';
-import { MatIconButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatSelect, MatOption } from '@angular/material/select';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatInput } from '@angular/material/input';
-import { MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
-import { FactionColorPipe } from '../pipes/faction-color.pipe';
-import { WorldNamePipe } from '../pipes/world-name.pipe';
+import { Ps2SearchComponent } from './ps2-search/ps2-search.component';
 
 @Component({
     templateUrl: './planetside-search.component.html',
     styleUrls: ['./planetside-search.component.css'],
-    imports: [NgClass, PlanetsidePlatformControl, MatIconButton, MatIcon, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatInput, MatAutocompleteTrigger, MatAutocomplete, FactionColorPipe, WorldNamePipe]
+    imports: [NgClass, PlanetsidePlatformControl, Ps2SearchComponent]
 })
 
-export class PlanetsideSearchComponent implements OnDestroy {
+export class PlanetsideSearchComponent {
     searchService = inject(SearchService);
 
-    @ViewChild('searchInput', { static: true }) searchInput: ElementRef;
-    @ViewChild('searchContainer', { static: true }) searchContainer: ElementRef;
-
-    private openSub: Subscription;
+    @ViewChild(Ps2SearchComponent, { static: true }) ps2Search: Ps2SearchComponent;
 
     constructor() {
         this.searchService.onSearchOpen.subscribe(() => {
-            this.searchInput.nativeElement.focus();
+            this.ps2Search.focus();
         });
     }
 
@@ -43,7 +32,7 @@ export class PlanetsideSearchComponent implements OnDestroy {
             return;
         }
 
-        if(!this.elementOrAncestorHasClass(event.target, 'top-search_dropdown') && !this.searchContainer.nativeElement.contains(event.target as Node)) {
+        if(!this.elementOrAncestorHasClass(event.target, 'top-search_dropdown') && !this.ps2Search.contains(event.target as Node)) {
             this.searchService.onBlur();
         }
     }
@@ -57,9 +46,5 @@ export class PlanetsideSearchComponent implements OnDestroy {
             node = node.parentNode;
         }
         return false;
-    }
-
-    ngOnDestroy() {
-        if (this.openSub) this.openSub.unsubscribe();
     }
 }

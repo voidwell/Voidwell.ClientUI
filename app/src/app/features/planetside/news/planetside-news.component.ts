@@ -3,8 +3,7 @@ import { of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { FeedItem } from '@core/api/models/ps2/reference.model';
 import { FeedsRepository } from '@core/api/ps2/feeds.repository';
-import { getErrorMessage } from '@core/util/error-message';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { NewsCardComponent } from './news-card/news-card.component';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
@@ -13,28 +12,28 @@ import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
     selector: 'planetside-news',
     templateUrl: './planetside-news.component.html',
     styleUrls: ['./planetside-news.component.css'],
-    imports: [ErrorMessageComponent, LoaderComponent, NewsCardComponent, MatCard, MatCardTitle, MatCardContent]
+    imports: [ErrorCardComponent, LoaderComponent, NewsCardComponent, MatCard, MatCardTitle, MatCardContent]
 })
 
 export class PlanetsideNewsComponent {
     private feedsRepository = inject(FeedsRepository);
     private cdr = inject(ChangeDetectorRef);
 
-    errorMessage: string = null;
     isNewsLoading: boolean;
     isUpdatesLoading: boolean;
+    newsFailed = false;
+    updatesFailed = false;
 
     newsList: FeedItem[];
     updateList: FeedItem[];
 
     constructor() {
-        this.errorMessage = null;
         this.isNewsLoading = true;
         this.isUpdatesLoading = true;
 
         this.feedsRepository.getNews()
-            .pipe(catchError(error => {
-                this.errorMessage = getErrorMessage(error);
+            .pipe(catchError(() => {
+                this.newsFailed = true;
                 this.isNewsLoading = false;
                 return of([] as FeedItem[]);
             }))
@@ -45,8 +44,8 @@ export class PlanetsideNewsComponent {
             });
 
         this.feedsRepository.getUpdates()
-            .pipe(catchError(error => {
-                this.errorMessage = getErrorMessage(error);
+            .pipe(catchError(() => {
+                this.updatesFailed = true;
                 this.isUpdatesLoading = false;
                 return of([] as FeedItem[]);
             }))

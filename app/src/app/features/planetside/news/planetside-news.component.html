@@ -1,34 +1,35 @@
 ﻿<div>
-  <vw-error-message [message]="errorMessage"></vw-error-message>
-  @if (!errorMessage) {
-    <div class="main-news-container pt-4 flex">
-      <div class="news-content flex-1 min-w-0">
-        <vw-loader variant="cards" [rows]="3" [loading]="isNewsLoading"></vw-loader>
-        @if (!isNewsLoading) {
-          <div class="news-card-list">
-            @for (post of newsList; track post) {
-              <vw-news-card [post]="post"></vw-news-card>
-            }
-          </div>
-        }
-      </div>
-      <div class="updates-content ml-5">
-        <mat-card>
-          <mat-card-title>Updates</mat-card-title>
-          <mat-card-content>
-            <vw-loader variant="lines" [rows]="6" [loading]="isUpdatesLoading"></vw-loader>
-            @if (!isUpdatesLoading) {
-              <ul>
-                @for (item of updateList; track item) {
-                  <li>
-                    <a [href]="item.link" target="_blank" [title]="item.title">{{item.title}}</a>
-                  </li>
-                }
-              </ul>
-            }
-          </mat-card-content>
-        </mat-card>
-      </div>
+  <div class="main-news-container pt-4 flex">
+    <div class="news-content flex-1 min-w-0">
+      <vw-loader variant="cards" [rows]="3" [loading]="isNewsLoading"></vw-loader>
+      @if (newsFailed) {
+        <vw-error-card></vw-error-card>
+      } @else if (!isNewsLoading) {
+        <div class="news-card-list">
+          @for (post of newsList; track post) {
+            <vw-news-card [post]="post"></vw-news-card>
+          }
+        </div>
+      }
     </div>
-  }
+    <div class="updates-content ml-5">
+      <mat-card>
+        <mat-card-title>Updates</mat-card-title>
+        <mat-card-content>
+          <vw-loader variant="lines" [rows]="6" [loading]="isUpdatesLoading"></vw-loader>
+          @if (updatesFailed) {
+            <p class="m-0 text-center">Unable to load updates.</p>
+          } @else if (!isUpdatesLoading) {
+            <ul>
+              @for (item of updateList; track item) {
+                <li>
+                  <a [href]="item.link" target="_blank" [title]="item.title">{{item.title}}</a>
+                </li>
+              }
+            </ul>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
 </div>

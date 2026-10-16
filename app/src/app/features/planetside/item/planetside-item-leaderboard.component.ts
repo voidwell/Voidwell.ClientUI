@@ -5,7 +5,7 @@ import { PlanetsideItemComponent } from './planetside-item.component';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { LeaderboardRepository } from '@core/api/ps2/leaderboard.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatCard, MatCardFooter } from '@angular/material/card';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { RouterLink } from '@angular/router';
@@ -17,7 +17,7 @@ import { ItemLeaderboardDataSource } from './planetside-item-leaderboard.data-so
 @Component({
     templateUrl: './planetside-item-leaderboard.component.html',
     styleUrls: ['./planetside-item-leaderboard.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, MatCard, MatCardFooter, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, RouterLink, NgClass, MatSortHeader, GradeComponent, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, AsyncPipe, DecimalPipe, FactionColorPipe]
+    imports: [LoaderComponent, ErrorCardComponent, MatCard, MatCardFooter, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, RouterLink, NgClass, MatSortHeader, GradeComponent, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, AsyncPipe, DecimalPipe, FactionColorPipe]
 })
 
 export class PlanetsideItemLeaderboardComponent implements OnInit {

@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { BlogPost } from '@core/api/models/platform/post.model';
 import { PostRepository } from '@core/api/platform/post.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
@@ -17,7 +17,7 @@ import { BlogEditorDialog } from './blog-editor-dialog/blog-editor-dialog.compon
     selector: 'voidwell-admin-blog',
     templateUrl: './blog.component.html',
     styleUrls: ['./blog.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, MatButton, MatIcon, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DatePipe]
+    imports: [LoaderComponent, ErrorCardComponent, MatButton, MatIcon, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DatePipe]
 })
 
 export class BlogComponent implements OnInit {

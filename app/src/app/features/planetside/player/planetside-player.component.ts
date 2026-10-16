@@ -5,14 +5,14 @@ import { catchError } from 'rxjs/operators';
 import { CharacterRepository } from '@core/api/ps2/character.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { CharacterDetails } from '@core/api/models/ps2/character.model';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { PlanetsidePlayerQuickStatsCardComponent } from './quick-stats-card/planetside-player-quick-stats-card.component';
 import { CharacterCardComponent } from './character-card/character-card.component';
 
 @Component({
     selector: 'planetside-player',
     templateUrl: './planetside-player.component.html',
-    imports: [ErrorMessageComponent, CharacterCardComponent, PlanetsidePlayerQuickStatsCardComponent, RouterOutlet]
+    imports: [ErrorCardComponent, CharacterCardComponent, PlanetsidePlayerQuickStatsCardComponent, RouterOutlet]
 })
 
 export class PlanetsidePlayerComponent {

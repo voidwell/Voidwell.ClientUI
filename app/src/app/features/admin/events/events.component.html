@@ -1,8 +1,10 @@
 ﻿<div class="content-container">
   <div class="events-list">
     <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-    <vw-error-message [message]="errorMessage"></vw-error-message>
-    @if (!isLoading) {
+    @if (errorMessage) {
+      <vw-error-card></vw-error-card>
+    }
+    @if (!isLoading && !errorMessage) {
       <div>
         <div class="header-buttons">
           <button mat-raised-button (click)="onEdit(null)">

@@ -8,7 +8,7 @@ import { CharacterRepository } from '@core/api/ps2/character.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { CharacterDetails, PlayerSessionEvent, PlayerSessionInfo } from '@core/api/models/ps2/character.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatCard, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
@@ -32,7 +32,7 @@ interface SessionStats {
 @Component({
     templateUrl: './planetside-player-session.component.html',
     styleUrls: ['./planetside-player-session.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, MatCard, MatCardTitle, MatCardContent, MatCardFooter, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIcon, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe, DgcImageUrlPipe, FactionColorPipe, ZoneNamePipe]
+    imports: [LoaderComponent, ErrorCardComponent, MatCard, MatCardTitle, MatCardContent, MatCardFooter, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIcon, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe, DgcImageUrlPipe, FactionColorPipe, ZoneNamePipe]
 })
 
 export class PlanetsidePlayerSessionComponent implements OnDestroy {
