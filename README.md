@@ -12,7 +12,7 @@ It is an Angular single-page app served by a small Express server.
 - Angular 22, Angular Material, NgRx (store + effects), RxJS
 - Leaflet (maps), D3
 - Vitest (via `@angular/build:unit-test`) and ESLint (`angular-eslint`)
-- Node 22 / Express 5 static server (`server/`)
+- Node 26 / Express 5 static server (`server/`)
 
 ## Project layout
 
@@ -55,7 +55,7 @@ moves down into `shared/` or `core/`.
 
 ## Getting started
 
-Requires Node `^22.22.3` or `^24.15.0`.
+Requires Node `^22.22.3`, `^24.15.0` or `26` and newer. CI and the Docker image use Node 26.
 
 ```sh
 cd app

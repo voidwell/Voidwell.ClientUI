@@ -14,7 +14,7 @@ PlanetSide 2. It is an Angular single-page app, served in production by a small 
 - Leaflet (`@bluehalo/ngx-leaflet`) for maps, D3 for charts
 - `angular-auth-oidc-client` (Keycloak, authorization code + PKCE)
 - Vitest (`@angular/build:unit-test`), ESLint (`angular-eslint`), TypeScript 6
-- Node `^22.22.3 || ^24.15.0`; Express static server in `server/`
+- Node `^22.22.3 || ^24.15.0 || >=26.0.0` (the production image and CI run Node 26); Express static server in `server/`
 
 ## Repository layout
 
