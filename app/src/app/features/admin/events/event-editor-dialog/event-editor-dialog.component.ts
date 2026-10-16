@@ -1,8 +1,12 @@
 ﻿import { Component, OnInit, OnChanges, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { catchError, map } from 'rxjs/operators';
+import { of } from 'rxjs';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators, FormArray, FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CustomEvent, CustomEventTeam } from '@core/api/models/platform/custom-event.model';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
+import { WorldRepository } from '@core/api/ps2/world.repository';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { NgClass } from '@angular/common';
@@ -10,7 +14,9 @@ import { MatFormField, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 import { MatSelect, MatOption } from '@angular/material/select';
-import { MatDatetimepickerModule } from '@mat-datetimepicker/core';
+import { DatetimeAdapter, MAT_DATETIME_FORMATS, MatDatetimepickerModule } from '@mat-datetimepicker/core';
+import { MAT_MOMENT_DATETIME_FORMATS, MomentDatetimeAdapter } from '@mat-datetimepicker/moment';
+import { provideMomentDateAdapter } from '@angular/material-moment-adapter';
 import { MatCheckbox } from '@angular/material/checkbox';
 
 /** A team row of the event editor: the team plus whether it takes part. */
@@ -36,25 +42,32 @@ interface TeamSelection extends CustomEventTeam {
         NgClass,
         MatButton,
     ],
+    // The date pickers' adapter is provided here rather than at the root so that
+    // moment and the picker only load with the admin pages that use them.
+    providers: [
+        provideMomentDateAdapter(),
+        { provide: DatetimeAdapter, useClass: MomentDatetimeAdapter },
+        { provide: MAT_DATETIME_FORMATS, useValue: MAT_MOMENT_DATETIME_FORMATS },
+    ],
 })
 export class EventEditorDialog implements OnInit, OnChanges {
     private formBuilder = inject(FormBuilder);
     dialogRef = inject<MatDialogRef<EventEditorDialog>>(MatDialogRef);
     private customEventRepository = inject(CustomEventRepository);
+    private worldRepository = inject(WorldRepository);
     data = inject<{ event?: CustomEvent }>(MAT_DIALOG_DATA);
 
     form: FormGroup;
     event: CustomEvent;
 
-    servers = [
-        { id: "1", name: "Connery" },
-        { id: "10", name: "Miller" },
-        { id: "13", name: "Cobalt" },
-        { id: "17", name: "Emerald" },
-        { id: "19", name: "Jaeger" },
-        { id: "25", name: "Briggs" },
-        { id: "40", name: "SolTech" }
-    ];
+    /** The worlds of the selected platform, as served by the API. */
+    servers = toSignal(
+        this.worldRepository.getWorlds().pipe(
+            map(worlds => worlds
+                .map(world => ({ id: world.id.toString(), name: world.name ?? world.id.toString() }))
+                .sort((a, b) => a.name.localeCompare(b.name))),
+            catchError(() => of([] as { id: string, name: string }[]))),
+        { initialValue: [] as { id: string, name: string }[] });
 
     maps = [
         { id: "2", name: "Indar" },

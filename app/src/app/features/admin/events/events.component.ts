@@ -1,8 +1,11 @@
 ﻿import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Subscription } from 'rxjs';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Subscription, of } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
+import { WorldRepository } from '@core/api/ps2/world.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatButton } from '@angular/material/button';
@@ -23,6 +26,14 @@ export class EventsComponent implements OnDestroy {
     private customEventRepository = inject(CustomEventRepository);
     private dialog = inject(MatDialog);
     private cdr = inject(ChangeDetectorRef);
+    private worldRepository = inject(WorldRepository);
+
+    /** World names keyed by world id. */
+    worldNames = toSignal(
+        this.worldRepository.getWorlds().pipe(
+            map(worlds => Object.fromEntries(worlds.map(world => [world.id.toString(), world.name]))),
+            catchError(() => of({} as Record<string, string | undefined>))),
+        { initialValue: {} as Record<string, string | undefined> });
 
     isLoading: boolean = true;
     errorMessage: string = null;

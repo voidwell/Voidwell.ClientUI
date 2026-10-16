@@ -27,7 +27,7 @@
           </ng-container>
           <ng-container matColumnDef="server">
             <mat-header-cell *matHeaderCellDef>Server</mat-header-cell>
-            <mat-cell *matCellDef="let event">{{event.serverId}}</mat-cell>
+            <mat-cell *matCellDef="let event">{{worldNames()[event.serverId] ?? event.serverId}}</mat-cell>
           </ng-container>
           <ng-container matColumnDef="map">
             <mat-header-cell *matHeaderCellDef>Map</mat-header-cell>
