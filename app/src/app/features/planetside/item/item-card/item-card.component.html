@@ -1,4 +1,4 @@
-﻿@if (!itemComponent.isLoading) {
+﻿@if (!itemComponent.isLoading()) {
   <mat-card class="item-card mb-8" [ngClass]="{'bg-vs': itemData()?.factionId===1, 'bg-nc': itemData()?.factionId===2, 'bg-tr': itemData()?.factionId===3}">
     <mat-card-title>
       <h1 class="item-name">{{itemData()?.name || "Unknown (" + itemComponent.itemId() +")"}}</h1>
