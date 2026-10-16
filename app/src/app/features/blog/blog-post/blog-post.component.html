@@ -1,6 +1,8 @@
 ﻿<div class="content-container">
   <vw-loader [loading]="isLoading"></vw-loader>
-  <vw-error-message [message]="errorMessage"></vw-error-message>
+  @if (errorMessage) {
+    <vw-error-card></vw-error-card>
+  }
   @if (!isLoading && !errorMessage) {
     <div class="blog-post mb-4">
       <vw-blog-card [post]="blogPost"></vw-blog-card>

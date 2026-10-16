@@ -1,18 +1,12 @@
-:host {
+.platform-control {
     display: inline-block;
     position: relative;
+    background: #2b3942;
     width: 120px;
+    height: 100%;
 }
 
-mat-select-trigger {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-}
-
-mat-select-trigger mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-    line-height: 18px;
+.platform-control .mat-mdc-select-trigger {
+    padding: 0 12px;
+    height: 100%;
 }

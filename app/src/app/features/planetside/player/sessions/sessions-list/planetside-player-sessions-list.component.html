@@ -1,7 +1,9 @@
 ﻿<div class="content-container">
   <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-  <vw-error-message [message]="errorMessage"></vw-error-message>
-  @if (!isLoading) {
+  @if (errorMessage) {
+    <vw-error-card></vw-error-card>
+  }
+  @if (!isLoading && !errorMessage) {
     <div class="session-list mt-4">
       <mat-table #table [dataSource]="dataSource" class="striped">
         <ng-container matColumnDef="sessionId">

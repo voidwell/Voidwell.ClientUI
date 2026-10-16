@@ -1,4 +1,4 @@
-﻿/*
+/*
 .splash {
     position: fixed;
     background: #22313a;
@@ -48,34 +48,6 @@ body {
     font-size: 13px;
     line-height: 1.42857143;
     margin: 0;
-}
-
-    body:before {
-        content: '';
-        height: 266px;
-        width: 100%;
-        position: absolute;
-        left: 0;
-        top: 0;
-        background-color: #1e2a31;
-    }
-
-@media screen and (-webkit-min-device-pixel-ratio: 0) and (max-width: 767px) {
-    body:before {
-        height: 215px;
-    }
-}
-
-@media screen and (-webkit-min-device-pixel-ratio: 0) {
-    body:before {
-        height: 265px;
-    }
-}
-
-@media (max-width: 767px) {
-    body:before {
-        height: 216px;
-    }
 }
 
 * {
@@ -435,6 +407,34 @@ mat-card .mat-mdc-card-subtitle {
 
 .mat-expansion-panel .mat-expansion-panel .mat-expansion-panel-content {
     background: #253037;
+}
+
+// Icon and icon-button sizes
+$icon-sizes: (sm: 16px, md: 24px, lg: 32px, xl: 48px);
+
+@mixin icon-size($size) {
+    width: $size !important;
+    height: $size !important;
+    font-size: $size !important;
+    line-height: $size !important;
+}
+
+@each $name, $size in $icon-sizes {
+    .#{$name}-icon {
+        @include icon-size($size);
+    }
+
+    .#{$name}-icon-button {
+        --mat-icon-button-icon-size: #{$size} !important;
+        width: $size !important;
+        height: $size !important;
+        padding: 0 !important;
+
+        .mat-icon {
+            display: block;
+            @include icon-size($size);
+        }
+    }
 }
 
 /* The platform picker panel renders in an overlay, so it can't be styled from its component. */

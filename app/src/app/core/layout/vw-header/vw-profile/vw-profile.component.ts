@@ -1,0 +1,71 @@
+import { Component, inject, computed, ViewEncapsulation } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { AppState, selectAuthState } from '../../../store/app.states';
+import { accountManagementUrl } from '../../../auth/auth.config';
+import { LogInUser, LogOutUser, RegisterUser } from '../../../store/actions/auth.actions';
+import { RouterLink } from '@angular/router';
+import { MatIcon } from '@angular/material/icon';
+import { MatIconButton } from '@angular/material/button';
+import { MatMenuTrigger, MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatDivider } from '@angular/material/list';
+
+@Component({
+    selector: 'vw-profile',
+    templateUrl: './vw-profile.component.html',
+    styleUrl: './vw-profile.component.css',
+    host: {
+        'class': 'vw-profile'
+    },
+    encapsulation: ViewEncapsulation.None,
+    imports: [RouterLink, MatIcon, MatIconButton, MatMenuTrigger, MatMenu, MatMenuItem, MatDivider]
+})
+
+export class VWProfileComponent {
+    private store = inject<Store<AppState>>(Store);
+
+    private authState = this.store.selectSignal(selectAuthState);
+
+    readonly accountUrl = accountManagementUrl;
+
+    readonly isLoggedIn = computed(() => this.authState().isAuthenticated);
+    readonly userName = computed(() => this.authState().user?.name || '');
+    readonly userRoles = computed(() => this.authState().userRoles);
+
+    signIn(): void {
+        this.store.dispatch(new LogInUser());
+    }
+
+    register(): void {
+        this.store.dispatch(new RegisterUser());
+    }
+
+    signOut(): void {
+        this.store.dispatch(new LogOutUser());
+    }
+
+    canAccessAdmin(): boolean {
+        return this.hasRoles(['Administrator', 'Blog', 'Events', 'PSB']);
+    }
+
+    hasRoles(roles: string[]): boolean {
+        if (roles == null) {
+            return true;
+        }
+
+        for (let i = 0; i < roles.length; i++) {
+            if (this.hasRole(roles[i])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    hasRole(role: string): boolean {
+        if (this.userRoles()?.indexOf(role) > -1) {
+            return true;
+        }
+
+        return false;
+    }
+}

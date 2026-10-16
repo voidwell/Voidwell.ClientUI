@@ -1,0 +1,13 @@
+<div class="flex items-center h-full">
+  <mat-select
+    class="h-full"
+    [value]="value()"
+    (selectionChange)="onSelectionChange($event)"
+    (openedChange)="onOpenChange($event)"
+    panelClass="top-search_dropdown"
+    hideSingleSelectionIndicator>
+    <mat-option value="character">Player</mat-option>
+    <mat-option value="outfit">Outfit</mat-option>
+    <mat-option value="item">Weapon</mat-option>
+  </mat-select>
+</div>

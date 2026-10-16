@@ -6,14 +6,14 @@ import { CharacterRepository } from '@core/api/ps2/character.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { CharacterDetails, CharacterDirectivesOutline } from '@core/api/models/ps2/character.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader } from '@angular/material/expansion';
 import { DirectiveTreeListComponent } from './directive-tree-list/directive-tree-list.component';
 
 @Component({
     templateUrl: './planetside-player-directives.component.html',
     styleUrls: ['./planetside-player-directives.component.css'],
-    imports: [LoaderComponent, ErrorMessageComponent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, DirectiveTreeListComponent]
+    imports: [LoaderComponent, ErrorCardComponent, MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, DirectiveTreeListComponent]
 })
 
 export class PlanetsidePlayerDirectivesComponent {

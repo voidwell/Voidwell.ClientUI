@@ -1,5 +1,7 @@
 ﻿<div>
-    <vw-error-message [message]="errorMessage"></vw-error-message>
+    @if (errorMessage) {
+      <vw-error-card></vw-error-card>
+    }
     <div [hidden]="errorMessage">
         <div class="flex flex-wrap gap-4 mb-4">
             <character-card class="flex-1 basis-96"></character-card>

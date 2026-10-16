@@ -1,6 +1,8 @@
 ﻿<div>
   <vw-loader [loading]="isLoading"></vw-loader>
-  <vw-error-message [message]="errorMessage"></vw-error-message>
+  @if (errorMessage) {
+    <vw-error-card></vw-error-card>
+  }
   @if (!isLoading && !errorMessage) {
     <div>
       <mat-card class="event-info mx-0 mt-2.5 mb-8">

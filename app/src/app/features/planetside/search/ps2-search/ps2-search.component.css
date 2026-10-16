@@ -1,0 +1,110 @@
+.ps2-search {
+    display: block;
+    height: 100%;
+}
+
+.top-search-container {
+    position: relative;
+    background: #2b3942;
+    transition: all 0.3s;
+}
+
+.focus .top-search-container {
+    background: #edeff0;
+}
+
+/* Input */
+
+.top-search_input {
+    width: 350px;
+    border: 0;
+    background: none;
+    color: #22313a;
+    font-family: inherit;
+    font-size: 15px;
+    line-height: inherit;
+}
+
+.top-search_input::placeholder {
+    color: #b4bfc3;
+    opacity: 1;
+}
+
+.focus .top-search_input::placeholder {
+    color: #22313a;
+}
+
+.top-search_clear {
+    color: #22313a;
+}
+
+.top-search_reset {
+    display: inline-block;
+    position: relative;
+    color: #b4bfc3;
+    cursor: pointer;
+    font-family: "Material Design Icons";
+    font-style: normal;
+}
+
+.focus .top-search_reset {
+    color: #edeff0;
+}
+
+.top-search_reset::before,
+.top-search_reset::after {
+    position: absolute;
+    left: 0;
+    transition: all 0.3s;
+}
+
+.top-search_reset::before {
+    content: "\F0349"; /* mdi-magnify; MDI 7 renumbered its codepoints */
+}
+
+.top-search_reset::after {
+    content: "\F004D"; /* mdi-arrow-left */
+    color: #22313a;
+    transform: scale(0) rotate(-180deg);
+}
+
+.focus .top-search_reset::before {
+    transform: scale(0) rotate(180deg);
+}
+
+.focus .top-search_reset::after {
+    transform: scale(1) rotate(0);
+}
+
+.top-search_reset.loading::after {
+    content: "\F0772"; /* mdi-loading */
+    animation: spin 0.5s infinite linear;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* Autocomplete results */
+
+.search-option.mat-mdc-option {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    overflow: visible;
+}
+
+.search-option.mat-mdc-option:not(:last-child) {
+    border-bottom: 1px solid #ccc;
+}
+
+.search-option .mdc-list-item__primary-text {
+    display: block;
+    width: 100%;
+}
+
+.search-option .item-title,
+.search-option .item-metadata {
+    display: block;
+    line-height: 2;
+}
