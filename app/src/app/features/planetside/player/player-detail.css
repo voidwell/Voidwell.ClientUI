@@ -8,99 +8,116 @@
     color: #8a9ba1;
 }
 
-/* List: a card per class or vehicle */
+/* List: one row per class or vehicle, with its figures in columns */
 
-.card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 12px;
-}
-
-.item-card {
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-    padding: 14px 16px;
+.list {
+    --columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr)) 24px;
+    overflow: hidden;
     border: 1px solid #3e505a;
     border-radius: 8px;
     background: #2b3942;
+}
+
+.list-head,
+.list-row {
+    display: grid;
+    grid-template-columns: var(--columns);
+    align-items: center;
+    gap: 16px;
+    padding: 0 12px 0 16px;
+}
+
+.list-head {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #344651;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.list-row {
+    min-height: 56px;
     color: #edeff0;
     text-decoration: none;
     transition: background-color .15s;
 }
 
-.item-card:hover {
+.list-row + .list-row {
+    border-top: 1px solid #344651;
+}
+
+.list-row:hover {
     background: #32434d;
 }
 
-.item-card:focus-visible {
+.list-row:focus-visible {
     outline: 2px solid #6dbbff;
-    outline-offset: 2px;
+    outline-offset: -2px;
 }
 
-.item-card.unplayed {
-    opacity: .55;
+.list-row.unplayed {
+    opacity: .5;
 }
 
-.item-head {
+.list-name {
     display: flex;
     align-items: center;
     gap: 12px;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 500;
 }
 
-.item-head img {
+.list-name img {
     flex: none;
-    width: 48px;
-    height: 48px;
+    width: 36px;
+    height: 36px;
     object-fit: contain;
 }
 
-.item-name {
-    overflow: hidden;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 500;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.item-sub {
-    color: #8a9ba1;
-    font-size: 12.5px;
-}
-
-.chevron {
-    flex: none;
-    color: #5d7079;
-}
-
-.item-stats {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 8px;
-}
-
-.item-stats > div {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-}
-
-.item-value {
-    color: #fff;
-    font-size: 15px;
-    font-weight: 500;
+.num {
+    text-align: right;
     font-variant-numeric: tabular-nums;
 }
 
-.item-label {
-    overflow: hidden;
-    color: #8a9ba1;
-    font-size: 11px;
-    letter-spacing: .04em;
-    text-overflow: ellipsis;
-    text-transform: uppercase;
-    white-space: nowrap;
+.list-row .num {
+    font-size: 14px;
+}
+
+.chevron {
+    color: #5d7079;
+}
+
+/* Narrow screens keep the name and the first two figures */
+@media (max-width: 700px) {
+    .list {
+        /* Fixed widths: each row is its own grid, so auto columns would not line up with the header */
+        --columns: minmax(0, 1fr) 68px 64px 16px;
+    }
+
+    .list-head,
+    .list-row {
+        gap: 10px;
+        padding: 0 8px 0 12px;
+    }
+
+    .list-name {
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .list-name img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .wide-only {
+        display: none;
+    }
 }
 
 /* Detail: overview card */

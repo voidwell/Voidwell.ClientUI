@@ -67,32 +67,29 @@
       </mat-card>
     </div>
   } @else {
-    <div class="card-grid">
+    <div class="list vehicles-list" role="table" aria-label="Vehicles">
+      <div class="list-head" role="row">
+        <span role="columnheader">Vehicle</span>
+        <span class="num" role="columnheader">As Pilot</span>
+        <span class="num" role="columnheader">As Gunner</span>
+        <span class="num wide-only" role="columnheader">Pilot K/D</span>
+        <span class="num wide-only" role="columnheader">Pilot Kills / Hour</span>
+        <span></span>
+      </div>
       @for (row of vehicles; track row.vehicle.id) {
-        <a class="item-card" [routerLink]="[row.vehicle.id]" [class.unplayed]="!row.playTime">
-          <div class="item-head">
-            <img [src]="row.vehicle.imageId | dgcImageUrl" alt="">
-            <div class="min-w-0 grow">
-              <div class="item-name">{{ row.vehicle.name }}</div>
-              @if (!row.playTime) {
-                <div class="item-sub">Not played</div>
-              }
-            </div>
-            <mat-icon class="chevron" fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
-          </div>
-          <div class="item-stats">
-            <div><span class="item-value">{{ hours(row.stats.pilotPlayTime) | number: '1.1-1' }}h</span><span class="item-label">As pilot</span></div>
-            <div><span class="item-value">{{ hours(row.stats.playTime) | number: '1.1-1' }}h</span><span class="item-label">As gunner</span></div>
-            <div><span class="item-value">{{ (ratio(row.stats.pilotKills, row.stats.pilotDeaths) | number: '1.2-2') ?? '—' }}</span><span class="item-label">Pilot K/D</span></div>
-          </div>
+        <a class="list-row" role="row" [routerLink]="[row.vehicle.id]" [class.unplayed]="!row.playTime">
+          <span class="list-name" role="cell">
+            <img [src]="row.vehicle.imageId | dgcImageUrl" alt=""><span class="truncate">{{ row.vehicle.name }}</span>
+          </span>
+          <span class="num" role="cell">{{ hours(row.stats.pilotPlayTime) | number: '1.1-1' }}h</span>
+          <span class="num" role="cell">{{ hours(row.stats.playTime) | number: '1.1-1' }}h</span>
+          <span class="num wide-only" role="cell">{{ (ratio(row.stats.pilotKills, row.stats.pilotDeaths) | number: '1.2-2') ?? '—' }}</span>
+          <span class="num wide-only" role="cell">{{ (perHour(row.stats.pilotKills, row.stats.pilotPlayTime) | number: '1.2-2') ?? '—' }}</span>
+          <mat-icon class="chevron" fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
         </a>
       }
     </div>
   }
 } @else {
-  <div class="card-grid">
-    @for (item of [0, 1, 2, 3, 4, 5]; track item) {
-      <vw-loader class="block" variant="panel" [loading]="true"></vw-loader>
-    }
-  </div>
+  <vw-loader variant="rows" [rows]="8" [loading]="true"></vw-loader>
 }

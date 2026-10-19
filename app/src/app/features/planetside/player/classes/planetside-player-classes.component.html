@@ -51,30 +51,29 @@
       </mat-card>
     </div>
   } @else {
-    <div class="card-grid">
+    <div class="list classes-list" role="table" aria-label="Classes">
+      <div class="list-head" role="row">
+        <span role="columnheader">Class</span>
+        <span class="num" role="columnheader">Time</span>
+        <span class="num" role="columnheader">Score / Min</span>
+        <span class="num wide-only" role="columnheader">Score</span>
+        <span class="num wide-only" role="columnheader">Accuracy</span>
+        <span></span>
+      </div>
       @for (row of classes; track row.profile.profileTypeId) {
-        <a class="item-card" [routerLink]="[row.profile.profileTypeId]" [class.unplayed]="!row.stats.playTime">
-          <div class="item-head">
-            <img [src]="row.profile.imageId | dgcImageUrl" alt="">
-            <div class="min-w-0 grow">
-              <div class="item-name">{{ row.profile.name }}</div>
-              <div class="item-sub">{{ hours(row.stats.playTime) | number: '1.1-1' }}h played</div>
-            </div>
-            <mat-icon class="chevron" fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
-          </div>
-          <div class="item-stats">
-            <div><span class="item-value">{{ row.stats.score ?? 0 | number }}</span><span class="item-label">Score</span></div>
-            <div><span class="item-value">{{ (perMinute(row.stats.score, row.stats.playTime) | number: '1.0-0') ?? '—' }}</span><span class="item-label">Score / min</span></div>
-            <div><span class="item-value">{{ (ratio(row.stats.hitCount, row.stats.fireCount) | percent: '1.1-1') ?? '—' }}</span><span class="item-label">Accuracy</span></div>
-          </div>
+        <a class="list-row" role="row" [routerLink]="[row.profile.profileTypeId]" [class.unplayed]="!row.stats.playTime">
+          <span class="list-name" role="cell">
+            <img [src]="row.profile.imageId | dgcImageUrl" alt=""><span class="truncate">{{ row.profile.name }}</span>
+          </span>
+          <span class="num" role="cell">{{ hours(row.stats.playTime) | number: '1.1-1' }}h</span>
+          <span class="num" role="cell">{{ (perMinute(row.stats.score, row.stats.playTime) | number: '1.0-0') ?? '—' }}</span>
+          <span class="num wide-only" role="cell">{{ row.stats.score ?? 0 | number }}</span>
+          <span class="num wide-only" role="cell">{{ (ratio(row.stats.hitCount, row.stats.fireCount) | percent: '1.1-1') ?? '—' }}</span>
+          <mat-icon class="chevron" fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
         </a>
       }
     </div>
   }
 } @else {
-  <div class="card-grid">
-    @for (item of [0, 1, 2, 3, 4, 5]; track item) {
-      <vw-loader class="block" variant="panel" [loading]="true"></vw-loader>
-    }
-  </div>
+  <vw-loader variant="rows" [rows]="6" [loading]="true"></vw-loader>
 }
