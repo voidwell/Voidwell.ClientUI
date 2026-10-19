@@ -135,12 +135,17 @@
         font-size: 22px;
     }
 
-    /* Under the date on narrow screens, so they line up with it on the left */
-    .hero-stat {
+    /* Under the date on narrow screens: the continents line up with it on the left, the duration keeps to the right */
+    .hero-stats {
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .hero-stat:not(:last-child) {
         align-items: flex-start;
     }
 
-    .pills {
+    .hero-stat:not(:last-child) .pills {
         justify-content: flex-start;
     }
 }
