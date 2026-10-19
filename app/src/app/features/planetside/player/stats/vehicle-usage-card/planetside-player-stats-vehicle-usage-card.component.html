@@ -1,0 +1,17 @@
+<mat-card class="vw-character-vehicle-usage">
+  <mat-card-title class="card-title">
+    <span>Vehicle Usage</span>
+    <a class="view-all" routerLink="/ps2/player/{{player().id}}/vehicles">View All &rarr;</a>
+  </mat-card-title>
+  <mat-card-content>
+    @if (vehicles()) {
+      @if (vehicleTimes().length) {
+        <planetside-player-stats-usage-donut [entries]="vehicleTimes()" label="Vehicle usage"></planetside-player-stats-usage-donut>
+      } @else {
+        <p class="empty">No time in vehicles yet.</p>
+      }
+    } @else {
+      <vw-loader variant="lines" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>
