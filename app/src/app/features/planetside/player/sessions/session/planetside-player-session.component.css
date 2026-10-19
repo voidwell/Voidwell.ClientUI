@@ -109,10 +109,6 @@
     text-transform: uppercase;
 }
 
-mat-card {
-    height: 100%;
-}
-
 .card-title {
     display: flex;
     align-items: center;
