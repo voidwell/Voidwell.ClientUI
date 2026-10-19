@@ -10,3 +10,18 @@
     padding: 0 12px;
     height: 100%;
 }
+
+/* Icon only on small screens, where the search sits in the narrow header overlay */
+@media (max-width: 991px) {
+    .platform-control {
+        width: auto;
+    }
+
+    .platform-control .mat-mdc-select-trigger {
+        padding: 0 4px 0 12px;
+    }
+
+    .platform-control .platform-control_name {
+        display: none;
+    }
+}

@@ -9,3 +9,13 @@
 .search-contents {
     height: 50px;
 }
+
+@media (max-width: 991px) {
+    .search {
+        display: block;
+    }
+
+    .search-contents platform-control {
+        margin-right: 8px;
+    }
+}

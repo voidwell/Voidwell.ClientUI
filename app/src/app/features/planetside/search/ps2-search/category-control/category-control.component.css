@@ -16,3 +16,32 @@
     --mat-select-enabled-trigger-text-color: #22313a;
     --mat-select-enabled-arrow-color: #22313a;
 }
+
+/* The panel sizes to its options, so it stays readable when the trigger shrinks to an icon */
+.top-search_dropdown {
+    min-width: 120px;
+}
+
+/* The icon only shows on small screens, in place of the label */
+.category-control .category-control_icon {
+    display: none;
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+@media (max-width: 991px) {
+    .category-control {
+        width: 48px;
+        margin-left: 8px;
+    }
+
+    .category-control .category-control_icon {
+        display: inline-block;
+    }
+
+    .category-control .category-control_label {
+        display: none;
+    }
+}

@@ -5,9 +5,11 @@
     (selectionChange)="onValueChange($event)"
     [value]="selectedValue()"
     panelClass="platform-dropdown"
+    [panelWidth]="null"
+    aria-label="Platform"
     hideSingleSelectionIndicator>
     <mat-select-trigger class="flex justify-center items-center">
-      <mat-icon fontSet="mdi" [fontIcon]="platformControl.value.icon" class="sm-icon mr-2"></mat-icon>{{ platformControl.value.name }}
+      <mat-icon fontSet="mdi" [fontIcon]="platformControl.value.icon" class="sm-icon"></mat-icon><span class="platform-control_name ml-2">{{ platformControl.value.name }}</span>
     </mat-select-trigger>
     @for (platform of platforms; track platform.id) {
       <mat-option [value]="platform">
