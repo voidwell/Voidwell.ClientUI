@@ -1,5 +1,5 @@
 import { CharacterDirectivesOutlineDirective, CharacterDirectivesOutlineTier, CharacterDirectivesOutlineTree } from '@core/api/models/ps2/character.model';
-import { completedObjectives, objectivePercent, tierFill, treeProgress } from './directive-progress';
+import { completedObjectives, distinctRewards, objectiveCount, objectivePercent, tierFill, treeProgress } from './directive-progress';
 
 const directive = (id: number, progress: number, goalValue: number, completionDate?: string): CharacterDirectivesOutlineDirective =>
     ({ id, treeId: 1, tierId: 1, progress, objective: { id, typeId: 1, goalValue }, completionDate });
@@ -50,6 +50,23 @@ describe('directive progress', () => {
         const progress = treeProgress(tree([tier(1, 100, '2014-01-01'), tier(2, 30), tier(3, 136.6), tier(4, 10)]));
 
         expect(progress.tiers.map(t => tierFill(progress, t))).toEqual([100, 30, 0, 0]);
+    });
+
+    it('lists each named reward once', () => {
+        const rewards = [
+            { id: 1, name: 'Expert Banner', imageId: 10 },
+            { id: 2, name: 'Expert Banner', imageId: 11 },
+            { id: 3 },
+            { id: 4, name: 'Implant Pack' }
+        ];
+
+        expect(distinctRewards(rewards).map(r => r.id)).toEqual([1, 4]);
+    });
+
+    it('caps an objective counter at its goal, leaving nothing to go', () => {
+        expect(objectiveCount(directive(1, 190, 250))).toEqual({ value: 190, goal: 250, remaining: 60 });
+        expect(objectiveCount(directive(1, 439, 250))).toEqual({ value: 250, goal: 250, remaining: 0 });
+        expect(objectiveCount(directive(1, 3, 0))).toBeUndefined();
     });
 
     it('works out objective progress, counting completed objectives as done', () => {

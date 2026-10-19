@@ -216,6 +216,10 @@
     font-variant-numeric: tabular-nums;
 }
 
+.objective-remaining {
+    color: #8a9ba1;
+}
+
 .objective-done {
     display: inline-flex;
     flex: none;

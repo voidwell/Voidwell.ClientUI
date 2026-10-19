@@ -1,4 +1,4 @@
-import { CharacterDirectivesOutlineDirective, CharacterDirectivesOutlineTier, CharacterDirectivesOutlineTree } from '@core/api/models/ps2/character.model';
+import { CharacterDirectivesOutlineDirective, CharacterDirectivesOutlineTier, CharacterDirectivesOutlineTree, DirectivesOutlineReward } from '@core/api/models/ps2/character.model';
 
 export type DirectiveTreeStatus = 'mastered' | 'inProgress' | 'notStarted';
 
@@ -40,6 +40,40 @@ export function isCompleted(item: { completionDate?: string }): boolean {
 /** Objectives of a tier completed, at most the number the tier needs. */
 export function completedObjectives(tier: CharacterDirectivesOutlineTier): number {
     return Math.min(tier.completionCount, tier.directives.filter(isCompleted).length);
+}
+
+/**
+ * A tier's rewards worth listing. Unnamed ones are left out, and a reward that comes in a variant per faction (the
+ * same name with a different image) is listed once.
+ */
+export function distinctRewards(rewards: DirectivesOutlineReward[]): DirectivesOutlineReward[] {
+    const names = new Set<string>();
+    return rewards.filter(reward => {
+        if (!reward.name || names.has(reward.name)) {
+            return false;
+        }
+        names.add(reward.name);
+        return true;
+    });
+}
+
+/** An objective's counter towards its goal. */
+export interface ObjectiveCount {
+    /** The counter, at most the goal: the API keeps counting past it until the whole tier is done. */
+    value: number;
+    goal: number;
+    /** How much is left, at least 0. */
+    remaining: number;
+}
+
+/** The objective's counter, if it has a goal to count towards. */
+export function objectiveCount(directive: CharacterDirectivesOutlineDirective): ObjectiveCount | undefined {
+    const goal = directive.objective?.goalValue;
+    if (!goal) {
+        return undefined;
+    }
+    const value = Math.min(goal, Math.max(0, directive.progress ?? 0));
+    return { value, goal, remaining: goal - value };
 }
 
 /** Progress of one objective, 0–100; completed objectives count as done whatever their counter says. */
