@@ -5,6 +5,8 @@ import { FactionValues, IsoDateString, PopulationPeriod } from './common.model';
 export interface World {
     id: number;
     name?: string;
+    /** False for legacy worlds that are no longer live. */
+    isActive: boolean;
 }
 
 export interface DailyPopulation {

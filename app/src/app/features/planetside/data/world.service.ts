@@ -13,9 +13,12 @@ export class WorldService {
     private worldRepository = inject(WorldRepository);
     private platform = inject(Store).selectSignal(selectPlanetsideState);
 
-    /** `null` until the first load completes. */
+    /** All worlds, including legacy ones (to name them on old records); `null` until the first load completes. */
     readonly worlds = toSignal(
         toObservable(computed(() => this.platform()?.platform)).pipe(
-            switchMap(() => this.worldRepository.getWorlds().pipe(catchError(() => EMPTY)))),
+            switchMap(() => this.worldRepository.getWorlds(true).pipe(catchError(() => EMPTY)))),
         { initialValue: null as World[] | null });
+
+    /** Only the currently live worlds; `null` until the first load completes. */
+    readonly activeWorlds = computed(() => this.worlds()?.filter(world => world.isActive) ?? null);
 }

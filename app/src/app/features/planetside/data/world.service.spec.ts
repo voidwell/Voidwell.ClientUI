@@ -9,11 +9,13 @@ import { WorldNamePipe } from '../pipes/world-name.pipe';
 import { WorldService } from './world.service';
 
 describe('WorldService', () => {
+    const OSPREY = { id: 1, name: 'Osprey', isActive: true };
+    const EMERALD = { id: 17, name: 'Emerald', isActive: false };
     const getWorlds = vi.fn();
 
     beforeEach(() => {
         getWorlds.mockReset();
-        getWorlds.mockReturnValue(of([{ id: 17, name: 'Emerald' }]));
+        getWorlds.mockReturnValue(of([OSPREY, EMERALD]));
         TestBed.configureTestingModule({
             providers: [
                 provideStore({}),
@@ -29,9 +31,17 @@ describe('WorldService', () => {
         const service = TestBed.inject(WorldService);
         TestBed.tick();
 
-        expect(service.worlds()).toEqual([{ id: 17, name: 'Emerald' }]);
+        expect(getWorlds).toHaveBeenCalledWith(true);
+        expect(service.worlds()).toEqual([OSPREY, EMERALD]);
         expect(TestBed.inject(WorldNamePipe).transform('17')).toBe('Emerald');
-        expect(TestBed.inject(WorldNamePipe).transform(1)).toBeNull();
+        expect(TestBed.inject(WorldNamePipe).transform(2)).toBeNull();
+    });
+
+    it('exposes only the active worlds', () => {
+        const service = TestBed.inject(WorldService);
+        TestBed.tick();
+
+        expect(service.activeWorlds()).toEqual([OSPREY]);
     });
 
     it('reloads when the platform changes', () => {
