@@ -91,6 +91,11 @@
     white-space: nowrap;
 }
 
+.zone-pill {
+    background: rgba(20, 184, 166, .18);
+    color: #5eead4;
+}
+
 /* Ten tiles: two rows of five, or five rows of two on narrow screens */
 .tiles {
     display: grid;
