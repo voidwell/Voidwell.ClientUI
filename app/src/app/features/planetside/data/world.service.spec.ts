@@ -9,21 +9,20 @@ import { WorldNamePipe } from '../pipes/world-name.pipe';
 import { WorldService } from './world.service';
 
 describe('WorldService', () => {
+    const OSPREY = { id: 1, name: 'Osprey', isInactive: false };
+    const EMERALD = { id: 17, name: 'Emerald', isInactive: true };
     const getWorlds = vi.fn();
-    const getActiveWorlds = vi.fn();
 
     beforeEach(() => {
         getWorlds.mockReset();
-        getWorlds.mockReturnValue(of([{ id: 1, name: 'Osprey' }, { id: 17, name: 'Emerald' }]));
-        getActiveWorlds.mockReset();
-        getActiveWorlds.mockReturnValue(of([{ id: 1, name: 'Osprey' }]));
+        getWorlds.mockReturnValue(of([OSPREY, EMERALD]));
         TestBed.configureTestingModule({
             providers: [
                 provideStore({}),
                 provideState('ps2', reducers.planetside),
                 WorldService,
                 WorldNamePipe,
-                { provide: WorldRepository, useValue: { getWorlds, getActiveWorlds } }
+                { provide: WorldRepository, useValue: { getWorlds } }
             ]
         });
     });
@@ -32,27 +31,26 @@ describe('WorldService', () => {
         const service = TestBed.inject(WorldService);
         TestBed.tick();
 
-        expect(service.worlds()).toEqual([{ id: 1, name: 'Osprey' }, { id: 17, name: 'Emerald' }]);
+        expect(getWorlds).toHaveBeenCalledWith(true);
+        expect(service.worlds()).toEqual([OSPREY, EMERALD]);
         expect(TestBed.inject(WorldNamePipe).transform('17')).toBe('Emerald');
         expect(TestBed.inject(WorldNamePipe).transform(2)).toBeNull();
     });
 
-    it('loads the active worlds separately', () => {
+    it('exposes only the active worlds', () => {
         const service = TestBed.inject(WorldService);
         TestBed.tick();
 
-        expect(service.activeWorlds()).toEqual([{ id: 1, name: 'Osprey' }]);
+        expect(service.activeWorlds()).toEqual([OSPREY]);
     });
 
     it('reloads when the platform changes', () => {
         TestBed.inject(WorldService);
         TestBed.tick();
         expect(getWorlds).toHaveBeenCalledTimes(1);
-        expect(getActiveWorlds).toHaveBeenCalledTimes(1);
 
         TestBed.inject(Store).dispatch(new ChangePlatform({ platform: 'ps4eu' }));
         TestBed.tick();
         expect(getWorlds).toHaveBeenCalledTimes(2);
-        expect(getActiveWorlds).toHaveBeenCalledTimes(2);
     });
 });

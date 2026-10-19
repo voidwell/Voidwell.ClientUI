@@ -10,14 +10,9 @@ export class WorldRepository {
     private api = inject(Ps2ApiClient);
     private readonly url = `${PS2_API_URL}/world`;
 
-    /** All worlds, cached after the first request. */
-    getWorlds(): Observable<World[]> {
-        return this.api.get<World[]>(this.url, { cache: true });
-    }
-
-    /** Worlds that are currently live (excludes legacy servers), cached after the first request. */
-    getActiveWorlds(): Observable<World[]> {
-        return this.api.get<World[]>(`${this.url}/active`, { cache: true });
+    /** Active worlds, plus legacy ones when `includeInactive` is set; cached after the first request. */
+    getWorlds(includeInactive = false): Observable<World[]> {
+        return this.api.get<World[]>(this.url, { params: { includeInactive }, cache: true });
     }
 
     /** Activity of a world over the last `periodHours` hours (at most 24). */
