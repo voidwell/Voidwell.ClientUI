@@ -9,8 +9,8 @@ import { WorldNamePipe } from '../pipes/world-name.pipe';
 import { WorldService } from './world.service';
 
 describe('WorldService', () => {
-    const OSPREY = { id: 1, name: 'Osprey', isInactive: false };
-    const EMERALD = { id: 17, name: 'Emerald', isInactive: true };
+    const OSPREY = { id: 1, name: 'Osprey', isActive: true };
+    const EMERALD = { id: 17, name: 'Emerald', isActive: false };
     const getWorlds = vi.fn();
 
     beforeEach(() => {

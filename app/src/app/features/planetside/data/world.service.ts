@@ -20,5 +20,5 @@ export class WorldService {
         { initialValue: null as World[] | null });
 
     /** Only the currently live worlds; `null` until the first load completes. */
-    readonly activeWorlds = computed(() => this.worlds()?.filter(world => !world.isInactive) ?? null);
+    readonly activeWorlds = computed(() => this.worlds()?.filter(world => world.isActive) ?? null);
 }
