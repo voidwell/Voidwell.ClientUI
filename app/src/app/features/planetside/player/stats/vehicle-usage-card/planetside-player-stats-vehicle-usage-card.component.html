@@ -1,14 +1,20 @@
 <mat-card class="vw-character-vehicle-usage">
   <mat-card-title class="card-title">
-    <span>Vehicle Usage</span>
+    <span class="flex flex-wrap items-center gap-3">
+      <span>Vehicle Usage</span>
+      <mat-button-toggle-group aria-label="Seat" hideSingleSelectionIndicator [value]="seat()" (change)="seat.set($event.value)">
+        <mat-button-toggle value="pilot">Pilot</mat-button-toggle>
+        <mat-button-toggle value="passenger">Passenger</mat-button-toggle>
+      </mat-button-toggle-group>
+    </span>
     <a class="view-all" routerLink="/ps2/player/{{player().id}}/vehicles">View All &rarr;</a>
   </mat-card-title>
   <mat-card-content>
     @if (vehicles()) {
       @if (vehicleTimes().length) {
-        <planetside-player-stats-usage-donut [entries]="vehicleTimes()" label="Vehicle usage"></planetside-player-stats-usage-donut>
+        <planetside-player-stats-usage-donut [entries]="vehicleTimes()" [label]="'Vehicle usage as ' + seat()"></planetside-player-stats-usage-donut>
       } @else {
-        <p class="empty">No time in vehicles yet.</p>
+        <p class="empty">No time as {{ seat() }} yet.</p>
       }
     } @else {
       <vw-loader variant="lines" [rows]="5" [loading]="true"></vw-loader>

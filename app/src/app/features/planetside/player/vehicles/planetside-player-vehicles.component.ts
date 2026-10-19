@@ -1,132 +1,80 @@
-import { Component, inject, effect, untracked, input } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import { Component, computed, inject, input } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DecimalPipe, PercentPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { PlanetsidePlayerComponent } from '../planetside-player.component';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 import { VehicleRepository } from '@core/api/ps2/vehicle.repository';
-import { CharacterDetails, CharacterDetailsVehicleStat, CharacterDetailsWeaponStat } from '@core/api/models/ps2/character.model';
+import { CharacterDetailsVehicleStat } from '@core/api/models/ps2/character.model';
 import { VehicleInfo } from '@core/api/models/ps2/reference.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
+import { PlanetsidePlayerComponent } from '../planetside-player.component';
 import { PlanetsidePlayerWeaponsTableComponent } from '../weapons-table/planetside-player-weapons-table.component';
-import { DecimalPipe } from '@angular/common';
+import { PlanetsideStatTileComponent } from '../stat-tile/planetside-stat-tile.component';
 import { DgcImageUrlPipe } from '../../pipes/dgc-image-url.pipe';
-import { VehiclesDataSource, VehicleRow } from './planetside-player-vehicles.data-source';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { hours, perHour, perMinute, ratio } from '../stat-math';
 
-@Component({
-    templateUrl: './planetside-player-vehicles.component.html',
-    styleUrls: ['./planetside-player-vehicles.component.css'],
-    imports: [LoaderComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatButton, RouterLink, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter, PlanetsidePlayerWeaponsTableComponent, DecimalPipe, DgcImageUrlPipe]
-})
-
-export class PlanetsidePlayerVehiclesComponent {
-    private planetsidePlayer = inject(PlanetsidePlayerComponent);
-    private vehicleRepository = inject(VehicleRepository);
-    readonly id = input<string>();
-
-    playerData: CharacterDetails;
-    private vehicleList = toSignal(this.vehicleRepository.getVehicles());
-
-    private isLoading: boolean;
-    private vehicles: VehicleRow[];
-    private vehicleId: number;
-    private vehicle: VehicleRow = null;
-    private vehicleWeapons: CharacterDetailsWeaponStat[] = [];
-    private allVehicles: VehicleInfo[] = [];
-
-    private vehiclesDataSource: DataSource<VehicleRow>;
-
-    constructor() {
-        const planetsidePlayer = this.planetsidePlayer;
-
-        this.isLoading = true;
-        effect(() => {
-            const data = planetsidePlayer.playerData();
-            const vehicles = this.vehicleList();
-
-            untracked(() => {
-                if (!vehicles) {
-                    return;
-                }
-
-                if (data !== null) {
-                    this.playerData = data;
-                    this.filterVehicles(vehicles);
-
-                    if (this.vehicleId) {
-                        this.setupVehicle(this.vehicleId);
-                    }
-                }
-                this.isLoading = false;
-            });
-        });
-
-        effect(() => {
-            const id = this.id();
-
-            untracked(() => {
-                this.vehicle = null;
-                this.vehicleWeapons = [];
-
-                this.vehicleId = parseInt(id);
-
-                if (!this.isLoading && this.vehicleId) {
-                    this.setupVehicle(this.vehicleId);
-                }
-            });
-        });
-    }
-
-    private filterVehicles(data: VehicleInfo[]) {
-        const vehicles: VehicleRow[] = [];
-
-        for (let i = 0; i < data.length; i++) {
-            const vehicle = data[i];
-            if (vehicle.factions.indexOf(this.playerData.factionId) !== -1 && vehicle.id < 100) {
-                vehicles.push({ ...vehicle, stats: {} });
-            }
-        }
-
-        this.playerData.vehicleStats.forEach(function (d: CharacterDetailsVehicleStat) {
-            for (let i = 0; i < vehicles.length; i++) {
-                if(vehicles[i].id === d.vehicleId) {
-                    vehicles[i].stats = d;
-                    break;
-                }
-            }
-        });
-
-        this.vehicles = vehicles.sort(this.sortVehicles);
-        this.vehiclesDataSource = new VehiclesDataSource(this.vehicles);
-    }
-
-    private setupVehicle(vehicleId: number) {
-        for (let k = 0; k < this.vehicles.length; k++) {
-            if (this.vehicles[k].id === vehicleId) {
-                this.vehicle = this.vehicles[k];
-                break;
-            }
-        }
-
-        for (let w = 0; w < this.playerData.weaponStats.length; w++) {
-            const weapon = this.playerData.weaponStats[w];
-
-            if (weapon.vehicleId === vehicleId) {
-                this.vehicleWeapons.push(weapon);
-            }
-        }
-    }
-
-    private sortVehicles(a: VehicleRow, b: VehicleRow) {
-        if ((a.stats.pilotScore + a.stats.score) < (b.stats.pilotScore + b.stats.score ))
-            return 1
-        if ((a.stats.pilotScore + a.stats.score) > (b.stats.pilotScore + b.stats.score))
-            return -1;
-        return 0;
-    }
-
+export interface VehicleRow {
+    vehicle: VehicleInfo;
+    stats: Partial<CharacterDetailsVehicleStat>;
+    /**
+     * Seconds in the vehicle, at least: the longer of the pilot and gunner times. The two overlap (a single-seat
+     * aircraft has near-equal pilot and gunner time), so they cannot be added up.
+     */
+    playTime: number;
 }
 
+/** The player's vehicles, and one vehicle in detail when the route names it. */
+@Component({
+    templateUrl: './planetside-player-vehicles.component.html',
+    styleUrls: ['../player-detail.css'],
+    imports: [LoaderComponent, MatCard, MatCardTitle, MatCardContent, MatIcon, RouterLink, DecimalPipe, PercentPipe, DgcImageUrlPipe, PlanetsidePlayerWeaponsTableComponent, PlanetsideStatTileComponent]
+})
+export class PlanetsidePlayerVehiclesComponent {
+    private vehicleRepository = inject(VehicleRepository);
+
+    /** The vehicle to show in detail, if any. */
+    readonly id = input<string>();
+
+    readonly player = inject(PlanetsidePlayerComponent).playerData;
+    private readonly vehicleList = toSignal(this.vehicleRepository.getVehicles());
+
+    readonly ratio = ratio;
+    readonly perHour = perHour;
+    readonly perMinute = perMinute;
+    readonly hours = hours;
+
+    /** The player's faction's vehicles (ids below 100) with their stats, most played first; `undefined` while loading. */
+    readonly vehicles = computed<VehicleRow[] | undefined>(() => {
+        const player = this.player();
+        const vehicles = this.vehicleList();
+        if (!player || !vehicles) {
+            return undefined;
+        }
+        return vehicles
+            .filter(vehicle => vehicle.id < 100 && vehicle.factions?.includes(player.factionId))
+            .map((vehicle): VehicleRow => {
+                const stats: Partial<CharacterDetailsVehicleStat> = (player.vehicleStats ?? []).find(stat => stat.vehicleId === vehicle.id) ?? {};
+                return { vehicle, stats, playTime: Math.max(stats.pilotPlayTime ?? 0, stats.playTime ?? 0) };
+            })
+            .sort((a, b) => b.playTime - a.playTime);
+    });
+
+    /** The vehicles the player has spent time in, to switch between in the detail view. */
+    readonly played = computed(() => (this.vehicles() ?? []).filter(row => row.playTime > 0));
+
+    readonly selected = computed(() => {
+        const id = Number(this.id());
+        return id ? this.vehicles()?.find(row => row.vehicle.id === id) : undefined;
+    });
+
+    readonly weapons = computed(() => {
+        const selected = this.selected();
+        return selected ? (this.player()?.weaponStats ?? []).filter(weapon => weapon.vehicleId === selected.vehicle.id) : [];
+    });
+
+    /** Kills made by running enemies over: kills as pilot beyond those of the vehicle's weapons. */
+    roadkills(stats: Partial<CharacterDetailsVehicleStat>): number {
+        return Math.max(0, (stats.pilotKills ?? 0) - (stats.kills ?? 0));
+    }
+}

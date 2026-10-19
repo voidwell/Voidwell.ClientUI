@@ -1,0 +1,292 @@
+/* Shared by the classes and vehicles pages: their card grids and the overview card, which follows the General card */
+
+:host {
+    display: block;
+}
+
+.muted {
+    color: #8a9ba1;
+}
+
+/* List: one row per class or vehicle, with its figures in columns */
+
+.list {
+    --columns: minmax(0, 2fr) repeat(4, minmax(0, 1fr)) 24px;
+    overflow: hidden;
+    border: 1px solid #3e505a;
+    border-radius: 8px;
+    background: #2b3942;
+}
+
+.list-head,
+.list-row {
+    display: grid;
+    grid-template-columns: var(--columns);
+    align-items: center;
+    gap: 16px;
+    padding: 0 12px 0 16px;
+}
+
+.list-head {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #344651;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.list-row {
+    min-height: 56px;
+    color: #edeff0;
+    text-decoration: none;
+    transition: background-color .15s;
+}
+
+.list-row + .list-row {
+    border-top: 1px solid #344651;
+}
+
+.list-row:hover {
+    background: #32434d;
+}
+
+.list-row:focus-visible {
+    outline: 2px solid #6dbbff;
+    outline-offset: -2px;
+}
+
+.list-row.unplayed {
+    opacity: .5;
+}
+
+.list-name {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.list-name img {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    object-fit: contain;
+}
+
+.num {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.list-row .num {
+    font-size: 14px;
+}
+
+.chevron {
+    color: #5d7079;
+}
+
+/* Narrow screens keep the name and the first two figures */
+@media (max-width: 700px) {
+    .list {
+        /* Fixed widths: each row is its own grid, so auto columns would not line up with the header */
+        --columns: minmax(0, 1fr) 68px 64px 16px;
+    }
+
+    .list-head,
+    .list-row {
+        gap: 10px;
+        padding: 0 8px 0 12px;
+    }
+
+    .list-name {
+        gap: 8px;
+        font-size: 14px;
+    }
+
+    .list-name img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .wide-only {
+        display: none;
+    }
+}
+
+/* Detail: overview card */
+
+.overview {
+    display: flex;
+    flex-direction: column;
+    padding-top: 12px;
+}
+
+.back {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 8px;
+    color: #6dbbff;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.back mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.hero-image {
+    flex: none;
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+}
+
+.hero-value {
+    margin: 0;
+    overflow: hidden;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.hero-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.hero-label {
+    margin-top: 2px;
+    color: #8a9ba1;
+    font-size: 11px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+}
+
+.pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(59, 130, 246, .2);
+    color: #93c5fd;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+/* Detail: links to the other classes or vehicles */
+
+.switcher {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid #344651;
+}
+
+.switch {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px 4px 6px;
+    border: 1px solid #3e505a;
+    border-radius: 999px;
+    color: #b4bfc3;
+    font-size: 13px;
+    text-decoration: none;
+}
+
+.switch img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+
+.switch:hover {
+    background: rgba(255, 255, 255, .04);
+}
+
+.switch.active {
+    border-color: #6dbbff;
+    background: rgba(59, 130, 246, .15);
+    color: #edeff0;
+}
+
+/* Detail: the weapons table scrolls sideways on narrow screens rather than squeezing its columns */
+
+.weapons {
+    overflow-x: auto;
+}
+
+@media (max-width: 600px) {
+    .hero-value {
+        font-size: 22px;
+    }
+
+    .hero-stat {
+        align-items: flex-start;
+    }
+
+    .tiles {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Detail: groups of tiles under a heading, as the vehicle page's pilot and gunner stats */
+
+.section-title {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin: 24px 0 0;
+    color: #edeff0;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.section-title .muted {
+    font-size: 12.5px;
+    font-weight: 400;
+}
+
+.section-tiles {
+    margin-top: 10px;
+}
+
+/* Five to a row, so the pilot and gunner groups wrap evenly instead of leaving one or two tiles on a row */
+@media (min-width: 900px) {
+    .section-tiles {
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+    }
+}
