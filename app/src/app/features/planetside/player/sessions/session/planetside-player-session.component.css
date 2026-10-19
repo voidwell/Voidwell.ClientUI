@@ -264,7 +264,7 @@ mat-button-toggle-group {
 
 .entry {
     display: grid;
-    grid-template-columns: 92px 28px minmax(0, 1fr) auto;
+    grid-template-columns: 92px 72px 28px minmax(0, 1fr) auto;
     align-items: center;
     gap: 10px;
     padding: 8px 4px;
@@ -352,38 +352,37 @@ mat-button-toggle-group {
 }
 
 .zone-name {
-    width: 64px;
+    overflow: hidden;
     color: #8a9ba1;
-    text-align: right;
+    font-size: 12.5px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
+/* On narrow screens the continent sits above the time at the right of each entry */
 @media (max-width: 700px) {
     .entry {
-        grid-template-columns: 28px minmax(0, 1fr);
+        grid-template-columns: 28px minmax(0, 1fr) auto;
         grid-template-areas:
-            "icon text"
-            "icon detail";
+            "icon text zone"
+            "icon detail time";
         row-gap: 2px;
     }
 
     .icon { grid-area: icon; }
     .text { grid-area: text; }
-
     .detail {
         grid-area: detail;
         justify-content: flex-start;
-        gap: 12px;
-    }
-
-    /* The time moves under the event on narrow screens */
-    .time {
-        order: 1;
-        grid-area: detail;
-        justify-self: end;
     }
 
     .zone-name {
-        width: auto;
-        text-align: left;
+        grid-area: zone;
+        text-align: right;
+    }
+
+    .time {
+        grid-area: time;
+        text-align: right;
     }
 }

@@ -112,6 +112,7 @@
           @for (entry of log(); track $index) {
             <li class="entry" [ngClass]="entry.kind">
               <span class="time">{{ entry.event.timestamp | date: 'h:mm:ss a' }}</span>
+              <span class="zone-name">{{ entry.event.zoneId | zoneName }}</span>
               <span class="icon"><mat-icon fontSet="mdi" [fontIcon]="icons[entry.kind]"></mat-icon></span>
               <span class="text">
                 @switch (entry.event.eventType) {
@@ -151,9 +152,6 @@
                     }
                     {{ weaponName }}
                   </span>
-                }
-                @if (entry.event.zoneId) {
-                  <span class="zone-name">{{ entry.event.zoneId | zoneName }}</span>
                 }
               </span>
             </li>
