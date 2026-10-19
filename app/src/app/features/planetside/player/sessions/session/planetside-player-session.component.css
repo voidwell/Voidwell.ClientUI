@@ -30,8 +30,7 @@
     text-decoration: none;
 }
 
-.back mat-icon,
-.footer mat-icon {
+.back mat-icon {
     width: 16px;
     height: 16px;
     font-size: 16px;
@@ -40,6 +39,7 @@
 
 .hero {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
@@ -61,12 +61,26 @@
     text-transform: uppercase;
 }
 
-.duration {
-    flex: none;
-    text-align: right;
+.hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 28px;
 }
 
-.duration-value {
+.hero-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+
+.pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.pill {
     display: inline-block;
     padding: 2px 10px;
     border-radius: 999px;
@@ -74,6 +88,7 @@
     color: #93c5fd;
     font-size: 14px;
     font-weight: 500;
+    white-space: nowrap;
 }
 
 /* Ten tiles: two rows of five, or five rows of two on narrow screens */
@@ -106,15 +121,6 @@
     font-variant-numeric: tabular-nums;
 }
 
-.footer {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-top: 16px;
-    color: #8a9ba1;
-    font-size: 12px;
-}
-
 @media (max-width: 600px) {
     .tiles {
         grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -122,6 +128,15 @@
 
     .hero-value {
         font-size: 22px;
+    }
+
+    /* Under the date on narrow screens, so they line up with it on the left */
+    .hero-stat {
+        align-items: flex-start;
+    }
+
+    .pills {
+        justify-content: flex-start;
     }
 }
 

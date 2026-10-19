@@ -20,9 +20,21 @@
               }
             </div>
           </div>
-          <div class="duration">
-            <span class="duration-value">{{ formatDuration(session.duration) }}</span>
-            <div class="hero-label">Duration</div>
+          <div class="hero-stats">
+            <div class="hero-stat">
+              <div class="pills"><span class="pill">{{ formatDuration(session.duration) }}</span></div>
+              <div class="hero-label">Duration</div>
+            </div>
+            @if (zones().length) {
+              <div class="hero-stat">
+                <div class="pills">
+                  @for (zoneId of zones(); track zoneId) {
+                    <span class="pill">{{ zoneId | zoneName }}</span>
+                  }
+                </div>
+                <div class="hero-label">Played on</div>
+              </div>
+            }
           </div>
         </div>
         <div class="tiles">
@@ -37,17 +49,6 @@
           <div class="tile" title="Not counted as kills"><div class="tile-label">Teamkills</div><div class="tile-value">{{ s.teamkills | number }}</div></div>
           <div class="tile" title="Counted as deaths"><div class="tile-label">Suicides</div><div class="tile-value">{{ s.suicides | number }}</div></div>
         </div>
-        @if (zones().length) {
-          <div class="footer">
-            <mat-icon fontSet="mdi" fontIcon="mdi-earth"></mat-icon>
-            <span>
-              Played on
-              @for (zoneId of zones(); track zoneId; let last = $last) {
-                {{ zoneId | zoneName }}{{ last ? '' : ', ' }}
-              }
-            </span>
-          </div>
-        }
       </mat-card-content>
     </mat-card>
 
