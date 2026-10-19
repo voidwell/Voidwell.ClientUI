@@ -80,12 +80,6 @@ export class PlanetsidePlayerSessionsListComponent {
         inject(DestroyRef).onDestroy(() => this.loadSub?.unsubscribe());
     }
 
-    /** How full a session's duration bar is, relative to the longest session loaded. */
-    durationPercent(session: PlayerSessionSummary): number {
-        const longest = this.summary().longest;
-        return longest > 0 ? session.duration / longest * 100 : 0;
-    }
-
     loadMore(): void {
         this.page++;
         this.loadPage();

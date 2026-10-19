@@ -51,10 +51,7 @@
                   <span class="live">In progress</span>
                 }
               </span>
-              <span class="duration">
-                <span class="duration-bar"><span [style.width.%]="durationPercent(session)"></span></span>
-                <span class="duration-text">{{ formatDuration(session.duration) }}</span>
-              </span>
+              <span class="duration">{{ formatDuration(session.duration) }}</span>
               <mat-icon class="chevron" fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
             </a>
           }

@@ -41,13 +41,9 @@
       <div class="tile"><span class="tile-value">{{ s.vehiclesLost | number }}</span><span class="tile-label">Vehicles lost</span></div>
       <div class="tile"><span class="tile-value">{{ s.facilitiesCaptured | number }}</span><span class="tile-label">Captured</span></div>
       <div class="tile"><span class="tile-value">{{ s.facilitiesDefended | number }}</span><span class="tile-label">Defended</span></div>
+      <div class="tile" title="Not counted as kills"><span class="tile-value">{{ s.teamkills | number }}</span><span class="tile-label">Teamkills</span></div>
+      <div class="tile" title="Counted as deaths"><span class="tile-value">{{ s.suicides | number }}</span><span class="tile-label">Suicides</span></div>
     </div>
-    @if (s.teamkills || s.suicides) {
-      <div class="footnote">
-        {{ s.teamkills }} {{ s.teamkills === 1 ? 'teamkill' : 'teamkills' }} (not counted as kills) ·
-        {{ s.suicides }} {{ s.suicides === 1 ? 'suicide' : 'suicides' }} (counted as deaths)
-      </div>
-    }
 
     <div class="flex flex-wrap gap-4">
       <mat-card class="flex-[2_1_420px]">
