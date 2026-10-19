@@ -15,6 +15,11 @@ export class WorldRepository {
         return this.api.get<World[]>(this.url, { cache: true });
     }
 
+    /** Worlds that are currently live (excludes legacy servers), cached after the first request. */
+    getActiveWorlds(): Observable<World[]> {
+        return this.api.get<World[]>(`${this.url}/active`, { cache: true });
+    }
+
     /** Activity of a world over the last `periodHours` hours (at most 24). */
     getWorldActivity(worldId: number, periodHours: number): Observable<WorldActivity> {
         return this.api.get<WorldActivity>(`${this.url}/activity`, { params: { worldId, period: periodHours } });

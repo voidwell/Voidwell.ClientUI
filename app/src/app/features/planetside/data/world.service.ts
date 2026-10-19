@@ -12,10 +12,17 @@ import { WorldRepository } from '@core/api/ps2/world.repository';
 export class WorldService {
     private worldRepository = inject(WorldRepository);
     private platform = inject(Store).selectSignal(selectPlanetsideState);
+    private platform$ = toObservable(computed(() => this.platform()?.platform));
 
-    /** `null` until the first load completes. */
+    /** All worlds, including legacy ones; `null` until the first load completes. */
     readonly worlds = toSignal(
-        toObservable(computed(() => this.platform()?.platform)).pipe(
+        this.platform$.pipe(
             switchMap(() => this.worldRepository.getWorlds().pipe(catchError(() => EMPTY)))),
+        { initialValue: null as World[] | null });
+
+    /** Only the currently live worlds; `null` until the first load completes. */
+    readonly activeWorlds = toSignal(
+        this.platform$.pipe(
+            switchMap(() => this.worldRepository.getActiveWorlds().pipe(catchError(() => EMPTY)))),
         { initialValue: null as World[] | null });
 }

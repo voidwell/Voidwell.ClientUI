@@ -10,17 +10,20 @@ import { WorldService } from './world.service';
 
 describe('WorldService', () => {
     const getWorlds = vi.fn();
+    const getActiveWorlds = vi.fn();
 
     beforeEach(() => {
         getWorlds.mockReset();
-        getWorlds.mockReturnValue(of([{ id: 17, name: 'Emerald' }]));
+        getWorlds.mockReturnValue(of([{ id: 1, name: 'Osprey' }, { id: 17, name: 'Emerald' }]));
+        getActiveWorlds.mockReset();
+        getActiveWorlds.mockReturnValue(of([{ id: 1, name: 'Osprey' }]));
         TestBed.configureTestingModule({
             providers: [
                 provideStore({}),
                 provideState('ps2', reducers.planetside),
                 WorldService,
                 WorldNamePipe,
-                { provide: WorldRepository, useValue: { getWorlds } }
+                { provide: WorldRepository, useValue: { getWorlds, getActiveWorlds } }
             ]
         });
     });
@@ -29,18 +32,27 @@ describe('WorldService', () => {
         const service = TestBed.inject(WorldService);
         TestBed.tick();
 
-        expect(service.worlds()).toEqual([{ id: 17, name: 'Emerald' }]);
+        expect(service.worlds()).toEqual([{ id: 1, name: 'Osprey' }, { id: 17, name: 'Emerald' }]);
         expect(TestBed.inject(WorldNamePipe).transform('17')).toBe('Emerald');
-        expect(TestBed.inject(WorldNamePipe).transform(1)).toBeNull();
+        expect(TestBed.inject(WorldNamePipe).transform(2)).toBeNull();
+    });
+
+    it('loads the active worlds separately', () => {
+        const service = TestBed.inject(WorldService);
+        TestBed.tick();
+
+        expect(service.activeWorlds()).toEqual([{ id: 1, name: 'Osprey' }]);
     });
 
     it('reloads when the platform changes', () => {
         TestBed.inject(WorldService);
         TestBed.tick();
         expect(getWorlds).toHaveBeenCalledTimes(1);
+        expect(getActiveWorlds).toHaveBeenCalledTimes(1);
 
         TestBed.inject(Store).dispatch(new ChangePlatform({ platform: 'ps4eu' }));
         TestBed.tick();
         expect(getWorlds).toHaveBeenCalledTimes(2);
+        expect(getActiveWorlds).toHaveBeenCalledTimes(2);
     });
 });

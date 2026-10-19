@@ -131,6 +131,7 @@ describe('repositories', () => {
             { name: 'WeaponInfoRepository.getWeaponInfoByName', call: () => inject(WeaponInfoRepository).getWeaponInfoByName('gauss'), method: 'GET', url: ps2('weaponInfo/byname/gauss') },
 
             { name: 'WorldRepository.getWorlds', call: () => inject(WorldRepository).getWorlds(), method: 'GET', url: ps2('world') },
+            { name: 'WorldRepository.getActiveWorlds', call: () => inject(WorldRepository).getActiveWorlds(), method: 'GET', url: ps2('world/active') },
             { name: 'WorldRepository.getWorldActivity', call: () => inject(WorldRepository).getWorldActivity(17, 6), method: 'GET', url: ps2('world/activity?worldId=17&period=6') },
             { name: 'WorldRepository.getPopulationHistory', call: () => inject(WorldRepository).getPopulationHistory([1, 17]), method: 'GET', url: ps2('world/population?q=1,17') },
 
