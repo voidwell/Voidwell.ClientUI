@@ -5,7 +5,7 @@ import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { CharacterDirectivesOutlineTier } from '@core/api/models/ps2/character.model';
 import { DgcImageUrlPipe } from '../../../pipes/dgc-image-url.pipe';
-import { DirectiveTreeProgress, completedObjectives, distinctRewards, isCompleted, objectiveCount, objectivePercent, tierColor, tierFill } from '../directive-progress';
+import { DirectiveTreeProgress, completedObjectives, distinctRewards, isCompleted, objectivePercent, tierColor, tierFill } from '../directive-progress';
 
 export interface DirectiveTreeDialogData {
     progress: DirectiveTreeProgress;
@@ -44,7 +44,7 @@ export class DirectiveTreeDialog {
     /** Objectives of the selected tier, completed ones last so what is left to do comes first. */
     readonly objectives = computed(() => [...this.selected().directives]
         .sort((a, b) => Number(isCompleted(a)) - Number(isCompleted(b)))
-        .map(directive => ({ directive, count: objectiveCount(directive), percent: objectivePercent(directive), completed: isCompleted(directive) })));
+        .map(directive => ({ directive, percent: objectivePercent(directive), completed: isCompleted(directive) })));
 
     /** One pip per objective the selected tier needs. */
     readonly requirementPips = computed(() =>

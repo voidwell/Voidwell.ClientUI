@@ -1,5 +1,5 @@
 import { CharacterDirectivesOutlineDirective, CharacterDirectivesOutlineTier, CharacterDirectivesOutlineTree } from '@core/api/models/ps2/character.model';
-import { completedObjectives, distinctRewards, objectiveCount, objectivePercent, tierFill, treeProgress } from './directive-progress';
+import { completedObjectives, distinctRewards, objectivePercent, tierFill, treeProgress } from './directive-progress';
 
 const directive = (id: number, progress: number, goalValue: number, completionDate?: string): CharacterDirectivesOutlineDirective =>
     ({ id, treeId: 1, tierId: 1, progress, objective: { id, typeId: 1, goalValue }, completionDate });
@@ -61,12 +61,6 @@ describe('directive progress', () => {
         ];
 
         expect(distinctRewards(rewards).map(r => r.id)).toEqual([1, 4]);
-    });
-
-    it('caps an objective counter at its goal, leaving nothing to go', () => {
-        expect(objectiveCount(directive(1, 190, 250))).toEqual({ value: 190, goal: 250, remaining: 60 });
-        expect(objectiveCount(directive(1, 439, 250))).toEqual({ value: 250, goal: 250, remaining: 0 });
-        expect(objectiveCount(directive(1, 3, 0))).toBeUndefined();
     });
 
     it('works out objective progress, counting completed objectives as done', () => {

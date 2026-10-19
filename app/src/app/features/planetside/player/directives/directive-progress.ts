@@ -57,25 +57,6 @@ export function distinctRewards(rewards: DirectivesOutlineReward[]): DirectivesO
     });
 }
 
-/** An objective's counter towards its goal. */
-export interface ObjectiveCount {
-    /** The counter, at most the goal: the API keeps counting past it until the whole tier is done. */
-    value: number;
-    goal: number;
-    /** How much is left, at least 0. */
-    remaining: number;
-}
-
-/** The objective's counter, if it has a goal to count towards. */
-export function objectiveCount(directive: CharacterDirectivesOutlineDirective): ObjectiveCount | undefined {
-    const goal = directive.objective?.goalValue;
-    if (!goal) {
-        return undefined;
-    }
-    const value = Math.min(goal, Math.max(0, directive.progress ?? 0));
-    return { value, goal, remaining: goal - value };
-}
-
 /** Progress of one objective, 0–100; completed objectives count as done whatever their counter says. */
 export function objectivePercent(directive: CharacterDirectivesOutlineDirective): number {
     if (isCompleted(directive)) {

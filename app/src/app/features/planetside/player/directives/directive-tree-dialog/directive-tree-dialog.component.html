@@ -82,14 +82,15 @@
             <span class="objective-name">{{ item.directive.name }}</span>
             @if (item.completed) {
               <span class="objective-done"><mat-icon fontSet="mdi" fontIcon="mdi-check"></mat-icon>{{ item.directive.completionDate | date: 'MMM d, y' }}</span>
-            } @else if (item.count; as count) {
-              <span class="objective-count">{{ count.value | number }} / {{ count.goal | number }} <span class="objective-remaining">· {{ count.remaining | number }} to go</span></span>
+            } @else if (item.directive.objective?.goalValue; as goal) {
+              <!-- The API keeps counting past the goal until the tier is done; the count says so, the bar stops at 100% -->
+              <span class="objective-count">{{ item.directive.progress | number }} / {{ goal | number }}</span>
             }
           </div>
           @if (item.directive.description) {
             <div class="objective-description">{{ item.directive.description }}</div>
           }
-          @if (!item.completed && item.count) {
+          @if (!item.completed && item.directive.objective?.goalValue) {
             <div class="objective-progress"><span [style.width.%]="item.percent"></span></div>
           }
         </div>
