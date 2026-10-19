@@ -1,0 +1,266 @@
+.dialog-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-top: 16px;
+    padding-right: 12px;
+}
+
+/* Material puts a fixed-height pseudo element before the title for the baseline; this header lays itself out */
+.dialog-header::before {
+    display: none;
+}
+
+.tree-image {
+    flex: none;
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+}
+
+.tree-name {
+    margin: 0;
+    overflow: hidden;
+    color: #edeff0;
+    font-size: 20px;
+    font-weight: 500;
+    line-height: 1.3;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tree-meta {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.tree-rank {
+    color: var(--rank-color);
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.points,
+.reward {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #edeff0;
+}
+
+.points mat-icon,
+.reward mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+    color: #6dbbff;
+}
+
+.reward img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+/* Tier stepper */
+
+.tiers {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.tier {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    padding: 10px 6px 8px;
+    border: 1px solid #3e505a;
+    border-radius: 8px;
+    background: transparent;
+    color: #8a9ba1;
+    font: inherit;
+    cursor: pointer;
+    transition: background-color .15s, border-color .15s;
+}
+
+.tier:hover {
+    background: rgba(255, 255, 255, .04);
+}
+
+.tier.selected {
+    border-color: var(--tier-color);
+    background: color-mix(in srgb, var(--tier-color) 12%, transparent);
+    color: #edeff0;
+}
+
+.tier-image {
+    width: 44px;
+    height: 44px;
+    object-fit: contain;
+    filter: grayscale(.8);
+    opacity: .6;
+}
+
+.tier.completed .tier-image,
+.tier.selected .tier-image {
+    filter: none;
+    opacity: 1;
+}
+
+.tier-name {
+    color: var(--tier-color);
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.tier-state {
+    font-size: 11.5px;
+    white-space: nowrap;
+}
+
+.tier-progress,
+.objective-progress {
+    display: block;
+    width: 100%;
+    height: 4px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: #1e2a31;
+}
+
+.tier-progress > span {
+    display: block;
+    height: 100%;
+    background: var(--tier-color);
+}
+
+/* Selected tier */
+
+.tier-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 32px;
+    margin-bottom: 12px;
+    padding: 12px 14px;
+    border-radius: 8px;
+    background: rgba(0, 0, 0, .15);
+    color: #edeff0;
+    font-size: 13px;
+}
+
+.label {
+    margin-bottom: 6px;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.pips {
+    display: inline-flex;
+    gap: 4px;
+}
+
+.pip {
+    width: 14px;
+    height: 14px;
+    border: 1px solid var(--tier-color);
+    border-radius: 50%;
+}
+
+.pip.done {
+    background: var(--tier-color);
+}
+
+/* Objectives */
+
+.objectives {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.objective {
+    display: flex;
+    gap: 12px;
+    padding: 12px 4px;
+    border-top: 1px solid #2b3942;
+}
+
+.objective-image {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.objective-name {
+    color: #edeff0;
+    font-weight: 500;
+}
+
+.objective-count {
+    flex: none;
+    color: #edeff0;
+    font-size: 12.5px;
+    font-variant-numeric: tabular-nums;
+}
+
+.objective-done {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 4px;
+    color: #4caf50;
+    font-size: 12.5px;
+}
+
+.objective-done mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.objective-description {
+    display: -webkit-box;
+    margin: 2px 0 8px;
+    overflow: hidden;
+    color: #8a9ba1;
+    font-size: 12.5px;
+    line-height: 1.45;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+}
+
+.objective-progress > span {
+    display: block;
+    height: 100%;
+    background: #6dbbff;
+}
+
+.objective.completed .objective-name,
+.objective.completed .objective-image {
+    opacity: .7;
+}
+
+@media (max-width: 600px) {
+    .tier-image {
+        width: 32px;
+        height: 32px;
+    }
+
+    .tier-state {
+        font-size: 10.5px;
+    }
+}

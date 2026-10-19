@@ -1,0 +1,100 @@
+@let p = progress;
+<div class="dialog-header" mat-dialog-title [style.--rank-color]="rankColor">
+  <img class="tree-image" [src]="p.tree.imageId | dgcImageUrl" alt="">
+  <div class="min-w-0 grow">
+    <h2 class="tree-name">{{ p.tree.name }}</h2>
+    <div class="tree-meta">
+      <span class="tree-rank">{{ p.rank?.name ?? 'Unranked' }}</span>
+      <span class="points"><mat-icon fontSet="mdi" fontIcon="mdi-star-circle-outline"></mat-icon>{{ p.points }} / {{ totalPoints }}</span>
+    </div>
+  </div>
+  <button mat-icon-button mat-dialog-close aria-label="Close">
+    <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
+  </button>
+</div>
+
+<mat-dialog-content>
+  <div class="tiers" role="tablist" aria-label="Tiers">
+    @for (step of steps; track step.tier.tierId) {
+      <button class="tier" role="tab" type="button"
+        [class.selected]="step.tier === selected()"
+        [class.completed]="step.completed"
+        [attr.aria-selected]="step.tier === selected()"
+        [style.--tier-color]="step.color"
+        (click)="selected.set(step.tier)">
+        <img class="tier-image" [src]="step.tier.imageId | dgcImageUrl" alt="">
+        <span class="tier-name">{{ step.tier.name }}</span>
+        <span class="tier-state">
+          @if (step.completed) {
+            {{ step.tier.completionDate | date: 'MMM d, y' }}
+          } @else if (step.current) {
+            {{ step.fill | number: '1.0-0' }}%
+          } @else {
+            Locked
+          }
+        </span>
+        <span class="tier-progress"><span [style.width.%]="step.fill"></span></span>
+      </button>
+    }
+  </div>
+
+  @let tier = selected();
+  <div class="tier-summary" [style.--tier-color]="tierColor(tier)">
+    <div class="requirement">
+      <div class="label">Requirement</div>
+      <div class="flex items-center gap-3">
+        <span class="pips">
+          @for (done of requirementPips(); track $index) {
+            <span class="pip" [class.done]="done"></span>
+          }
+        </span>
+        <span>
+          @if (tier.completionDate) {
+            Completed {{ tier.completionDate | date: 'MMM d, y' }}
+          } @else {
+            {{ selectedCompleted() }} of {{ tier.completionCount }} objectives
+          }
+        </span>
+      </div>
+    </div>
+    <div class="rewards">
+      <div class="label">Rewards</div>
+      <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
+        <span class="reward"><mat-icon fontSet="mdi" fontIcon="mdi-star-circle-outline"></mat-icon>{{ tier.directivePoints }} points</span>
+        @for (reward of rewards(); track reward.id) {
+          <span class="reward">
+            @if (reward.imageId) {
+              <img [src]="reward.imageId | dgcImageUrl" alt="">
+            }
+            {{ reward.name }}
+          </span>
+        }
+      </div>
+    </div>
+  </div>
+
+  <ul class="objectives">
+    @for (item of objectives(); track item.directive.id) {
+      <li class="objective" [class.completed]="item.completed">
+        <img class="objective-image" [src]="item.directive.imageId | dgcImageUrl" alt="">
+        <div class="min-w-0 grow">
+          <div class="flex items-baseline justify-between gap-3">
+            <span class="objective-name">{{ item.directive.name }}</span>
+            @if (item.completed) {
+              <span class="objective-done"><mat-icon fontSet="mdi" fontIcon="mdi-check"></mat-icon>{{ item.directive.completionDate | date: 'MMM d, y' }}</span>
+            } @else if (item.directive.objective?.goalValue; as goal) {
+              <!-- The API keeps counting past the goal until the tier is done; the count says so, the bar stops at 100% -->
+              <span class="objective-count">{{ item.directive.progress | number }} / {{ goal | number }}</span>
+            }
+          </div>
+          @if (item.directive.description) {
+            <div class="objective-description">{{ item.directive.description }}</div>
+          }
+          @if (!item.completed && item.directive.objective?.goalValue) {
+            <div class="objective-progress"><span [style.width.%]="item.percent"></span></div>
+          }
+        </div>
+      </li>
+    }
+  </ul>
+</mat-dialog-content>

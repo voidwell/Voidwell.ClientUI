@@ -1,0 +1,29 @@
+@let p = progress();
+<div class="tree-card" [class.mastered]="p.status === 'mastered'" [style.--rank-color]="rankColor()">
+  <div class="flex items-center gap-3">
+    <img class="tree-image" [src]="p.tree.imageId | dgcImageUrl" alt="">
+    <div class="min-w-0 grow">
+      <div class="tree-name">{{ p.tree.name }}</div>
+      <div class="tree-rank">{{ p.rank?.name ?? 'Unranked' }}</div>
+    </div>
+    <div class="tree-points" title="Directive points earned">
+      <mat-icon fontSet="mdi" fontIcon="mdi-star-circle-outline"></mat-icon>{{ p.points }}
+    </div>
+  </div>
+
+  <div class="tier-bar" role="img" [attr.aria-label]="(p.rank?.name ?? 'Unranked') + ', ' + (p.current ? p.current.name + ' ' + (p.currentPercent | number: '1.0-0') + '%' : 'mastered')">
+    @for (segment of segments(); track segment.tier.tierId) {
+      <span class="tier-segment"><span class="tier-fill" [style.width.%]="segment.fill" [style.background]="segment.color"></span></span>
+    }
+  </div>
+
+  <div class="tree-status">
+    @if (p.current; as current) {
+      <span>{{ current.name }}</span>
+      <span class="muted">{{ p.currentCompleted }} of {{ current.completionCount }} objectives</span>
+    } @else {
+      <span class="done"><mat-icon fontSet="mdi" fontIcon="mdi-check-decagram"></mat-icon>Mastered</span>
+      <span class="muted">{{ p.rank?.completionDate | date: 'MMM d, y' }}</span>
+    }
+  </div>
+</div>
