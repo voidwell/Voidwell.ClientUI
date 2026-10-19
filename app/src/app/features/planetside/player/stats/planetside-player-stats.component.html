@@ -2,7 +2,10 @@
   <div class="voidwell-character-stats flex flex-col gap-4">
     <div class="card-grid flex flex-wrap gap-4">
       <planetside-player-stats-overview-card class="card flex-auto" [player]="playerData"></planetside-player-stats-overview-card>
-      <planetside-player-stats-class-usage-card class="card flex-auto" [player]="playerData"></planetside-player-stats-class-usage-card>
+    </div>
+    <div class="card-grid flex flex-wrap gap-4">
+      <planetside-player-stats-class-usage-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-class-usage-card>
+      <planetside-player-stats-vehicle-usage-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-vehicle-usage-card>
     </div>
     <div class="card-grid flex flex-wrap gap-4">
       <planetside-player-stats-siege-card class="siege-container card flex-auto" [captured]="playerData.lifetimeStats.facilityCaptureCount" [defended]="playerData.lifetimeStats.facilityDefendedCount"></planetside-player-stats-siege-card>
@@ -19,7 +22,10 @@
   <div class="voidwell-character-stats flex flex-col gap-4">
     <div class="card-grid flex flex-wrap gap-4">
       <vw-loader class="vw-character-overview card flex-auto basis-75" variant="panel" [loading]="true"></vw-loader>
-      <vw-loader class="vw-character-class-usage card flex-auto basis-75" variant="panel" [loading]="true"></vw-loader>
+    </div>
+    <div class="card-grid flex flex-wrap gap-4">
+      <vw-loader class="vw-character-class-usage card flex-1 basis-96" variant="panel" [loading]="true"></vw-loader>
+      <vw-loader class="vw-character-vehicle-usage card flex-1 basis-96" variant="panel" [loading]="true"></vw-loader>
     </div>
     <div class="card-grid flex flex-wrap gap-4">
       @for (item of [0, 1, 2, 3]; track item) {

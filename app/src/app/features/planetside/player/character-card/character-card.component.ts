@@ -21,9 +21,6 @@ export class CharacterCardComponent {
 
     navLinks = [
         { path: 'stats', display: 'Stats' },
-        { path: 'vehicles', display: 'Vehicles' },
-        { path: 'weapons', display: 'Weapons' },
-        { path: 'sessions', display: 'Sessions' },
         { path: 'directives', display: 'Directives' }
     ];
 

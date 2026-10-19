@@ -1,0 +1,21 @@
+<div class="usage flex flex-wrap items-center gap-6">
+  <svg class="donut flex-none" viewBox="0 0 160 160" role="img" [attr.aria-label]="label()">
+    <g transform="translate(80,80)">
+      @for (slice of slices(); track slice.id) {
+        <path [attr.d]="slice.path" [attr.fill]="slice.color"></path>
+      }
+    </g>
+    <text class="donut-caption" x="80" y="72" text-anchor="middle">Total Time</text>
+    <text class="donut-total" x="80" y="98" text-anchor="middle">{{totalHours() | number: '1.0-0'}}h</text>
+  </svg>
+  <ul class="legend grow">
+    @for (slice of slices(); track slice.id) {
+      <li class="flex items-center gap-3">
+        <span class="dot" [style.background]="slice.color"></span>
+        <span class="name grow">{{slice.name}}</span>
+        <span class="percent">{{slice.percent | number: '1.1-1'}}%</span>
+        <span class="hours">{{slice.hours | number: '1.0-0'}}h</span>
+      </li>
+    }
+  </ul>
+</div>
