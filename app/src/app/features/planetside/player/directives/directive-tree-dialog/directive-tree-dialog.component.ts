@@ -5,7 +5,7 @@ import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { CharacterDirectivesOutlineTier } from '@core/api/models/ps2/character.model';
 import { DgcImageUrlPipe } from '../../../pipes/dgc-image-url.pipe';
-import { DirectiveTreeProgress, completedObjectives, distinctRewards, isCompleted, objectivePercent, tierColor, tierFill } from '../directive-progress';
+import { DirectiveTreeProgress, completedObjectives, namedRewards, isCompleted, objectivePercent, tierColor, tierFill } from '../directive-progress';
 
 export interface DirectiveTreeDialogData {
     progress: DirectiveTreeProgress;
@@ -37,7 +37,7 @@ export class DirectiveTreeDialog {
         current: tier === this.progress.current
     }));
 
-    readonly rewards = computed(() => distinctRewards(this.selected().rewards));
+    readonly rewards = computed(() => namedRewards(this.selected().rewards));
 
     readonly selectedCompleted = computed(() => completedObjectives(this.selected()));
 

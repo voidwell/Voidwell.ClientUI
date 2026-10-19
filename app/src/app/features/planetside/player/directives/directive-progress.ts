@@ -43,18 +43,11 @@ export function completedObjectives(tier: CharacterDirectivesOutlineTier): numbe
 }
 
 /**
- * A tier's rewards worth listing. Unnamed ones are left out, and a reward that comes in a variant per faction (the
- * same name with a different image) is listed once.
+ * A tier's rewards worth listing: the API includes some with neither a name nor an image. A reward that comes in a
+ * variant per faction keeps every variant, each with its own image.
  */
-export function distinctRewards(rewards: DirectivesOutlineReward[]): DirectivesOutlineReward[] {
-    const names = new Set<string>();
-    return rewards.filter(reward => {
-        if (!reward.name || names.has(reward.name)) {
-            return false;
-        }
-        names.add(reward.name);
-        return true;
-    });
+export function namedRewards(rewards: DirectivesOutlineReward[]): DirectivesOutlineReward[] {
+    return rewards.filter(reward => !!reward.name);
 }
 
 /** Progress of one objective, 0–100; completed objectives count as done whatever their counter says. */

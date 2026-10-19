@@ -1,5 +1,5 @@
 import { CharacterDirectivesOutlineDirective, CharacterDirectivesOutlineTier, CharacterDirectivesOutlineTree } from '@core/api/models/ps2/character.model';
-import { completedObjectives, distinctRewards, objectivePercent, tierFill, treeProgress } from './directive-progress';
+import { completedObjectives, namedRewards, objectivePercent, tierFill, treeProgress } from './directive-progress';
 
 const directive = (id: number, progress: number, goalValue: number, completionDate?: string): CharacterDirectivesOutlineDirective =>
     ({ id, treeId: 1, tierId: 1, progress, objective: { id, typeId: 1, goalValue }, completionDate });
@@ -52,7 +52,7 @@ describe('directive progress', () => {
         expect(progress.tiers.map(t => tierFill(progress, t))).toEqual([100, 30, 0, 0]);
     });
 
-    it('lists each named reward once', () => {
+    it('lists every named reward, faction variants included', () => {
         const rewards = [
             { id: 1, name: 'Expert Banner', imageId: 10 },
             { id: 2, name: 'Expert Banner', imageId: 11 },
@@ -60,7 +60,7 @@ describe('directive progress', () => {
             { id: 4, name: 'Implant Pack' }
         ];
 
-        expect(distinctRewards(rewards).map(r => r.id)).toEqual([1, 4]);
+        expect(namedRewards(rewards).map(r => r.id)).toEqual([1, 2, 4]);
     });
 
     it('works out objective progress, counting completed objectives as done', () => {
