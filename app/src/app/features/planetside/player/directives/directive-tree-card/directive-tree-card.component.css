@@ -1,0 +1,107 @@
+:host {
+    display: block;
+}
+
+.tree-card {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    height: 100%;
+    padding: 14px 16px;
+    border: 1px solid #3e505a;
+    border-left: 3px solid var(--rank-color);
+    border-radius: 8px;
+    background: #2b3942;
+    transition: background-color .15s, border-color .15s;
+}
+
+:host:hover .tree-card {
+    background: #32434d;
+}
+
+.tree-image {
+    flex: none;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.tree-name {
+    overflow: hidden;
+    color: #edeff0;
+    font-size: 15px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.tree-rank {
+    color: var(--rank-color);
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.tree-points {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    gap: 4px;
+    color: #edeff0;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.tree-points mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+    color: #6dbbff;
+}
+
+.tier-bar {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 4px;
+}
+
+.tier-segment {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 3px;
+    background: #1e2a31;
+}
+
+.tier-fill {
+    display: block;
+    height: 100%;
+}
+
+.tree-status {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    color: #edeff0;
+    font-size: 12.5px;
+}
+
+.muted {
+    color: #8a9ba1;
+}
+
+.done {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--rank-color);
+    font-weight: 500;
+}
+
+.done mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+}

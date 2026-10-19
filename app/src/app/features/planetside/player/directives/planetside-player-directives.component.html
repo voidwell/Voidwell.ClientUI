@@ -1,18 +1,87 @@
-﻿<div class="content-container">
-  <vw-loader [loading]="isLoading"></vw-loader>
-  @if (errorMessage) {
-    <vw-error-card></vw-error-card>
-  }
-  @if (!isLoading && !errorMessage) {
-    <div class="directives">
-      <mat-accordion>
-        @for (category of outline.categories; track category) {
-          <mat-expansion-panel>
-            <mat-expansion-panel-header>{{category.name}}</mat-expansion-panel-header>
-            <directive-tree-list [trees]="category.trees"></directive-tree-list>
-          </mat-expansion-panel>
+@if (errorMessage()) {
+  <vw-error-card></vw-error-card>
+} @else if (categories(); as categories) {
+  <div class="directives flex flex-col gap-4">
+    @let s = summary();
+    <mat-card>
+      <mat-card-content class="summary">
+        <div class="summary-stats">
+          <div class="stat">
+            <span class="stat-value"><mat-icon fontSet="mdi" fontIcon="mdi-star-circle-outline"></mat-icon>{{ s.points | number }}</span>
+            <span class="stat-label">Directive points</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{{ s.mastered }}<span class="stat-of"> / {{ s.total }}</span></span>
+            <span class="stat-label">Trees mastered</span>
+          </div>
+          <div class="stat">
+            <span class="stat-value">{{ s.inProgress }}</span>
+            <span class="stat-label">In progress</span>
+          </div>
+        </div>
+        <div class="ranks">
+          <div class="rank-bar" role="img" aria-label="Trees by rank">
+            @for (rank of s.ranks; track rank.name) {
+              @if (rank.count) {
+                <span [style.width.%]="rank.percent" [style.background]="rank.color"></span>
+              }
+            }
+          </div>
+          <ul class="rank-legend">
+            @for (rank of s.ranks; track rank.name) {
+              <li><span class="dot" [style.background]="rank.color"></span>{{ rank.name }} <strong>{{ rank.count }}</strong></li>
+            }
+          </ul>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <div class="toolbar">
+      <mat-chip-listbox aria-label="Category" hideSingleSelectionIndicator [value]="category()" (change)="onCategoryChange($event)">
+        <mat-chip-option [value]="null">All</mat-chip-option>
+        @for (group of categories; track group.id) {
+          <mat-chip-option [value]="group.id">{{ group.name }}</mat-chip-option>
         }
-      </mat-accordion>
+      </mat-chip-listbox>
+      <div class="toolbar-end">
+        <mat-button-toggle-group aria-label="Status" hideSingleSelectionIndicator [value]="status()" (change)="status.set($event.value)">
+          <mat-button-toggle value="all">All</mat-button-toggle>
+          <mat-button-toggle value="inProgress">In progress</mat-button-toggle>
+          <mat-button-toggle value="mastered">Mastered</mat-button-toggle>
+          <mat-button-toggle value="notStarted">Not started</mat-button-toggle>
+        </mat-button-toggle-group>
+        <label class="tree-search">
+          <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+          <input type="search" placeholder="Find a tree" aria-label="Find a tree" [value]="search()" (input)="onSearch($event)">
+        </label>
+      </div>
     </div>
-  }
-</div>
+
+    @for (group of groups(); track group.id) {
+      <section>
+        <h2 class="group-title">
+          {{ group.name }}
+          <span class="group-count">{{ group.mastered }} / {{ group.total }} mastered</span>
+        </h2>
+        <div class="tree-grid">
+          @for (tree of group.trees; track tree.tree.id) {
+            <button type="button" class="tree-button" (click)="open(tree)">
+              <directive-tree-card [progress]="tree"></directive-tree-card>
+            </button>
+          }
+        </div>
+      </section>
+    } @empty {
+      <p class="empty">No directive trees match these filters.</p>
+    }
+  </div>
+} @else {
+  <div class="flex flex-col gap-4">
+    <vw-loader class="block" variant="panel" [loading]="true"></vw-loader>
+    <div class="tree-grid">
+      @for (item of [0, 1, 2, 3, 4, 5]; track item) {
+        <vw-loader class="block" variant="panel" [loading]="true"></vw-loader>
+      }
+    </div>
+  </div>
+}
