@@ -5,9 +5,15 @@
     (selectionChange)="onSelectionChange($event)"
     (openedChange)="onOpenChange($event)"
     panelClass="top-search_dropdown"
+    [panelWidth]="null"
+    aria-label="Search category"
     hideSingleSelectionIndicator>
-    <mat-option value="character">Player</mat-option>
-    <mat-option value="outfit">Outfit</mat-option>
-    <mat-option value="item">Weapon</mat-option>
+    <mat-select-trigger class="flex items-center justify-center">
+      <mat-icon class="category-control_icon" fontSet="mdi" [fontIcon]="selected()?.icon"></mat-icon>
+      <span class="category-control_label">{{ selected()?.label }}</span>
+    </mat-select-trigger>
+    @for (category of categories; track category.value) {
+      <mat-option [value]="category.value">{{ category.label }}</mat-option>
+    }
   </mat-select>
 </div>

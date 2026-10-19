@@ -1,0 +1,9 @@
+<mat-button-toggle-group
+  [value]="selected()"
+  (change)="onChange($event)"
+  aria-label="PlanetSide platform"
+  hideSingleSelectionIndicator>
+  @for (platform of platforms; track platform.id) {
+    <mat-button-toggle [value]="platform.id">{{ platform.name }}</mat-button-toggle>
+  }
+</mat-button-toggle-group>

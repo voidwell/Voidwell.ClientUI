@@ -95,6 +95,10 @@ ul {
     line-height: 8px;
 }
 
+.nav-platform-picker {
+    margin: -8px 0 28px 50px;
+}
+
 .toggle-button {
     color: #8a9ba1;
 }

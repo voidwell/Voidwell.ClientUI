@@ -1,5 +1,6 @@
 import { Ps2Platform } from '@core/api/models/ps2/common.model';
-import { PLATFORMS, groupByPlatform } from './platforms';
+import { PLATFORMS } from '@core/platform/platforms';
+import { groupByPlatform } from './platforms';
 
 describe('groupByPlatform', () => {
     const item = (platform: Ps2Platform, name: string) => ({ platform, name });

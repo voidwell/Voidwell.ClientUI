@@ -1,10 +1,11 @@
-﻿import { Component, ViewEncapsulation, OnDestroy, inject, effect, untracked } from '@angular/core';
+﻿import { Component, ViewEncapsulation, OnDestroy, inject, computed } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { SearchService, SearchState } from '@core/layout/search.service';
 import { AppState } from '@core/store/app.states';
 import { selectPlanetsideState } from '@core/platform/store/planetside.states';
+import { PLATFORM_QUERY_PARAM } from '@core/platform/platforms';
 import { SearchRepository } from '@core/api/ps2/search.repository';
 import { SearchResult } from '@core/api/models/ps2/reference.model';
 
@@ -23,25 +24,26 @@ export class PlanetsideWrapperComponent implements OnDestroy {
 
     private queryWait: ReturnType<typeof setTimeout>;
     private activeSelection: SearchResult;
-    private activePlatform: string = 'pc';
 
     private searchSub: Subscription;
     private resultSub: Subscription;
+
     private planetside = this.store.selectSignal(selectPlanetsideState);
+
+    private readonly resultPages: Record<string, string> = {
+        character: 'player',
+        outfit: 'outfit',
+        item: 'item'
+    };
+
+    /**
+     * The platform the page shows. The outlet is rebuilt when it changes, so the current page loads again from
+     * the new platform without every page having to watch for the change.
+     */
+    readonly platform = computed(() => this.planetside().platform);
 
     constructor() {
         const searchService = this.searchService;
-
-        effect(() => {
-            const platformState = this.planetside();
-
-            untracked(() => {
-                if (platformState && this.activePlatform !== platformState.platform) {
-                    this.activePlatform = platformState.platform;
-                    this.router.navigateByUrl('ps2');
-                }
-            });
-        });
 
         const searchPlaceholder = 'Search for players, outfits, and weapons';
         searchService.attach(searchPlaceholder);
@@ -71,14 +73,9 @@ export class PlanetsideWrapperComponent implements OnDestroy {
         this.resultSub = searchService.onClickResult.subscribe(result => {
             this.activeSelection = result;
 
-            if (result.type === 'character') {
-                this.router.navigateByUrl('ps2/player/' + result.id);
-            }
-            if (result.type === 'outfit') {
-                this.router.navigateByUrl('ps2/outfit/' + result.id);
-            }
-            if (result.type === 'item') {
-                this.router.navigateByUrl('ps2/item/' + result.id);
+            const page = this.resultPages[result.type ?? ''];
+            if (page) {
+                this.router.navigate(['/ps2', page, result.id], { queryParams: { [PLATFORM_QUERY_PARAM]: this.platform() } });
             }
         });
     }

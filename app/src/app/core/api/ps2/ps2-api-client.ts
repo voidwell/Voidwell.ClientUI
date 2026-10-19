@@ -20,9 +20,9 @@ export class Ps2ApiClient {
     private api = inject(ApiClient);
     private planetside = inject<Store<unknown>>(Store).selectSignal(selectPlanetsideState);
 
-    /** The platform selected in the UI, `pc` until the planetside state is loaded. */
+    /** The platform selected in the UI. */
     get selectedPlatform(): Ps2Platform {
-        return (this.planetside()?.platform as Ps2Platform) ?? 'pc';
+        return this.planetside().platform;
     }
 
     get<T>(url: string, options: Ps2RequestOptions = {}): Observable<T> {

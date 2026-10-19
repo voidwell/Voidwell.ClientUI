@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { PLATFORMS, PlatformInfo } from '@shared/utils/platforms';
+import { PLATFORMS, PlatformInfo } from '@core/platform/platforms';
 import { PlatformSectionComponent } from './platform-section.component';
 
 @Component({

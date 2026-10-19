@@ -145,7 +145,7 @@ export class BulkCharacterStatsComponent implements OnInit {
 
       this.queryParams[key] = sVal;
 
-      this.router.navigate([], { queryParams: this.queryParams, replaceUrl: true });
+      this.router.navigate([], { queryParams: this.queryParams, queryParamsHandling: 'merge', replaceUrl: true });
   }
 
   private exportToCsv(filename: string, rows: unknown[][]) {

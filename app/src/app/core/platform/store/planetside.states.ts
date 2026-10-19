@@ -1,8 +1,5 @@
 import { createFeatureSelector } from '@ngrx/store';
-import { planetsideReducer, PlanetsideState } from './reducers/planetside.reducers';
+import { PlanetsideState } from './reducers/planetside.reducers';
 
-export const reducers = {
-    planetside: planetsideReducer
-};
-
+/** The selected PlanetSide platform; registered on the root store so the navigation can show it on every page. */
 export const selectPlanetsideState = createFeatureSelector<PlanetsideState>('ps2');
