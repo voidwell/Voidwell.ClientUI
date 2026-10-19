@@ -92,8 +92,8 @@
 }
 
 .zone-pill {
-    background: rgba(20, 184, 166, .18);
-    color: #5eead4;
+    background: rgba(255, 255, 255, .08);
+    color: #edeff0;
 }
 
 /* Ten tiles: two rows of five, or five rows of two on narrow screens */

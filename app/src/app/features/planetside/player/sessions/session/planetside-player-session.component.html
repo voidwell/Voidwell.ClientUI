@@ -21,10 +21,6 @@
             </div>
           </div>
           <div class="hero-stats">
-            <div class="hero-stat">
-              <div class="pills"><span class="pill">{{ formatDuration(session.duration) }}</span></div>
-              <div class="hero-label">Duration</div>
-            </div>
             @if (zones().length) {
               <div class="hero-stat">
                 <div class="pills">
@@ -35,6 +31,10 @@
                 <div class="hero-label">Played on</div>
               </div>
             }
+            <div class="hero-stat">
+              <div class="pills"><span class="pill">{{ formatDuration(session.duration) }}</span></div>
+              <div class="hero-label">Duration</div>
+            </div>
           </div>
         </div>
         <div class="tiles">
