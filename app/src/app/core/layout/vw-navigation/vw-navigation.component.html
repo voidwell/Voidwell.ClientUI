@@ -23,6 +23,9 @@
               </button>
             </div>
             <ul [class.nav-node-invisible]="!nestedTreeControl.isExpanded(node)">
+              @if (node.platformPicker) {
+                <vw-platform-picker class="nav-platform-picker"></vw-platform-picker>
+              }
               <ng-container matTreeNodeOutlet></ng-container>
             </ul>
           </mat-nested-tree-node>

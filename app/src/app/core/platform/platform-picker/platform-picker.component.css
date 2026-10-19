@@ -1,0 +1,21 @@
+:host {
+    display: block;
+}
+
+mat-button-toggle-group {
+    --mat-button-toggle-height: 30px;
+    --mat-button-toggle-shape: 6px;
+    --mat-button-toggle-label-text-size: 12px;
+    --mat-button-toggle-label-text-weight: 500;
+    --mat-button-toggle-background-color: transparent;
+    --mat-button-toggle-text-color: #8a9ba1;
+    --mat-button-toggle-selected-state-background-color: #384a55;
+    --mat-button-toggle-selected-state-text-color: #edeff0;
+    --mat-button-toggle-divider-color: #3e505a;
+    --mat-button-toggle-state-layer-color: #edeff0;
+    border-color: #3e505a;
+}
+
+mat-button-toggle-group ::ng-deep .mat-button-toggle-label-content {
+    padding: 0 10px;
+}

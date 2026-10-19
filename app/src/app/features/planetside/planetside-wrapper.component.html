@@ -1,3 +1,6 @@
-﻿<div>
+<div>
+  <!-- Keyed on the platform: a new outlet re-creates the current page, which then loads the new platform's data -->
+  @for (platform of [platform()]; track platform) {
     <router-outlet></router-outlet>
+  }
 </div>

@@ -1,14 +1,17 @@
+import { Ps2Platform } from '@core/api/models/ps2/common.model';
+import { loadSavedPlatform } from '../../platforms';
 import { PlanetsideActionTypes, PlanetsideActions } from '../actions/planetside.actions';
 
 export interface PlanetsideState {
-    platform: string;
+    platform: Ps2Platform;
 };
 
-const initialState: PlanetsideState = {
-    platform: 'pc'
-};
-  
-export function planetsideReducer(state = initialState, action: PlanetsideActions): PlanetsideState {
+/** Starts on the platform the user last picked; the URL of a PlanetSide page overrides it (see `platformGuard`). */
+const initialState = (): PlanetsideState => ({
+    platform: loadSavedPlatform()
+});
+
+export function planetsideReducer(state = initialState(), action: PlanetsideActions): PlanetsideState {
     switch (action.type) {
         case PlanetsideActionTypes.CHANGE_PLATFORM: {
             return {
@@ -21,4 +24,3 @@ export function planetsideReducer(state = initialState, action: PlanetsideAction
         }
     }
 }
-  

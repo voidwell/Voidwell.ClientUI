@@ -437,21 +437,3 @@ $icon-sizes: (sm: 16px, md: 24px, lg: 32px, xl: 48px);
     }
 }
 
-/* The platform picker panel renders in an overlay, so it can't be styled from its component. */
-.platform-dropdown {
-    min-width: 120px;
-}
-
-.platform-dropdown .mat-mdc-option {
-    min-height: 40px;
-    padding: 0 12px;
-    white-space: nowrap;
-}
-
-.platform-dropdown .mat-mdc-option .mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-    line-height: 18px;
-    margin-right: 8px;
-}

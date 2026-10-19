@@ -23,7 +23,7 @@ app/                 Angular workspace (package.json, angular.json)
       api/           ApiClient, routes, request cache, every repository and its models
       auth/          OIDC config, auth service and route guard
       layout/        header, navigation, footer, search and nav-menu services
-      platform/      selected PS2 platform state (feeds the Ps2ApiClient)
+      platform/      selected PS2 platform: state, `?platform=` URL guard, nav picker
       store/         root NgRx state (auth)
       util/          error-message helper
     shared/          reusable, stateless; may use core, never features
@@ -95,8 +95,13 @@ api/
 
 Daybreak requests go through `Ps2ApiClient`, which adds the `platform` query parameter (`pc`, `ps4us` or `ps4eu`)
 from the platform selected in the UI; the three Daybreak instances are routed on it. Reference data that is the same on
-every platform opts out with `platform: false`, and the services / store admin lists query all three instances and
-tag each item with its platform.
+every platform opts out with `platform: false`, and the services / store admin lists and the search box query all three
+instances and tag each item with its platform.
+
+The selected platform comes from the page URL (`/ps2/alerts?platform=ps4us`), so PlanetSide pages can be shared and
+reloaded. A URL without it is redirected to the platform the user last picked (saved in `localStorage`, `pc` by
+default). The picker under "Planetside 2" in the side navigation switches platform in place, or goes to the matching
+list page when the current page shows a record (player, outfit, alert, event or world) of the old platform.
 
 Components inject the repository they need (`inject(CharacterRepository)`) and never build URLs themselves.
 When a backend route or DTO changes, update the matching repository and model; `api/repositories.spec.ts`

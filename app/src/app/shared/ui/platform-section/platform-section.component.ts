@@ -1,6 +1,6 @@
 import { Component, input, model } from '@angular/core';
 import { MatIcon } from '@angular/material/icon';
-import { PlatformInfo } from '@shared/utils/platforms';
+import { PlatformInfo } from '@core/platform/platforms';
 
 let nextId = 0;
 

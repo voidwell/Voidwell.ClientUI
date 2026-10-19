@@ -10,6 +10,7 @@ import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { MatNavList } from '@angular/material/list';
 import { MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
+import { PlatformPickerComponent } from '../../platform/platform-picker/platform-picker.component';
 
 export class NavNode {
     name: string;
@@ -17,6 +18,8 @@ export class NavNode {
     icon: string;
     exact: boolean;
     children: NavNode[];
+    /** Show the PlanetSide platform picker above the children. */
+    platformPicker?: boolean;
 }
 
 const NAV_DATA: NavNode[] = [
@@ -39,6 +42,7 @@ const NAV_DATA: NavNode[] = [
         url: '/ps2',
         icon: 'mdi-gamepad-variant',
         exact: false,
+        platformPicker: true,
         children: [
             {
                 name: 'News',
@@ -111,7 +115,7 @@ const NAV_DATA: NavNode[] = [
     selector: 'vw-navigation',
     templateUrl: './vw-navigation.component.html',
     styleUrls: ['./vw-navigation.component.css'],
-    imports: [MatSidenavContainer, MatSidenav, NgClass, NgTemplateOutlet, MatNavList, MatIconButton, MatIcon, MatTree, MatTreeNodeDef, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodeOutlet, MatSidenavContent]
+    imports: [MatSidenavContainer, MatSidenav, NgClass, NgTemplateOutlet, MatNavList, MatIconButton, MatIcon, MatTree, MatTreeNodeDef, MatTreeNodeToggle, RouterLinkActive, RouterLink, MatNestedTreeNode, MatTreeNodeOutlet, MatSidenavContent, PlatformPickerComponent]
 })
 export class VWNavigationComponent implements OnDestroy {
     navMenuService = inject(NavMenuService);

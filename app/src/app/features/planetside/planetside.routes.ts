@@ -1,7 +1,6 @@
 ﻿import { Routes } from '@angular/router';
+import { platformGuard } from '@core/platform/platform-routing';
 import { DecimalPipe, DatePipe } from '@angular/common';
-import { provideState } from '@ngrx/store';
-import { reducers } from '@core/platform/store/planetside.states';
 import { PerformanceGrades } from './data/performance-grades.service';
 import { ZoneHelper } from './data/zone-helper.service';
 import { WorldService } from './data/world.service';
@@ -53,6 +52,8 @@ const planetsideChildRoutes: Routes = [
     {
         path: '',
         component: PlanetsideWrapperComponent,
+        canActivate: [platformGuard],
+        runGuardsAndResolvers: 'always',
         children: [
             { path: '', redirectTo: 'news', pathMatch: 'full' },
             { path: 'news', component: PlanetsideNewsComponent },
@@ -142,12 +143,11 @@ const planetsideChildRoutes: Routes = [
     }
 ];
 
-/** Lazy route of the PlanetSide 2 area; its services and the `ps2` store slice live as long as the area is loaded. */
+/** Lazy route of the PlanetSide 2 area; its services live as long as the area is loaded. */
 export const PLANETSIDE_ROUTES: Routes = [
     {
         path: '',
         providers: [
-            provideState('ps2', reducers.planetside),
             PerformanceGrades,
             DecimalPipe,
             DatePipe,

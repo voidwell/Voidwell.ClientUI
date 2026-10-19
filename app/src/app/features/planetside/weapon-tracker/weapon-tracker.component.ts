@@ -525,7 +525,7 @@ export class WeaponTrackerComponent implements OnInit {
 
         this.queryParams[key] = sVal;
 
-        this.router.navigate([], { queryParams: this.queryParams, replaceUrl: true });
+        this.router.navigate([], { queryParams: this.queryParams, queryParamsHandling: 'merge', replaceUrl: true });
     }
 
     private toDateString(d: Date): string {

@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
 import { of } from 'rxjs';
-import { Store, provideState, provideStore } from '@ngrx/store';
+import { Store, provideStore } from '@ngrx/store';
 import { ChangePlatform } from '@core/platform/store/actions/planetside.actions';
-import { reducers } from '@core/platform/store/planetside.states';
+import { reducers } from '@core/store/app.states';
 import { WorldRepository } from '@core/api/ps2/world.repository';
 
 import { WorldNamePipe } from '../pipes/world-name.pipe';
@@ -18,8 +18,7 @@ describe('WorldService', () => {
         getWorlds.mockReturnValue(of([OSPREY, EMERALD]));
         TestBed.configureTestingModule({
             providers: [
-                provideStore({}),
-                provideState('ps2', reducers.planetside),
+                provideStore(reducers),
                 WorldService,
                 WorldNamePipe,
                 { provide: WorldRepository, useValue: { getWorlds } }

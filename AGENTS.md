@@ -25,7 +25,7 @@ app/                  Angular workspace (package.json, angular.json, eslint.conf
       api/            Ps2ApiClient, api-routes, RequestCache, repositories (ps2/, platform/), models/
       auth/           OIDC config, auth service, route guard
       layout/         nav-menu service, header/footer/search
-      platform/       selected PS2 platform state (pc / ps4us / ps4eu)
+      platform/       selected PS2 platform (pc / ps4us / ps4eu): state, URL guard, nav picker
       store/          root NgRx state (auth)
       util/
     shared/           reusable, stateless; may use core, never features
@@ -92,6 +92,11 @@ considering work finished.
   reached via a hostname where the `api.` subdomain resolves.
 - PS2 requests go through `Ps2ApiClient`, which adds the `platform` query param from the selected platform. Reference
   data identical across platforms opts out with `platform: false`. `RequestCache` caches responses for 30 minutes.
+- The URL decides the platform of PlanetSide pages: `platformGuard` (`core/platform/platform-routing.ts`) reads
+  `?platform=`, updates the store and saves it to `localStorage`, and redirects URLs without it to the selected
+  platform. Links inside the area need not carry the parameter, but a `router.navigate([], { queryParams })` must
+  use `queryParamsHandling: 'merge'` so it keeps it. Pages do not watch the platform: the wrapper rebuilds its
+  outlet when it changes, so the current page loads again.
 - When a backend route or DTO changes, update the matching repository and model together.
 
 ### Auth

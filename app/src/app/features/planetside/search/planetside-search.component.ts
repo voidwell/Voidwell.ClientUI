@@ -1,13 +1,12 @@
 import { Component, HostListener, ViewChild, inject } from '@angular/core';
 import { SearchService } from '@core/layout/search.service';
 import { NgClass } from '@angular/common';
-import { PlanetsidePlatformControl } from './platform-control/platform-control.component';
 import { Ps2SearchComponent } from './ps2-search/ps2-search.component';
 
 @Component({
     templateUrl: './planetside-search.component.html',
     styleUrls: ['./planetside-search.component.css'],
-    imports: [NgClass, PlanetsidePlatformControl, Ps2SearchComponent]
+    imports: [NgClass, Ps2SearchComponent]
 })
 
 export class PlanetsideSearchComponent {

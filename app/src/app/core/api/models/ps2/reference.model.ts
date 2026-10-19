@@ -1,4 +1,4 @@
-import { IsoDateString } from './common.model';
+import { IsoDateString, Ps2Platform } from './common.model';
 
 /** `GET ps2/profile` (classes) */
 export interface Profile {
@@ -56,6 +56,9 @@ export interface SearchResult {
     memberCount: number;
     categoryId?: string;
 }
+
+/** A search result tagged with the Daybreak instance it was found on. */
+export type PlatformSearchResult = SearchResult & { platform: Ps2Platform };
 
 /** `GET ps2/feeds/news` and `GET ps2/feeds/updates` */
 export interface FeedItem {

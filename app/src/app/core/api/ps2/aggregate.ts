@@ -6,14 +6,17 @@ const INSTANCE_TIMEOUT_MS = 2000;
 
 /**
  * Queries every Daybreak instance and merges the results, tagging each item with
- * the platform it came from. An instance that is slow or down contributes
- * nothing instead of failing the whole request.
+ * the platform it came from. An instance that is slow (past `timeoutMs`) or down
+ * contributes nothing instead of failing the whole request.
  */
-export function aggregateByPlatform<T>(request: (platform: Ps2Platform) => Observable<T[]>): Observable<(T & { platform: Ps2Platform })[]> {
+export function aggregateByPlatform<T>(
+    request: (platform: Ps2Platform) => Observable<T[]>,
+    timeoutMs = INSTANCE_TIMEOUT_MS
+): Observable<(T & { platform: Ps2Platform })[]> {
     return forkJoin(
         PS2_PLATFORMS.map(platform =>
             request(platform).pipe(
-                timeout(INSTANCE_TIMEOUT_MS),
+                timeout(timeoutMs),
                 catchError(() => of([] as T[])),
                 map(items => items.map(item => ({ ...item, platform })))
             )
