@@ -55,13 +55,10 @@
       <mat-card>
         <mat-card-title>Weapons</mat-card-title>
         <mat-card-content class="weapons">
-          <!-- Keyed on the vehicle: the table reads its weapons once -->
-          @for (key of [row.vehicle.id]; track key) {
-            @if (weapons().length) {
-              <planetside-player-weapons-table [weapons]="weapons()"></planetside-player-weapons-table>
-            } @else {
-              <p class="muted">No weapon stats for this vehicle.</p>
-            }
+          @if (weapons().length) {
+            <planetside-player-weapons-table [weapons]="weapons()"></planetside-player-weapons-table>
+          } @else {
+            <p class="muted">No weapon stats for this vehicle.</p>
           }
         </mat-card-content>
       </mat-card>

@@ -1,44 +1,285 @@
-﻿:host {
+:host {
     display: block;
+}
+
+/* Filters */
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+mat-button-toggle-group {
+    --mat-button-toggle-height: 32px;
+    --mat-button-toggle-shape: 8px;
+    --mat-button-toggle-label-text-size: 13px;
+    --mat-button-toggle-background-color: transparent;
+    --mat-button-toggle-text-color: #b4bfc3;
+    --mat-button-toggle-selected-state-background-color: #384a55;
+    --mat-button-toggle-selected-state-text-color: #edeff0;
+    --mat-button-toggle-divider-color: #3e505a;
+    border-color: #3e505a;
+}
+
+.weapon-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid #3e505a;
+    border-radius: 8px;
+    color: #8a9ba1;
+}
+
+.weapon-search:focus-within {
+    border-color: #6dbbff;
+}
+
+.weapon-search mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+}
+
+.weapon-search input {
+    width: 180px;
+    border: 0;
+    outline: 0;
+    background: none;
+    color: #edeff0;
+    font: inherit;
+    font-size: 13px;
+}
+
+/* Table */
+
+.table-wrap {
     overflow-x: auto;
 }
 
-mat-table {
-    min-width: 1100px;
-    overflow-x: auto;
+table {
+    --mat-table-background-color: transparent;
+    --mat-table-header-headline-color: #8a9ba1;
+    --mat-table-header-headline-size: 11px;
+    --mat-table-header-headline-weight: 500;
+    --mat-table-header-headline-tracking: .06em;
+    --mat-table-row-item-label-text-color: #edeff0;
+    --mat-table-row-item-label-text-size: 14px;
+    --mat-table-row-item-outline-color: #344651;
+    --mat-table-header-container-height: 40px;
+    --mat-table-row-item-container-height: 52px;
+    width: 100%;
 }
 
-.mat-column-name,
-.auraxium-meter-back {
-    min-width: 160px;
+th.mat-mdc-header-cell {
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
-.auraxium-meter-back {
-    height: 3px;
-    background: #797979;
-    position: absolute;
-    left: 0;
-    bottom: -1px;
+td.mat-mdc-cell,
+th.mat-mdc-header-cell {
+    padding: 0 10px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
-.auraxium-meter-fore {
-    background: #4c1f66;
-    height: 100%;
+/* Numeric headers keep their arrow on the left so the labels line up with the figures */
+th.mat-mdc-header-cell ::ng-deep .mat-sort-header-container {
+    justify-content: flex-end;
 }
 
 .mat-column-name {
+    width: 32%;
+    max-width: 0;
+    text-align: left !important;
+}
+
+th.mat-column-name ::ng-deep .mat-sort-header-container {
+    justify-content: flex-start;
+}
+
+.mat-column-expand {
+    width: 40px;
+    padding-right: 4px !important;
+}
+
+.weapon-row {
+    cursor: pointer;
+    transition: background-color .15s;
+}
+
+.weapon-row:hover,
+.weapon-row.open {
+    background: rgba(255, 255, 255, .04);
+}
+
+.weapon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+}
+
+.weapon img,
+.no-image {
+    flex: none;
+    width: 56px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.weapon-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    font-weight: 500;
+}
+
+.weapon-category {
+    overflow: hidden;
+    color: #8a9ba1;
+    font-size: 12px;
+    text-overflow: ellipsis;
+}
+
+.auraxium {
+    display: inline-flex;
+    flex: none;
+    color: #e6b422;
+}
+
+.auraxium mat-icon {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+    line-height: 16px;
+}
+
+.graded {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+}
+
+.grade-badge {
+    min-width: 30px;
+    padding: 1px 5px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .06);
+    font-size: 11px;
+    text-align: center;
+}
+
+.expand-button {
+    display: inline-flex;
+    padding: 4px;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: #8a9ba1;
+    cursor: pointer;
+}
+
+.expand-button mat-icon {
+    transition: transform .15s;
+}
+
+.weapon-row.open .expand-button mat-icon {
+    transform: rotate(180deg);
+}
+
+.expand-button:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+/* Detail row: closed rows take no space */
+
+.detail-row {
+    height: 0 !important;
+}
+
+.detail-row:not(.open) td {
+    border-bottom-width: 0;
+}
+
+.detail-row td {
+    padding: 0 !important;
     text-align: left;
+    white-space: normal;
 }
 
-.mat-column-name a {
+.detail {
+    padding: 4px 10px 16px;
+    background: rgba(255, 255, 255, .04);
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+}
+
+.item-link {
+    display: inline-block;
+    margin-top: 12px;
+    color: #6dbbff;
+    font-size: 13px;
     text-decoration: none;
-    color: inherit;
 }
 
-.mat-mdc-table .mat-mdc-row {
-    min-height: 25px;
+.empty {
+    margin: 20px 0;
+    color: #8a9ba1;
+    text-align: center;
 }
 
-.mat-mdc-table .mat-mdc-row .mat-mdc-cell {
-    font-size: 12.8px;
+/* Fewer columns as the table narrows; the open row shows the rest */
+@media (max-width: 1100px) {
+    .mat-column-hsr,
+    .mat-column-time {
+        display: none;
+    }
+}
+
+@media (max-width: 700px) {
+    .mat-column-accuracy,
+    .mat-column-kph {
+        display: none;
+    }
+
+    /* The name takes whatever the remaining columns leave */
+    .mat-column-name {
+        width: 100%;
+    }
+
+    /* The name matters more than the picture on a phone */
+    .weapon img,
+    .no-image {
+        display: none;
+    }
+
+    td.mat-mdc-cell,
+    th.mat-mdc-header-cell {
+        padding: 0 6px;
+    }
+
+    .weapon-search,
+    .weapon-search input {
+        flex: 1;
+        width: auto;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
 }

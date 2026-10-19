@@ -18,14 +18,15 @@
     color: #3e9003;
 }
 
+/* The low grades are lightened enough to read on the dark cards */
 .grade-D {
-    color: #bb3918;
+    color: #e0663f;
 }
 
 .grade-F {
-    color: #861d1d;
+    color: #e04848;
 }
 
 .grade-T {
-    color: #714b4b;
+    color: #b58585;
 }

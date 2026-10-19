@@ -1,56 +1,50 @@
-﻿import { DataSource } from '@angular/cdk/collections';
+import { DataSource } from '@angular/cdk/collections';
 import { MatSort } from '@angular/material/sort';
-import { Observable, of, merge } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { compareSortValues, SortValue } from '@shared/utils/sort';
 import { CharacterDetailsWeaponStat } from '@core/api/models/ps2/character.model';
+import { perHour, perMinute, ratio } from '../stat-math';
 
+/**
+ * How each sortable column orders the weapons. A figure that cannot be worked out (K/D of a weapon whose deaths the
+ * game does not count, such as grenades and orbital strikes) sorts as 0.
+ */
+const SORT_VALUES: Record<string, (weapon: CharacterDetailsWeaponStat) => SortValue> = {
+    name: weapon => weapon.name,
+    kills: weapon => weapon.stats.kills,
+    kdr: weapon => ratio(weapon.stats.kills, weapon.stats.deaths),
+    accuracy: weapon => ratio(weapon.stats.hitCount, weapon.stats.fireCount),
+    hsr: weapon => ratio(weapon.stats.headshots, weapon.stats.kills),
+    kph: weapon => perHour(weapon.stats.kills, weapon.stats.playTime),
+    spm: weapon => perMinute(weapon.stats.score, weapon.stats.playTime),
+    time: weapon => weapon.stats.playTime
+};
+
+/** The weapons table's rows, sorted by its sort header; the rows change as its filters do. */
 export class PlayerWeaponsDataSource extends DataSource<CharacterDetailsWeaponStat> {
-    constructor(private data: CharacterDetailsWeaponStat[], private sort: MatSort) {
+    private readonly rows = new BehaviorSubject<CharacterDetailsWeaponStat[]>([]);
+
+    constructor(private sort: MatSort) {
         super();
     }
 
-    connect(): Observable<CharacterDetailsWeaponStat[]> {
-        const first = of(this.data);
-        return merge(first, this.sort.sortChange).pipe(map(() => {
-            return this.getSortedData();
-        }));
+    setRows(rows: CharacterDetailsWeaponStat[]): void {
+        this.rows.next(rows);
     }
 
-    getSortedData() {
-        const data = this.data;
-        if (!this.sort.active || this.sort.direction == '') { return data; }
-
-        return data.sort((a, b) => {
-            let f: (p: CharacterDetailsWeaponStat) => SortValue;
-
-            switch (this.sort.active) {
-                case 'name': f = p => p.name; break;
-                case 'kills': f = p => p.stats.kills; break;
-                case 'vehicleKills': f = p => p.stats.vehicleKills; break;
-                case 'deaths': f = p => p.stats.deaths; break;
-                case 'kdr': f = p => p.stats.kills / p.stats.deaths; break;
-                case 'kdrDelta': f = p => p.stats.killDeathRatioDelta || -1000; break;
-                case 'accuracy': f = p => p.stats.hitCount / p.stats.fireCount; break;
-                case 'accuracyDelta': f = p => p.stats.accuracyDelta || -1000; break;
-                case 'hsr': f = p => p.stats.headshots / p.stats.kills; break;
-                case 'hsrDelta': f = p => p.stats.hsrDelta || -1000; break;
-                case 'kph': f = p => p.stats.kills / (p.stats.playTime / 3600); break;
-                case 'kphDelta': f = p => p.stats.kphDelta || -1000; break;
-                case 'vehicleKph': f = p => p.stats.vehicleKills / (p.stats.playTime / 3600); break;
-                case 'vehicleKphDelta': f = p => p.stats.vehicleKphDelta || -1000; break;
-                case 'spm': f = p => p.stats.score / (p.stats.playTime / 60); break;
-                case 'time': f = p => p.stats.playTime / 3600; break;
-                case 'lpk': f = p => p.stats.hitCount / p.stats.kills; break;
-                case 'spk': f = p => p.stats.fireCount / p.stats.kills; break;
-            }
-
-            const propertyA: SortValue = f(a);
-            const propertyB: SortValue = f(b);
-
-            return compareSortValues(propertyA, propertyB, this.sort.direction);
-        });
+    connect(): Observable<CharacterDetailsWeaponStat[]> {
+        return combineLatest([this.rows, this.sort.sortChange.pipe(startWith(null))]).pipe(
+            map(([rows]) => this.sorted(rows)));
     }
 
     disconnect() { }
+
+    private sorted(rows: CharacterDetailsWeaponStat[]): CharacterDetailsWeaponStat[] {
+        const value = SORT_VALUES[this.sort.active];
+        if (!value || !this.sort.direction) {
+            return rows;
+        }
+        return [...rows].sort((a, b) => compareSortValues(value(a), value(b), this.sort.direction));
+    }
 }
