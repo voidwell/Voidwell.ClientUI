@@ -1,201 +1,180 @@
-﻿<div class="content-container player-session mt-1">
-  <vw-loader [loading]="isLoading"></vw-loader>
-  @if (errorMessage) {
-    <vw-error-card></vw-error-card>
-  }
-  @if (!isLoading && !errorMessage) {
-    <div>
-      <div class="session-info">
-        <mat-card class="session-overview">
-          <mat-card-title>Session</mat-card-title>
-          <mat-card-content>
-            <div class="data-block">
-              <span class="value">{{session.loginDate | date:'M/dd/yy h:mm a'}}</span>
-              <span class="label">Start</span>
+@if (errorMessage()) {
+  <vw-error-card></vw-error-card>
+} @else if (session(); as session) {
+  <div class="flex flex-col gap-4">
+    <mat-card>
+      <mat-card-content class="header">
+        <a class="back" routerLink="/ps2/player/{{ playerId() }}/sessions">
+          <mat-icon fontSet="mdi" fontIcon="mdi-arrow-left"></mat-icon>All sessions
+        </a>
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <h2 class="title">{{ session.loginDate | date: 'EEEE, MMM d, y' }}</h2>
+            <div class="subtitle">
+              {{ session.loginDate | date: 'h:mm a' }} –
+              @if (session.logoutDate) {
+                {{ session.logoutDate | date: 'h:mm a' }}
+              } @else {
+                <span class="live">In progress</span>
+              }
+              · {{ formatDuration(session.duration) }}
             </div>
-            <div class="data-block">
-              <span class="value">{{session.logoutDate | date:'M/dd/yy h:mm a'}}</span>
-              <span class="label">End</span>
+          </div>
+          @if (zones().length) {
+            <div class="zones">
+              @for (zoneId of zones(); track zoneId) {
+                <span class="zone"><mat-icon fontSet="mdi" fontIcon="mdi-earth"></mat-icon>{{ zoneId | zoneName }}</span>
+              }
             </div>
-            <div class="data-block">
-              <span class="value">{{session.duration / 3600000 | number: '.1-1'}} Hours</span>
-              <span class="label">Duration</span>
-            </div>
-          </mat-card-content>
-        </mat-card>
-        <mat-card class="session-stats">
-          <mat-card-title>Stats</mat-card-title>
-          <mat-card-footer>
-            <div class="stats-list">
-              <div class="info-item px-8 py-4">
-                <span class="label">KDR</span>
-                <span class="value">{{sessionStats.kills / sessionStats.deaths | number: '.2-2'}}</span>
-              </div>
-              <div class="info-item px-8 py-4">
-                <span class="label">HSR</span>
-                <span class="value">{{sessionStats.headshots / sessionStats.kills * 100 | number: '.1-1'}}%</span>
-              </div>
-              <div class="info-item px-8 py-4">
-                <span class="label">Kills</span>
-                <span class="value">{{sessionStats.kills | number}}</span>
-              </div>
-              <div class="info-item px-8 py-4">
-                <span class="label">Deaths</span>
-                <span class="value">{{sessionStats.deaths | number}}</span>
-              </div>
-              <div class="info-item px-8 py-4">
-                <span class="label">Suicides</span>
-                <span class="value">{{sessionStats.suicides | number}}</span>
-              </div>
-              <div class="info-item px-8 py-4">
-                <span class="label">Teamkills</span>
-                <span class="value">{{sessionStats.teamkills | number}}</span>
-              </div>
-              <div class="info-item px-8 py-4">
-                <span class="label">Headshots</span>
-                <span class="value">{{sessionStats.headshots | number}}</span>
-              </div>
-              <div class="info-item px-8 py-4">
-                <span class="label">Captured</span>
-                <span class="value">{{sessionStats.facilitiesCaptured | number}}</span>
-              </div>
-              <div class="info-item px-8 py-4">
-                <span class="label">Defended</span>
-                <span class="value">{{sessionStats.facilitiesDefended | number}}</span>
-              </div>
-            </div>
-          </mat-card-footer>
-        </mat-card>
-      </div>
-      @if (!isLoading) {
-        <div class="session-log">
-          <mat-card class="action-log-card">
-            <mat-card-title>Action Log</mat-card-title>
-            <mat-card-footer>
-              <mat-table #table [dataSource]="dataSource" class="striped">
-                <ng-container matColumnDef="time">
-                  <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
-                  <mat-cell *matCellDef="let event">
-                    <span class="big-time">{{event.timestamp | date: 'MMM d, h:mm:ss a'}}</span>
-                    <span class="small-time">{{event.timestamp | date: 'h:mm:ss a'}}</span>
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="event">
-                  <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                  <mat-cell *matCellDef="let event">
-                    @if (event.eventType==='Login' || event.eventType==='Logout') {
-                      <div>
-                        <div class="event-col col-session-state grow basis-0 self-center">
-                          @if (event.eventType==='Login') {
-                            <div>Player logged in</div>
-                          }
-                          @if (event.eventType==='Logout') {
-                            <div>Player logged out</div>
-                          }
-                        </div>
-                      </div>
-                    }
-                    @if (event.eventType==='BattleRankUp') {
-                      <div style="display: flex; justify-content: flex-start; align-items: stretch">
-                        <div class="event-col col-battle-rank-up grow basis-0 self-center">
-                          <mat-icon fontSet="mdi" class="rank-up-icon" fontIcon="mdi-arrow-up-thick"></mat-icon> Ranked up to {{event.battleRank}}
-                        </div>
-                      </div>
-                    }
-                    @if (event.eventType==='Death') {
-                      <div style="display: flex; justify-content: space-between">
-                        <div class="event-col grow basis-0 self-center">
-                          <a routerLink="/ps2/player/{{event.attacker.id}}">
-                            <span [class]="event.attacker.factionId | factionColor">{{event.attacker.name || event.attacker.id}}</span>
-                          </a>
-                        </div>
-                        <div class="event-col grow basis-0 self-center">
-                          <div class="weapon-image px-0 py-1">
-                            <img [src]="event.weapon.imageId | dgcImageUrl" alt="" />
-                          </div>
-                          <div class="weapon-details">
-                            <div>{{event.weapon.name}}</div>
-                            @if (event.isHeadshot) {
-                              <strong>Headshot</strong>
-                            }
-                          </div>
-                          <div class="weapon-headshot">
-                            @if (event.isHeadshot) {
-                              <mat-icon fontSet="mdi" fontIcon="mdi-target"></mat-icon>
-                            }
-                          </div>
-                        </div>
-                        <div class="event-col grow basis-0 self-center">
-                          <a routerLink="/ps2/player/{{event.victim.id}}">
-                            <span [class]="event.victim.factionId | factionColor">{{event.victim.name || event.victim.id}}</span>
-                          </a>
-                        </div>
-                      </div>
-                    }
-                    @if (event.eventType==='VehicleDestroy') {
-                      <div style="display: flex; justify-content: space-between">
-                        <div class="event-col grow basis-0 self-center">
-                          <a routerLink="/ps2/player/{{event.attacker.id}}">
-                            <span [class]="event.attacker.factionId | factionColor">{{event.attacker.name || event.attacker.id}}</span>
-                          </a>
-                        </div>
-                        <div class="event-col grow basis-0 self-center">
-                          <div class="weapon-image px-0 py-1">
-                            <img [src]="event.weapon.imageId | dgcImageUrl" alt="" />
-                          </div>
-                          <div class="weapon-details">
-                            <div>{{event.weapon.name}}</div>
-                            @if (event.isHeadshot) {
-                              <strong>Headshot</strong>
-                            }
-                          </div>
-                        </div>
-                        <div class="event-col col-player-vehicle grow basis-0 self-center">
-                          <div class="col-player-vehicle-wrapper">
-                            <div class="emphasis">
-                              <div [class]="event.factionId | factionColor">{{event.victimVehicle.name}}</div>
-                            </div>
-                            @if (event.victim && event.victim.id !== '0') {
-                              <div class="player-vehicle-owner">
-                                Owned by
-                                <a class="clean-link" routerLink="/ps2/player/{{event.victim.id}}">
-                                  <span [class]="event.victim.factionId | factionColor">{{event.victim.name || event.victim.id}}</span>
-                                </a>
-                              </div>
-                            }
-                          </div>
-                        </div>
-                      </div>
-                    }
-                    @if (event.eventType==='FacilityCapture' || event.eventType==='FacilityDefend') {
-                      <div>
-                        <div class="event-col col-facility-state grow basis-0 self-center">
-                          @if (event.eventType==='FacilityCapture') {
-                            <div>
-                              <mat-icon fontSet="mdi" class="sword-icon" fontIcon="mdi-sword"></mat-icon> Captured {{event.facility.name}}
-                            </div>
-                          }
-                          @if (event.eventType==='FacilityDefend') {
-                            <div>
-                              <mat-icon fontSet="mdi" class="shield-icon" fontIcon="mdi-shield"></mat-icon> Defended {{event.facility.name}}
-                            </div>
-                          }
-                        </div>
-                      </div>
-                    }
-                  </mat-cell>
-                </ng-container>
-                <ng-container matColumnDef="location">
-                  <mat-header-cell *matHeaderCellDef>Location</mat-header-cell>
-                  <mat-cell *matCellDef="let event">{{event.zoneId | zoneName}}</mat-cell>
-                </ng-container>
-                <mat-header-row *matHeaderRowDef="['time','event','location']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['time','event','location'];"></mat-row>
-              </mat-table>
-            </mat-card-footer>
-          </mat-card>
+          }
         </div>
-      }
+      </mat-card-content>
+    </mat-card>
+
+    @let s = stats();
+    <div class="tiles">
+      <div class="tile"><span class="tile-value">{{ s.kills | number }}</span><span class="tile-label">Kills</span></div>
+      <div class="tile"><span class="tile-value">{{ s.deaths | number }}</span><span class="tile-label">Deaths</span></div>
+      <div class="tile"><span class="tile-value">{{ s.kdr | number: '1.2-2' }}</span><span class="tile-label">K/D</span></div>
+      <div class="tile"><span class="tile-value">{{ s.headshotRatio | number: '1.0-0' }}%</span><span class="tile-label">Headshots</span></div>
+      <div class="tile"><span class="tile-value">{{ s.vehicleKills | number }}</span><span class="tile-label">Vehicles destroyed</span></div>
+      <div class="tile"><span class="tile-value">{{ s.vehiclesLost | number }}</span><span class="tile-label">Vehicles lost</span></div>
+      <div class="tile"><span class="tile-value">{{ s.facilitiesCaptured | number }}</span><span class="tile-label">Captured</span></div>
+      <div class="tile"><span class="tile-value">{{ s.facilitiesDefended | number }}</span><span class="tile-label">Defended</span></div>
     </div>
-  }
-</div>
+    @if (s.teamkills || s.suicides) {
+      <div class="footnote">
+        {{ s.teamkills }} {{ s.teamkills === 1 ? 'teamkill' : 'teamkills' }} (not counted as kills) ·
+        {{ s.suicides }} {{ s.suicides === 1 ? 'suicide' : 'suicides' }} (counted as deaths)
+      </div>
+    }
+
+    <div class="flex flex-wrap gap-4">
+      <mat-card class="flex-[2_1_420px]">
+        <mat-card-title class="card-title">
+          <span>Activity</span>
+          <span class="legend"><span class="dot kill"></span>Kills <span class="dot death"></span>Deaths</span>
+        </mat-card-title>
+        <mat-card-content>
+          @let a = activity();
+          <div class="chart" role="img" [attr.aria-label]="'Kills and deaths over the session: ' + s.kills + ' kills, ' + s.deaths + ' deaths'">
+            @for (bucket of a.buckets; track bucket.start) {
+              <div class="column" [title]="(bucket.start | date: 'h:mm a') + ': ' + bucket.kills + ' kills, ' + bucket.deaths + ' deaths'">
+                <span class="bar kill" [style.height.%]="bucket.kills / a.max * 100"></span>
+                <span class="bar death" [style.height.%]="bucket.deaths / a.max * 100"></span>
+              </div>
+            }
+          </div>
+          <div class="chart-axis">
+            <span>{{ session.loginDate | date: 'h:mm a' }}</span>
+            <span>{{ (session.logoutDate ?? session.loginDate) | date: 'h:mm a' }}</span>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card class="flex-[1_1_280px]">
+        <mat-card-title class="card-title">Top Weapons</mat-card-title>
+        <mat-card-content>
+          @for (usage of weapons(); track usage.weapon.id) {
+            <div class="weapon">
+              @if (usage.weapon.imageId) {
+                <img [src]="usage.weapon.imageId | dgcImageUrl" alt="">
+              } @else {
+                <span class="no-image"></span>
+              }
+              @if (usage.weapon.name) {
+                <a class="weapon-name" routerLink="/ps2/item/{{ usage.weapon.id }}">{{ usage.weapon.name }}</a>
+              } @else {
+                <span class="weapon-name muted">Unknown weapon</span>
+              }
+              <span class="weapon-kills">{{ usage.kills }} <span class="muted">{{ usage.kills === 1 ? 'kill' : 'kills' }}</span></span>
+            </div>
+          } @empty {
+            <p class="muted">No kills this session.</p>
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <mat-card>
+      <mat-card-title class="card-title flex-wrap gap-3">
+        <span>Event Log</span>
+        @let c = filterCounts();
+        <mat-button-toggle-group aria-label="Show" hideSingleSelectionIndicator [value]="logFilter()" (change)="logFilter.set($event.value)">
+          <mat-button-toggle value="all">All {{ c.all }}</mat-button-toggle>
+          <mat-button-toggle value="combat">Combat {{ c.combat }}</mat-button-toggle>
+          <mat-button-toggle value="vehicles">Vehicles {{ c.vehicles }}</mat-button-toggle>
+          <mat-button-toggle value="facilities">Facilities {{ c.facilities }}</mat-button-toggle>
+        </mat-button-toggle-group>
+      </mat-card-title>
+      <mat-card-content>
+        <ol class="log">
+          @for (entry of log(); track $index) {
+            <li class="entry" [ngClass]="entry.kind">
+              <span class="time">{{ entry.event.timestamp | date: 'h:mm:ss a' }}</span>
+              <span class="icon"><mat-icon fontSet="mdi" [fontIcon]="icons[entry.kind]"></mat-icon></span>
+              <span class="text">
+                @switch (entry.event.eventType) {
+                  @case ('Death') {
+                    @switch (entry.kind) {
+                      @case ('kill') { Killed <ng-container *ngTemplateOutlet="character; context: { $implicit: entry.other }"></ng-container> }
+                      @case ('teamkill') { Teamkilled <ng-container *ngTemplateOutlet="character; context: { $implicit: entry.other }"></ng-container> }
+                      @case ('suicide') { Killed themselves }
+                      @default { Killed by <ng-container *ngTemplateOutlet="character; context: { $implicit: entry.other }"></ng-container> }
+                    }
+                    @if (entry.headshot) {
+                      <span class="badge">Headshot</span>
+                    }
+                  }
+                  @case ('VehicleDestroy') {
+                    @if (entry.kind === 'vehicleKill') {
+                      Destroyed <strong>{{ entry.event.victimVehicle?.name || 'a vehicle' }}</strong>
+                      @if (entry.other && entry.other.id !== '0') {
+                        of <ng-container *ngTemplateOutlet="character; context: { $implicit: entry.other }"></ng-container>
+                      }
+                    } @else {
+                      Lost <strong>{{ entry.event.victimVehicle?.name || 'a vehicle' }}</strong> to <ng-container *ngTemplateOutlet="character; context: { $implicit: entry.other }"></ng-container>
+                    }
+                  }
+                  @case ('FacilityCapture') { Captured <strong>{{ entry.event.facility?.name }}</strong> }
+                  @case ('FacilityDefend') { Defended <strong>{{ entry.event.facility?.name }}</strong> }
+                  @case ('BattleRankUp') { Reached battle rank <strong>{{ entry.event.battleRank }}</strong> }
+                  @case ('Login') { Logged in }
+                  @case ('Logout') { Logged out }
+                }
+              </span>
+              <span class="detail">
+                @if (entry.weapon?.name; as weaponName) {
+                  <span class="weapon-used">
+                    @if (entry.weapon?.imageId) {
+                      <img [src]="entry.weapon?.imageId | dgcImageUrl" alt="">
+                    }
+                    {{ weaponName }}
+                  </span>
+                }
+                @if (entry.event.zoneId) {
+                  <span class="zone-name">{{ entry.event.zoneId | zoneName }}</span>
+                }
+              </span>
+            </li>
+          } @empty {
+            <li class="muted">No events of this kind.</li>
+          }
+        </ol>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #character let-character>
+    @if (character?.id) {
+      <a class="character" routerLink="/ps2/player/{{ character.id }}" [ngClass]="character.factionId | factionColor">{{ character.name || character.id }}</a>
+    } @else {
+      <span class="muted">unknown</span>
+    }
+  </ng-template>
+} @else {
+  <div class="flex flex-col gap-4">
+    <vw-loader class="block" variant="panel" [loading]="true"></vw-loader>
+    <vw-loader variant="rows" [rows]="10" [loading]="true"></vw-loader>
+  </div>
+}

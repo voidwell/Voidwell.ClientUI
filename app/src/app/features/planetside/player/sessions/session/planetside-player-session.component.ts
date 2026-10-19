@@ -1,149 +1,128 @@
-﻿import { ChangeDetectorRef, Component, OnDestroy, inject, effect, untracked, input } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import { Component, computed, inject, input, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { DatePipe, DecimalPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Subscription, throwError } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
-import { PlanetsidePlayerComponent } from '../../planetside-player.component';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { combineLatest, of } from 'rxjs';
+import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { CharacterRepository } from '@core/api/ps2/character.repository';
+import { CharacterDetails, PlayerSession } from '@core/api/models/ps2/character.model';
 import { getErrorMessage } from '@core/util/error-message';
-import { CharacterDetails, PlayerSessionEvent, PlayerSessionInfo } from '@core/api/models/ps2/character.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
-import { MatCard, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { MatIcon } from '@angular/material/icon';
-import { DecimalPipe, DatePipe } from '@angular/common';
+import { PlanetsidePlayerComponent } from '../../planetside-player.component';
 import { DgcImageUrlPipe } from '../../../pipes/dgc-image-url.pipe';
 import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
 import { ZoneNamePipe } from '../../../pipes/zone-name.pipe';
-import { SessionDataSource } from './planetside-player-session.data-source';
+import {
+    SessionEventFilter, SessionEventKind, SessionLogEntry, activityBuckets, formatDuration, matchesFilter, sessionStats, toLogEntry, weaponUsage, zonesVisited
+} from '../session-events';
 
-/** Running totals of a play session. */
-interface SessionStats {
-    kills: number;
-    deaths: number;
-    teamkills: number;
-    suicides: number;
-    headshots: number;
-    facilitiesCaptured: number;
-    facilitiesDefended: number;
-}
+type SessionResult = { session: PlayerSession, playerId: string } | { error: string };
+
+/** Activity chart columns: one per five minutes, within these bounds. */
+const BUCKET_MS = 5 * 60 * 1000;
+const MIN_BUCKETS = 6;
+const MAX_BUCKETS = 48;
 
 @Component({
     templateUrl: './planetside-player-session.component.html',
     styleUrls: ['./planetside-player-session.component.css'],
-    imports: [LoaderComponent, ErrorCardComponent, MatCard, MatCardTitle, MatCardContent, MatCardFooter, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatIcon, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, DatePipe, DgcImageUrlPipe, FactionColorPipe, ZoneNamePipe]
+    imports: [
+        LoaderComponent,
+        ErrorCardComponent,
+        MatCard,
+        MatCardTitle,
+        MatCardContent,
+        MatButtonToggleGroup,
+        MatButtonToggle,
+        MatIcon,
+        RouterLink,
+        NgClass,
+        NgTemplateOutlet,
+        DatePipe,
+        DecimalPipe,
+        DgcImageUrlPipe,
+        FactionColorPipe,
+        ZoneNamePipe
+    ]
 })
-
-export class PlanetsidePlayerSessionComponent implements OnDestroy {
-    private planetsidePlayer = inject(PlanetsidePlayerComponent);
+export class PlanetsidePlayerSessionComponent {
     private characterRepository = inject(CharacterRepository);
-    private cdr = inject(ChangeDetectorRef);
 
-    isLoading: boolean;
-    errorMessage: string = null;
-
-    private loadSub: Subscription | undefined;
     readonly id = input<string>();
-    private session: PlayerSessionInfo | null;
-    private sessionStats: SessionStats;
-    private playerData: CharacterDetails;
+    readonly formatDuration = formatDuration;
 
-    private dataSource: DataSource<PlayerSessionEvent>;
+    readonly icons: Record<SessionEventKind, string> = {
+        kill: 'mdi-crosshairs-gps',
+        teamkill: 'mdi-account-alert',
+        suicide: 'mdi-skull-outline',
+        death: 'mdi-skull',
+        vehicleKill: 'mdi-tank',
+        vehicleLoss: 'mdi-car-off',
+        capture: 'mdi-flag',
+        defend: 'mdi-shield',
+        rankUp: 'mdi-arrow-up-bold',
+        login: 'mdi-login',
+        logout: 'mdi-logout'
+    };
 
-    constructor() {
-        this.isLoading = true;
+    private readonly result = toSignal(combineLatest([toObservable(inject(PlanetsidePlayerComponent).playerData), toObservable(this.id)]).pipe(
+        filter((args): args is [CharacterDetails, string] => !!args[0] && !!args[1]),
+        switchMap(([player, sessionId]) => this.characterRepository.getSession(player.id, sessionId).pipe(
+            map((session): SessionResult => ({ session, playerId: player.id })),
+            catchError(error => of<SessionResult>({ error: getErrorMessage(error) })),
+            startWith(undefined)))));
 
-        effect(() => {
-            const player = this.planetsidePlayer.playerData();
-            const sessionId = this.id();
+    readonly playerId = computed(() => {
+        const result = this.result();
+        return result && 'session' in result ? result.playerId : undefined;
+    });
 
-            untracked(() => this.load(player, sessionId));
-        });
-    }
+    readonly errorMessage = computed(() => {
+        const result = this.result();
+        return result && 'error' in result ? result.error : null;
+    });
 
-    private load(player: CharacterDetails | null, sessionId: string | undefined) {
-        this.loadSub?.unsubscribe();
+    /** The session's details; `undefined` while loading. */
+    readonly session = computed(() => {
+        const result = this.result();
+        return result && 'session' in result ? result.session.session : undefined;
+    });
 
-        this.isLoading = true;
-        this.errorMessage = null;
-        this.session = null;
-        this.playerData = player;
-        this.sessionStats = {
-            kills: 0,
-            deaths: 0,
-            teamkills: 0,
-            suicides: 0,
-            headshots: 0,
-            facilitiesCaptured: 0,
-            facilitiesDefended: 0
-        };
+    readonly entries = computed<SessionLogEntry[]>(() => {
+        const result = this.result();
+        return result && 'session' in result
+            ? (result.session.events ?? []).map(event => toLogEntry(event, result.playerId))
+            : [];
+    });
 
-        if (player === null || sessionId === undefined) {
-            return;
+    readonly stats = computed(() => sessionStats(this.entries()));
+    readonly weapons = computed(() => weaponUsage(this.entries()).slice(0, 5));
+    readonly zones = computed(() => {
+        const result = this.result();
+        return result && 'session' in result ? zonesVisited(result.session.events ?? []) : [];
+    });
+
+    readonly activity = computed(() => {
+        const session = this.session();
+        if (!session) {
+            return { buckets: [], max: 0 };
         }
+        const start = Date.parse(session.loginDate);
+        const end = start + session.duration;
+        const count = Math.min(MAX_BUCKETS, Math.max(MIN_BUCKETS, Math.round(session.duration / BUCKET_MS)));
+        const buckets = activityBuckets(this.entries(), start, end, count);
+        return { buckets, max: Math.max(1, ...buckets.map(bucket => Math.max(bucket.kills, bucket.deaths))) };
+    });
 
-        this.loadSub = this.characterRepository.getSession(player.id, sessionId)
-            .pipe(catchError(error => {
-                this.errorMessage = getErrorMessage(error);
-                return throwError(() => error);
-            }))
-            .pipe(finalize(() => {
-                this.isLoading = false;
-                this.cdr.markForCheck();
-            }))
-            .subscribe(data => {
-                this.session = data.session;
-                this.calculateSessionStats(data.events);
-                this.dataSource = new SessionDataSource(data.events);
-            });
-    }
-
-    private calculateSessionStats(events: PlayerSessionEvent[]) {
-        for (let i = 0; i < events.length; i++) {
-            const event = events[i];
-
-            switch (event.eventType) {
-                case 'Death':
-                    if (event.attacker.id === this.playerData.id &&
-                        event.attacker.id !== event.victim.id &&
-                        event.attacker.factionId !== event.victim.factionId) {
-                        this.sessionStats.kills++;
-
-                        if (event.isHeadshot) {
-                            this.sessionStats.headshots++;
-                        }
-                    }
-
-                    if (event.attacker.id === this.playerData.id &&
-                        event.attacker.id !== event.victim.id &&
-                        event.attacker.factionId === event.victim.factionId) {
-                        this.sessionStats.teamkills++;
-                    }
-
-                    if (event.victim.id === this.playerData.id) {
-                        this.sessionStats.deaths++;
-                    }
-
-                    if (event.attacker.id === this.playerData.id &&
-                        event.attacker.id === event.victim.id) {
-                        this.sessionStats.suicides++;
-                    }
-                    break;
-
-                case 'FacilityCapture':
-                    this.sessionStats.facilitiesCaptured++;
-                    break;
-
-                case 'FacilityDefend':
-                    this.sessionStats.facilitiesDefended++;
-                    break;
-            }
-        }
-    }
-
-    ngOnDestroy() {
-        this.loadSub?.unsubscribe();
-    }
+    readonly logFilter = signal<SessionEventFilter>('all');
+    readonly log = computed(() => this.entries().filter(entry => matchesFilter(entry, this.logFilter())));
+    readonly filterCounts = computed(() => {
+        const entries = this.entries();
+        const count = (logFilter: SessionEventFilter) => entries.filter(entry => matchesFilter(entry, logFilter)).length;
+        return { all: entries.length, combat: count('combat'), vehicles: count('vehicles'), facilities: count('facilities') };
+    });
 }
-
