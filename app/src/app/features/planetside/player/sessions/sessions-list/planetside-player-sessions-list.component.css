@@ -1,28 +1,130 @@
-﻿
-.mat-column-sessionId {
-    max-width: 120px;
+:host {
+    display: block;
 }
 
-.goto-button {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100%;
-    height: 100%;
+.summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 40px;
+    padding-top: 16px;
 }
 
-.mat-column-gobutton {
-    max-width: 30px;
+.stat {
+    display: flex;
+    flex-direction: column;
 }
 
-@media screen and (max-width: 620px) {
-    .mat-column-duration {
-        display: none;
+.stat-value {
+    color: #fff;
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 1.25;
+}
+
+.stat-label {
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.month-title {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin: 8px 0 10px;
+    color: #edeff0;
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.month-meta {
+    color: #8a9ba1;
+    font-size: 12.5px;
+    font-weight: 400;
+}
+
+.session-list {
+    overflow: hidden;
+    border: 1px solid #3e505a;
+    border-radius: 8px;
+    background: #2b3942;
+}
+
+.session {
+    display: grid;
+    grid-template-columns: 44px minmax(0, 1fr) auto 24px;
+    align-items: center;
+    gap: 16px;
+    padding: 10px 12px 10px 16px;
+    color: #edeff0;
+    text-decoration: none;
+    transition: background-color .15s;
+}
+
+.session + .session {
+    border-top: 1px solid #344651;
+}
+
+.session:hover {
+    background: #32434d;
+}
+
+.session:focus-visible {
+    outline: 2px solid #6dbbff;
+    outline-offset: -2px;
+}
+
+.day {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    line-height: 1.1;
+}
+
+.day-number {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.day-name {
+    color: #8a9ba1;
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+.times {
+    font-size: 14px;
+    white-space: nowrap;
+}
+
+.live {
+    color: #4caf50;
+    font-weight: 500;
+}
+
+.duration {
+    color: #b4bfc3;
+    font-size: 13px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+}
+
+.chevron {
+    color: #5d7079;
+}
+
+.empty {
+    margin: 24px 0;
+    color: #8a9ba1;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .session {
+        grid-template-columns: 40px minmax(0, 1fr) auto 20px;
+        gap: 12px;
     }
 }
 
-@media screen and (max-width: 450px) {
-    .mat-column-endDate {
-        display: none;
-    }
-}

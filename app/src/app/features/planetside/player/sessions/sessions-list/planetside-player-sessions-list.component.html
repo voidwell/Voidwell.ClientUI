@@ -1,38 +1,77 @@
-﻿<div class="content-container">
-  <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-  @if (errorMessage) {
-    <vw-error-card></vw-error-card>
-  }
-  @if (!isLoading && !errorMessage) {
-    <div class="session-list mt-4">
-      <mat-table #table [dataSource]="dataSource" class="striped">
-        <ng-container matColumnDef="sessionId">
-          <mat-header-cell *matHeaderCellDef></mat-header-cell>
-          <mat-cell *matCellDef="let session">#{{session.id}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="startDate">
-          <mat-header-cell *matHeaderCellDef>Start</mat-header-cell>
-          <mat-cell *matCellDef="let session">{{session.loginDate | date: 'M/d/yy h:mm a'}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="endDate">
-          <mat-header-cell *matHeaderCellDef>End</mat-header-cell>
-          <mat-cell *matCellDef="let session">{{session.logoutDate | date: 'M/d/yy h:mm a'}}</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="duration">
-          <mat-header-cell *matHeaderCellDef>Duration</mat-header-cell>
-          <mat-cell *matCellDef="let session">{{session.duration / 3600000 | number: '.1-1'}} Hours</mat-cell>
-        </ng-container>
-        <ng-container matColumnDef="gobutton">
-          <mat-header-cell *matHeaderCellDef></mat-header-cell>
-          <mat-cell *matCellDef="let session">
-            <a mat-button routerLink="{{session.id}}" class="goto-button pt-1 pr-4 text-right">
-              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+@if (errorMessage()) {
+  <vw-error-card></vw-error-card>
+} @else if (sessions(); as sessions) {
+  <div class="flex flex-col gap-4">
+    @let s = summary();
+    <mat-card>
+      <mat-card-content class="summary">
+        <div class="stat">
+          <span class="stat-value">{{ s.count }}</span>
+          <span class="stat-label">Sessions</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ formatDuration(s.total) }}</span>
+          <span class="stat-label">Time played</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ formatDuration(s.average) }}</span>
+          <span class="stat-label">Average session</span>
+        </div>
+        <div class="stat">
+          <span class="stat-value">{{ formatDuration(s.longest) }}</span>
+          <span class="stat-label">Longest session</span>
+        </div>
+        @if (s.lastPlayed) {
+          <div class="stat">
+            <span class="stat-value">{{ s.lastPlayed | date: 'MMM d, y' }}</span>
+            <span class="stat-label">Last played</span>
+          </div>
+        }
+      </mat-card-content>
+    </mat-card>
+
+    @for (group of months(); track group.month) {
+      <section>
+        <h2 class="month-title">
+          {{ group.month | date: 'MMMM y' }}
+          <span class="month-meta">{{ group.sessions.length }} {{ group.sessions.length === 1 ? 'session' : 'sessions' }} · {{ formatDuration(group.totalDuration) }}</span>
+        </h2>
+        <div class="session-list">
+          @for (session of group.sessions; track session.id) {
+            <a class="session" [routerLink]="[session.id]">
+              <span class="day">
+                <span class="day-number">{{ session.loginDate | date: 'd' }}</span>
+                <span class="day-name">{{ session.loginDate | date: 'EEE' }}</span>
+              </span>
+              <span class="times">
+                {{ session.loginDate | date: 'h:mm a' }} – 
+                @if (session.logoutDate) {
+                  {{ session.logoutDate | date: 'h:mm a' }}
+                } @else {
+                  <span class="live">In progress</span>
+                }
+              </span>
+              <span class="duration">{{ formatDuration(session.duration) }}</span>
+              <mat-icon class="chevron" fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
             </a>
-          </mat-cell>
-        </ng-container>
-        <mat-header-row *matHeaderRowDef="['sessionId','startDate','endDate','duration','gobutton']"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: ['sessionId','startDate','endDate','duration','gobutton'];"></mat-row>
-      </mat-table>
-    </div>
-  }
-</div>
+          }
+        </div>
+      </section>
+    } @empty {
+      <p class="empty">No sessions recorded yet.</p>
+    }
+
+    @if (hasMore()) {
+      <div class="flex justify-center">
+        <button mat-stroked-button [disabled]="loadingMore()" (click)="loadMore()">
+          {{ loadingMore() ? 'Loading…' : 'Load older sessions' }}
+        </button>
+      </div>
+    }
+  </div>
+} @else {
+  <div class="flex flex-col gap-4">
+    <vw-loader class="block" variant="panel" [loading]="true"></vw-loader>
+    <vw-loader variant="rows" [rows]="8" [loading]="true"></vw-loader>
+  </div>
+}

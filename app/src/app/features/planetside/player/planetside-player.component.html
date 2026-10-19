@@ -3,9 +3,10 @@
       <vw-error-card></vw-error-card>
     }
     <div [hidden]="errorMessage">
-        <div class="flex flex-wrap gap-4 mb-4">
+        <!-- Quick stats sit beside the character card, and take the full width once there is no room (24rem + 1rem gap + 16rem) -->
+        <div class="@container flex flex-wrap gap-4 mb-4">
             <character-card class="flex-1 basis-96"></character-card>
-            <planetside-player-quick-stats-card class="flex-none w-64" [player]="playerData()"></planetside-player-quick-stats-card>
+            <planetside-player-quick-stats-card class="flex-none w-64 @max-[41rem]:w-full" [player]="playerData()"></planetside-player-quick-stats-card>
         </div>
         <router-outlet></router-outlet>
     </div>
