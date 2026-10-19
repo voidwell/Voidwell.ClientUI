@@ -239,25 +239,12 @@
     font-weight: 500;
 }
 
-.search-option_platform {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    padding: 1px 6px;
-    border-radius: 4px;
-    background: #384a55;
-    color: #edeff0;
-    font-size: 11px;
-    font-weight: 500;
-}
-
 .search-option_world {
     display: inline-flex;
     align-items: center;
     gap: 4px;
 }
 
-.search-option .search-option_platform .mat-icon,
 .search-option .search-option_world .mat-icon {
     width: 14px;
     height: 14px;

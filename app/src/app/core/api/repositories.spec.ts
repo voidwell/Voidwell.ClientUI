@@ -7,7 +7,6 @@ import { PLATFORM_API_URL, PS2_API_URL } from './api-routes';
 import { VoidwellAuthService } from '../auth/voidwell-auth.service';
 import { reducers } from '../store/app.states';
 import { PlatformServiceState, PlatformStoreUpdate } from './models/ps2/admin.model';
-import { PlatformSearchResult } from './models/ps2/reference.model';
 import { CustomEventRepository } from './platform/custom-event.repository';
 import { PostRepository } from './platform/post.repository';
 import { UtilsRepository } from './platform/utils.repository';
@@ -170,17 +169,6 @@ describe('repositories', () => {
 
             expect(result.map(r => r.platform)).toEqual(['pc', 'ps4us', 'ps4eu']);
             expect(result.every(r => r.name === 'feed')).toBe(true);
-        });
-
-        it('searches all three instances and tags each result with its platform', () => {
-            let result: PlatformSearchResult[] = [];
-            inject(SearchRepository).searchAllPlatforms('character', 'bob').subscribe(r => (result = r));
-
-            for (const platform of ['pc', 'ps4us', 'ps4eu']) {
-                http.expectOne(ps2Static(`search/character/bob?platform=${platform}`)).flush([{ name: `bob-${platform}` }]);
-            }
-
-            expect(result.map(r => [r.name, r.platform])).toEqual([['bob-pc', 'pc'], ['bob-ps4us', 'ps4us'], ['bob-ps4eu', 'ps4eu']]);
         });
 
         it('keeps working when one instance is down', () => {

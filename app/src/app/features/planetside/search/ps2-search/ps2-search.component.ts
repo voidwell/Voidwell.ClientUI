@@ -7,11 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatOption } from '@angular/material/select';
 import { MatInput } from '@angular/material/input';
 import { MatAutocompleteTrigger, MatAutocomplete, MatAutocompleteOrigin } from '@angular/material/autocomplete';
-import { Store } from '@ngrx/store';
 import { SearchService } from '@core/layout/search.service';
-import { PlatformSearchResult } from '@core/api/models/ps2/reference.model';
-import { selectPlanetsideState } from '@core/platform/store/planetside.states';
-import { PLATFORMS, PlatformInfo } from '@core/platform/platforms';
 import { CategoryControlComponent } from './category-control/category-control.component';
 import { FactionColorPipe } from '../../pipes/faction-color.pipe';
 import { WorldNamePipe } from '../../pipes/world-name.pipe';
@@ -45,8 +41,6 @@ export class Ps2SearchComponent {
         item: 'Weapons'
     };
 
-    private readonly planetside = inject(Store).selectSignal(selectPlanetsideState);
-
     private readonly query = toSignal(this.searchService.control.valueChanges, { initialValue: this.searchService.control.value });
     private readonly category = toSignal(this.searchService.categoryControl.valueChanges, { initialValue: this.searchService.categoryControl.value });
 
@@ -73,11 +67,6 @@ export class Ps2SearchComponent {
 
     onCategoryOpenChange(isOpen: boolean) {
         this.searchService.dropdownToggled(isOpen);
-    }
-
-    /** The platform a result was found on, when that is not the selected one; results span every platform. */
-    otherPlatform(result: PlatformSearchResult): PlatformInfo | undefined {
-        return result.platform === this.planetside().platform ? undefined : PLATFORMS.find(p => p.id === result.platform);
     }
 
     /**

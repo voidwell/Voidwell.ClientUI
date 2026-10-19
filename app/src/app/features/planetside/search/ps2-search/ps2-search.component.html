@@ -49,11 +49,6 @@
             <span class="search-option_name">{{ parts[0] }}<mark>{{ parts[1] }}</mark>{{ parts[2] }}</span>
           </span>
           <span class="search-option_meta">
-            @if (otherPlatform(result); as platform) {
-              <span class="search-option_platform">
-                <mat-icon fontSet="mdi" [fontIcon]="platform.icon"></mat-icon>{{ platform.name }}
-              </span>
-            }
             @if (result.type === 'character') {
               <span>BR <strong>{{ result.battleRank }}</strong></span>
             }

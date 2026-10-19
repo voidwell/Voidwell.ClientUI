@@ -95,8 +95,8 @@ api/
 
 Daybreak requests go through `Ps2ApiClient`, which adds the `platform` query parameter (`pc`, `ps4us` or `ps4eu`)
 from the platform selected in the UI; the three Daybreak instances are routed on it. Reference data that is the same on
-every platform opts out with `platform: false`, and the services / store admin lists and the search box query all three
-instances and tag each item with its platform.
+every platform opts out with `platform: false`, and the services / store admin lists query all three instances and
+tag each item with its platform.
 
 The selected platform comes from the page URL (`/ps2/alerts?platform=ps4us`), so PlanetSide pages can be shared and
 reloaded. A URL without it is redirected to the platform the user last picked (saved in `localStorage`, `pc` by

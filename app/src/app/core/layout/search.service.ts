@@ -1,7 +1,7 @@
 ﻿import { Injectable, EventEmitter, signal } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subscription, Observable } from 'rxjs';
-import { PlatformSearchResult } from '../api/models/ps2/reference.model';
+import { SearchResult } from '../api/models/ps2/reference.model';
 
 export interface SearchQuery {
     category: string;
@@ -13,18 +13,18 @@ export class SearchService {
     public searchState: EventEmitter<SearchState> = new EventEmitter();
     public onSearchOpen: EventEmitter<boolean> = new EventEmitter();
     public onEntry: Observable<SearchQuery>;
-    public onClickResult: Observable<PlatformSearchResult>;
+    public onClickResult: Observable<SearchResult>;
     public readonly isUsable = signal(false);
     public readonly searchFocused = signal(false);
     public control: FormControl;
     public categoryControl: FormControl;
     public placeholder: string = '';
     public readonly isSearching = signal(false);
-    public readonly results = signal<PlatformSearchResult[]>([]);
+    public readonly results = signal<SearchResult[]>([]);
 
     private searchStateSub: Subscription;
     private onEntryEmitter: EventEmitter<SearchQuery> = new EventEmitter();
-    private onClickResultEmitter: EventEmitter<PlatformSearchResult> = new EventEmitter();
+    private onClickResultEmitter: EventEmitter<SearchResult> = new EventEmitter();
 
     constructor() {
         this.control = new FormControl();
@@ -55,7 +55,7 @@ export class SearchService {
     }
 
     /** Reports that the user picked a result of the search box. */
-    selectResult(result: PlatformSearchResult) {
+    selectResult(result: SearchResult) {
         this.onClickResultEmitter.emit(result);
     }
 
@@ -113,9 +113,9 @@ export class SearchService {
 
 export class SearchState {
     public isSearching: boolean = false;
-    public data: PlatformSearchResult[] = [];
+    public data: SearchResult[] = [];
 
-    constructor(isSearching: boolean, results: PlatformSearchResult[] = []) {
+    constructor(isSearching: boolean, results: SearchResult[] = []) {
         this.isSearching = isSearching;
         this.data = results;
     }
