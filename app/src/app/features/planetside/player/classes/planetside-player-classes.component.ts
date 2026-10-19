@@ -1,179 +1,67 @@
-import { Component, inject, effect, untracked, input } from '@angular/core';
-import { DataSource } from '@angular/cdk/collections';
+import { Component, computed, inject, input } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { DecimalPipe, PercentPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { PlanetsidePlayerComponent } from '../planetside-player.component';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 import { ProfileRepository } from '@core/api/ps2/profile.repository';
-import { CharacterDetails, CharacterDetailsProfileStat, CharacterDetailsWeaponStat } from '@core/api/models/ps2/character.model';
+import { CharacterDetailsProfileStat } from '@core/api/models/ps2/character.model';
 import { Profile } from '@core/api/models/ps2/reference.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
+import { PlanetsidePlayerComponent } from '../planetside-player.component';
 import { PlanetsidePlayerWeaponsTableComponent } from '../weapons-table/planetside-player-weapons-table.component';
-import { DecimalPipe } from '@angular/common';
+import { PlanetsideStatTileComponent } from '../stat-tile/planetside-stat-tile.component';
 import { DgcImageUrlPipe } from '../../pipes/dgc-image-url.pipe';
-import { ProfilesDataSource, ProfileRow } from './planetside-player-classes.data-source';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { hours, perMinute, ratio } from '../stat-math';
+import { classWeapons } from './class-weapons';
 
-@Component({
-    templateUrl: './planetside-player-classes.component.html',
-    styleUrls: ['./planetside-player-classes.component.css'],
-    imports: [LoaderComponent, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatButton, RouterLink, MatIcon, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatCard, MatCardHeader, MatCardTitle, MatCardContent, MatCardFooter, PlanetsidePlayerWeaponsTableComponent, DecimalPipe, DgcImageUrlPipe]
-})
-
-export class PlanetsidePlayerClassesComponent {
-    private planetsidePlayer = inject(PlanetsidePlayerComponent);
-    private profileRepository = inject(ProfileRepository);
-    readonly id = input<string>();
-
-    playerData: CharacterDetails;
-    private profileList = toSignal(this.profileRepository.getProfiles());
-
-    private isLoading: boolean;
-    private profiles: ProfileRow[];
-    private profileId: number;
-    private profile: ProfileRow = null;
-    private profileWeapons: CharacterDetailsWeaponStat[] = [];
-
-    private profilesDataSource: DataSource<ProfileRow>;
-
-    constructor() {
-        const planetsidePlayer = this.planetsidePlayer;
-
-        this.isLoading = true;
-        effect(() => {
-            const data = planetsidePlayer.playerData();
-            const profiles = this.profileList();
-
-            untracked(() => {
-                if (!profiles) {
-                    return;
-                }
-
-                this.playerData = data;
-
-                if (this.playerData !== null) {
-                    this.filterProfiles(profiles);
-
-                    if (this.profileId) {
-                        this.setupProfile(this.profileId);
-                    }
-                }
-                this.isLoading = false;
-            });
-        });
-
-        effect(() => {
-            const id = this.id();
-
-            untracked(() => {
-                this.profile = null;
-                this.profileWeapons = [];
-
-                this.profileId = parseInt(id);
-
-                if (!this.isLoading && this.profileId) {
-                    this.setupProfile(this.profileId);
-                }
-            });
-        });
-    }
-
-    private filterProfiles(data: Profile[]) {
-        const profiles: ProfileRow[] = [];
-
-        for (let i = 0; i < data.length; i++) {
-            const profile = data[i];
-            if (profile.factionId === this.playerData.factionId) {
-                profiles.push({ ...profile, stats: {} });
-            }
-        }
-
-        this.playerData.profileStats.forEach(function (d: CharacterDetailsProfileStat) {
-            for (let i = 0; i < profiles.length; i++) {
-                if (profiles[i].profileTypeId === d.profileId) {
-                    profiles[i].stats = d;
-                }
-            }
-        });
-
-        this.profiles = profiles.sort(this.sortProfiles);
-        this.profilesDataSource = new ProfilesDataSource(this.profiles);
-    }
-
-    private setupProfile(profileId: number) {
-        for (let k = 0; k < this.profiles.length; k++) {
-            if (this.profiles[k].profileTypeId === profileId) {
-                this.profile = this.profiles[k];
-                break;
-            }
-        }
-
-        const PROFILE = {
-            INFILTRATOR: 1,
-            LIGHTASSAULT: 3,
-            COMBATMEDIC: 4,
-            ENGINEER: 5,
-            HEAVYASSAULT: 6,
-            MAX: 7
-        };
-
-        const profileWeapons: CharacterDetailsWeaponStat[] = [];
-        this.playerData.weaponStats.forEach(function (weapon) {
-            switch (weapon.category) {
-                case 'AA MAX (Left)':
-                case 'AA MAX (Right)':
-                case 'AI MAX (Left)':
-                case 'AI MAX (Right)':
-                case 'AV MAX (Left)':
-                case 'AV MAX (Right)':
-                    if (profileId === PROFILE.MAX) {
-                        profileWeapons.push(weapon);
-                    }
-                    break;
-                case 'SMG':
-                    if (profileId === PROFILE.ENGINEER || profileId === PROFILE.LIGHTASSAULT || profileId === PROFILE.INFILTRATOR) {
-                        profileWeapons.push(weapon);
-                    }
-                    break;
-                case 'Assault Rifle':
-                    if (profileId === PROFILE.COMBATMEDIC) {
-                        profileWeapons.push(weapon);
-                    }
-                    break;
-                case 'Carbine':
-                    if (profileId === PROFILE.ENGINEER || profileId === PROFILE.LIGHTASSAULT) {
-                        profileWeapons.push(weapon);
-                    }
-                    break;
-                case 'Battle Rifle':
-                case 'Heavy Gun':
-                case 'LMG':
-                    if (profileId === PROFILE.HEAVYASSAULT) {
-                        profileWeapons.push(weapon);
-                    }
-                    break;
-                case 'Crossbow':
-                case 'Sniper Rifle':
-                case 'Pistol':
-                    if (profileId === PROFILE.INFILTRATOR) {
-                        profileWeapons.push(weapon);
-                    }
-                    break;
-            }
-        });
-
-        this.profileWeapons = profileWeapons;
-    }
-
-    private sortProfiles(a: ProfileRow, b: ProfileRow) {
-        if (a.stats.score < b.stats.score)
-            return 1
-        if (a.stats.score > b.stats.score)
-            return -1;
-        return 0;
-    }
-
+export interface ClassRow {
+    profile: Profile;
+    stats: Partial<CharacterDetailsProfileStat>;
 }
 
+/** The player's classes, and one class in detail when the route names it. */
+@Component({
+    templateUrl: './planetside-player-classes.component.html',
+    styleUrls: ['../player-detail.css'],
+    imports: [LoaderComponent, MatCard, MatCardTitle, MatCardContent, MatIcon, RouterLink, DecimalPipe, PercentPipe, DgcImageUrlPipe, PlanetsidePlayerWeaponsTableComponent, PlanetsideStatTileComponent]
+})
+export class PlanetsidePlayerClassesComponent {
+    private profileRepository = inject(ProfileRepository);
+
+    /** The class to show in detail, if any. */
+    readonly id = input<string>();
+
+    readonly player = inject(PlanetsidePlayerComponent).playerData;
+    private readonly profiles = toSignal(this.profileRepository.getProfiles());
+
+    readonly ratio = ratio;
+    readonly perMinute = perMinute;
+    readonly hours = hours;
+
+    /** The player's faction's classes with their stats, most played first; `undefined` while loading. */
+    readonly classes = computed<ClassRow[] | undefined>(() => {
+        const player = this.player();
+        const profiles = this.profiles();
+        if (!player || !profiles) {
+            return undefined;
+        }
+        return profiles
+            .filter(profile => profile.factionId === player.factionId)
+            .map((profile): ClassRow => ({
+                profile,
+                stats: (player.profileStats ?? []).find(stat => stat.profileId === profile.profileTypeId) ?? {}
+            }))
+            .sort((a, b) => (b.stats.playTime ?? 0) - (a.stats.playTime ?? 0));
+    });
+
+    readonly selected = computed(() => {
+        const id = Number(this.id());
+        return id ? this.classes()?.find(row => row.profile.profileTypeId === id) : undefined;
+    });
+
+    readonly weapons = computed(() => {
+        const selected = this.selected();
+        return selected ? classWeapons(this.player()?.weaponStats ?? [], selected.profile.profileTypeId) : [];
+    });
+}

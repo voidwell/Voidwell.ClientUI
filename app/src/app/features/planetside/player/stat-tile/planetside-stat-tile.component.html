@@ -1,0 +1,5 @@
+<div class="tile-label">{{ label() }}</div>
+<div class="tile-value"><ng-content></ng-content></div>
+@if (note()) {
+  <div class="tile-note">{{ note() }}</div>
+}

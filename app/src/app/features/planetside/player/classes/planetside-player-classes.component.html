@@ -1,113 +1,80 @@
-@if (playerData) {
-  <div class="content-container">
-    <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-    @if (!isLoading) {
-      <div>
-        @if (!profile) {
-          <div class="class-list mt-6">
-            <mat-table #table [dataSource]="profilesDataSource" class="striped">
-              <ng-container matColumnDef="rank">
-                <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                <mat-cell *matCellDef="let idx = index">
-                  <div class="rank-block">
-                    #{{idx + 1}}
-                  </div>
-                </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="name">
-                <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-                <mat-cell *matCellDef="let profile">
-                  <div class="class-title">
-                    <img class="pull-left" [src]="profile.imageId | dgcImageUrl" />
-                    <div class="name-block my-0 mr-0 ml-px">
-                      <strong>{{profile.name}}</strong>
-                      <small>{{profile.stats.score | number}}</small>
-                    </div>
-                  </div>
-                </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="accuracy">
-                <div class="accuracy-block">
-                  <mat-header-cell *matHeaderCellDef>Accuracy</mat-header-cell>
-                  <mat-cell *matCellDef="let profile">{{profile.stats.hitCount / profile.stats.fireCount * 100 | number: '.1-1'}}%</mat-cell>
-                </div>
-              </ng-container>
-              <ng-container matColumnDef="kdr">
-                <mat-header-cell *matHeaderCellDef>K/D Ratio</mat-header-cell>
-                <mat-cell *matCellDef="let profile">
-                  <div class="kdr-block my-0 mr-0 ml-px">
-                    <div><strong>{{profile.stats.kills / profile.stats.deaths | number: '.2-2'}}</strong>:1 K/D</div>
-                    <small>{{profile.stats.kills | number}} / {{profile.stats.deaths | number}}</small>
-                  </div>
-                </mat-cell>
-              </ng-container>
-              <ng-container matColumnDef="time">
-                <div class="time-block">
-                  <mat-header-cell *matHeaderCellDef>Time Played</mat-header-cell>
-                  <mat-cell *matCellDef="let profile">{{profile.stats.playTime / 3600 | number:'.1-1'}} Hours</mat-cell>
-                </div>
-              </ng-container>
-              <ng-container matColumnDef="gobutton">
-                <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                <mat-cell *matCellDef="let profile">
-                  <a mat-button routerLink="{{profile.profileTypeId}}" class="goto-button pt-1 pr-4 text-right">
-                    <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
-                  </a>
-                </mat-cell>
-              </ng-container>
-              <mat-header-row *matHeaderRowDef="['rank','name','time','gobutton']"></mat-header-row>
-              <mat-row *matRowDef="let row; columns: ['rank','name','time','gobutton'];"></mat-row>
-            </mat-table>
+@if (classes(); as classes) {
+  @if (selected(); as row) {
+    <div class="flex flex-col gap-4">
+      <mat-card>
+        <mat-card-content class="overview">
+          <a class="back" routerLink="/ps2/player/{{ player()?.id }}/classes">
+            <mat-icon fontSet="mdi" fontIcon="mdi-arrow-left"></mat-icon>All classes
+          </a>
+          <div class="hero">
+            <div class="flex min-w-0 items-center gap-3">
+              <img class="hero-image" [src]="row.profile.imageId | dgcImageUrl" alt="">
+              <h2 class="hero-value">{{ row.profile.name }}</h2>
+            </div>
+            <div class="hero-stat">
+              <span class="pill">{{ hours(row.stats.playTime) | number: '1.1-1' }}h</span>
+              <div class="hero-label">Time played</div>
+            </div>
           </div>
-        }
-        @if (profile) {
-          <div class="single-class mt-6">
-            <mat-card>
-              <mat-card-header>
-                <mat-card-title class="class-title">
-                  <img class="pull-left" [src]="profile.imageId | dgcImageUrl" />
-                  <h3 class="class-name self-center">{{profile.name}}</h3>
-                </mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <div class="profile-data">
-                  <div>
-                    <span class="label">Kills of enemy class:</span>
-                    <span class="value">{{profile.stats.kills | number}}</span>
-                  </div>
-                  <div>
-                    <span class="label">Deaths by enemy class:</span>
-                    <span class="value">{{profile.stats.deaths | number}}</span>
-                  </div>
-                  <div>
-                    <span class="label">Score:</span>
-                    <span class="value">{{profile.stats.score | number}}</span>
-                  </div>
-                  <div>
-                    <span class="label">Score/Min:</span>
-                    <span class="value">{{profile.stats.score / (profile.stats.playTime / 60) | number: '.0-0'}}</span>
-                  </div>
-                  <div>
-                    <span class="label">Shots fired:</span>
-                    <span class="value">{{profile.stats.fireCount | number}}</span>
-                  </div>
-                  <div>
-                    <span class="label">Shots hit:</span>
-                    <span class="value">{{profile.stats.hitCount | number}}</span>
-                  </div>
-                  <div>
-                    <span class="label">Time played:</span>
-                    <span class="value">{{profile.stats.playTime / 60 / 60 | number: '.1-1'}} Hours</span>
-                  </div>
-                </div>
-              </mat-card-content>
-              <mat-card-footer>
-                <planetside-player-weapons-table [weapons]="profileWeapons"></planetside-player-weapons-table>
-              </mat-card-footer>
-            </mat-card>
+          <div class="tiles">
+            <planetside-stat-tile label="Score">{{ row.stats.score ?? 0 | number }}</planetside-stat-tile>
+            <planetside-stat-tile label="Score / Min">{{ (perMinute(row.stats.score, row.stats.playTime) | number: '1.0-0') ?? '—' }}</planetside-stat-tile>
+            <planetside-stat-tile label="Accuracy">{{ (ratio(row.stats.hitCount, row.stats.fireCount) | percent: '1.1-1') ?? '—' }}</planetside-stat-tile>
+            <planetside-stat-tile label="Shots Fired">{{ row.stats.fireCount ?? 0 | number }}</planetside-stat-tile>
+            <planetside-stat-tile label="Shots Hit">{{ row.stats.hitCount ?? 0 | number }}</planetside-stat-tile>
+            <planetside-stat-tile label="Kills of Class" note="Enemies of this class killed">{{ row.stats.kills ?? 0 | number }}</planetside-stat-tile>
+            <planetside-stat-tile label="Deaths to Class" note="Deaths to enemies of this class">{{ row.stats.deaths ?? 0 | number }}</planetside-stat-tile>
           </div>
-        }
-      </div>
+          <nav class="switcher" aria-label="Classes">
+            @for (other of classes; track other.profile.profileTypeId) {
+              <a class="switch" routerLink="/ps2/player/{{ player()?.id }}/classes/{{ other.profile.profileTypeId }}"
+                [class.active]="other === row" [attr.aria-current]="other === row ? 'page' : null">
+                <img [src]="other.profile.imageId | dgcImageUrl" alt="">{{ other.profile.name }}
+              </a>
+            }
+          </nav>
+        </mat-card-content>
+      </mat-card>
+
+      <mat-card>
+        <mat-card-title>Weapons</mat-card-title>
+        <mat-card-content class="weapons">
+          <!-- Keyed on the class: the table reads its weapons once -->
+          @for (key of [row.profile.profileTypeId]; track key) {
+            @if (weapons().length) {
+              <planetside-player-weapons-table [weapons]="weapons()"></planetside-player-weapons-table>
+            } @else {
+              <p class="muted">No weapon stats for this class.</p>
+            }
+          }
+        </mat-card-content>
+      </mat-card>
+    </div>
+  } @else {
+    <div class="card-grid">
+      @for (row of classes; track row.profile.profileTypeId) {
+        <a class="item-card" [routerLink]="[row.profile.profileTypeId]" [class.unplayed]="!row.stats.playTime">
+          <div class="item-head">
+            <img [src]="row.profile.imageId | dgcImageUrl" alt="">
+            <div class="min-w-0 grow">
+              <div class="item-name">{{ row.profile.name }}</div>
+              <div class="item-sub">{{ hours(row.stats.playTime) | number: '1.1-1' }}h played</div>
+            </div>
+            <mat-icon class="chevron" fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+          </div>
+          <div class="item-stats">
+            <div><span class="item-value">{{ row.stats.score ?? 0 | number }}</span><span class="item-label">Score</span></div>
+            <div><span class="item-value">{{ (perMinute(row.stats.score, row.stats.playTime) | number: '1.0-0') ?? '—' }}</span><span class="item-label">Score / min</span></div>
+            <div><span class="item-value">{{ (ratio(row.stats.hitCount, row.stats.fireCount) | percent: '1.1-1') ?? '—' }}</span><span class="item-label">Accuracy</span></div>
+          </div>
+        </a>
+      }
+    </div>
+  }
+} @else {
+  <div class="card-grid">
+    @for (item of [0, 1, 2, 3, 4, 5]; track item) {
+      <vw-loader class="block" variant="panel" [loading]="true"></vw-loader>
     }
   </div>
 }
