@@ -52,9 +52,16 @@ mat-card-content {
 
 .tiles {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    /* Two rows of three, so the card matches the height of the Siege Level card beside it */
+    grid-template-columns: repeat(3, 1fr);
     gap: 12px;
     margin-top: 20px;
+}
+
+@media (max-width: 600px) {
+    .tiles {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 .tile {
@@ -85,7 +92,9 @@ mat-card-content {
     display: flex;
     align-items: center;
     gap: 6px;
-    margin-top: 16px;
+    /* Sits at the bottom when the card is stretched to match its row */
+    margin-top: auto;
+    padding-top: 16px;
     font-size: 12px;
     color: #8a9ba1;
 }
