@@ -1,44 +1,321 @@
-﻿:host {
+:host {
     display: block;
+}
+
+/* Filters */
+
+.filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+mat-button-toggle-group {
+    --mat-button-toggle-height: 32px;
+    --mat-button-toggle-shape: 8px;
+    --mat-button-toggle-label-text-size: 13px;
+    --mat-button-toggle-background-color: transparent;
+    --mat-button-toggle-text-color: #b4bfc3;
+    --mat-button-toggle-selected-state-background-color: #384a55;
+    --mat-button-toggle-selected-state-text-color: #edeff0;
+    --mat-button-toggle-divider-color: #3e505a;
+    border-color: #3e505a;
+}
+
+.weapon-search {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid #3e505a;
+    border-radius: 8px;
+    color: #8a9ba1;
+}
+
+.weapon-search:focus-within {
+    border-color: #6dbbff;
+}
+
+.weapon-search mat-icon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+    line-height: 18px;
+}
+
+.weapon-search input {
+    width: 180px;
+    border: 0;
+    outline: 0;
+    background: none;
+    color: #edeff0;
+    font: inherit;
+    font-size: 13px;
+}
+
+/* Table */
+
+.table-wrap {
     overflow-x: auto;
 }
 
-mat-table {
-    min-width: 1100px;
-    overflow-x: auto;
+table {
+    --mat-table-background-color: transparent;
+    --mat-table-row-item-label-text-size: 13px;
+    --mat-table-header-headline-color: #8a9ba1;
+    --mat-table-header-headline-size: 11px;
+    --mat-table-header-headline-weight: 500;
+    --mat-table-header-headline-tracking: .03em;
+    --mat-table-row-item-label-text-color: #edeff0;
+    --mat-table-row-item-outline-color: #344651;
+    --mat-table-header-container-height: 40px;
+    --mat-table-row-item-container-height: 52px;
+    width: 100%;
 }
 
-.mat-column-name,
-.auraxium-meter-back {
-    min-width: 160px;
+th.mat-mdc-header-cell {
+    text-transform: uppercase;
+    white-space: nowrap;
 }
 
-.auraxium-meter-back {
-    height: 3px;
-    background: #797979;
-    position: absolute;
-    left: 0;
-    bottom: -1px;
+td.mat-mdc-cell,
+th.mat-mdc-header-cell {
+    padding: 0 6px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
 }
 
-.auraxium-meter-fore {
-    background: #4c1f66;
-    height: 100%;
+/* Numeric headers keep their arrow on the left so the labels line up with the figures */
+th.mat-mdc-header-cell ::ng-deep .mat-sort-header-container {
+    justify-content: flex-end;
 }
 
+/* The weapon column stays in view while the figures scroll sideways */
 .mat-column-name {
+    position: sticky;
+    left: 0;
+    /* Above the sort headers, which make their own stacking layer */
+    z-index: 3;
+    background: #2b3942;
+    text-align: left !important;
+}
+
+/* Material gives header cells the table's (transparent) background with a more specific rule */
+.mat-mdc-table .mat-column-name {
+    background: #2b3942;
+}
+
+.mat-mdc-table .weapon-row:hover .mat-column-name,
+.mat-mdc-table .weapon-row.open .mat-column-name {
+    background: color-mix(in srgb, #fff 8%, #2b3942);
+}
+
+th.mat-column-name ::ng-deep .mat-sort-header-container {
+    justify-content: flex-start;
+}
+
+.mat-column-expand {
+    width: 32px;
+    padding-right: 4px !important;
+}
+
+.weapon-row {
+    cursor: pointer;
+    transition: background-color .15s;
+}
+
+/* Solid, since the cells inherit it and the sticky name cell has to match */
+.weapon-row:hover,
+.weapon-row.open {
+    background: color-mix(in srgb, #fff 8%, #2b3942);
+}
+
+/* Table cells ignore max-width, so the weapon's own box sets the column's width; long names end in an ellipsis */
+.weapon {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 160px;
+    min-width: 0;
+}
+
+.weapon-name {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+    font-weight: 500;
+}
+
+.weapon-category {
+    overflow: hidden;
+    color: #8a9ba1;
+    font-size: 12px;
+    text-overflow: ellipsis;
+}
+
+/* A stripe down the left of each weapon that fills from the bottom as it nears Auraxium (1,160 kills) */
+.auraxium-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: rgba(168, 85, 247, .3);
+}
+
+.auraxium-bar.done {
+    background: #a855f7;
+}
+
+.graded {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.grade-badge {
+    /* Wide enough for the longest grade (A++), so every badge, and so every figure beside one, lines up */
+    min-width: 28px;
+    padding: 1px 2px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .06);
+    font-size: 11px;
+    text-align: center;
+}
+
+/* Holds a missing grade's place so ungraded figures line up with the graded ones; tiles stand alone and need none */
+.grade-placeholder {
+    background: none;
+}
+
+.tiles .grade-placeholder {
+    display: none;
+}
+
+.expand-button {
+    display: inline-flex;
+    padding: 4px;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: #8a9ba1;
+    cursor: pointer;
+}
+
+.expand-button mat-icon {
+    transition: transform .15s;
+}
+
+.weapon-row.open .expand-button mat-icon {
+    transform: rotate(180deg);
+}
+
+.expand-button:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+/* Detail row: closed rows take no space */
+
+.detail-row {
+    height: 0 !important;
+}
+
+.detail-row:not(.open) td {
+    border-bottom-width: 0;
+}
+
+.detail-row td {
+    padding: 0 !important;
     text-align: left;
+    white-space: normal;
 }
 
-.mat-column-name a {
-    text-decoration: none;
+.detail {
+    padding: 4px 10px 16px;
+    background: rgba(255, 255, 255, .04);
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 10px;
+}
+
+.weapon-link {
     color: inherit;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
+    text-underline-offset: 3px;
 }
 
-.mat-mdc-table .mat-mdc-row {
-    min-height: 25px;
+.weapon-link:hover {
+    opacity: .8;
 }
 
-.mat-mdc-table .mat-mdc-row .mat-mdc-cell {
-    font-size: 12.8px;
+/* The open row repeats a column only where the table hides it */
+@media (min-width: 701px) {
+    .tiles .in-table {
+        display: none;
+    }
+}
+
+.empty {
+    margin: 20px 0;
+    color: #8a9ba1;
+    text-align: center;
+}
+
+/* Every column shows (scrolling sideways when it must) except on phones, which keep the essentials; the open row shows the rest */
+@media (max-width: 700px) {
+    .mat-column-vehicleKills,
+    .mat-column-deaths,
+    .mat-column-accuracy,
+    .mat-column-hsr,
+    .mat-column-kph,
+    .mat-column-vehicleKph,
+    .mat-column-spm,
+    .mat-column-time,
+    .mat-column-lpk,
+    .mat-column-spk {
+        display: none;
+    }
+
+    /* The name takes whatever the remaining columns leave */
+    .mat-column-name {
+        position: relative;
+        width: 100%;
+        max-width: 0;
+    }
+
+    .weapon {
+        width: auto;
+    }
+
+    td.mat-mdc-cell,
+    th.mat-mdc-header-cell {
+        padding: 0 6px;
+    }
+
+    .weapon-search,
+    .weapon-search input {
+        flex: 1;
+        width: auto;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+    }
+}
+
+/* A graded column sorted by its grades rather than its figures rings its badges. */
+:is([data-grade-sort=kdr] .mat-column-kdr, [data-grade-sort=accuracy] .mat-column-accuracy, [data-grade-sort=hsr] .mat-column-hsr,
+    [data-grade-sort=kph] .mat-column-kph, [data-grade-sort=vehicleKph] .mat-column-vehicleKph) .grade-badge {
+    box-shadow: inset 0 0 0 1px rgba(237, 239, 240, .45);
 }

@@ -1,1 +1,7 @@
-﻿
+:host {
+    display: block;
+}
+
+.weapons {
+    padding-top: 16px;
+}

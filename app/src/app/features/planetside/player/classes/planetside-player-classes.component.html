@@ -25,27 +25,16 @@
             <planetside-stat-tile label="Kills of Class" note="Enemies of this class killed">{{ row.stats.kills ?? 0 | number }}</planetside-stat-tile>
             <planetside-stat-tile label="Deaths to Class" note="Deaths to enemies of this class">{{ row.stats.deaths ?? 0 | number }}</planetside-stat-tile>
           </div>
-          <nav class="switcher" aria-label="Classes">
-            @for (other of classes; track other.profile.profileTypeId) {
-              <a class="switch" routerLink="/ps2/player/{{ player()?.id }}/classes/{{ other.profile.profileTypeId }}"
-                [class.active]="other === row" [attr.aria-current]="other === row ? 'page' : null">
-                <img [src]="other.profile.imageId | dgcImageUrl" alt="">{{ other.profile.name }}
-              </a>
-            }
-          </nav>
         </mat-card-content>
       </mat-card>
 
       <mat-card>
         <mat-card-title>Weapons</mat-card-title>
         <mat-card-content class="weapons">
-          <!-- Keyed on the class: the table reads its weapons once -->
-          @for (key of [row.profile.profileTypeId]; track key) {
-            @if (weapons().length) {
-              <planetside-player-weapons-table [weapons]="weapons()"></planetside-player-weapons-table>
-            } @else {
-              <p class="muted">No weapon stats for this class.</p>
-            }
+          @if (weapons().length) {
+            <planetside-player-weapons-table [weapons]="weapons()"></planetside-player-weapons-table>
+          } @else {
+            <p class="muted">No weapon stats for this class.</p>
           }
         </mat-card-content>
       </mat-card>

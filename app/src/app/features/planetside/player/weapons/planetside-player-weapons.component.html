@@ -1,7 +1,7 @@
-﻿@if (weaponStats().length) {
-  <div class="content-container">
-    <div class="weapons-table mt-6">
+@if (weaponStats().length) {
+  <mat-card>
+    <mat-card-content class="weapons">
       <planetside-player-weapons-table [weapons]="weaponStats()"></planetside-player-weapons-table>
-    </div>
-  </div>
+    </mat-card-content>
+  </mat-card>
 }

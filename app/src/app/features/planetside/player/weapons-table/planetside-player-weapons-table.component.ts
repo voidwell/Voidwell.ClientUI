@@ -1,38 +1,81 @@
-﻿import { Component, Input, OnInit, ViewChild } from '@angular/core';
-import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
-import { CharacterDetailsWeaponStat } from '@core/api/models/ps2/character.model';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { Component, computed, effect, input, signal, viewChild } from '@angular/core';
+import { DecimalPipe, NgTemplateOutlet, PercentPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { MatSort, MatSortHeader } from '@angular/material/sort';
+import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
+import { MatIcon } from '@angular/material/icon';
+import { CharacterDetailsWeaponStat } from '@core/api/models/ps2/character.model';
 import { GradeComponent } from '../../components/vw-grade/vw-grade.component';
-import { DecimalPipe } from '@angular/common';
+import { PlanetsideStatTileComponent } from '../stat-tile/planetside-stat-tile.component';
+import { hours, perHour, perMinute, ratio } from '../stat-math';
 import { PlayerWeaponsDataSource } from './planetside-player-weapons-table.data-source';
 
+/** Kills that earn a weapon its Auraxium medal. */
+export const AURAXIUM_KILLS = 1160;
+
+/** Lists longer than this get a search box and an infantry / vehicle filter. */
+const FILTER_THRESHOLD = 15;
+
+export type WeaponKind = 'all' | 'infantry' | 'vehicle';
+
+/** A player's weapons with kills, sortable, each row opening to the rest of its stats. */
 @Component({
     selector: 'planetside-player-weapons-table',
     templateUrl: './planetside-player-weapons-table.component.html',
     styleUrls: ['./planetside-player-weapons-table.component.css'],
-    imports: [MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, GradeComponent, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe]
+    imports: [
+        MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
+        MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatButtonToggleGroup, MatButtonToggle, MatIcon, RouterLink,
+        GradeComponent, PlanetsideStatTileComponent, NgTemplateOutlet, DecimalPipe, PercentPipe
+    ]
 })
+export class PlanetsidePlayerWeaponsTableComponent {
+    readonly weapons = input.required<CharacterDetailsWeaponStat[]>();
 
-export class PlanetsidePlayerWeaponsTableComponent implements OnInit {
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @Input() weapons: CharacterDetailsWeaponStat[];
+    readonly columns = ['name', 'kills', 'vehicleKills', 'deaths', 'kdr', 'accuracy', 'hsr', 'kph', 'vehicleKph', 'spm', 'time', 'lpk', 'spk', 'expand'];
 
-    dataSource: PlayerWeaponsDataSource;
+    readonly ratio = ratio;
+    readonly perHour = perHour;
+    readonly perMinute = perMinute;
+    readonly hours = hours;
+    readonly auraxiumKills = AURAXIUM_KILLS;
 
-    ngOnInit() {
-        this.sort.sort(<MatSortable>{
-            id: 'kills',
-            start: 'desc'
-        });
+    readonly search = signal('');
+    readonly kind = signal<WeaponKind>('all');
+    /** The weapon whose row is open, by item id. */
+    readonly expanded = signal<number | null>(null);
 
-        const weapons = this.weapons.filter(item => item.stats.kills > 0);
-        this.dataSource = new PlayerWeaponsDataSource(weapons, this.sort);
+    /** The weapons the player has killed with; the ones the table can show. */
+    private readonly used = computed(() => this.weapons().filter(weapon => (weapon.stats?.kills ?? 0) > 0));
+
+    readonly filterable = computed(() => this.used().length > FILTER_THRESHOLD);
+
+    readonly rows = computed(() => {
+        const search = this.search().trim().toLowerCase();
+        const kind = this.kind();
+        return this.used().filter(weapon =>
+            (kind === 'all' || (kind === 'vehicle') === !!weapon.vehicleId) &&
+            (!search || (weapon.name ?? '').toLowerCase().includes(search) || (weapon.category ?? '').toLowerCase().includes(search)));
+    });
+
+    private readonly sort = viewChild.required(MatSort);
+    readonly dataSource = computed(() => new PlayerWeaponsDataSource(this.sort()));
+
+    constructor() {
+        effect(() => this.dataSource().setRows(this.rows()));
     }
 
-    private getPercentToAurax(kills: number) {
-        const percent = kills / 1160 * 100;
-        return (percent > 100 ? 100 : percent) + '%';
+    toggle(weapon: CharacterDetailsWeaponStat): void {
+        this.expanded.update(id => (id === weapon.itemId ? null : weapon.itemId));
+    }
+
+    onSearch(event: Event): void {
+        this.search.set((event.target as HTMLInputElement).value);
+    }
+
+    /** Progress towards the Auraxium medal, 0–1. */
+    auraxiumProgress(weapon: CharacterDetailsWeaponStat): number {
+        return Math.min(1, (weapon.stats.kills ?? 0) / AURAXIUM_KILLS);
     }
 }
-

@@ -38,30 +38,16 @@
             <planetside-stat-tile label="Vehicle Kills">{{ s.vehicleKills ?? 0 | number }}</planetside-stat-tile>
             <planetside-stat-tile label="Vehicle Kills / Hour">{{ (perHour(s.vehicleKills, s.playTime) | number: '1.2-2') ?? '—' }}</planetside-stat-tile>
           </div>
-
-          @if (played().length > 1) {
-            <nav class="switcher" aria-label="Vehicles">
-              @for (other of played(); track other.vehicle.id) {
-                <a class="switch" routerLink="/ps2/player/{{ player()?.id }}/vehicles/{{ other.vehicle.id }}"
-                  [class.active]="other === row" [attr.aria-current]="other === row ? 'page' : null">
-                  <img [src]="other.vehicle.imageId | dgcImageUrl" alt="">{{ other.vehicle.name }}
-                </a>
-              }
-            </nav>
-          }
         </mat-card-content>
       </mat-card>
 
       <mat-card>
         <mat-card-title>Weapons</mat-card-title>
         <mat-card-content class="weapons">
-          <!-- Keyed on the vehicle: the table reads its weapons once -->
-          @for (key of [row.vehicle.id]; track key) {
-            @if (weapons().length) {
-              <planetside-player-weapons-table [weapons]="weapons()"></planetside-player-weapons-table>
-            } @else {
-              <p class="muted">No weapon stats for this vehicle.</p>
-            }
+          @if (weapons().length) {
+            <planetside-player-weapons-table [weapons]="weapons()"></planetside-player-weapons-table>
+          } @else {
+            <p class="muted">No weapon stats for this vehicle.</p>
           }
         </mat-card-content>
       </mat-card>

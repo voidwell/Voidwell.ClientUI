@@ -1,101 +1,169 @@
-﻿<mat-table #table [dataSource]="dataSource" class="striped" matSort>
+@if (filterable()) {
+  <div class="filters">
+    <mat-button-toggle-group aria-label="Weapon type" hideSingleSelectionIndicator [value]="kind()" (change)="kind.set($event.value)">
+      <mat-button-toggle value="all">All</mat-button-toggle>
+      <mat-button-toggle value="infantry">Infantry</mat-button-toggle>
+      <mat-button-toggle value="vehicle">Vehicle</mat-button-toggle>
+    </mat-button-toggle-group>
+    <label class="weapon-search">
+      <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+      <input type="search" placeholder="Find a weapon" aria-label="Find a weapon" [value]="search()" (input)="onSearch($event)">
+    </label>
+  </div>
+}
+
+<div class="table-wrap">
+  <table mat-table [dataSource]="dataSource()" multiTemplateDataRows matSort matSortActive="kills" matSortDirection="desc" matSortStart="desc" matSortDisableClear
+    [attr.data-grade-sort]="dataSource().gradeSort()">
     <ng-container matColumnDef="name">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-        <mat-cell *matCellDef="let item">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>Weapon</th>
+      <td mat-cell *matCellDef="let w">
+        <span class="auraxium-bar" [class.done]="w.stats.kills >= auraxiumKills" [style.height.%]="auraxiumProgress(w) * 100"
+          [attr.title]="w.stats.kills >= auraxiumKills ? 'Auraxium' : (auraxiumProgress(w) | percent: '1.0-0') + ' to Auraxium'"></span>
+        <div class="weapon">
+          <div class="min-w-0">
             <div class="weapon-name">
-                <a routerLink="/ps2/item/{{item.itemId}}">{{item?.name || "Unknown (" + item.itemId +")"}}</a>
-                <div class="auraxium-meter-back">
-                    <div class="auraxium-meter-fore" [style.width]="getPercentToAurax(item.stats.kills)"></div>
-                </div>
+              <a class="truncate weapon-link" routerLink="/ps2/item/{{ w.itemId }}" (click)="$event.stopPropagation()">{{ w.name || 'Unknown (' + w.itemId + ')' }}</a>
             </div>
-        </mat-cell>
+            <div class="weapon-category">{{ w.category }}</div>
+          </div>
+        </div>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="kills">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.kills | number}}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">Kills</th>
+      <td mat-cell *matCellDef="let w">{{ w.stats.kills | number }}</td>
     </ng-container>
 
     <ng-container matColumnDef="vehicleKills">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>V.Kills</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.vehicleKills | number}}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Vehicle kills">V.Kills</th>
+      <td mat-cell *matCellDef="let w">{{ w.stats.vehicleKills | number }}</td>
     </ng-container>
 
     <ng-container matColumnDef="deaths">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Deaths</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.deaths | number}}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">Deaths</th>
+      <td mat-cell *matCellDef="let w">{{ w.stats.deaths | number }}</td>
     </ng-container>
 
     <ng-container matColumnDef="kdr">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>K/D Ratio</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.kills / item.stats.deaths | number: '.2-2'}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="kdrDelta">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.killDeathRatioDelta"></vw-grade></mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">K/D</th>
+      <td mat-cell *matCellDef="let w">
+        <ng-container *ngTemplateOutlet="graded; context: { value: (ratio(w.stats.kills, w.stats.deaths) | number: '1.2-2') ?? '—', delta: w.stats.killDeathRatioDelta }"></ng-container>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="accuracy">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Accuracy</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.hitCount / item.stats.fireCount * 100 | number: '.1-1'}}%</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="accuracyDelta">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.accuracyDelta"></vw-grade></mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">Accuracy</th>
+      <td mat-cell *matCellDef="let w">
+        <ng-container *ngTemplateOutlet="graded; context: { value: (ratio(w.stats.hitCount, w.stats.fireCount) | percent: '1.1-1') ?? '—', delta: w.stats.accuracyDelta }"></ng-container>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="hsr">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>HSR</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.headshots / item.stats.kills * 100 | number: '.1-1'}}%</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="hsrDelta">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.hsrDelta"></vw-grade></mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Headshot ratio">HSR</th>
+      <td mat-cell *matCellDef="let w">
+        <ng-container *ngTemplateOutlet="graded; context: { value: (ratio(w.stats.headshots, w.stats.kills) | percent: '1.1-1') ?? '—', delta: w.stats.hsrDelta }"></ng-container>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="kph">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>KPH</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.kills / (item.stats.playTime / 3600) | number: '.1-1'}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="kphDelta">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.kphDelta"></vw-grade></mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Kills per hour">KPH</th>
+      <td mat-cell *matCellDef="let w">
+        <ng-container *ngTemplateOutlet="graded; context: { value: (perHour(w.stats.kills, w.stats.playTime) | number: '1.1-1') ?? '—', delta: w.stats.kphDelta }"></ng-container>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="vehicleKph">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>V.KPH</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.vehicleKills / (item.stats.playTime / 3600) | number: '.1-1'}}</mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="vehicleKphDelta">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Δ</mat-header-cell>
-        <mat-cell *matCellDef="let item"><vw-grade [delta]="item.stats.vehicleKphDelta"></vw-grade></mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Vehicle kills per hour">V.KPH</th>
+      <td mat-cell *matCellDef="let w">
+        <ng-container *ngTemplateOutlet="graded; context: { value: (perHour(w.stats.vehicleKills, w.stats.playTime) | number: '1.1-1') ?? '—', delta: w.stats.vehicleKphDelta }"></ng-container>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="spm">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>SPM</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.score / (item.stats.playTime / 60) | number: '.0-0'}}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Score per minute">SPM</th>
+      <td mat-cell *matCellDef="let w">{{ (perMinute(w.stats.score, w.stats.playTime) | number: '1.0-0') ?? '—' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="time">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>Time</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.playTime / 3600 | number: '.1-1'}}h</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">Time</th>
+      <td mat-cell *matCellDef="let w">{{ hours(w.stats.playTime) | number: '1.1-1' }}h</td>
     </ng-container>
 
     <ng-container matColumnDef="lpk">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>LPK</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.hitCount / item.stats.kills | number: '.1-1'}}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Shots landed per kill">LPK</th>
+      <td mat-cell *matCellDef="let w">{{ (ratio(w.stats.hitCount, w.stats.kills) | number: '1.1-1') ?? '—' }}</td>
     </ng-container>
 
     <ng-container matColumnDef="spk">
-        <mat-header-cell *matHeaderCellDef mat-sort-header>SPK</mat-header-cell>
-        <mat-cell *matCellDef="let item">{{item.stats.fireCount / item.stats.kills | number: '.1-1'}}</mat-cell>
+      <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Shots fired per kill">SPK</th>
+      <td mat-cell *matCellDef="let w">{{ (ratio(w.stats.fireCount, w.stats.kills) | number: '1.1-1') ?? '—' }}</td>
     </ng-container>
 
-    <mat-header-row *matHeaderRowDef="['name','kills','vehicleKills','deaths','kdr','kdrDelta','accuracy','accuracyDelta','hsr','hsrDelta','kph','kphDelta','vehicleKph','vehicleKphDelta','spm','time','lpk','spk']"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: ['name','kills','vehicleKills','deaths','kdr','kdrDelta','accuracy','accuracyDelta','hsr','hsrDelta','kph','kphDelta','vehicleKph','vehicleKphDelta','spm','time','lpk','spk'];"></mat-row>
-</mat-table>
+    <ng-container matColumnDef="expand">
+      <th mat-header-cell *matHeaderCellDef><span class="sr-only">Details</span></th>
+      <td mat-cell *matCellDef="let w">
+        <button type="button" class="expand-button" [attr.aria-expanded]="expanded() === w.itemId"
+          [attr.aria-label]="(expanded() === w.itemId ? 'Hide details of ' : 'Show details of ') + w.name"
+          (click)="$event.stopPropagation(); toggle(w)">
+          <mat-icon fontSet="mdi" fontIcon="mdi-chevron-down"></mat-icon>
+        </button>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="detail">
+      <td mat-cell *matCellDef="let w" [attr.colspan]="columns.length">
+        @if (expanded() === w.itemId) {
+          @let s = w.stats;
+          <div class="detail">
+            <!-- The figures the table hides on phones, then the ones it never shows -->
+            <div class="tiles">
+              <planetside-stat-tile class="in-table" label="Vehicle Kills">{{ s.vehicleKills | number }}</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Deaths">{{ s.deaths | number }}</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Accuracy">
+                <ng-container *ngTemplateOutlet="graded; context: { value: (ratio(s.hitCount, s.fireCount) | percent: '1.1-1') ?? '—', delta: s.accuracyDelta }"></ng-container>
+              </planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Headshot Ratio">
+                <ng-container *ngTemplateOutlet="graded; context: { value: (ratio(s.headshots, s.kills) | percent: '1.1-1') ?? '—', delta: s.hsrDelta }"></ng-container>
+              </planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Kills / Hour">
+                <ng-container *ngTemplateOutlet="graded; context: { value: (perHour(s.kills, s.playTime) | number: '1.1-1') ?? '—', delta: s.kphDelta }"></ng-container>
+              </planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Vehicle Kills / Hour">
+                <ng-container *ngTemplateOutlet="graded; context: { value: (perHour(s.vehicleKills, s.playTime) | number: '1.1-1') ?? '—', delta: s.vehicleKphDelta }"></ng-container>
+              </planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Score / Min">{{ (perMinute(s.score, s.playTime) | number: '1.0-0') ?? '—' }}</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Time">{{ hours(s.playTime) | number: '1.1-1' }}h</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Landed / Kill">{{ (ratio(s.hitCount, s.kills) | number: '1.1-1') ?? '—' }}</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Shots / Kill">{{ (ratio(s.fireCount, s.kills) | number: '1.1-1') ?? '—' }}</planetside-stat-tile>
+              <planetside-stat-tile label="Score">{{ s.score | number }}</planetside-stat-tile>
+              <planetside-stat-tile label="Headshots">{{ s.headshots | number }}</planetside-stat-tile>
+              <planetside-stat-tile label="Shots Fired">{{ s.fireCount | number }}</planetside-stat-tile>
+              <planetside-stat-tile label="Shots Hit">{{ s.hitCount | number }}</planetside-stat-tile>
+            </div>
+          </div>
+        }
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columns"></tr>
+    <tr mat-row *matRowDef="let w; columns: columns" class="weapon-row" [class.open]="expanded() === w.itemId" (click)="toggle(w)"></tr>
+    <tr mat-row *matRowDef="let w; columns: ['detail']" class="detail-row" [class.open]="expanded() === w.itemId"></tr>
+  </table>
+
+  @if (!rows().length) {
+    <p class="empty">No weapons match.</p>
+  }
+</div>
+
+<ng-template #graded let-value="value" let-delta="delta">
+  <span class="graded">
+    <span>{{ value }}</span>
+    @if (delta != null) {
+      <vw-grade class="grade-badge" [delta]="delta"></vw-grade>
+    } @else {
+      <span class="grade-badge grade-placeholder" aria-hidden="true"></span>
+    }
+  </span>
+</ng-template>

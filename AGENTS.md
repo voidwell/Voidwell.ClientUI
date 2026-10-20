@@ -107,6 +107,49 @@ considering work finished.
 - Match surrounding code: 4-space indentation, single quotes, standalone components, Tailwind utilities plus Material
   theming (`styles/theme.scss`). PlanetSide-specific styles go in `styles/planetside.css`.
 
+## Design philosophy
+
+Keep new and reworked pages consistent with these principles.
+
+### Layout
+- Build pages from cards. A detail page opens with an overview card: a way back, a header identifying the subject with
+  its headline figure, then its key figures as tiles.
+- Navigation is a drill-down: a list leads to a detail page, which leads back to the list. Avoid sideways shortcuts and
+  redundant tabs. A summary links on to its full page instead of being duplicated in a tab.
+- Show lists of comparable records as sortable tables. Tiles are for the figures of a single record.
+
+### Tables
+- Keep every column users rely on. Abbreviate headers where space is tight and spell them out on hover.
+- Right-align figures with tabular numbers, and keep columns lined up. When something beside a figure is missing,
+  hold its space.
+- Sort figures high to low on the first click. A value that can't be worked out shows a dash and sorts last.
+- On small screens keep only the essential columns. Expandable rows may reveal more, but only what is hidden at the
+  current width; never repeat what is already visible.
+- A wide table scrolls inside its container with the identifying column pinned. The page itself never scrolls sideways.
+- Offer search and filters only when a list is long enough to need them.
+
+### Visual language
+- Keep it quiet: low-contrast borders, faint tints, no decorative imagery. Show an image only when it helps identify
+  something. Keep meters and charts out of dense lists.
+- Inline links on names and labels look like the text, with a faint dashed underline. Navigation links use the accent
+  colour.
+- Use small, muted pills for tags and categories. Save stronger colour for the one figure or state that matters.
+- Show progress compactly and in proportion, rather than with medals or decorations.
+- Use solid colours for highlights that can stack or overlap, so layered elements match.
+- Show ratings or grades only where real data supports them. Never invent a value to fill a gap.
+
+### Figures
+- Progress indicators never overflow: the bar caps at full while the count may exceed the target. Don't add
+  "remaining" figures.
+- Never add up figures that overlap. When a figure's meaning isn't obvious, say what it counts.
+- Compute shared figures with shared helpers so every page agrees, and show missing results as a dash, never NaN or
+  Infinity.
+
+### Checking work
+- Check every visual change in a browser at desktop and phone widths, with realistic data that includes the awkward
+  cases (long names, missing values, zeros, empty lists).
+- On small screens, content wraps or stacks and stays aligned. Nothing should scroll the page sideways.
+
 ## Deployment
 
 - Docker multi-stage build (`Dockerfile`): builds the app, installs server deps, runs `node server.js` on `SERVER_PORT`

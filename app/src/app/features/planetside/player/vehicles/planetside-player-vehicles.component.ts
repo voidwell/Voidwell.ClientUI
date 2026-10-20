@@ -60,9 +60,6 @@ export class PlanetsidePlayerVehiclesComponent {
             .sort((a, b) => b.playTime - a.playTime);
     });
 
-    /** The vehicles the player has spent time in, to switch between in the detail view. */
-    readonly played = computed(() => (this.vehicles() ?? []).filter(row => row.playTime > 0));
-
     readonly selected = computed(() => {
         const id = Number(this.id());
         return id ? this.vehicles()?.find(row => row.vehicle.id === id) : undefined;
