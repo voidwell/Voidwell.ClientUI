@@ -1,4 +1,5 @@
 ﻿import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
 import { OnlineCharacter } from '@core/api/models/ps2/character.model';
 import { MatCard, MatCardContent, MatCardFooter } from '@angular/material/card';
@@ -17,12 +18,5 @@ import { FactionNamePipe } from '../../../pipes/faction-name.pipe';
 export class PlanetsideWorldPlayersComponent {
     private parent = inject(PlanetsideWorldComponent);
 
-    players: OnlineCharacter[] = [];
-
-    constructor() {
-        this.parent.getOnlinePlayers()
-            .subscribe(players => {
-                this.players = players;
-            });
-    }
+    readonly players = toSignal(this.parent.getOnlinePlayers(), { initialValue: [] as OnlineCharacter[] });
 }

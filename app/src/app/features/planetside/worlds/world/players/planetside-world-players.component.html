@@ -2,7 +2,7 @@
   <mat-card class="player-totals mb-6">
     <mat-card-content class="layout-padding">
       <div>
-        @for (faction of players | groupBy: 'character.factionId' | pairs ; track faction) {
+        @for (faction of players() | groupBy: 'character.factionId' | pairs ; track faction) {
           <div class="total-row">
             <span class="total-label" [ngClass]="faction[0] | factionColor">{{faction[0] | factionName}}:</span>
             <span>{{faction[1].length}}</span>
@@ -10,13 +10,13 @@
         }
         <div class="total-row">
           <span class="total-label">Total:</span>
-          <span>{{players.length}}</span>
+          <span>{{players().length}}</span>
         </div>
       </div>
     </mat-card-content>
   </mat-card>
 
-  @for (faction of players | groupBy: 'character.factionId' | pairs; track faction) {
+  @for (faction of players() | groupBy: 'character.factionId' | pairs; track faction) {
     <mat-card>
       <mat-card-content>
         <h3 [ngClass]="faction[0] | factionColor">{{faction[0] | factionName}}</h3>
