@@ -1,4 +1,4 @@
-import { Component, computed, inject, input } from '@angular/core';
+import { Component, computed, effect, inject, input } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { DecimalPipe, PercentPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
@@ -9,6 +9,7 @@ import { CharacterDetailsVehicleStat } from '@core/api/models/ps2/character.mode
 import { VehicleInfo } from '@core/api/models/ps2/reference.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { PlanetsidePlayerComponent } from '../planetside-player.component';
+import { playerTrail } from '../player-breadcrumbs';
 import { PlanetsidePlayerWeaponsTableComponent } from '../weapons-table/planetside-player-weapons-table.component';
 import { PlanetsideStatTileComponent } from '../stat-tile/planetside-stat-tile.component';
 import { DgcImageUrlPipe } from '../../pipes/dgc-image-url.pipe';
@@ -36,7 +37,8 @@ export class PlanetsidePlayerVehiclesComponent {
     /** The vehicle to show in detail, if any. */
     readonly id = input<string>();
 
-    readonly player = inject(PlanetsidePlayerComponent).playerData;
+    private planetsidePlayer = inject(PlanetsidePlayerComponent);
+    readonly player = this.planetsidePlayer.playerData;
     private readonly vehicleList = toSignal(this.vehicleRepository.getVehicles());
 
     readonly ratio = ratio;
@@ -64,6 +66,14 @@ export class PlanetsidePlayerVehiclesComponent {
         const id = Number(this.id());
         return id ? this.vehicles()?.find(row => row.vehicle.id === id) : undefined;
     });
+
+    constructor() {
+        effect(() => {
+            const row = this.selected();
+            const section = { label: 'Vehicles', path: 'vehicles' };
+            this.planetsidePlayer.breadcrumbs.set(row ? playerTrail(section, { label: row.vehicle.name ?? '' }) : playerTrail(section));
+        });
+    }
 
     readonly weapons = computed(() => {
         const selected = this.selected();

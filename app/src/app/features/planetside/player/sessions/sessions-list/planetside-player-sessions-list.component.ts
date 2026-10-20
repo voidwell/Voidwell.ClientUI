@@ -11,6 +11,7 @@ import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { PlanetsidePlayerComponent } from '../../planetside-player.component';
+import { playerTrail } from '../../player-breadcrumbs';
 import { formatDuration } from '../session-events';
 
 /** Sessions the API returns per page; a shorter page is the last one. */
@@ -73,6 +74,8 @@ export class PlanetsidePlayerSessionsListComponent {
     });
 
     constructor() {
+        this.planetsidePlayer.breadcrumbs.set(playerTrail({ label: 'Sessions' }));
+
         effect(() => {
             const player = this.planetsidePlayer.playerData();
             untracked(() => this.reset(player));

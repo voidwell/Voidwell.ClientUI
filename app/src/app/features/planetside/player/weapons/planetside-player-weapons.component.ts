@@ -1,5 +1,6 @@
 ﻿import { Component, computed, inject } from '@angular/core';
 import { PlanetsidePlayerComponent } from '../planetside-player.component';
+import { playerTrail } from '../player-breadcrumbs';
 import { MatCard, MatCardContent } from '@angular/material/card';
 import { PlanetsidePlayerWeaponsTableComponent } from '../weapons-table/planetside-player-weapons-table.component';
 
@@ -13,4 +14,8 @@ export class PlanetsidePlayerWeaponsComponent {
     private planetsidePlayer = inject(PlanetsidePlayerComponent);
 
     readonly weaponStats = computed(() => this.planetsidePlayer.playerData()?.weaponStats ?? []);
+
+    constructor() {
+        this.planetsidePlayer.breadcrumbs.set(playerTrail({ label: 'Weapons' }));
+    }
 }

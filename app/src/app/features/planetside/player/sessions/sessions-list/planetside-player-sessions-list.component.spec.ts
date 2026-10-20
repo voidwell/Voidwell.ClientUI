@@ -19,7 +19,7 @@ describe('PlanetsidePlayerSessionsListComponent', () => {
         TestBed.configureTestingModule({
             providers: [
                 provideRouter([]),
-                { provide: PlanetsidePlayerComponent, useValue: { playerData: signal({ id: '42' } as CharacterDetails) } },
+                { provide: PlanetsidePlayerComponent, useValue: { playerData: signal({ id: '42' } as CharacterDetails), breadcrumbs: signal([]) } },
                 { provide: CharacterRepository, useValue: { getSessions: () => { const page = new Subject<PlayerSessionSummary[]>(); pages.push(page); return page; } } }
             ]
         });

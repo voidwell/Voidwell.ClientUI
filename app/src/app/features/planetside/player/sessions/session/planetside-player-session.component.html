@@ -5,9 +5,6 @@
     @let s = stats();
     <mat-card>
       <mat-card-content class="overview">
-        <a class="back" routerLink="/ps2/player/{{ playerId() }}/sessions">
-          <mat-icon fontSet="mdi" fontIcon="mdi-arrow-left"></mat-icon>All sessions
-        </a>
         <div class="hero">
           <div class="min-w-0">
             <h2 class="hero-value">{{ session.loginDate | date: 'EEEE, MMM d, y' }}</h2>

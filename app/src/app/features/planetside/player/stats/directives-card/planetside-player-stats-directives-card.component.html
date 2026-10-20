@@ -1,0 +1,15 @@
+<mat-card>
+  <mat-card-title class="card-title">
+    <span>Directives</span>
+    <a class="view-all" routerLink="/ps2/player/{{player().id}}/directives">View All &rarr;</a>
+  </mat-card-title>
+  <mat-card-content>
+    @if (summary(); as summary) {
+      <directives-summary [summary]="summary"></directives-summary>
+    } @else if (summary() === null) {
+      <p class="muted">Directives are unavailable right now.</p>
+    } @else {
+      <vw-loader variant="lines" [rows]="2" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>

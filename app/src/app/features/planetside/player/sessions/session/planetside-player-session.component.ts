@@ -1,6 +1,6 @@
-import { Component, computed, inject, input, signal } from '@angular/core';
+import { Component, LOCALE_ID, computed, effect, inject, input, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { DatePipe, DecimalPipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { DatePipe, DecimalPipe, NgClass, NgTemplateOutlet, formatDate } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
@@ -13,6 +13,7 @@ import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { PlanetsidePlayerComponent } from '../../planetside-player.component';
+import { playerTrail } from '../../player-breadcrumbs';
 import { DgcImageUrlPipe } from '../../../pipes/dgc-image-url.pipe';
 import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
 import { ZoneNamePipe } from '../../../pipes/zone-name.pipe';
@@ -51,6 +52,8 @@ const MAX_BUCKETS = 48;
 })
 export class PlanetsidePlayerSessionComponent {
     private characterRepository = inject(CharacterRepository);
+    private planetsidePlayer = inject(PlanetsidePlayerComponent);
+    private locale = inject(LOCALE_ID);
 
     readonly id = input<string>();
     readonly formatDuration = formatDuration;
@@ -69,7 +72,7 @@ export class PlanetsidePlayerSessionComponent {
         logout: 'mdi-logout'
     };
 
-    private readonly result = toSignal(combineLatest([toObservable(inject(PlanetsidePlayerComponent).playerData), toObservable(this.id)]).pipe(
+    private readonly result = toSignal(combineLatest([toObservable(this.planetsidePlayer.playerData), toObservable(this.id)]).pipe(
         filter((args): args is [CharacterDetails, string] => !!args[0] && !!args[1]),
         switchMap(([player, sessionId]) => this.characterRepository.getSession(player.id, sessionId).pipe(
             map((session): SessionResult => ({ session, playerId: player.id })),
@@ -91,6 +94,16 @@ export class PlanetsidePlayerSessionComponent {
         const result = this.result();
         return result && 'session' in result ? result.session.session : undefined;
     });
+
+    constructor() {
+        effect(() => {
+            const session = this.session();
+            const sessions = { label: 'Sessions', path: 'sessions' };
+            this.planetsidePlayer.breadcrumbs.set(session
+                ? playerTrail(sessions, { label: formatDate(session.loginDate, 'MMM d, y', this.locale) })
+                : playerTrail(sessions));
+        });
+    }
 
     readonly entries = computed<SessionLogEntry[]>(() => {
         const result = this.result();
