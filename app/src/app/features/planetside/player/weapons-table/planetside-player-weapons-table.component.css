@@ -158,17 +158,17 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     text-overflow: ellipsis;
 }
 
-.auraxium {
-    display: inline-flex;
-    flex: none;
-    color: #e6b422;
+/* A stripe down the left of each weapon that fills from the bottom as it nears Auraxium (1,160 kills) */
+.auraxium-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 3px;
+    background: rgba(168, 85, 247, .55);
 }
 
-.auraxium mat-icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-    line-height: 16px;
+.auraxium-bar.done {
+    background: #a855f7;
 }
 
 .graded {
@@ -267,7 +267,7 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
 
     /* The name takes whatever the remaining columns leave */
     .mat-column-name {
-        position: static;
+        position: relative;
         width: 100%;
         max-width: 0;
     }

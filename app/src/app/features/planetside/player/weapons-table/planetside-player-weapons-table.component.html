@@ -17,15 +17,12 @@
     <ng-container matColumnDef="name">
       <th mat-header-cell *matHeaderCellDef mat-sort-header>Weapon</th>
       <td mat-cell *matCellDef="let w">
+        <span class="auraxium-bar" [class.done]="w.stats.kills >= auraxiumKills" [style.height.%]="auraxiumProgress(w) * 100"
+          [attr.title]="w.stats.kills >= auraxiumKills ? 'Auraxium' : (auraxiumProgress(w) | percent: '1.0-0') + ' to Auraxium'"></span>
         <div class="weapon">
           <div class="min-w-0">
             <div class="weapon-name">
               <span class="truncate">{{ w.name || 'Unknown (' + w.itemId + ')' }}</span>
-              @if (w.stats.kills >= auraxiumKills) {
-                <span class="auraxium" title="Auraxium: {{ auraxiumKills | number }} kills">
-                  <mat-icon fontSet="mdi" fontIcon="mdi-medal"></mat-icon>
-                </span>
-              }
             </div>
             <div class="weapon-category">{{ w.category }}</div>
           </div>

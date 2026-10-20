@@ -81,6 +81,18 @@ describe('PlanetsidePlayerWeaponsTableComponent', () => {
         expect(kdCells[1].querySelector('vw-grade').textContent).toBe('A');
     });
 
+    it('fills the Auraxium stripe with progress toward 1,160 kills', () => {
+        const fixture = setup([weapon(1, 'Orion', 1500, 500), weapon(2, 'Gauss SAW', 580, 300)]);
+        const bars = fixture.nativeElement.querySelectorAll('.auraxium-bar') as NodeListOf<HTMLElement>;
+
+        expect(bars[0].classList).toContain('done');
+        expect(bars[0].style.height).toBe('100%');
+        expect(bars[0].title).toBe('Auraxium');
+        expect(bars[1].classList).not.toContain('done');
+        expect(bars[1].style.height).toBe('50%');
+        expect(bars[1].title).toBe('50% to Auraxium');
+    });
+
     it('opens a row to the rest of its stats, one at a time', () => {
         const fixture = setup(WEAPONS.slice(0, 2));
         const rows = fixture.nativeElement.querySelectorAll('tr.weapon-row') as NodeListOf<HTMLElement>;
