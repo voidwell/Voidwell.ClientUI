@@ -128,24 +128,6 @@
     padding-top: 12px;
 }
 
-.back {
-    display: inline-flex;
-    align-self: flex-start;
-    align-items: center;
-    gap: 4px;
-    margin-bottom: 8px;
-    color: #6dbbff;
-    font-size: 13px;
-    text-decoration: none;
-}
-
-.back mat-icon {
-    width: 16px;
-    height: 16px;
-    font-size: 16px;
-    line-height: 16px;
-}
-
 .hero {
     display: flex;
     flex-wrap: wrap;

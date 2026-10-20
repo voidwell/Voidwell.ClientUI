@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { PlanetsidePlayerComponent } from '../planetside-player.component';
+import { playerTrail } from '../player-breadcrumbs';
 import { PlanetsidePlayerStatsOverviewCardComponent } from './overview-card/planetside-player-stats-overview-card.component';
 import { PlanetsidePlayerStatsClassUsageCardComponent } from './class-usage-card/planetside-player-stats-class-usage-card.component';
 import { PlanetsidePlayerStatsVehicleUsageCardComponent } from './vehicle-usage-card/planetside-player-stats-vehicle-usage-card.component';
@@ -10,6 +11,7 @@ import { PlanetsidePlayerStatsWeaponsCardComponent } from './weapons-card/planet
 import { PlanetsidePlayerStatsRecentSessionsCardComponent } from './recent-sessions-card/planetside-player-stats-recent-sessions-card.component';
 import { PlanetsidePlayerStatsTopWeaponsCardComponent } from './top-weapons-card/planetside-player-stats-top-weapons-card.component';
 import { PlanetsidePlayerStatsIviCardComponent } from './ivi-card/planetside-player-stats-ivi-card.component';
+import { PlanetsidePlayerStatsDirectivesCardComponent } from './directives-card/planetside-player-stats-directives-card.component';
 
 @Component({
     templateUrl: './planetside-player-stats.component.html',
@@ -23,7 +25,8 @@ import { PlanetsidePlayerStatsIviCardComponent } from './ivi-card/planetside-pla
         PlanetsidePlayerStatsWeaponsCardComponent,
         PlanetsidePlayerStatsIviCardComponent,
         PlanetsidePlayerStatsRecentSessionsCardComponent,
-        PlanetsidePlayerStatsTopWeaponsCardComponent
+        PlanetsidePlayerStatsTopWeaponsCardComponent,
+        PlanetsidePlayerStatsDirectivesCardComponent
     ]
 })
 
@@ -31,4 +34,8 @@ export class PlanetsidePlayerStatsComponent {
     private planetsidePlayer = inject(PlanetsidePlayerComponent);
 
     readonly player = this.planetsidePlayer.playerData;
+
+    constructor() {
+        this.planetsidePlayer.breadcrumbs.set(playerTrail());
+    }
 }

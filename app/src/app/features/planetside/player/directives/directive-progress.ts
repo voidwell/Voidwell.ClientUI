@@ -94,3 +94,36 @@ export function tierFill(progress: DirectiveTreeProgress, tier: CharacterDirecti
 export function tierColor(tier: CharacterDirectivesOutlineTier | undefined): string {
     return (tier && TIER_COLORS[tier.tierId]) ?? UNRANKED_COLOR;
 }
+
+/** Rank names in order, Unranked first; tier ids 1–4 are Novice to Master. */
+export const RANKS = ['Unranked', 'Novice', 'Adept', 'Expert', 'Master'];
+
+/** A player's directive progress at a glance: points, tree counts and how many trees reached each rank. */
+export interface DirectivesSummary {
+    points: number;
+    mastered: number;
+    inProgress: number;
+    total: number;
+    /** Highest rank first, as the rank bar fills from the left. */
+    ranks: { name: string, count: number, percent: number, color: string }[];
+}
+
+export function summarizeDirectives(trees: DirectiveTreeProgress[]): DirectivesSummary {
+    const counts = RANKS.map(() => 0);
+    for (const tree of trees) {
+        counts[tree.rank?.tierId ?? 0]++;
+    }
+
+    return {
+        points: trees.reduce((sum, tree) => sum + tree.points, 0),
+        mastered: trees.filter(tree => tree.status === 'mastered').length,
+        inProgress: trees.filter(tree => tree.status === 'inProgress').length,
+        total: trees.length,
+        ranks: RANKS.map((name, tierId) => ({
+            name,
+            count: counts[tierId],
+            percent: trees.length ? counts[tierId] / trees.length * 100 : 0,
+            color: TIER_COLORS[tierId] ?? UNRANKED_COLOR
+        })).reverse()
+    };
+}

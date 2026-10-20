@@ -8,6 +8,7 @@
       <planetside-player-stats-class-usage-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-class-usage-card>
       <planetside-player-stats-vehicle-usage-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-vehicle-usage-card>
     </div>
+    <planetside-player-stats-directives-card class="card" [player]="playerData"></planetside-player-stats-directives-card>
     <div class="card-grid flex flex-wrap gap-4">
       <planetside-player-stats-kdr-card class="card flex-auto" [stats]="playerData.lifetimeStats"></planetside-player-stats-kdr-card>
       <planetside-player-stats-weapons-card class="card flex-auto" [stats]="playerData.lifetimeStats"></planetside-player-stats-weapons-card>
@@ -28,6 +29,7 @@
       <vw-loader class="vw-character-class-usage card flex-1 basis-96" variant="panel" [loading]="true"></vw-loader>
       <vw-loader class="vw-character-vehicle-usage card flex-1 basis-96" variant="panel" [loading]="true"></vw-loader>
     </div>
+    <vw-loader class="card" variant="panel" [loading]="true"></vw-loader>
     <div class="card-grid flex flex-wrap gap-4">
       @for (item of [0, 1, 2]; track item) {
         <vw-loader class="card flex-auto basis-56 max-w-112" variant="panel" [loading]="true"></vw-loader>

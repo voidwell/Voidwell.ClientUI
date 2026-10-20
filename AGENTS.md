@@ -112,10 +112,11 @@ considering work finished.
 Keep new and reworked pages consistent with these principles.
 
 ### Layout
-- Build pages from cards. A detail page opens with an overview card: a way back, a header identifying the subject with
+- Build pages from cards. A detail page opens with an overview card: a header identifying the subject with
   its headline figure, then its key figures as tiles.
-- Navigation is a drill-down: a list leads to a detail page, which leads back to the list. Avoid sideways shortcuts and
-  redundant tabs. A summary links on to its full page instead of being duplicated in a tab.
+- Navigation is a drill-down: an overview summarises each area and links on to its full page, a list leads to a detail
+  page. A breadcrumb trail shows where a page sits and is the way back up; don't add back links, tabs or sideways
+  shortcuts alongside it.
 - Show lists of comparable records as sortable tables. Tiles are for the figures of a single record.
 
 ### Tables

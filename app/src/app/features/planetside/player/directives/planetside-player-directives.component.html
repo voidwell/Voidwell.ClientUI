@@ -2,37 +2,9 @@
   <vw-error-card></vw-error-card>
 } @else if (categories(); as categories) {
   <div class="directives flex flex-col gap-4">
-    @let s = summary();
     <mat-card>
-      <mat-card-content class="summary">
-        <div class="summary-stats">
-          <div class="stat">
-            <span class="stat-value"><mat-icon fontSet="mdi" fontIcon="mdi-star-circle-outline"></mat-icon>{{ s.points | number }}</span>
-            <span class="stat-label">Directive points</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">{{ s.mastered }}<span class="stat-of"> / {{ s.total }}</span></span>
-            <span class="stat-label">Trees mastered</span>
-          </div>
-          <div class="stat">
-            <span class="stat-value">{{ s.inProgress }}</span>
-            <span class="stat-label">In progress</span>
-          </div>
-        </div>
-        <div class="ranks">
-          <div class="rank-bar" role="img" aria-label="Trees by rank">
-            @for (rank of s.ranks; track rank.name) {
-              @if (rank.count) {
-                <span [style.width.%]="rank.percent" [style.background]="rank.color"></span>
-              }
-            }
-          </div>
-          <ul class="rank-legend">
-            @for (rank of s.ranks; track rank.name) {
-              <li><span class="dot" [style.background]="rank.color"></span>{{ rank.name }} <strong>{{ rank.count }}</strong></li>
-            }
-          </ul>
-        </div>
+      <mat-card-content class="summary-content">
+        <directives-summary [summary]="summary()"></directives-summary>
       </mat-card-content>
     </mat-card>
 

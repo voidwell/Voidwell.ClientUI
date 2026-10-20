@@ -8,6 +8,7 @@ import { CharacterDetails } from '@core/api/models/ps2/character.model';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { PlanetsidePlayerQuickStatsCardComponent } from './quick-stats-card/planetside-player-quick-stats-card.component';
 import { CharacterCardComponent } from './character-card/character-card.component';
+import { PlayerBreadcrumb } from './player-breadcrumbs';
 
 @Component({
     selector: 'planetside-player',
@@ -24,6 +25,8 @@ export class PlanetsidePlayerComponent {
     isLoading: boolean;
     errorMessage: string = null;
     readonly playerData = signal<CharacterDetails | null>(null);
+    /** Where the current page sits under the player, shown in the character card; each page sets its own. */
+    readonly breadcrumbs = signal<PlayerBreadcrumb[]>([]);
 
 
     constructor() {

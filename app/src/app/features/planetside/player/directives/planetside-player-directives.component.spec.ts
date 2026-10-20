@@ -36,7 +36,7 @@ describe('PlanetsidePlayerDirectivesComponent', () => {
     const setup = (getDirectives: () => unknown) => {
         TestBed.configureTestingModule({
             providers: [
-                { provide: PlanetsidePlayerComponent, useValue: { playerData: signal({ id: '42' } as CharacterDetails) } },
+                { provide: PlanetsidePlayerComponent, useValue: { playerData: signal({ id: '42' } as CharacterDetails), breadcrumbs: signal([]) } },
                 { provide: CharacterRepository, useValue: { getDirectives } }
             ]
         });

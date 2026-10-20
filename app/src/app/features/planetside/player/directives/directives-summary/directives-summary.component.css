@@ -1,0 +1,89 @@
+:host {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 20px 40px;
+}
+
+.summary-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 40px;
+}
+
+.stat {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-value {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.stat-value mat-icon {
+    width: 24px;
+    height: 24px;
+    font-size: 24px;
+    line-height: 24px;
+    color: #6dbbff;
+}
+
+.stat-of {
+    color: #8a9ba1;
+    font-size: 18px;
+}
+
+.stat-label {
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+}
+
+.ranks {
+    flex: 1 1 280px;
+}
+
+.rank-bar {
+    display: flex;
+    gap: 2px;
+    height: 10px;
+    overflow: hidden;
+    border-radius: 5px;
+    background: #1e2a31;
+}
+
+.rank-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 16px;
+    margin: 10px 0 0;
+    padding: 0;
+    list-style: none;
+    color: #b4bfc3;
+    font-size: 12.5px;
+}
+
+.rank-legend li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.rank-legend strong {
+    color: #edeff0;
+    font-weight: 500;
+}
+
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}

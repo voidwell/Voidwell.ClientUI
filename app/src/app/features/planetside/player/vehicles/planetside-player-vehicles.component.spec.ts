@@ -38,7 +38,7 @@ describe('PlanetsidePlayerVehiclesComponent', () => {
         TestBed.configureTestingModule({
             providers: [
                 provideRouter([]),
-                { provide: PlanetsidePlayerComponent, useValue: { playerData: signal(PLAYER) } },
+                { provide: PlanetsidePlayerComponent, useValue: { playerData: signal(PLAYER), breadcrumbs: signal([]) } },
                 { provide: VehicleRepository, useValue: { getVehicles: () => of(VEHICLES) } }
             ]
         });
@@ -58,6 +58,17 @@ describe('PlanetsidePlayerVehiclesComponent', () => {
 
         expect(fixture.componentInstance.selected()?.vehicle.name).toBe('Scythe');
         expect(fixture.componentInstance.weapons().map(w => w.itemId)).toEqual([1]);
+    });
+
+    it('puts the vehicle in the breadcrumbs under Vehicles', () => {
+        const breadcrumbs = TestBed.inject(PlanetsidePlayerComponent).breadcrumbs;
+        const fixture = TestBed.createComponent(PlanetsidePlayerVehiclesComponent);
+        fixture.detectChanges();
+        expect(breadcrumbs().map(crumb => crumb.label)).toEqual(['Overview', 'Vehicles']);
+
+        fixture.componentRef.setInput('id', '7');
+        fixture.detectChanges();
+        expect(breadcrumbs()).toEqual([{ label: 'Overview', path: 'stats' }, { label: 'Vehicles', path: 'vehicles' }, { label: 'Scythe' }]);
     });
 
     it('counts roadkills as pilot kills beyond weapon kills, never below zero', () => {
