@@ -2,7 +2,6 @@ import { Component, computed, inject } from '@angular/core';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
 import { CombatReportClassStats, CombatReportParticipantStats } from '@core/api/models/ps2/combat-report.model';
 import { WorldActivity } from '@core/api/models/ps2/world.model';
-import { AlertView } from '../../../components/alert-card/alert-view';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { AlertCardComponent } from '../../../components/alert-card/alert-card.component';
 import { ActivityPopulationCardComponent } from './activity-population-card/activity-population-card.component';
