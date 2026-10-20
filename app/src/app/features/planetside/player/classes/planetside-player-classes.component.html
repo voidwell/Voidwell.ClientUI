@@ -6,6 +6,14 @@
           <a class="back" routerLink="/ps2/player/{{ player()?.id }}/classes">
             <mat-icon fontSet="mdi" fontIcon="mdi-arrow-left"></mat-icon>All classes
           </a>
+          <nav class="switcher" aria-label="Classes">
+            @for (other of classes; track other.profile.profileTypeId) {
+              <a class="switch" routerLink="/ps2/player/{{ player()?.id }}/classes/{{ other.profile.profileTypeId }}"
+                [class.active]="other === row" [attr.aria-current]="other === row ? 'page' : null">
+                <img [src]="other.profile.imageId | dgcImageUrl" alt="">{{ other.profile.name }}
+              </a>
+            }
+          </nav>
           <div class="hero">
             <div class="flex min-w-0 items-center gap-3">
               <img class="hero-image" [src]="row.profile.imageId | dgcImageUrl" alt="">
@@ -25,14 +33,6 @@
             <planetside-stat-tile label="Kills of Class" note="Enemies of this class killed">{{ row.stats.kills ?? 0 | number }}</planetside-stat-tile>
             <planetside-stat-tile label="Deaths to Class" note="Deaths to enemies of this class">{{ row.stats.deaths ?? 0 | number }}</planetside-stat-tile>
           </div>
-          <nav class="switcher" aria-label="Classes">
-            @for (other of classes; track other.profile.profileTypeId) {
-              <a class="switch" routerLink="/ps2/player/{{ player()?.id }}/classes/{{ other.profile.profileTypeId }}"
-                [class.active]="other === row" [attr.aria-current]="other === row ? 'page' : null">
-                <img [src]="other.profile.imageId | dgcImageUrl" alt="">{{ other.profile.name }}
-              </a>
-            }
-          </nav>
         </mat-card-content>
       </mat-card>
 

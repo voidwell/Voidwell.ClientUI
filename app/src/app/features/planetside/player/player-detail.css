@@ -210,9 +210,9 @@
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    margin-top: 16px;
-    padding-top: 16px;
-    border-top: 1px solid #344651;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #344651;
 }
 
 .switch {
