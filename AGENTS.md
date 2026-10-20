@@ -107,6 +107,57 @@ considering work finished.
 - Match surrounding code: 4-space indentation, single quotes, standalone components, Tailwind utilities plus Material
   theming (`styles/theme.scss`). PlanetSide-specific styles go in `styles/planetside.css`.
 
+## Design philosophy
+
+The redesigned PlanetSide player pages (character overview, sessions, directives, classes, vehicles, weapons) set the
+pattern. Follow it when building or reworking other pages.
+
+### Layout
+- Pages are built from `mat-card`s. A detail page opens with an overview card: a back link, a hero row (icon and name,
+  with a headline figure such as time played as a pill on the right), then a grid of stat tiles
+  (`planetside-stat-tile`). Shared detail styles live in `features/planetside/player/player-detail.css`.
+- Navigation is a drill-down: a list leads to a detail page, which links back to the list. Don't add switchers, extra
+  tabs or other ways to jump sideways. A summary card links on to its full page with a "View All →" link rather than
+  adding a tab for it.
+- Lists of comparable records are tables. Use a Material table (`mat-table` and `MatSort`), not a grid of tiles. Tiles
+  are for a single record's figures.
+
+### Tables
+- Keep every column users rely on. Use short headers (K/D, KPH, HSR) with a `title` that spells them out.
+- Figures are right-aligned with tabular numbers. Columns must line up: when something is missing beside a figure, such
+  as a grade, hold its space with an empty placeholder of the same width.
+- Sortable columns sort high to low on the first click. A value that can't be worked out shows "—" and sorts last.
+- On phones keep only the essential columns (the name plus one or two key figures) and hide the rest. A row may open to
+  show more, but only what the table hides at the current width; never repeat a visible column.
+- When a table is wider than its card, it scrolls sideways inside the card with the name column sticky; the page itself
+  never scrolls sideways.
+- Offer search and filters only when a list is long enough to need them (the weapons table's cut-off is 15 rows).
+
+### Visual language
+- Keep it quiet: low-contrast borders, faint tints, no decorative images. Show an image only when it helps identify
+  something. Keep meters and charts out of dense lists.
+- Inline links on a name or label, such as a weapon or an outfit, look like the text with a faint dashed underline
+  (`text-decoration: underline dashed`, colour at 25% of the text). Navigation links (back, View All) use the accent blue.
+- Small grey pills mark categories or tags (worlds, continents). The blue pill is for the hero's headline figure.
+- Purple marks Auraxium progress and finished achievements. Show progress compactly, for example the stripe on weapon
+  rows, rather than with a medal or badge.
+- Use solid colours for highlights that can stack. Material cells inherit their row's background, so a see-through tint
+  on a row applies twice, and a sticky cell will not match it.
+- Grades (`vw-grade`) appear only where the API gives a delta. Don't invent a grade or show a placeholder letter.
+
+### Figures
+- Progress bars never overflow: the bar stops at 100%, while the count may run past the target ("1,250 / 1,000").
+  Don't add a "to go" figure.
+- Don't add up stats that overlap; vehicle pilot and gunner time overlap, for example. When a figure's meaning isn't
+  obvious, say what it counts in a tile note, such as "Kills of Class: enemies of this class killed".
+- Put figure math in shared helpers (`stat-math.ts`: `ratio`, `perHour`, `perMinute`, `hours`) so every page computes
+  them the same way. Those helpers return `null` rather than divide by zero.
+
+### Checking work
+- Check every visual change in a browser at desktop (1440px) and phone (390px) widths, with realistic data that
+  includes the awkward cases (long names, missing grades, zero deaths, empty lists).
+- On a phone, content wraps or stacks and figures stay right-aligned. Nothing should scroll the page sideways.
+
 ## Deployment
 
 - Docker multi-stage build (`Dockerfile`): builds the app, installs server deps, runs `node server.js` on `SERVER_PORT`
