@@ -139,16 +139,8 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     display: flex;
     align-items: center;
     gap: 8px;
-    width: 195px;
+    width: 160px;
     min-width: 0;
-}
-
-.weapon img,
-.no-image {
-    flex: none;
-    width: 40px;
-    height: 20px;
-    object-fit: contain;
 }
 
 .weapon-name {
@@ -282,12 +274,6 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
 
     .weapon {
         width: auto;
-    }
-
-    /* The name matters more than the picture on a phone */
-    .weapon img,
-    .no-image {
-        display: none;
     }
 
     td.mat-mdc-cell,

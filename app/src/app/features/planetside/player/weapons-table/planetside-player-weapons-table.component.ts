@@ -7,7 +7,6 @@ import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-
 import { MatIcon } from '@angular/material/icon';
 import { CharacterDetailsWeaponStat } from '@core/api/models/ps2/character.model';
 import { GradeComponent } from '../../components/vw-grade/vw-grade.component';
-import { DgcImageUrlPipe } from '../../pipes/dgc-image-url.pipe';
 import { PlanetsideStatTileComponent } from '../stat-tile/planetside-stat-tile.component';
 import { hours, perHour, perMinute, ratio } from '../stat-math';
 import { PlayerWeaponsDataSource } from './planetside-player-weapons-table.data-source';
@@ -28,7 +27,7 @@ export type WeaponKind = 'all' | 'infantry' | 'vehicle';
     imports: [
         MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
         MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatButtonToggleGroup, MatButtonToggle, MatIcon, RouterLink,
-        GradeComponent, PlanetsideStatTileComponent, NgTemplateOutlet, DecimalPipe, PercentPipe, DgcImageUrlPipe
+        GradeComponent, PlanetsideStatTileComponent, NgTemplateOutlet, DecimalPipe, PercentPipe
     ]
 })
 export class PlanetsidePlayerWeaponsTableComponent {
