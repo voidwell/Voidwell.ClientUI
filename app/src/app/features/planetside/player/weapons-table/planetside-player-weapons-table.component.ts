@@ -34,7 +34,7 @@ export type WeaponKind = 'all' | 'infantry' | 'vehicle';
 export class PlanetsidePlayerWeaponsTableComponent {
     readonly weapons = input.required<CharacterDetailsWeaponStat[]>();
 
-    readonly columns = ['name', 'kills', 'kdr', 'accuracy', 'hsr', 'kph', 'time', 'expand'];
+    readonly columns = ['name', 'kills', 'vehicleKills', 'deaths', 'kdr', 'accuracy', 'hsr', 'kph', 'vehicleKph', 'spm', 'time', 'lpk', 'spk', 'expand'];
 
     readonly ratio = ratio;
     readonly perHour = perHour;

@@ -13,12 +13,17 @@ import { perHour, perMinute, ratio } from '../stat-math';
 const SORT_VALUES: Record<string, (weapon: CharacterDetailsWeaponStat) => SortValue> = {
     name: weapon => weapon.name,
     kills: weapon => weapon.stats.kills,
+    vehicleKills: weapon => weapon.stats.vehicleKills,
+    deaths: weapon => weapon.stats.deaths,
     kdr: weapon => ratio(weapon.stats.kills, weapon.stats.deaths),
     accuracy: weapon => ratio(weapon.stats.hitCount, weapon.stats.fireCount),
     hsr: weapon => ratio(weapon.stats.headshots, weapon.stats.kills),
     kph: weapon => perHour(weapon.stats.kills, weapon.stats.playTime),
+    vehicleKph: weapon => perHour(weapon.stats.vehicleKills, weapon.stats.playTime),
     spm: weapon => perMinute(weapon.stats.score, weapon.stats.playTime),
-    time: weapon => weapon.stats.playTime
+    time: weapon => weapon.stats.playTime,
+    lpk: weapon => ratio(weapon.stats.hitCount, weapon.stats.kills),
+    spk: weapon => ratio(weapon.stats.fireCount, weapon.stats.kills)
 };
 
 /** The weapons table's rows, sorted by its sort header; the rows change as its filters do. */

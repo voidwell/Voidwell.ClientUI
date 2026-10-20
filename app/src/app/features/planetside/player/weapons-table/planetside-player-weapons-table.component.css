@@ -65,12 +65,12 @@ mat-button-toggle-group {
 
 table {
     --mat-table-background-color: transparent;
+    --mat-table-row-item-label-text-size: 13px;
     --mat-table-header-headline-color: #8a9ba1;
     --mat-table-header-headline-size: 11px;
     --mat-table-header-headline-weight: 500;
-    --mat-table-header-headline-tracking: .06em;
+    --mat-table-header-headline-tracking: .03em;
     --mat-table-row-item-label-text-color: #edeff0;
-    --mat-table-row-item-label-text-size: 14px;
     --mat-table-row-item-outline-color: #344651;
     --mat-table-header-container-height: 40px;
     --mat-table-row-item-container-height: 52px;
@@ -84,7 +84,7 @@ th.mat-mdc-header-cell {
 
 td.mat-mdc-cell,
 th.mat-mdc-header-cell {
-    padding: 0 10px;
+    padding: 0 6px;
     text-align: right;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
@@ -95,10 +95,24 @@ th.mat-mdc-header-cell ::ng-deep .mat-sort-header-container {
     justify-content: flex-end;
 }
 
+/* The weapon column stays in view while the figures scroll sideways */
 .mat-column-name {
-    width: 32%;
-    max-width: 0;
+    position: sticky;
+    left: 0;
+    /* Above the sort headers, which make their own stacking layer */
+    z-index: 3;
+    background: #2b3942;
     text-align: left !important;
+}
+
+/* Material gives header cells the table's (transparent) background with a more specific rule */
+.mat-mdc-table .mat-column-name {
+    background: #2b3942;
+}
+
+.mat-mdc-table .weapon-row:hover .mat-column-name,
+.mat-mdc-table .weapon-row.open .mat-column-name {
+    background: #32434d;
 }
 
 th.mat-column-name ::ng-deep .mat-sort-header-container {
@@ -106,7 +120,7 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
 }
 
 .mat-column-expand {
-    width: 40px;
+    width: 32px;
     padding-right: 4px !important;
 }
 
@@ -120,18 +134,20 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     background: rgba(255, 255, 255, .04);
 }
 
+/* Table cells ignore max-width, so the weapon's own box sets the column's width; long names end in an ellipsis */
 .weapon {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    width: 195px;
     min-width: 0;
 }
 
 .weapon img,
 .no-image {
     flex: none;
-    width: 56px;
-    height: 28px;
+    width: 40px;
+    height: 20px;
     object-fit: contain;
 }
 
@@ -167,12 +183,12 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     display: inline-flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 6px;
+    gap: 4px;
 }
 
 .grade-badge {
-    min-width: 30px;
-    padding: 1px 5px;
+    min-width: 26px;
+    padding: 1px 4px;
     border-radius: 4px;
     background: rgba(255, 255, 255, .06);
     font-size: 11px;
@@ -242,23 +258,30 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     text-align: center;
 }
 
-/* Fewer columns as the table narrows; the open row shows the rest */
-@media (max-width: 1100px) {
-    .mat-column-hsr,
-    .mat-column-time {
-        display: none;
-    }
-}
-
+/* Every column shows (scrolling sideways when it must) except on phones, which keep the essentials; the open row shows the rest */
 @media (max-width: 700px) {
+    .mat-column-vehicleKills,
+    .mat-column-deaths,
     .mat-column-accuracy,
-    .mat-column-kph {
+    .mat-column-hsr,
+    .mat-column-kph,
+    .mat-column-vehicleKph,
+    .mat-column-spm,
+    .mat-column-time,
+    .mat-column-lpk,
+    .mat-column-spk {
         display: none;
     }
 
     /* The name takes whatever the remaining columns leave */
     .mat-column-name {
+        position: static;
         width: 100%;
+        max-width: 0;
+    }
+
+    .weapon {
+        width: auto;
     }
 
     /* The name matters more than the picture on a phone */
