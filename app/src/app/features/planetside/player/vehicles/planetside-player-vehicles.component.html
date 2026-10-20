@@ -7,16 +7,6 @@
           <a class="back" routerLink="/ps2/player/{{ player()?.id }}/vehicles">
             <mat-icon fontSet="mdi" fontIcon="mdi-arrow-left"></mat-icon>All vehicles
           </a>
-          @if (played().length > 1) {
-            <nav class="switcher" aria-label="Vehicles">
-              @for (other of played(); track other.vehicle.id) {
-                <a class="switch" routerLink="/ps2/player/{{ player()?.id }}/vehicles/{{ other.vehicle.id }}"
-                  [class.active]="other === row" [attr.aria-current]="other === row ? 'page' : null">
-                  <img [src]="other.vehicle.imageId | dgcImageUrl" alt="">{{ other.vehicle.name }}
-                </a>
-              }
-            </nav>
-          }
           <div class="hero">
             <div class="flex min-w-0 items-center gap-3">
               <img class="hero-image" [src]="row.vehicle.imageId | dgcImageUrl" alt="">

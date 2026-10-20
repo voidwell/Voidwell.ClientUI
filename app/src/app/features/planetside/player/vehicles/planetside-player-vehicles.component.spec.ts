@@ -50,7 +50,6 @@ describe('PlanetsidePlayerVehiclesComponent', () => {
         const rows = component.vehicles() ?? [];
 
         expect(rows.map(row => [row.vehicle.name, row.playTime / HOUR])).toEqual([['Galaxy', 167], ['Scythe', 115], ['Magrider', 20], ['Valkyrie', 0]]);
-        expect(component.played().map(row => row.vehicle.name)).toEqual(['Galaxy', 'Scythe', 'Magrider']);
     });
 
     it('shows the selected vehicle with its own weapons', () => {

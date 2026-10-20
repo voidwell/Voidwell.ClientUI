@@ -204,45 +204,6 @@
     margin-top: 20px;
 }
 
-/* Detail: links to the other classes or vehicles */
-
-.switcher {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 16px;
-    padding-bottom: 16px;
-    border-bottom: 1px solid #344651;
-}
-
-.switch {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 10px 4px 6px;
-    border: 1px solid #3e505a;
-    border-radius: 999px;
-    color: #b4bfc3;
-    font-size: 13px;
-    text-decoration: none;
-}
-
-.switch img {
-    width: 20px;
-    height: 20px;
-    object-fit: contain;
-}
-
-.switch:hover {
-    background: rgba(255, 255, 255, .04);
-}
-
-.switch.active {
-    border-color: #6dbbff;
-    background: rgba(59, 130, 246, .15);
-    color: #edeff0;
-}
-
 /* Detail: the weapons table scrolls sideways on narrow screens rather than squeezing its columns */
 
 .weapons {
