@@ -73,6 +73,43 @@ describe('PlanetsidePlayerWeaponsTableComponent', () => {
         expect(fixture.nativeElement.querySelectorAll('tr.weapon-row td.mat-column-kdr')[3].textContent.trim()).toBe('—');
     });
 
+    it('sorts a graded column by its grades on the third and fourth clicks, ungraded weapons last', () => {
+        const fixture = setup([
+            weapon(1, 'A', 500, 100, {}, -1),
+            weapon(2, 'B', 100, 100, {}, 2),
+            weapon(3, 'C', 300, 100),
+            weapon(4, 'D', 200, 100, {}, 0.5)
+        ]);
+        const header = fixture.nativeElement.querySelector('th.mat-column-kdr') as HTMLElement;
+        const table = fixture.nativeElement.querySelector('table') as HTMLElement;
+        const click = () => {
+            header.click();
+            fixture.detectChanges();
+            return names(fixture.nativeElement);
+        };
+
+        expect(click()).toEqual(['A', 'C', 'D', 'B']);
+        expect(click()).toEqual(['B', 'D', 'C', 'A']);
+        expect(table.dataset['gradeSort']).toBeUndefined();
+        expect(click()).toEqual(['B', 'D', 'A', 'C']);
+        expect(table.dataset['gradeSort']).toBe('kdr');
+        expect(click()).toEqual(['A', 'D', 'B', 'C']);
+        expect(click()).toEqual(['A', 'C', 'D', 'B']);
+        expect(table.dataset['gradeSort']).toBeUndefined();
+    });
+
+    it('drops back to sorting by figure on another column', () => {
+        const fixture = setup([weapon(1, 'A', 500, 100, {}, -1), weapon(2, 'B', 100, 100, {}, 2)]);
+        const kdr = fixture.nativeElement.querySelector('th.mat-column-kdr') as HTMLElement;
+        [1, 2, 3].forEach(() => kdr.click());
+        (fixture.nativeElement.querySelector('th.mat-column-kills') as HTMLElement).click();
+        kdr.click();
+        fixture.detectChanges();
+
+        expect(names(fixture.nativeElement)).toEqual(['A', 'B']);
+        expect((fixture.nativeElement.querySelector('table') as HTMLElement).dataset['gradeSort']).toBeUndefined();
+    });
+
     it('grades a figure only when the API gave a delta for it', () => {
         const fixture = setup(WEAPONS.slice(0, 2));
         const kdCells = fixture.nativeElement.querySelectorAll('tr.weapon-row td.mat-column-kdr');

@@ -292,3 +292,9 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
         align-items: stretch;
     }
 }
+
+/* A graded column sorted by its grades rather than its figures rings its badges. */
+:is([data-grade-sort=kdr] .mat-column-kdr, [data-grade-sort=accuracy] .mat-column-accuracy, [data-grade-sort=hsr] .mat-column-hsr,
+    [data-grade-sort=kph] .mat-column-kph, [data-grade-sort=vehicleKph] .mat-column-vehicleKph) .grade-badge {
+    box-shadow: inset 0 0 0 1px rgba(237, 239, 240, .45);
+}
