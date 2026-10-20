@@ -162,6 +162,8 @@
     <span>{{ value }}</span>
     @if (delta != null) {
       <vw-grade class="grade-badge" [delta]="delta"></vw-grade>
+    } @else {
+      <span class="grade-badge grade-placeholder" aria-hidden="true"></span>
     }
   </span>
 </ng-template>

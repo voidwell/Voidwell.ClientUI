@@ -180,12 +180,22 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
 }
 
 .grade-badge {
-    min-width: 26px;
-    padding: 1px 4px;
+    /* Wide enough for the longest grade (A++), so every badge, and so every figure beside one, lines up */
+    min-width: 28px;
+    padding: 1px 2px;
     border-radius: 4px;
     background: rgba(255, 255, 255, .06);
     font-size: 11px;
     text-align: center;
+}
+
+/* Holds a missing grade's place so ungraded figures line up with the graded ones; tiles stand alone and need none */
+.grade-placeholder {
+    background: none;
+}
+
+.tiles .grade-placeholder {
+    display: none;
 }
 
 .expand-button {

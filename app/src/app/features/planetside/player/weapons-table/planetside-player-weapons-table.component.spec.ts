@@ -115,6 +115,7 @@ describe('PlanetsidePlayerWeaponsTableComponent', () => {
         const kdCells = fixture.nativeElement.querySelectorAll('tr.weapon-row td.mat-column-kdr');
 
         expect(kdCells[0].querySelector('vw-grade')).toBeNull();
+        expect(kdCells[0].querySelector('.grade-placeholder')).not.toBeNull();
         expect(kdCells[1].querySelector('vw-grade').textContent).toBe('A');
     });
 
