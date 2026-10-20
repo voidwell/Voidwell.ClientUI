@@ -137,14 +137,35 @@ describe('PlanetsidePlayerWeaponsTableComponent', () => {
         rows[0].click();
         fixture.detectChanges();
         expect(fixture.nativeElement.querySelectorAll('.detail').length).toBe(1);
-        expect(fixture.nativeElement.querySelector('.detail .item-link').getAttribute('href')).toBe('/ps2/item/2');
+        expect(fixture.nativeElement.querySelector('tr.weapon-row.open .weapon-name').textContent.trim()).toBe('Gauss SAW');
 
         rows[1].click();
         fixture.detectChanges();
-        expect(fixture.nativeElement.querySelector('.detail .item-link').getAttribute('href')).toBe('/ps2/item/1');
+        expect(fixture.nativeElement.querySelector('tr.weapon-row.open .weapon-name').textContent.trim()).toBe('Orion');
 
         rows[1].click();
         fixture.detectChanges();
         expect(fixture.nativeElement.querySelector('.detail')).toBeNull();
+    });
+
+    it('links the weapon name to its page without opening the row', () => {
+        const fixture = setup(WEAPONS.slice(0, 1));
+        const link = fixture.nativeElement.querySelector('tr.weapon-row .weapon-link') as HTMLAnchorElement;
+
+        expect(link.getAttribute('href')).toBe('/ps2/item/1');
+        link.click();
+        fixture.detectChanges();
+        expect(fixture.componentInstance.expanded()).toBeNull();
+    });
+
+    it('marks the open row\'s tiles that repeat a column, which wide screens hide', () => {
+        const fixture = setup(WEAPONS.slice(0, 1));
+        (fixture.nativeElement.querySelector('tr.weapon-row') as HTMLElement).click();
+        fixture.detectChanges();
+        const labels = (selector: string) => Array.from(fixture.nativeElement.querySelectorAll(selector) as NodeListOf<HTMLElement>)
+            .map(tile => tile.getAttribute('label'));
+
+        expect(labels('.tiles planetside-stat-tile:not(.in-table)')).toEqual(['Score', 'Headshots', 'Shots Fired', 'Shots Hit']);
+        expect(labels('.tiles .in-table')).toContain('Accuracy');
     });
 });

@@ -23,7 +23,7 @@
         <div class="weapon">
           <div class="min-w-0">
             <div class="weapon-name">
-              <span class="truncate">{{ w.name || 'Unknown (' + w.itemId + ')' }}</span>
+              <a class="truncate weapon-link" routerLink="/ps2/item/{{ w.itemId }}" (click)="$event.stopPropagation()">{{ w.name || 'Unknown (' + w.itemId + ')' }}</a>
             </div>
             <div class="weapon-category">{{ w.category }}</div>
           </div>
@@ -117,24 +117,31 @@
         @if (expanded() === w.itemId) {
           @let s = w.stats;
           <div class="detail">
+            <!-- The figures the table hides on phones, then the ones it never shows -->
             <div class="tiles">
-              <planetside-stat-tile label="Deaths">{{ s.deaths | number }}</planetside-stat-tile>
-              <planetside-stat-tile label="Vehicle Kills">{{ s.vehicleKills | number }}</planetside-stat-tile>
-              <planetside-stat-tile label="Vehicle Kills / Hour">
-                <ng-container *ngTemplateOutlet="graded; context: { value: (perHour(s.vehicleKills, s.playTime) | number: '1.2-2') ?? '—', delta: s.vehicleKphDelta }"></ng-container>
+              <planetside-stat-tile class="in-table" label="Vehicle Kills">{{ s.vehicleKills | number }}</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Deaths">{{ s.deaths | number }}</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Accuracy">
+                <ng-container *ngTemplateOutlet="graded; context: { value: (ratio(s.hitCount, s.fireCount) | percent: '1.1-1') ?? '—', delta: s.accuracyDelta }"></ng-container>
               </planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Headshot Ratio">
+                <ng-container *ngTemplateOutlet="graded; context: { value: (ratio(s.headshots, s.kills) | percent: '1.1-1') ?? '—', delta: s.hsrDelta }"></ng-container>
+              </planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Kills / Hour">
+                <ng-container *ngTemplateOutlet="graded; context: { value: (perHour(s.kills, s.playTime) | number: '1.1-1') ?? '—', delta: s.kphDelta }"></ng-container>
+              </planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Vehicle Kills / Hour">
+                <ng-container *ngTemplateOutlet="graded; context: { value: (perHour(s.vehicleKills, s.playTime) | number: '1.1-1') ?? '—', delta: s.vehicleKphDelta }"></ng-container>
+              </planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Score / Min">{{ (perMinute(s.score, s.playTime) | number: '1.0-0') ?? '—' }}</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Time">{{ hours(s.playTime) | number: '1.1-1' }}h</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Landed / Kill">{{ (ratio(s.hitCount, s.kills) | number: '1.1-1') ?? '—' }}</planetside-stat-tile>
+              <planetside-stat-tile class="in-table" label="Shots / Kill">{{ (ratio(s.fireCount, s.kills) | number: '1.1-1') ?? '—' }}</planetside-stat-tile>
               <planetside-stat-tile label="Score">{{ s.score | number }}</planetside-stat-tile>
-              <planetside-stat-tile label="Score / Min">{{ (perMinute(s.score, s.playTime) | number: '1.0-0') ?? '—' }}</planetside-stat-tile>
               <planetside-stat-tile label="Headshots">{{ s.headshots | number }}</planetside-stat-tile>
               <planetside-stat-tile label="Shots Fired">{{ s.fireCount | number }}</planetside-stat-tile>
               <planetside-stat-tile label="Shots Hit">{{ s.hitCount | number }}</planetside-stat-tile>
-              <planetside-stat-tile label="Landed / Kill">{{ (ratio(s.hitCount, s.kills) | number: '1.1-1') ?? '—' }}</planetside-stat-tile>
-              <planetside-stat-tile label="Shots / Kill">{{ (ratio(s.fireCount, s.kills) | number: '1.1-1') ?? '—' }}</planetside-stat-tile>
-              <planetside-stat-tile label="Auraxium" [note]="(s.kills | number) + ' / ' + (auraxiumKills | number) + ' kills'">
-                {{ auraxiumProgress(w) | percent: '1.0-0' }}
-              </planetside-stat-tile>
             </div>
-            <a class="item-link" routerLink="/ps2/item/{{ w.itemId }}">Weapon page &rarr;</a>
           </div>
         }
       </td>

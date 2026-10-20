@@ -112,7 +112,7 @@ th.mat-mdc-header-cell ::ng-deep .mat-sort-header-container {
 
 .mat-mdc-table .weapon-row:hover .mat-column-name,
 .mat-mdc-table .weapon-row.open .mat-column-name {
-    background: #32434d;
+    background: color-mix(in srgb, #fff 8%, #2b3942);
 }
 
 th.mat-column-name ::ng-deep .mat-sort-header-container {
@@ -129,9 +129,10 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     transition: background-color .15s;
 }
 
+/* Solid, since the cells inherit it and the sticky name cell has to match */
 .weapon-row:hover,
 .weapon-row.open {
-    background: rgba(255, 255, 255, .04);
+    background: color-mix(in srgb, #fff 8%, #2b3942);
 }
 
 /* Table cells ignore max-width, so the weapon's own box sets the column's width; long names end in an ellipsis */
@@ -236,12 +237,22 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     gap: 10px;
 }
 
-.item-link {
-    display: inline-block;
-    margin-top: 12px;
-    color: #6dbbff;
-    font-size: 13px;
-    text-decoration: none;
+.weapon-link {
+    color: inherit;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+    text-underline-offset: 3px;
+}
+
+.weapon-link:hover {
+    opacity: .8;
+}
+
+/* The open row repeats a column only where the table hides it */
+@media (min-width: 701px) {
+    .tiles .in-table {
+        display: none;
+    }
 }
 
 .empty {
