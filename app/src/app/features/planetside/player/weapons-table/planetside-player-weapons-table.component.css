@@ -240,7 +240,7 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
 .weapon-link {
     color: inherit;
     text-decoration: underline dashed;
-    text-decoration-color: color-mix(in srgb, currentColor 50%, transparent);
+    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
     text-underline-offset: 3px;
 }
 
