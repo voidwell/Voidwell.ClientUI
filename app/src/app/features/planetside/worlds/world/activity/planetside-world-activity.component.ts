@@ -1,4 +1,4 @@
-import { Component, inject, effect, untracked } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
 import { CombatReportClassStats, CombatReportParticipantStats } from '@core/api/models/ps2/combat-report.model';
 import { WorldActivity } from '@core/api/models/ps2/world.model';
@@ -41,60 +41,34 @@ export interface ActivityView extends Omit<WorldActivity, 'activityPeriodStart' 
 export class PlanetsideWorldActivityComponent {
     private parent = inject(PlanetsideWorldComponent);
 
-    activity: ActivityView;
-    alerts: AlertView[];
-    isLoading: boolean = false;
+    /** The world's activity over the last hour, refreshed by the world page; `null` while loading. */
+    readonly activity = computed<ActivityView | null>(() => {
+        const activity = this.parent.activity();
+        if (!activity) {
+            return null;
+        }
 
-    vsClasses: CombatReportClassStats[];
-    ncClasses: CombatReportClassStats[];
-    trClasses: CombatReportClassStats[];
-    nsClasses: CombatReportClassStats[];
+        const periodStart = new Date(activity.activityPeriodStart);
+        const periodEnd = new Date(activity.activityPeriodEnd);
+        const activityDurationMinutes = (periodEnd.getTime() - periodStart.getTime()) / (60000);
+
+        return {
+            ...activity,
+            activityPeriodStart: periodStart,
+            activityPeriodEnd: periodEnd,
+            topPlayers: (activity.topPlayers ?? []).map(player => this.toTopPlayerView(player, activityDurationMinutes))
+        };
+    });
+
+    readonly alerts = computed(() => this.parent.alerts() ?? []);
+
+    /** Class stats per faction: VS, NC and TR. */
+    readonly factionClasses = computed<CombatReportClassStats[][]>(() => {
+        const classStats = this.activity()?.classStats ?? [];
+        return [1, 2, 3].map(factionId => classStats.filter(t => t.profile.factionId === factionId));
+    });
 
     objectKeys = Object.keys;
-
-    constructor() {
-        this.isLoading = true;
-
-        effect(() => {
-            const activity = this.parent.activity();
-
-            untracked(() => {
-                if (!activity) {
-                    return;
-                }
-
-                const periodStart = new Date(activity.activityPeriodStart);
-                const periodEnd = new Date(activity.activityPeriodEnd);
-                const activityDurationMinutes = (periodEnd.getTime() - periodStart.getTime()) / (60000);
-
-                this.vsClasses = activity.classStats.filter(t => t.profile.factionId === 1);
-                this.ncClasses = activity.classStats.filter(t => t.profile.factionId === 2);
-                this.trClasses = activity.classStats.filter(t => t.profile.factionId === 3);
-                this.nsClasses = activity.classStats.filter(t => t.profile.factionId === 4);
-
-                this.activity = {
-                    ...activity,
-                    activityPeriodStart: periodStart,
-                    activityPeriodEnd: periodEnd,
-                    topPlayers: activity.topPlayers.map(player => this.toTopPlayerView(player, activityDurationMinutes))
-                };
-
-                this.isLoading = false;
-            });
-        });
-
-        effect(() => {
-            const alerts = this.parent.alerts();
-
-            untracked(() => {
-                if (alerts === null) {
-                    return;
-                }
-
-                this.alerts = alerts;
-            });
-        });
-    }
 
     private toTopPlayerView(player: CombatReportParticipantStats, activityDurationMinutes: number): TopPlayerView {
         const loginDate = player.loginDate ? new Date(player.loginDate) : null;
@@ -116,7 +90,7 @@ export class PlanetsideWorldActivityComponent {
 
     /** Top experience earners of one stat, per faction. */
     experience(stat: string): WorldActivityExperienceFactions {
-        return (this.activity.topExperience as unknown as Record<string, WorldActivityExperienceFactions>)[stat];
+        return (this.activity()?.topExperience as unknown as Record<string, WorldActivityExperienceFactions>)[stat];
     }
 
     experiencePlayers(stat: string, faction: string): WorldActivityExperienceItem[] {

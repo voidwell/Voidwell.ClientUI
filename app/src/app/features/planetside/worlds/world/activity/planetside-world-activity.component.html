@@ -1,8 +1,8 @@
-<vw-loader [loading]="isLoading"></vw-loader>
-@if (!isLoading && activity) {
+<vw-loader [loading]="!activity()"></vw-loader>
+@if (activity(); as activity) {
   <div class="world-activity mt-6">
     <div class="alerts-list flex flex-col">
-      @for (alert of alerts | orderBy: 'startDate'; track alert) {
+      @for (alert of alerts() | orderBy: 'startDate'; track alert) {
         <vw-alert-card [alert]="alert" [focusEvent]="true"></vw-alert-card>
       }
     </div>
@@ -85,7 +85,7 @@
       <mat-card class="card class-stats">
         <mat-card-title>Classes</mat-card-title>
         <mat-card-content>
-          @for (classStats of [vsClasses, ncClasses, trClasses]; track classStats) {
+          @for (classStats of factionClasses(); track $index) {
             <div class="class-stats-table">
               <table>
                 <tr>
