@@ -164,7 +164,7 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     bottom: 0;
     left: 0;
     width: 3px;
-    background: rgba(168, 85, 247, .55);
+    background: rgba(168, 85, 247, .3);
 }
 
 .auraxium-bar.done {
