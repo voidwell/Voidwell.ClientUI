@@ -33,22 +33,6 @@
     opacity: 0.8;
 }
 
-.faction-icon {
-    color: #b0b3b5;
-}
-
-.faction-icon.faction-vs {
-    color: #b565e6;
-}
-
-.faction-icon.faction-nc {
-    color: #4a90e2;
-}
-
-.faction-icon.faction-tr {
-    color: #e85a5a;
-}
-
 .player-divider {
     width: 1px;
     height: 16px;

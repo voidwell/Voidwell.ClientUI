@@ -6,12 +6,13 @@ import { NgClass, DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { Breadcrumb, BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
+import { FactionIconComponent } from '../../components/faction-icon/faction-icon.component';
 
 @Component({
     selector: 'character-card',
     templateUrl: './character-card.component.html',
     styleUrls: ['./character-card.component.css'],
-    imports: [LoaderComponent, MatIcon, RouterLink, MatCard, NgClass, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardFooter, BreadcrumbsComponent, DatePipe]
+    imports: [LoaderComponent, MatIcon, RouterLink, MatCard, NgClass, MatCardTitle, MatCardSubtitle, MatCardContent, MatCardFooter, BreadcrumbsComponent, FactionIconComponent, DatePipe]
 })
 
 export class CharacterCardComponent {

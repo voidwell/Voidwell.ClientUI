@@ -12,8 +12,8 @@
       <div class="player-summary flex items-center gap-3">
         <span>BR {{playerData.battleRank}}</span>
         <span class="player-divider"></span>
-        <span class="flex items-center gap-1">
-          <mat-icon class="faction-icon" fontSet="mdi" fontIcon="mdi-shield" [ngClass]="{'faction-vs': playerData.factionId===1, 'faction-nc': playerData.factionId===2, 'faction-tr': playerData.factionId===3}"></mat-icon>
+        <span class="flex items-center gap-2">
+          <vw-faction-icon [factionId]="playerData.factionId"></vw-faction-icon>
           <span>{{playerData.world}}</span>
         </span>
       </div>
