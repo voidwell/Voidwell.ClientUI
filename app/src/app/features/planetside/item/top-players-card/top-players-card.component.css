@@ -1,0 +1,103 @@
+:host {
+    display: block;
+}
+
+.card-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.view-all {
+    color: #6dbbff;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+
+th {
+    padding: 8px 6px;
+    border-bottom: 1px solid #344651;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .03em;
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+td {
+    height: 44px;
+    padding: 0 6px;
+    border-bottom: 1px solid #344651;
+    text-align: right;
+    white-space: nowrap;
+}
+
+.rank {
+    width: 28px;
+    color: #8a9ba1;
+    text-align: left;
+}
+
+.player {
+    text-align: left;
+}
+
+.player-link {
+    color: inherit;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
+    text-underline-offset: 3px;
+}
+
+.player-link:hover {
+    opacity: .8;
+}
+
+.faction-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: #b0b3b5;
+}
+
+.faction-dot.faction-1 {
+    background: #b565e6;
+}
+
+.faction-dot.faction-2 {
+    background: #4a90e2;
+}
+
+.faction-dot.faction-3 {
+    background: #e85a5a;
+}
+
+.muted {
+    margin: 0;
+    color: #8a9ba1;
+}
+
+@media (max-width: 700px) {
+    .wide {
+        display: none;
+    }
+
+    /* The name takes whatever the figures leave, ending in an ellipsis */
+    .player {
+        width: 100%;
+        max-width: 0;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+}

@@ -1,0 +1,17 @@
+@let c = chart();
+<svg [attr.viewBox]="viewBox" role="img" aria-label="Damage by range">
+  @for (tick of c.yTicks; track tick.label) {
+    <line class="grid" [attr.x1]="left" [attr.x2]="right" [attr.y1]="tick.y" [attr.y2]="tick.y"></line>
+    <text class="tick" [attr.x]="left - 8" [attr.y]="tick.y + 4" text-anchor="end">{{ tick.label }}</text>
+  }
+  @for (tick of c.xTicks; track tick.label) {
+    <line class="grid" [attr.x1]="tick.x" [attr.x2]="tick.x" [attr.y1]="top" [attr.y2]="bottom"></line>
+    <text class="tick" [attr.x]="tick.x" [attr.y]="height - 8" text-anchor="middle">{{ tick.label }}</text>
+  }
+  <polygon class="area" [attr.points]="c.area"></polygon>
+  <polyline class="line" [attr.points]="c.points"></polyline>
+  @for (mark of c.marks; track mark.text) {
+    <circle class="dot" [attr.cx]="mark.x" [attr.cy]="mark.y" r="4"></circle>
+    <text class="mark" [attr.x]="mark.x + (mark.anchor === 'start' ? 8 : -8)" [attr.y]="mark.y - 10" [attr.text-anchor]="mark.anchor">{{ mark.text }}</text>
+  }
+</svg>

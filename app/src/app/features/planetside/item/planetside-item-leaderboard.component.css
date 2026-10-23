@@ -1,42 +1,267 @@
-﻿.item-leaderboard {
-    overflow: hidden;
+:host {
+    display: block;
 }
 
-.mat-mdc-table {
-    max-height: 800px;
-    overflow: auto;
+mat-card-title {
+    font-size: 14px;
 }
 
-.mat-mdc-table .mat-mdc-row {
-    min-height: 25px;
+.muted {
+    margin: 0;
+    color: #8a9ba1;
 }
 
-.character-name a {
-    text-decoration: none;
-    color: #fff;
+/* Table */
+
+.table-wrap {
+    overflow-x: auto;
+    transition: opacity .15s;
 }
 
-.mat-column-idx {
-    max-width: 50px;
+.table-wrap.reloading {
+    opacity: .5;
 }
 
-.mat-column-name {
-    overflow: hidden;
+table {
+    --mat-table-background-color: transparent;
+    --mat-table-row-item-label-text-size: 13px;
+    --mat-table-header-headline-color: #8a9ba1;
+    --mat-table-header-headline-size: 11px;
+    --mat-table-header-headline-weight: 500;
+    --mat-table-header-headline-tracking: .03em;
+    --mat-table-row-item-label-text-color: #edeff0;
+    --mat-table-row-item-outline-color: #344651;
+    --mat-table-header-container-height: 40px;
+    --mat-table-row-item-container-height: 44px;
+    width: 100%;
+}
+
+th.mat-mdc-header-cell {
+    text-transform: uppercase;
     white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
-.mat-column-kills,
-.mat-column-vehicleKills,
-.mat-column-deaths,
-.mat-column-kdr,
-.mat-column-kdrDelta,
-.mat-column-aga,
-.mat-column-accuracy,
-.mat-column-accuracyDelta,
-.mat-column-hsr,
-.mat-column-hsrDelta,
-.mat-column-kph,
-.mat-column-kphDelta {
-    max-width: 80px;
+td.mat-mdc-cell,
+th.mat-mdc-header-cell {
+    padding: 0 6px;
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+/* Numeric headers keep their arrow on the left so the labels line up with the figures */
+th.mat-mdc-header-cell ::ng-deep .mat-sort-header-container {
+    justify-content: flex-end;
+}
+
+.mat-column-rank {
+    width: 40px;
+    color: #8a9ba1;
+    text-align: left !important;
+}
+
+/* The player column stays in view while the figures scroll sideways */
+.mat-column-name {
+    position: sticky;
+    left: 0;
+    /* Above the sort headers, which make their own stacking layer */
+    z-index: 3;
+    text-align: left !important;
+}
+
+/* Material gives header cells the table's (transparent) background with a more specific rule */
+.mat-mdc-table .mat-column-name {
+    background: #2b3942;
+}
+
+.player {
+    display: flex;
+    align-items: center;
+    width: 180px;
+    min-width: 0;
+}
+
+.player-link {
+    color: inherit;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
+    text-underline-offset: 3px;
+}
+
+.player-link:hover {
+    opacity: .8;
+}
+
+.faction-dot {
+    flex: none;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    border-radius: 50%;
+    background: #b0b3b5;
+}
+
+.faction-dot.faction-1 {
+    background: #b565e6;
+}
+
+.faction-dot.faction-2 {
+    background: #4a90e2;
+}
+
+.faction-dot.faction-3 {
+    background: #e85a5a;
+}
+
+/* Rows open on small screens only, where the table hides most columns */
+
+.mat-column-expand {
+    display: none;
+    width: 32px;
+    padding-right: 4px !important;
+}
+
+.detail-row {
+    display: none;
+}
+
+.expand-button {
+    display: inline-flex;
+    padding: 4px;
+    border: 0;
+    border-radius: 50%;
+    background: none;
+    color: #8a9ba1;
+    cursor: pointer;
+}
+
+.expand-button mat-icon {
+    transition: transform .15s;
+}
+
+.leaderboard-row.open .expand-button mat-icon {
+    transform: rotate(180deg);
+}
+
+.expand-button:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+.detail {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    padding: 4px 10px 16px;
+    background: rgba(255, 255, 255, .04);
+}
+
+.tile {
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .05);
+}
+
+.tile-label {
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.tile-value {
+    margin-top: 4px;
+    font-size: 20px;
+    font-weight: 500;
+}
+
+/* Pager */
+
+.pager {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 12px;
+    color: #8a9ba1;
+    font-size: 13px;
+}
+
+.pager strong {
+    color: #edeff0;
+    font-weight: 400;
+}
+
+.page-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #344651;
+    border-radius: 4px;
+    background: none;
+    color: #edeff0;
+    cursor: pointer;
+}
+
+.page-button:disabled {
+    color: #4d5f68;
+    cursor: default;
+}
+
+.page-button:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+/* Every column shows (scrolling sideways when it must) except on phones, which keep the essentials; an open row shows the rest */
+@media (max-width: 700px) {
+    .mat-column-vehicleKills,
+    .mat-column-deaths,
+    .mat-column-accuracy,
+    .mat-column-hsr,
+    .mat-column-kph,
+    .mat-column-time {
+        display: none;
+    }
+
+    .mat-column-expand {
+        display: table-cell;
+    }
+
+    .detail-row {
+        display: table-row;
+        height: 0 !important;
+    }
+
+    .detail-row:not(.open) td {
+        border-bottom-width: 0;
+    }
+
+    .detail-row td {
+        padding: 0 !important;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .leaderboard-row {
+        cursor: pointer;
+    }
+
+    /* Solid, since the cells inherit it and the sticky name cell has to match */
+    .leaderboard-row.open {
+        background: color-mix(in srgb, #fff 8%, #2b3942);
+    }
+
+    .mat-mdc-table .leaderboard-row.open .mat-column-name {
+        background: color-mix(in srgb, #fff 8%, #2b3942);
+    }
+
+    /* The name takes whatever the remaining columns leave */
+    .mat-column-name {
+        position: relative;
+        width: 100%;
+        max-width: 0;
+    }
+
+    .player {
+        width: auto;
+    }
 }

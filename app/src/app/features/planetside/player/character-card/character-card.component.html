@@ -32,19 +32,7 @@
       </div>
     </mat-card-content>
     <mat-card-footer>
-      <nav class="breadcrumbs" aria-label="Breadcrumb">
-        <ol>
-          @for (crumb of breadcrumbs(); track $index) {
-            <li>
-              @if (crumb.path) {
-                <a routerLink="/ps2/player/{{playerData.id}}/{{crumb.path}}">{{crumb.label}}</a>
-              } @else {
-                <span aria-current="page">{{crumb.label}}</span>
-              }
-            </li>
-          }
-        </ol>
-      </nav>
+      <vw-breadcrumbs [crumbs]="crumbs()"></vw-breadcrumbs>
     </mat-card-footer>
   </mat-card>
 } @else {
