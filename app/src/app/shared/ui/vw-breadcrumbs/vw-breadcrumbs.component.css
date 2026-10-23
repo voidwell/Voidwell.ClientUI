@@ -1,0 +1,44 @@
+:host {
+    display: block;
+}
+
+.breadcrumbs {
+    padding: 12px 16px;
+    background: rgba(0, 0, 0, .18);
+    font-size: 13px;
+}
+
+.breadcrumbs ol {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.breadcrumbs li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.breadcrumbs li + li::before {
+    content: '›';
+    color: rgba(255, 255, 255, .45);
+}
+
+.breadcrumbs a {
+    color: rgba(255, 255, 255, .75);
+    text-decoration: none;
+}
+
+.breadcrumbs a:hover {
+    color: #fff;
+}
+
+.breadcrumbs [aria-current] {
+    color: #fff;
+    font-weight: 500;
+}

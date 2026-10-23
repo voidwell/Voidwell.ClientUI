@@ -1,0 +1,21 @@
+:host {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.badge {
+    box-sizing: border-box;
+    /* Wide enough for the longest grade (A++), so every badge, and so every figure beside one, lines up */
+    min-width: 28px;
+    padding: 1px 2px;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, .06);
+    font-size: 11px;
+    text-align: center;
+}
+
+.placeholder {
+    background: none;
+}

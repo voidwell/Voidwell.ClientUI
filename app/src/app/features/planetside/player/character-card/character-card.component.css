@@ -33,22 +33,6 @@
     opacity: 0.8;
 }
 
-.faction-icon {
-    color: #b0b3b5;
-}
-
-.faction-icon.faction-vs {
-    color: #b565e6;
-}
-
-.faction-icon.faction-nc {
-    color: #4a90e2;
-}
-
-.faction-icon.faction-tr {
-    color: #e85a5a;
-}
-
 .player-divider {
     width: 1px;
     height: 16px;
@@ -78,45 +62,4 @@
 
 .bg-tr {
     background: #661f20;
-}
-
-.breadcrumbs {
-    padding: 12px 16px;
-    background: rgba(0, 0, 0, .18);
-    font-size: 13px;
-}
-
-.breadcrumbs ol {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px 8px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.breadcrumbs li {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.breadcrumbs li + li::before {
-    content: '›';
-    color: rgba(255, 255, 255, .45);
-}
-
-.breadcrumbs a {
-    color: rgba(255, 255, 255, .75);
-    text-decoration: none;
-}
-
-.breadcrumbs a:hover {
-    color: #fff;
-}
-
-.breadcrumbs [aria-current] {
-    color: #fff;
-    font-weight: 500;
 }

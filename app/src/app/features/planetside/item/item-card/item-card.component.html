@@ -1,20 +1,29 @@
 ﻿@if (!itemComponent.isLoading()) {
-  <mat-card class="item-card mb-8" [ngClass]="{'bg-vs': itemData()?.factionId===1, 'bg-nc': itemData()?.factionId===2, 'bg-tr': itemData()?.factionId===3}">
-    <mat-card-title>
-      <h1 class="item-name">{{itemData()?.name || "Unknown (" + itemComponent.itemId() +")"}}</h1>
-      <div class="stats pull-right">
-        <div>
-          {{itemData()?.category}}
-        </div>
+  @let item = itemData();
+  <mat-card class="item-card mb-4" [ngClass]="{'bg-vs': item?.factionId===1, 'bg-nc': item?.factionId===2, 'bg-tr': item?.factionId===3}">
+    <div class="item-body">
+      <div class="min-w-0">
+        <h1 class="item-name">{{ item?.name || 'Unknown (' + itemComponent.itemId() + ')' }}</h1>
+        @if (item) {
+          <div class="item-meta">
+            @if (item.category) {
+              <span class="pill">{{ item.category }}</span>
+            }
+            @if (item.factionId) {
+              <span class="faction"><vw-faction-icon [factionId]="item.factionId"></vw-faction-icon>{{ item.factionId | factionName }}</span>
+            }
+          </div>
+          @if (item.description) {
+            <p class="item-description">{{ item.description }}</p>
+          }
+        }
       </div>
-    </mat-card-title>
-    <mat-card-subtitle>
-      <div class="outfit-description">
-        {{itemData()?.description}}
-      </div>
-    </mat-card-subtitle>
+      @if (item?.imageId) {
+        <img class="item-image" [src]="item!.imageId | dgcImageUrl" alt="">
+      }
+    </div>
     <mat-card-footer>
-      <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+      <vw-breadcrumbs [crumbs]="itemComponent.breadcrumbs()"></vw-breadcrumbs>
     </mat-card-footer>
   </mat-card>
 }
