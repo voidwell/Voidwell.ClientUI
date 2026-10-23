@@ -81,6 +81,10 @@ th.mat-mdc-header-cell ::ng-deep .mat-sort-header-container {
     min-width: 0;
 }
 
+.faction-icon {
+    margin-right: 8px;
+}
+
 .player-link {
     color: inherit;
     text-decoration: underline dashed;
@@ -90,27 +94,6 @@ th.mat-mdc-header-cell ::ng-deep .mat-sort-header-container {
 
 .player-link:hover {
     opacity: .8;
-}
-
-.faction-dot {
-    flex: none;
-    width: 8px;
-    height: 8px;
-    margin-right: 8px;
-    border-radius: 50%;
-    background: #b0b3b5;
-}
-
-.faction-dot.faction-1 {
-    background: #b565e6;
-}
-
-.faction-dot.faction-2 {
-    background: #4a90e2;
-}
-
-.faction-dot.faction-3 {
-    background: #e85a5a;
 }
 
 /* Rows open on small screens only, where the table hides most columns */

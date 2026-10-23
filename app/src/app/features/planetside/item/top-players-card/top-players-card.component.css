@@ -17,6 +17,7 @@
 table {
     width: 100%;
     border-collapse: collapse;
+    color: #edeff0;
     font-size: 13px;
     font-variant-numeric: tabular-nums;
 }
@@ -51,6 +52,11 @@ td {
     text-align: left;
 }
 
+.faction-icon {
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
 .player-link {
     color: inherit;
     text-decoration: underline dashed;
@@ -60,27 +66,6 @@ td {
 
 .player-link:hover {
     opacity: .8;
-}
-
-.faction-dot {
-    display: inline-block;
-    width: 8px;
-    height: 8px;
-    margin-right: 8px;
-    border-radius: 50%;
-    background: #b0b3b5;
-}
-
-.faction-dot.faction-1 {
-    background: #b565e6;
-}
-
-.faction-dot.faction-2 {
-    background: #4a90e2;
-}
-
-.faction-dot.faction-3 {
-    background: #e85a5a;
 }
 
 .muted {

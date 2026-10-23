@@ -44,25 +44,6 @@
     gap: 6px;
 }
 
-.faction-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #b0b3b5;
-}
-
-.faction-dot.faction-1 {
-    background: #b565e6;
-}
-
-.faction-dot.faction-2 {
-    background: #4a90e2;
-}
-
-.faction-dot.faction-3 {
-    background: #e85a5a;
-}
-
 .item-description {
     max-width: 640px;
     margin: 12px 0 0;

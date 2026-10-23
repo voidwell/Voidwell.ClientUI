@@ -10,7 +10,7 @@
               <span class="pill">{{ item.category }}</span>
             }
             @if (item.factionId) {
-              <span class="faction"><span class="faction-dot" [ngClass]="'faction-' + item.factionId"></span>{{ item.factionId | factionName }}</span>
+              <span class="faction"><vw-faction-icon [factionId]="item.factionId"></vw-faction-icon>{{ item.factionId | factionName }}</span>
             }
           </div>
           @if (item.description) {

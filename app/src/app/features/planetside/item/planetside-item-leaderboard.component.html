@@ -19,7 +19,7 @@
           <th mat-header-cell *matHeaderCellDef>Player</th>
           <td mat-cell *matCellDef="let row">
             <div class="player">
-              <span [class]="'faction-dot faction-' + row.factionId"></span>
+              <vw-faction-icon class="faction-icon" [factionId]="row.factionId"></vw-faction-icon>
               <a class="player-link truncate" routerLink="/ps2/player/{{ row.characterId }}" (click)="$event.stopPropagation()">{{ row.name }}</a>
             </div>
           </td>

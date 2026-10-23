@@ -12,6 +12,7 @@ import { LeaderboardSortDirection, WeaponLeaderboardRow } from '@core/api/models
 import { LeaderboardRepository } from '@core/api/ps2/leaderboard.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { GradedFigureComponent } from '../components/graded-figure/graded-figure.component';
+import { FactionIconComponent } from '../components/faction-icon/faction-icon.component';
 import { PlanetsideItemComponent } from './planetside-item.component';
 import { LEADERBOARD_PAGE_SIZE, accuracy, hours, hsr, kdr, kph } from './leaderboard-figures';
 
@@ -27,7 +28,7 @@ type LeaderboardResult = { rows: WeaponLeaderboardRow[] } | { error: true };
     imports: [
         MatCard, MatCardTitle, MatCardContent, MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCellDef, MatHeaderCell,
         MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatIcon, RouterLink, DecimalPipe, PercentPipe,
-        LoaderComponent, GradedFigureComponent
+        LoaderComponent, GradedFigureComponent, FactionIconComponent
     ]
 })
 export class PlanetsideItemLeaderboardComponent {
