@@ -4,8 +4,8 @@ import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { WeaponLeaderboardRow } from '@core/api/models/ps2/weapon.model';
 import { LeaderboardRepository } from '@core/api/ps2/leaderboard.repository';
-import { PerformanceGrades } from '../data/performance-grades.service';
-import { PlanetsideItemComponent } from './planetside-item.component';
+import { PerformanceGrades } from '../../data/performance-grades.service';
+import { PlanetsideItemComponent } from '../planetside-item.component';
 import { PlanetsideItemLeaderboardComponent } from './planetside-item-leaderboard.component';
 
 const page = (start: number, count: number): WeaponLeaderboardRow[] => Array.from({ length: count }, (_, i) => ({
