@@ -70,6 +70,10 @@ considering work finished.
   and features never import other features. Code two features need moves to `shared/` or `core/`.
 - One component per file. Dialogs are their own components in a `<name>-dialog/` folder; Material table data sources
   live in `*.data-source.ts` files next to the component.
+- A route's component gets its own folder under its feature (`item/stats/`, `item/leaderboard/`), keeping the full
+  file name (`planetside-item-stats.component.ts`). What only one view uses (cards, charts, helpers and their specs)
+  lives in that view's folder. What several views use stays at the parent: the card that heads the page, or a helper
+  two views import. Move files with `git mv`, and update the imports and the lazy route imports to match.
 
 ### Type safety
 - No `any` (ESLint `no-explicit-any` and `noImplicitAny`). Use the contracts in `core/api/models/`, or `unknown` plus a
@@ -150,6 +154,8 @@ Keep new and reworked pages consistent with these principles.
 - Check every visual change in a browser at desktop and phone widths, with realistic data that includes the awkward
   cases (long names, missing values, zeros, empty lists).
 - On small screens, content wraps or stacks and stays aligned. Nothing should scroll the page sideways.
+- The `screenshot-page` skill (`.claude/skills/`) shows how to check a page without the real backend, and the
+  `commit-and-pr-on-windows` skill covers committing and opening a PR from this machine.
 
 ## Deployment
 
