@@ -11,9 +11,7 @@ description: Commit, push and open a pull request in this repo from a Windows ma
 - Run `npm run lint`, `npm test` and `npm run build:prod` from `app/` and report failures instead of committing over
   them. CI runs the same three.
 - Stage by path (`git add -A app/src`), not `git add .`, and read `git status --short` before committing.
-- Commit and PR style: a short imperative subject ("Modernize the outfit page"), a body that says what and why. End
-  commit messages with the attribution line and PR bodies with the "Generated with Claude Code" line that the
-  session's system reminder gives.
+- Commit and PR style: a short imperative subject ("Modernize the outfit page"), a body that says what and why.
 
 ## Commit messages
 
