@@ -1,44 +1,18 @@
-﻿<div>
-  <vw-loader [loading]="isLoading"></vw-loader>
-  @if (errorMessage) {
-    <vw-error-card></vw-error-card>
-  }
-  @if (!isLoading && !errorMessage) {
-    <div>
-      <div class="alert-header mx-0 mt-2.5 mb-8">
-        <div class="alert-header-content flex flex-nowrap">
-          <div class="side-img flex flex-none" [ngClass]="{'indar': activeEvent.zoneId === 2, 'hossin': activeEvent.zoneId === 4, 'amerish': activeEvent.zoneId === 6, 'esamir': activeEvent.zoneId === 8, 'oshur': activeEvent.zoneId === 344}"></div>
-          <div class="card-info flex grow">
-            <mat-card class="card-info flex grow">
-              <mat-card-title>
-                <div class="title">
-                  <div class="date-info text-right">
-                    <div>{{activeEvent.startDate | date:'MMM d, y h:mm:ss a'}}</div>
-                    @if (isActive(activeEvent)) {
-                      <small class="remaining-timer">
-                        <vw-countdown [end]="getEndDate(activeEvent)"></vw-countdown> Remaining
-                      </small>
-                    }
-                    <div class="duration text-right">Duration: {{getDurationMinutes(activeEvent) | number:'.0-0'}} Minutes</div>
-                  </div>
-                  <div class="event-name">
-                    <h1>{{activeEvent.metagameEvent?.name}}</h1>
-                    <small>{{activeEvent.worldId | worldName}} <mat-icon fontSet="mdi" class="location-spacer" fontIcon="mdi-chevron-double-right"></mat-icon> {{activeEvent.zoneId | zoneName}}</small>
-                  </div>
-                </div>
-              </mat-card-title>
-              <mat-card-subtitle>{{activeEvent.metagameEvent?.description}}</mat-card-subtitle>
-              <mat-card-content>
-                <vw-faction-bar [vs]="activeEvent.lastFactionVS" [nc]="activeEvent.lastFactionNC" [tr]="activeEvent.lastFactionTR" [neutural]="isNeuturalMetagame(activeEvent)"></vw-faction-bar>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-        <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
-      </div>
-    </div>
-  }
-  @if (!isLoading && !errorMessage) {
-    <router-outlet></router-outlet>
-  }
-</div>
+﻿<vw-loader [loading]="isLoading"></vw-loader>
+@if (errorMessage) {
+  <vw-error-card></vw-error-card>
+}
+@if (!isLoading && !errorMessage && event(); as alert) {
+  <vw-breadcrumbs [crumbs]="breadcrumbs()"></vw-breadcrumbs>
+  <combat-event-header
+    [title]="alert.metagameEvent?.name ?? 'Alert'"
+    [subtitle]="((alert.worldId | worldName) ?? '') + ' › ' + ((alert.zoneId | zoneName) ?? '')"
+    [description]="alert.metagameEvent?.description ?? ''"
+    [start]="start()"
+    [end]="end()"
+    [scores]="scores()"
+    [startScores]="startScores()"
+    [alarm]="true"
+    [tabs]="tabs"></combat-event-header>
+  <router-outlet></router-outlet>
+}

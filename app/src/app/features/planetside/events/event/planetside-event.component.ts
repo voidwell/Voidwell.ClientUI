@@ -1,26 +1,23 @@
-﻿import { ChangeDetectorRef, Component, forwardRef, inject, effect, input, untracked } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, computed, forwardRef, inject, effect, input, untracked } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { PlanetsideCombatEventComponent } from '../../components/combat-event/planetside-combat-event.component';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { CustomEventDetails } from '@core/api/models/platform/custom-event.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
-import { MatCard, MatCardContent, MatCardFooter } from '@angular/material/card';
-import { VWCountdownComponent } from '@shared/ui/vw-countdown/vw-countdown.component';
-import { FactionBarComponent } from '../../components/faction-bar/faction-bar.component';
-import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
-import { DatePipe } from '@angular/common';
+import { NavLink } from '@shared/ui/nav-link.model';
+import { Breadcrumb, BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
+import { CombatEventHeaderComponent, FactionScores } from '../../components/combat-event/combat-event-header.component';
+import { PlanetsideCombatEventComponent } from '../../components/combat-event/planetside-combat-event.component';
 import { ZoneNamePipe } from '../../pipes/zone-name.pipe';
 import { WorldNamePipe } from '../../pipes/world-name.pipe';
 
 @Component({
     templateUrl: './planetside-event.component.html',
-    styleUrls: ['./planetside-event.component.css'],
     providers: [{ provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideEventComponent) }],
-    imports: [LoaderComponent, ErrorCardComponent, MatCard, MatCardContent, VWCountdownComponent, FactionBarComponent, MatCardFooter, VWTabNavSubBarComponent, RouterOutlet, DatePipe, ZoneNamePipe, WorldNamePipe]
+    imports: [LoaderComponent, ErrorCardComponent, BreadcrumbsComponent, CombatEventHeaderComponent, RouterOutlet, ZoneNamePipe, WorldNamePipe]
 })
 
 export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<CustomEventDetails> {
@@ -30,13 +27,28 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<Cus
 
     isLoading: boolean = true;
     errorMessage: string = null;
-    private navLinks = [
+
+    readonly tabs: NavLink[] = [
         { path: 'players', display: 'Players' },
         { path: 'outfits', display: 'Outfits' },
         { path: 'weapons', display: 'Weapons' },
         { path: 'vehicles', display: 'Vehicles' },
         { path: 'map', display: 'Map' }
     ];
+
+    readonly start = computed(() => new Date(this.event()?.startDate ?? 0));
+    readonly end = computed(() => new Date(this.event()?.endDate ?? 0));
+
+    /** Territory held by each faction at the end of the event; `null` when it was not recorded. */
+    readonly scores = computed<FactionScores | null>(() => {
+        const score = this.event()?.score;
+        return score ? { vs: score[1] ?? 0, nc: score[2] ?? 0, tr: score[3] ?? 0 } : null;
+    });
+
+    readonly breadcrumbs = computed<Breadcrumb[]>(() => [
+        { label: 'Events', link: '/ps2/events' },
+        { label: this.event()?.name ?? 'Event' }
+    ]);
 
     constructor() {
         super();
@@ -58,21 +70,12 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<Cus
                         this.cdr.markForCheck();
                         return throwError(() => error);
                     }))
-                    .subscribe(data => this.setup(data));
+                    .subscribe(data => {
+                        this.event.set(data);
+                        this.isLoading = false;
+                        this.cdr.markForCheck();
+                    });
             });
         });
     }
-
-    private setup(data: CustomEventDetails) {
-        this.event.set(data);
-        this.isLoading = false;
-        this.cdr.markForCheck();
-    }
-
-    private getEndDate(alert: { startDate?: string }): Date {
-        const startString = alert.startDate;
-        const startMs = new Date(startString).getTime();
-        return new Date(startMs + 1000 * 60 * 90);
-    }
-
 }

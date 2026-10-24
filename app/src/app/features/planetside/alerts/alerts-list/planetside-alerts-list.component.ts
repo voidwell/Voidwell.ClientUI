@@ -1,109 +1,118 @@
-﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
-import { EMPTY } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { getErrorMessage } from '@core/util/error-message';
-import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { WorldService } from '../../data/world.service';
-import { AlertRepository } from '@core/api/ps2/alert.repository';
-import { AlertView, toAlertView } from '../../components/alert-card/alert-view';
-import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
-import { AlertCardComponent } from '../../components/alert-card/alert-card.component';
-import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
-import { MatButton } from '@angular/material/button';
+﻿import { Component, computed, inject, signal } from '@angular/core';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatIcon } from '@angular/material/icon';
-import { NgArrayPipesModule } from 'ngx-pipes';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
+import { of } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import { AlertRepository } from '@core/api/ps2/alert.repository';
+import { getErrorMessage } from '@core/util/error-message';
+import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
+import { LoaderComponent } from '@shared/ui/loader/loader.component';
+import { ActiveAlertsCardComponent } from '../../components/active-alerts-card/active-alerts-card.component';
+import { AlertView, toAlertView } from '../../components/alert-view';
+import { cellOf, sortRows } from '../../components/combat-report/combat-report-figures';
+import { WorldService } from '../../data/world.service';
+import { ZoneService } from '../../data/zone.service';
+import { FactionCodePipe } from '../../pipes/faction-code.pipe';
+import { activeAlerts, pastAlertRows } from './alerts-list-figures';
+
+type Result = { alerts: AlertView[] } | { error: string };
 
 @Component({
     templateUrl: './planetside-alerts-list.component.html',
-    styleUrls: ['./planetside-alerts-list.component.css'],
-    imports: [AlertCardComponent, LoaderComponent, ErrorCardComponent, MatButtonToggleGroup, MatButtonToggle, MatButton, MatIcon, NgArrayPipesModule]
+    imports: [
+        MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, DatePipe, DecimalPipe,
+        LoaderComponent, ErrorCardComponent, ActiveAlertsCardComponent, FactionCodePipe
+    ]
 })
-
 export class PlanetsideAlertsListComponent {
     private alertRepository = inject(AlertRepository);
-    private cdr = inject(ChangeDetectorRef);
-    worldService = inject(WorldService);
+    private zoneService = inject(ZoneService);
+    readonly worldService = inject(WorldService);
 
-    errorMessage: string = null;
-    isLoading: boolean;
-    isActiveLoading = true;
-    pageNumber = 0;
+    /** The page of past alerts being shown, from 0. */
+    readonly page = signal(0);
+    /** The server whose alerts are listed; everyone's when `null`. */
+    readonly worldId = signal<number | null>(null);
+    readonly sort = signal<Sort>({ active: 'startedAt', direction: 'desc' });
+    /** Alerts whose hidden columns are showing on a phone. */
+    readonly expanded = signal<ReadonlySet<string>>(new Set());
 
-    private alerts: AlertView[] = [];
-    private firstPageAlerts: AlertView[] = [];
-    private pageWorldId: number | null;
+    private readonly result = signal<Result | null>(null);
+    /** The newest alerts of every server, where the running ones come from; `null` until they load. */
+    private readonly latest = signal<AlertView[] | null>(null);
+
+    readonly isLoading = computed(() => this.result() === null);
+    readonly errorMessage = computed(() => {
+        const result = this.result();
+        return result && 'error' in result ? result.error : null;
+    });
+
+    readonly active = computed(() => activeAlerts(this.latest() ?? []));
+    readonly latestLoaded = computed(() => this.latest() !== null);
+
+    readonly rows = computed(() => {
+        const result = this.result();
+        const worlds = this.worldService.worlds() ?? [];
+        const rows = result && 'alerts' in result
+            ? pastAlertRows(result.alerts, id => worlds.find(world => world.id === id)?.name ?? '', id => this.zoneService.zoneName(id) ?? '')
+            : [];
+        return sortRows(rows, this.sort(), cellOf);
+    });
 
     constructor() {
-        this.alerts = [];
-        this.firstPageAlerts = [];
-
-        this.loadAlertsPage();
+        this.load();
     }
 
-    getActiveAlerts() {
-        const now = new Date();
-        return this.firstPageAlerts.filter(alert => this.getEndDate(alert) > now);
+    setWorld(worldId: number | null): void {
+        this.worldId.set(worldId);
+        this.page.set(0);
+        this.load();
     }
 
-    getPastAlerts() {
-        const now = new Date();
-        return this.alerts.filter(alert => this.getEndDate(alert) <= now);
+    goToPage(page: number): void {
+        this.page.set(page);
+        this.load();
     }
 
-    nextAlerts() {
-        this.pageNumber++;
-        this.loadAlertsPage();
+    onSort(sort: Sort): void {
+        this.sort.set(sort);
     }
 
-    previousAlerts() {
-        this.pageNumber--;
-        this.loadAlertsPage();
+    toggle(key: string): void {
+        this.expanded.update(open => {
+            const next = new Set(open);
+            if (!next.delete(key)) {
+                next.add(key);
+            }
+            return next;
+        });
     }
 
-    onFilterChange(event: MatButtonToggleChange) {
-        this.pageNumber = 0;
+    private load(): void {
+        this.result.set(null);
 
-        if (!event.value) {
-            this.pageWorldId = null;
-        } else {
-            this.pageWorldId = parseInt(event.value);
-        }
+        const page = this.page();
+        const worldId = this.worldId();
 
-        this.loadAlertsPage();
-    }
-
-    private loadAlertsPage() {
-        this.isLoading = true;
-
-        this.alertRepository.getAlerts(this.pageNumber, this.pageWorldId || undefined)
-            .pipe(catchError(error => {
-                this.errorMessage = getErrorMessage(error);
-                this.isLoading = false;
-                this.isActiveLoading = false;
-                this.cdr.markForCheck();
-                return EMPTY;
-            }))
+        this.alertRepository.getAlerts(page, worldId ?? undefined)
+            .pipe(catchError(error => of({ error: getErrorMessage(error) })))
             .subscribe(alerts => {
-                this.errorMessage = null;
-                this.alerts = alerts.map(toAlertView);
-
-                if (this.pageNumber === 0 && !this.pageWorldId) {
-                    this.firstPageAlerts = this.alerts.slice();
+                if (!Array.isArray(alerts)) {
+                    this.latest.update(latest => latest ?? []);
+                    this.result.set(alerts);
+                    return;
                 }
 
-                this.isLoading = false;
-                this.isActiveLoading = false;
-                this.cdr.markForCheck();
+                const views = alerts.map(toAlertView);
+                if (page === 0 && worldId === null) {
+                    this.latest.set(views);
+                } else if (this.latest() === null) {
+                    this.latest.set([]);
+                }
+                this.result.set({ alerts: views });
             });
-    }
-
-    private getEndDate(alert: AlertView): Date {
-        if (alert.endDate) {
-            return new Date(alert.endDate);
-        }
-
-        const startString = alert.startDate;
-        const startMs = new Date(startString).getTime();
-        return new Date(startMs + 1000 * 60 * 45);
     }
 }

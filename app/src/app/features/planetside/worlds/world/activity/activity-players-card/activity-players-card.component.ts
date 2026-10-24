@@ -4,7 +4,7 @@ import { RouterLink } from '@angular/router';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { FactionColorPipe } from '../../../../pipes/faction-color.pipe';
-import { TopPlayerRow, cellOf, sortRows } from '../activity-figures';
+import { TopPlayerRow, cellOf, sortRows } from '../../../../components/combat-report/combat-report-figures';
 
 /** The most active players of the last hour, their names in their faction's colour. */
 @Component({

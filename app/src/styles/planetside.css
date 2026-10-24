@@ -145,11 +145,6 @@ p.stat-muted {
     vertical-align: bottom;
 }
 
-/* The outfit alias leads a name */
-.stat-name .stat-muted {
-    margin-right: 4px;
-}
-
 .stat-pill {
     display: inline-block;
     padding: 1px 9px;
@@ -285,5 +280,86 @@ p.stat-muted {
 @media (max-width: 700px) {
     .stat-search {
         width: 100%;
+    }
+}
+
+/* A button that reads as a link inside a table cell */
+
+.stat-button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.stat-button:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+/* Rows that open on a phone to show the columns hidden there; mark those columns with hs */
+
+.stat-expand,
+.stat-detail {
+    display: none;
+}
+
+.stat-expand {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin-right: 2px;
+    border: 0;
+    background: none;
+    color: #8a9ba1;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.stat-expand:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+.stat-expand .mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+@media (max-width: 700px) {
+    .stat-table .hs {
+        display: none;
+    }
+
+    .stat-expand {
+        display: inline-block;
+    }
+
+    .stat-table .stat-detail {
+        display: table-row;
+    }
+
+    .stat-table .stat-detail td {
+        height: auto;
+        padding: 2px 8px 14px 32px;
+        background: rgba(255, 255, 255, .02);
+        text-align: left;
+        white-space: normal;
+    }
+
+    .stat-detail ul {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .stat-detail li {
+        display: flex;
+        justify-content: space-between;
+        gap: 8px;
     }
 }

@@ -1,6 +1,7 @@
 import { CombatReportParticipantStats } from '@core/api/models/ps2/combat-report.model';
 import { WorldActivityStats } from '@core/api/models/ps2/world.model';
-import { cellOf, factionStatRows, formatTimespan, kdr, sortRows, topOutfitRows, topPlayerRows } from './activity-figures';
+import { CaptureLogRow } from '@core/api/models/ps2/combat-report.model';
+import { captureRows, cellOf, combatOutfitRows, combatPlayerRows, factionStatRows, formatTimespan, kdr, sortRows, topOutfitRows, topPlayerRows } from './combat-report-figures';
 
 const fv = (vs: number, nc: number, tr: number, ns: number) => ({ vs, nc, tr, ns });
 const zero = fv(0, 0, 0, 0);
@@ -104,5 +105,59 @@ describe('figures', () => {
     it('gives no ratio without a divisor', () => {
         expect(kdr(5, 0)).toBeNull();
         expect(kdr(5, 2)).toBe(2.5);
+    });
+});
+
+describe('combatPlayerRows', () => {
+    it('works out the figures and names the outfit', () => {
+        const [row] = combatPlayerRows([{
+            character: { id: '1', name: 'Wakeful', factionId: 2 }, outfit: { name: 'Voidwell Veterans', alias: 'VKTZ' },
+            kills: 50, deaths: 0, headshots: 10, suicides: 1, teamkills: 2, vehicleKills: 3, sessionKills: 0
+        }]);
+
+        expect(row).toMatchObject({ id: '1', alias: 'VKTZ', outfitName: 'Voidwell Veterans', kdr: null, hsr: 0.2, headshots: 10 });
+    });
+
+    it('has no outfit for a player without one, and skips players without a character', () => {
+        const rows = combatPlayerRows([
+            { character: { id: '1', name: 'A', factionId: 1 }, kills: 1, deaths: 1, headshots: 0, suicides: 0, teamkills: 0, vehicleKills: 0, sessionKills: 0 },
+            { kills: 1, deaths: 1, headshots: 0, suicides: 0, teamkills: 0, vehicleKills: 0, sessionKills: 0 }
+        ]);
+
+        expect(rows).toHaveLength(1);
+        expect(rows[0].outfitName).toBeUndefined();
+        expect(combatPlayerRows(undefined)).toEqual([]);
+    });
+});
+
+describe('combatOutfitRows', () => {
+    it('works out the figures', () => {
+        const [row] = combatOutfitRows([{
+            outfit: { id: '9', name: 'Void', factionId: 1 }, kills: 100, deaths: 50, headshots: 25, suicides: 0, teamkills: 0,
+            vehicleKills: 4, participantCount: 10, facilityCaptures: 3
+        }]);
+
+        expect(row).toMatchObject({ participants: 10, captures: 3, kdr: 2, hsr: 0.25 });
+    });
+});
+
+describe('captureRows', () => {
+    const log: CaptureLogRow[] = [
+        { timestamp: '2026-10-20T10:00:00Z', newFactionId: 1, oldFactionId: 2, mapRegion: { id: 5, facilityName: 'Tawrich' }, outfit: { id: '3', name: 'Void', alias: 'VKTZ' }, factionVs: 40, factionNc: 30, factionTr: 30, zonePopVs: 10 },
+        { timestamp: '2026-10-20T10:05:00Z', newFactionId: 3, oldFactionId: 3, mapRegion: { id: 6, facilityName: 'Hvar' } }
+    ];
+
+    it('lists captures, where the facility changed hands, by default', () => {
+        const rows = captureRows(log, { captures: true, defends: false });
+
+        expect(rows).toHaveLength(1);
+        expect(rows[0]).toMatchObject({ facility: 'Tawrich', winnerId: 1, loserId: 2, isCapture: true, outfitAlias: 'VKTZ', control: { vs: 40, nc: 30, tr: 30 } });
+    });
+
+    it('lists defends, and both, and neither', () => {
+        expect(captureRows(log, { captures: false, defends: true }).map(r => r.facility)).toEqual(['Hvar']);
+        expect(captureRows(log, { captures: true, defends: true })).toHaveLength(2);
+        expect(captureRows(log, { captures: false, defends: false })).toEqual([]);
+        expect(captureRows(undefined, { captures: true, defends: true })).toEqual([]);
     });
 });

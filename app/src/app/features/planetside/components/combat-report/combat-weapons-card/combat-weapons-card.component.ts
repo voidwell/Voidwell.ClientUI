@@ -4,17 +4,18 @@ import { RouterLink } from '@angular/router';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { CombatReportWeaponStats } from '@core/api/models/ps2/combat-report.model';
-import { FactionColorPipe } from '../../../../pipes/faction-color.pipe';
-import { cellOf, sortRows, weaponRows } from '../activity-figures';
+import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
+import { cellOf, sortRows, weaponRows } from '../combat-report-figures';
 
-/** The weapons with the most kills in the last hour, in the colour of the faction that uses each. */
+/** Weapons by their kills, in the colour of the faction that uses each. The caption names the period, if any. */
 @Component({
-    selector: 'activity-weapons-card',
-    templateUrl: './activity-weapons-card.component.html',
+    selector: 'combat-weapons-card',
+    templateUrl: './combat-weapons-card.component.html',
     imports: [MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, RouterLink, NgClass, DecimalPipe, PercentPipe, FactionColorPipe]
 })
-export class ActivityWeaponsCardComponent {
+export class CombatWeaponsCardComponent {
     readonly weapons = input<CombatReportWeaponStats[]>();
+    readonly caption = input('');
 
     readonly sort = signal<Sort>({ active: 'kills', direction: 'desc' });
     readonly rows = computed(() => sortRows(weaponRows(this.weapons()), this.sort(), cellOf));

@@ -1,0 +1,30 @@
+@if (sorted().length || emptyText()) {
+  <mat-card class="stat-card mb-4">
+    <mat-card-title>Active alerts</mat-card-title>
+    <mat-card-content>
+      @if (sorted().length) {
+        <ul class="alerts">
+          @for (alert of sorted(); track alert.metagameInstanceId) {
+            <li>
+              <vw-alert-indicator></vw-alert-indicator>
+              <a class="stat-link name" routerLink="/ps2/alerts/{{ alert.worldId }}/{{ alert.metagameInstanceId }}">{{ alert.metagameEvent?.name }}</a>
+              <span class="stat-muted">
+                @if (showServer()) { {{ alert.worldId | worldName }} · }{{ alert.zoneId | zoneName }}
+              </span>
+              <span class="scores">
+                @for (faction of [1, 2, 3]; track faction) {
+                  <span [ngClass]="faction | factionColor" [title]="faction | factionName">{{ (faction === 1 ? alert.lastFactionVs : faction === 2 ? alert.lastFactionNc : alert.lastFactionTr) | number: '1.0-0' }}%</span>
+                }
+              </span>
+              @if (alert.endDate) {
+                <span class="time-left"><vw-countdown [end]="alert.endDate"></vw-countdown> remaining</span>
+              }
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="stat-muted">{{ emptyText() }}</p>
+      }
+    </mat-card-content>
+  </mat-card>
+}

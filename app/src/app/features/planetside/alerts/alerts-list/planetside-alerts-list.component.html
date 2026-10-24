@@ -1,62 +1,85 @@
-﻿<div class="content-container">
-  <div class="alerts-list-container mt-2.5">
-    @if (errorMessage) {
-      <vw-error-card></vw-error-card>
-    }
-    <div [hidden]="errorMessage">
-      <h3>Active Alerts</h3>
-      <vw-loader variant="alerts" [rows]="1" [loading]="isActiveLoading"></vw-loader>
-      @if (!isActiveLoading && getActiveAlerts().length === 0) {
-        <div class="no-alerts text-center">
-          <strong>No alerts in progress</strong>
+﻿@if (errorMessage()) {
+  <vw-error-card></vw-error-card>
+} @else {
+  @if (latestLoaded()) {
+    <active-alerts-card [alerts]="active()" [showServer]="true" emptyText="No alerts in progress"></active-alerts-card>
+  } @else {
+    <vw-loader variant="alerts" [rows]="1" [loading]="true"></vw-loader>
+  }
+
+  <mat-card class="stat-card mb-4">
+    <mat-card-title>Past alerts</mat-card-title>
+    <div class="stat-chips" role="group" aria-label="Filter alerts by server">
+      <button type="button" class="stat-chip" [class.on]="worldId() === null" [attr.aria-pressed]="worldId() === null" (click)="setWorld(null)">All</button>
+      @for (world of worldService.activeWorlds(); track world.id) {
+        <button type="button" class="stat-chip" [class.on]="worldId() === world.id" [attr.aria-pressed]="worldId() === world.id" (click)="setWorld(world.id)">{{ world.name }}</button>
+      }
+    </div>
+    <mat-card-content>
+      @if (isLoading()) {
+        <vw-loader variant="table" [rows]="6" [loading]="true"></vw-loader>
+      } @else {
+        @if (rows().length) {
+          <div class="stat-table-wrap">
+            <table class="stat-table" matSort matSortActive="startedAt" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+              <thead>
+                <tr>
+                  <th class="left pinned" mat-sort-header="name" start="asc">Alert</th>
+                  <th class="left hs" mat-sort-header="serverName" start="asc">Server</th>
+                  <th class="left hs" mat-sort-header="zoneName" start="asc">Zone</th>
+                  <th class="left hs" mat-sort-header="startedAt" start="desc">Started</th>
+                  <th class="faction-vs-text" mat-sort-header="vs" start="desc" arrowPosition="before">{{ 1 | factionCode }}</th>
+                  <th class="faction-nc-text" mat-sort-header="nc" start="desc" arrowPosition="before">{{ 2 | factionCode }}</th>
+                  <th class="faction-tr-text" mat-sort-header="tr" start="desc" arrowPosition="before">{{ 3 | factionCode }}</th>
+                  <th class="hs" mat-sort-header="durationMinutes" start="desc" arrowPosition="before">Duration</th>
+                </tr>
+              </thead>
+              @for (row of rows(); track row.key) {
+                <tbody>
+                  <tr>
+                    <td class="left pinned">
+                      <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.key)" [attr.aria-label]="'Show the details of ' + row.name" (click)="toggle(row.key)">
+                        <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.key) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                      </button>
+                      <a class="stat-link stat-name" routerLink="/ps2/alerts/{{ row.worldId }}/{{ row.instanceId }}" [title]="row.name">{{ row.name }}</a>
+                    </td>
+                    <td class="left hs stat-muted">{{ row.serverName || '—' }}</td>
+                    <td class="left hs">{{ row.zoneName || '—' }}</td>
+                    <td class="left hs stat-muted" [title]="(row.startDate | date: 'medium') ?? ''">{{ row.startDate | date: 'MMM d, h:mm a' }}</td>
+                    @if (row.vs === null) { <td class="dash">—</td> } @else { <td class="faction-vs-text" [class.lead]="row.leader === 'vs'">{{ row.vs | number: '1.0-0' }}%</td> }
+                    @if (row.nc === null) { <td class="dash">—</td> } @else { <td class="faction-nc-text" [class.lead]="row.leader === 'nc'">{{ row.nc | number: '1.0-0' }}%</td> }
+                    @if (row.tr === null) { <td class="dash">—</td> } @else { <td class="faction-tr-text" [class.lead]="row.leader === 'tr'">{{ row.tr | number: '1.0-0' }}%</td> }
+                    <td class="hs stat-muted">{{ row.durationMinutes | number }} min</td>
+                  </tr>
+                  @if (expanded().has(row.key)) {
+                    <tr class="stat-detail">
+                      <td colspan="4">
+                        <ul>
+                          <li><span>Server</span><span>{{ row.serverName || '—' }}</span></li>
+                          <li><span>Zone</span><span>{{ row.zoneName || '—' }}</span></li>
+                          <li><span>Started</span><span>{{ row.startDate | date: 'MMM d, h:mm a' }}</span></li>
+                          <li><span>Duration</span><span>{{ row.durationMinutes | number }} min</span></li>
+                        </ul>
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              }
+            </table>
+          </div>
+        } @else {
+          <p class="stat-muted">No past alerts on this page.</p>
+        }
+        <div class="stat-pager">
+          <span>Page <strong>{{ page() + 1 | number }}</strong></span>
+          <button type="button" class="stat-page-button" aria-label="Previous page" [disabled]="page() === 0" (click)="goToPage(page() - 1)">
+            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+          </button>
+          <button type="button" class="stat-page-button" aria-label="Next page" (click)="goToPage(page() + 1)">
+            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+          </button>
         </div>
       }
-      <div class="alerts-list in-progress flex flex-col">
-        @for (alert of getActiveAlerts() | orderBy: 'startDate'; track alert) {
-          <vw-alert-card [alert]="alert"></vw-alert-card>
-        }
-      </div>
-      <h3>Past Alerts</h3>
-      <div class="alerts-list flex flex-col">
-        <div class="paging-buttons mb-2.5 text-center">
-          <div class="filters">
-            <mat-button-toggle-group #group="matButtonToggleGroup" (change)="onFilterChange($event)">
-              <mat-button-toggle [checked]="true">All</mat-button-toggle>
-              @for (world of worldService.activeWorlds(); track world) {
-                <mat-button-toggle [value]="world.id">{{world.name}}</mat-button-toggle>
-              }
-            </mat-button-toggle-group>
-          </div>
-          @if (pageNumber > 0) {
-            <button mat-raised-button class="pull-left" (click)="previousAlerts()">
-              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
-              <span>Page {{pageNumber}}</span>
-            </button>
-          }
-          <button mat-raised-button class="pull-right" (click)="nextAlerts()">
-            <span>Page {{pageNumber + 2}}</span>
-            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
-          </button>
-        </div>
-        <vw-loader variant="alerts" [rows]="5" [loading]="isLoading"></vw-loader>
-        @if (!isLoading) {
-          @for (alert of getPastAlerts() | orderBy: '-startDate'; track alert) {
-            <vw-alert-card [alert]="alert"></vw-alert-card>
-          }
-        }
-        <div class="paging-buttons mb-2.5 text-center">
-          @if (pageNumber > 0) {
-            <button mat-raised-button (click)="previousAlerts()">
-              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
-              <span>Page {{pageNumber}}</span>
-            </button>
-          }
-          <button mat-raised-button class="pull-right" (click)="nextAlerts()">
-            <span>Page {{pageNumber + 2}}</span>
-            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
+    </mat-card-content>
+  </mat-card>
+}

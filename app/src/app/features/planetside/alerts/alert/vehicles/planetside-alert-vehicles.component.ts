@@ -1,44 +1,14 @@
-﻿import { Component, OnInit, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
+﻿import { Component, computed, inject } from '@angular/core';
 import { PlanetsideCombatEventComponent } from '../../../components/combat-event/planetside-combat-event.component';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { NgClass, DecimalPipe } from '@angular/common';
-import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
-import { AlertVehiclesDataSource } from './planetside-alert-vehicles.data-source';
+import { CombatVehiclesCardComponent } from '../../../components/combat-report/combat-vehicles-card/combat-vehicles-card.component';
 
+/** The vehicles of an alert or event by their kills. */
 @Component({
-    templateUrl: './planetside-alert-vehicles.component.html',
-    styleUrls: ['./planetside-alert-vehicles.component.css'],
-    imports: [MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatSortHeader, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, FactionColorPipe]
+    template: '<combat-vehicles-card [vehicles]="vehicles()"></combat-vehicles-card>',
+    imports: [CombatVehiclesCardComponent]
 })
-
-export class PlanetsideAlertVehiclesComponent implements OnInit {
+export class PlanetsideAlertVehiclesComponent {
     private parentEventComponent = inject(PlanetsideCombatEventComponent);
-    private injector = inject(Injector);
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-    dataSource: AlertVehiclesDataSource;
-
-    ngOnInit() {
-        effect(() => {
-            const alert = this.parentEventComponent.event();
-
-            untracked(() => {
-                if (alert == null) {
-                    return;
-                }
-
-                this.sort.sort(<MatSortable>{
-                    id: 'kills',
-                    start: 'desc'
-                });
-
-                this.dataSource = new AlertVehiclesDataSource(alert.log.stats.vehicles, this.sort, this.paginator);
-            });
-        }, { injector: this.injector });
-    }
+    readonly vehicles = computed(() => this.parentEventComponent.event()?.log?.stats?.vehicles);
 }
-

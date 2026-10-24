@@ -5,7 +5,7 @@ import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { CombatReportClassStats } from '@core/api/models/ps2/combat-report.model';
 import { FactionCodePipe } from '../../../../pipes/faction-code.pipe';
 import { FactionColorPipe } from '../../../../pipes/faction-color.pipe';
-import { cellOf, classRows, sortRows } from '../activity-figures';
+import { cellOf, classRows, sortRows } from '../../../../components/combat-report/combat-report-figures';
 
 /** The classes of one faction at a time, by their figures of the last hour. */
 @Component({

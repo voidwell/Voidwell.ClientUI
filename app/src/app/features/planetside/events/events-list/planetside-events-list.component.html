@@ -1,30 +1,59 @@
-﻿<div class="content-container">
-  <div class="events-list-container mt-2.5">
-    @if (errorMessage) {
-      <vw-error-card></vw-error-card>
-    }
-    @if (!errorMessage) {
-      <div>
-        <h3>Active Events</h3>
-        <vw-loader variant="alerts" [rows]="1" [loading]="isLoading"></vw-loader>
-        @if (!isLoading && getActiveEvents().length === 0) {
-          <div class="no-events text-center">
-            <strong>No events in progress</strong>
-          </div>
-        }
-        <div class="events-list in-progress flex flex-col">
-          @for (event of getActiveEvents() | orderBy: 'startDate'; track event) {
-            <vw-event-card [event]="event"></vw-event-card>
-          }
+﻿<vw-loader variant="table" [rows]="5" [loading]="isLoading()"></vw-loader>
+@if (errorMessage()) {
+  <vw-error-card></vw-error-card>
+} @else if (!isLoading()) {
+  <active-events-card [events]="active()"></active-events-card>
+
+  <mat-card class="stat-card mb-4">
+    <mat-card-title>Past events</mat-card-title>
+    <mat-card-content>
+      @if (past().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="startedAt" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+            <thead>
+              <tr>
+                <th class="left pinned" mat-sort-header="name" start="asc">Event</th>
+                <th class="left hs" mat-sort-header="serverName" start="asc">Server</th>
+                <th class="left hs" mat-sort-header="mapName" start="asc">Map</th>
+                <th class="left" mat-sort-header="startedAt" start="desc">Started</th>
+                <th class="left hs">Teams</th>
+              </tr>
+            </thead>
+            @for (row of past(); track row.id) {
+              <tbody>
+                <tr>
+                  <td class="left pinned">
+                    <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the details of ' + row.name" (click)="toggle(row.id)">
+                      <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                    </button>
+                    <a class="stat-link stat-name" routerLink="/ps2/events/{{ row.id }}" [title]="row.name">{{ row.name }}</a>
+                  </td>
+                  <td class="left hs stat-muted">{{ row.serverName || '—' }}</td>
+                  <td class="left hs">{{ row.mapName || '—' }}</td>
+                  <td class="left stat-muted" [title]="(row.startDate | date: 'medium') ?? ''">{{ row.startDate | date: 'MMM d, h:mm a' }}</td>
+                  <td class="left hs">
+                    @for (team of row.teams; track $index) { <span class="stat-pill team">{{ team }}</span> }
+                    @if (!row.teams.length) { <span class="dash">—</span> }
+                  </td>
+                </tr>
+                @if (expanded().has(row.id)) {
+                  <tr class="stat-detail">
+                    <td colspan="2">
+                      <ul>
+                        <li><span>Server</span><span>{{ row.serverName || '—' }}</span></li>
+                        <li><span>Map</span><span>{{ row.mapName || '—' }}</span></li>
+                        <li><span>Teams</span><span>{{ row.teams.length ? row.teams.join(', ') : '—' }}</span></li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              </tbody>
+            }
+          </table>
         </div>
-        <h3>Past Events</h3>
-        <vw-loader variant="alerts" [rows]="5" [loading]="isLoading"></vw-loader>
-        <div class="events-list flex flex-col">
-          @for (event of getPastEvents() | orderBy: '-startDate'; track event) {
-            <vw-event-card [event]="event"></vw-event-card>
-          }
-        </div>
-      </div>
-    }
-  </div>
-</div>
+      } @else {
+        <p class="stat-muted">No past events.</p>
+      }
+    </mat-card-content>
+  </mat-card>
+}

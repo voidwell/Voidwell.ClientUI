@@ -1,97 +1,77 @@
-﻿<div class="event-map" [class.map-enabled]="alert && alert.zoneSnapshot">
-  @if (alert && alert.zoneSnapshot) {
-    <div class="replay-map">
-      <zone-replay-map [zoneId]="alert.zoneId"
-        [ownership]="ownership()"
+﻿@if (mapEnabled()) {
+  @let a = alert()!;
+  <mat-card class="stat-card mb-4">
+    <mat-card-title>Replay</mat-card-title>
+    <mat-card-content>
+      <zone-replay-map
+        [zoneId]="a.zoneId"
+        [ownership]="a.zoneSnapshot"
         [focusFacility]="focusFacilityEmitter"
         [focusTimestamp]="focusTimestampEmitter"
-        [timeline]="alert.log.captureLog"
-        [start]="alert.startDate"
-        [end]="alert.endDate">
-      </zone-replay-map>
-    </div>
-  }
-  <div class="map-events">
-    <div class="filters">
-      Show:
-      <mat-button-toggle value="captures"
-        [checked]="filterState.captures"
-        (change)="onFilterToggle($event)">
-        Captures
-      </mat-button-toggle>
-      <mat-button-toggle value="defends"
-        [checked]="filterState.defends"
-        (change)="onFilterToggle($event)">
-        Defends
-      </mat-button-toggle>
-    </div>
-    <div class="table-container">
-      <mat-table #table [dataSource]="dataSource" class="striped" matSort>
-        <ng-container matColumnDef="time">
-          <mat-header-cell *matHeaderCellDef>Time</mat-header-cell>
-          <mat-cell *matCellDef="let event">
-            <span class="timestamp" (click)="onFocusTimestamp(event.timestamp)">
-              {{event.timestamp | date: 'HH:mm:ss'}}
-            </span>
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="facility">
-          <mat-header-cell *matHeaderCellDef>Facility</mat-header-cell>
-          <mat-cell *matCellDef="let event">
-            <span class="facility-name" [ngClass]="event.newFactionId | factionColor" (click)="onFocusFacility(event.mapRegion.id)">
-              {{event.mapRegion.facilityName}}
-            </span>
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="winner">
-          <mat-header-cell *matHeaderCellDef>Winner</mat-header-cell>
-          <mat-cell *matCellDef="let event">
-            <span [ngClass]="event.newFactionId | factionColor">{{event.newFactionId | factionCode}}</span>
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="loser">
-          <mat-header-cell *matHeaderCellDef>Loser</mat-header-cell>
-          <mat-cell *matCellDef="let event">
-            <span [ngClass]="event.oldFactionId | factionColor">{{event.oldFactionId | factionCode}}</span>
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="outfit">
-          <mat-header-cell *matHeaderCellDef>Outfit</mat-header-cell>
-          <mat-cell *matCellDef="let event">
-            @if (event.outfit) {
-              <a routerLink="outfit/{{event.outfit.id}}" class="outfit-name">
-                @if (event.outfit.alias) {
-                  <span>[{{event.outfit.alias}}]</span>
-                }
-                <span>{{event.outfit.name}}</span>
-              </a>
-            }
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="mapper">
-          <mat-header-cell *matHeaderCellDef>Map %</mat-header-cell>
-          <mat-cell *matCellDef="let event">
-            <vw-faction-bar [vs]="event.factionVs" [nc]="event.factionNc" [tr]="event.factionTr"></vw-faction-bar>
-          </mat-cell>
-        </ng-container>
-
-        <ng-container matColumnDef="zonepop">
-          <mat-header-cell *matHeaderCellDef>Continent Population % *</mat-header-cell>
-          <mat-cell *matCellDef="let event">
-            <vw-faction-bar [vs]="event.zonePopVs" [nc]="event.zonePopNc" [tr]="event.zonePopTr" [neutural]="false"></vw-faction-bar>
-          </mat-cell>
-        </ng-container>
-
-        <mat-header-row *matHeaderRowDef="['time','facility','winner','loser','outfit','mapper','zonepop']"></mat-header-row>
-        <mat-row *matRowDef="let row; columns: ['time','facility','winner','loser','outfit','mapper','zonepop'];"></mat-row>
-      </mat-table>
-      <br />
-      <small>*Population calculated as all characters that performed an action (i.e kill, death, revive, healed, capture base, defend base, etc) within the last 10 minutes on that continent. If population tracking was initiated recently relative to the event starting then population values will be unreliable.</small>
-    </div>
+        [timeline]="a.log.captureLog"
+        [start]="a.startDate"
+        [end]="a.endDate"></zone-replay-map>
+    </mat-card-content>
+  </mat-card>
+}
+<mat-card class="stat-card mb-4">
+  <mat-card-title>Map events</mat-card-title>
+  <div class="stat-chips" role="group" aria-label="Kinds of map event">
+    <button type="button" class="stat-chip" [class.on]="filter().captures" [attr.aria-pressed]="filter().captures" (click)="toggle('captures')">Captures</button>
+    <button type="button" class="stat-chip" [class.on]="filter().defends" [attr.aria-pressed]="filter().defends" (click)="toggle('defends')">Defends</button>
   </div>
-</div>
+  <mat-card-content>
+    @if (rows().length) {
+      <div class="stat-table-wrap">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th class="left pinned">Time</th>
+              <th class="left">Facility</th>
+              <th class="left" title="The faction that held the facility before it was captured">Took from</th>
+              <th class="left">Outfit</th>
+              <th title="Territory each faction held afterwards">Map control</th>
+              <th title="Share of the players who did something on the continent in the previous 10 minutes">Continent population</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track $index) {
+              <tr>
+                <td class="left pinned stat-muted">
+                  @if (mapEnabled()) {
+                    <button type="button" class="stat-link stat-button" (click)="onFocusTimestamp(row.timestamp)">{{ row.timestamp | date: 'mediumTime' }}</button>
+                  } @else {
+                    {{ row.timestamp | date: 'mediumTime' }}
+                  }
+                </td>
+                <td class="left">
+                  @if (mapEnabled()) {
+                    <button type="button" class="stat-link stat-button" [ngClass]="row.winnerId | factionColor" (click)="onFocusFacility(row.facilityId)">{{ row.facility }}</button>
+                  } @else {
+                    <span [ngClass]="row.winnerId | factionColor">{{ row.facility }}</span>
+                  }
+                </td>
+                <td class="left">
+                  @if (row.isCapture && row.loserId) { <vw-faction-icon [factionId]="row.loserId"></vw-faction-icon> } @else { <span class="dash">—</span> }
+                </td>
+                <td class="left">
+                  @if (row.outfitId) {
+                    <a class="stat-link" [ngClass]="row.winnerId | factionColor" routerLink="/ps2/outfit/{{ row.outfitId }}">
+                      @if (row.outfitAlias) { <span class="stat-muted">[{{ row.outfitAlias }}]</span>&ngsp;}{{ row.outfitName }}</a>
+                  } @else {
+                    <span class="dash">—</span>
+                  }
+                </td>
+                <td><vw-faction-bar class="bar" [vs]="row.control.vs" [nc]="row.control.nc" [tr]="row.control.tr"></vw-faction-bar></td>
+                <td><vw-faction-bar class="bar" [vs]="row.population.vs" [nc]="row.population.nc" [tr]="row.population.tr" [neutural]="false"></vw-faction-bar></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+      <p class="note">Population counts everyone who did something on the continent in the previous 10 minutes, so it is unreliable if tracking began just before it started.</p>
+    } @else {
+      <p class="stat-muted">No map events to show.</p>
+    }
+  </mat-card-content>
+</mat-card>
