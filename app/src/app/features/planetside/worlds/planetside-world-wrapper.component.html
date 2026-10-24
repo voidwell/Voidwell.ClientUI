@@ -1,13 +1,103 @@
-﻿<div>
-  <vw-loader variant="list" [loading]="isLoading"></vw-loader>
-  @if (errorMessage) {
-    <vw-error-card></vw-error-card>
-  }
-  @if (!isLoading && !errorMessage) {
-    <div>
-      @for (world of worlds | orderBy: 'name'; track world) {
-        <world-card [world]="world"></world-card>
-      }
+﻿<vw-loader variant="table" [rows]="5" [loading]="isLoading()"></vw-loader>
+@if (errorMessage()) {
+  <vw-error-card></vw-error-card>
+} @else if (!isLoading()) {
+  <mat-card class="servers mb-4">
+    <div class="servers-head">
+      <mat-card-title>Servers</mat-card-title>
+      <span class="muted">{{ totalOnline() | number }} {{ totalOnline() === 1 ? 'player' : 'players' }} online across {{ onlineWorldCount() | number }} {{ onlineWorldCount() === 1 ? 'server' : 'servers' }}</span>
     </div>
+    <mat-card-content>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th class="name">Server</th>
+              <th class="status">Status</th>
+              <th>Online</th>
+              @for (faction of factionKeys; track faction) {
+                <th class="faction" [ngClass]="factionIds[faction] | factionColor">{{ factionIds[faction] | factionCode }}</th>
+              }
+              @for (zone of zones(); track zone.id) {
+                <th class="zone">{{ zone.name }}</th>
+              }
+            </tr>
+          </thead>
+          @for (row of rows(); track row.id) {
+            <tbody>
+              <tr>
+                <td class="name">
+                  <button type="button" class="expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the zones of ' + row.name" (click)="toggle(row.id)">
+                    <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                  </button>
+                  <a class="link" routerLink="{{ row.id }}/activity">{{ row.name }}</a>
+                </td>
+                <td class="status">
+                  <span class="state"><i class="dot" [class.off]="!row.isOnline"></i>{{ row.isOnline ? 'Online' : 'Offline' }}</span>
+                </td>
+                @if (row.online === null) {
+                  <td class="dash">—</td>
+                } @else {
+                  <td>{{ row.online | number }}</td>
+                }
+                @for (faction of factionKeys; track faction) {
+                  @let total = row.factions[faction];
+                  @if (total === null) {
+                    <td class="faction dash">—</td>
+                  } @else {
+                    <td class="faction" [ngClass]="factionIds[faction] | factionColor">{{ total | number }}</td>
+                  }
+                }
+                @for (zone of zones(); track zone.id) {
+                  <td class="zone">
+                    <ng-container [ngTemplateOutlet]="cell" [ngTemplateOutletContext]="{ row, zone }"></ng-container>
+                  </td>
+                }
+              </tr>
+              @if (expanded().has(row.id)) {
+                <tr class="detail">
+                  <td colspan="2">
+                    <ul>
+                      @for (zone of zones(); track zone.id) {
+                        <li>
+                          <span>{{ zone.name }}</span>
+                          <span class="zone-value">
+                            <ng-container [ngTemplateOutlet]="cell" [ngTemplateOutletContext]="{ row, zone }"></ng-container>
+                          </span>
+                        </li>
+                      }
+                    </ul>
+                  </td>
+                </tr>
+              }
+            </tbody>
+          }
+        </table>
+      </div>
+    </mat-card-content>
+  </mat-card>
+}
+
+<ng-template #cell let-row="row" let-zone="zone">
+  @let c = row.cells[zone.id];
+  @switch (c.kind) {
+    @case ('alert') {
+      <a class="cell" routerLink="{{ row.id }}/map/{{ zone.id }}">
+        <vw-alert-indicator></vw-alert-indicator>{{ c.population | number }}
+      </a>
+    }
+    @case ('locked') {
+      <span class="cell">
+        <mat-icon class="lock" [ngClass]="c.factionId | factionColor" fontSet="mdi" fontIcon="mdi-lock"
+          [title]="'Locked by ' + ((c.factionId | factionCode) ?? 'unknown') + ', ' + (c.timestamp | date: 'medium')"></mat-icon>
+        <span class="dash">—</span>
+      </span>
+    }
+    @case ('population') {
+      <a class="cell" routerLink="{{ row.id }}/map/{{ zone.id }}">{{ c.population | number }}</a>
+    }
+    @default {
+      <span class="dash">—</span>
+    }
   }
-</div>
+</ng-template>

@@ -1,0 +1,33 @@
+<mat-card class="stat-card">
+  <mat-card-title>Top vehicles <small>last hour</small></mat-card-title>
+  <mat-card-content>
+    @if (rows().length) {
+      <div class="stat-table-wrap">
+        <table class="stat-table" matSort matSortActive="kills" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+          <thead>
+            <tr>
+              <th class="left pinned" mat-sort-header="name" start="asc">Vehicle</th>
+              <th mat-sort-header="kills" start="desc" arrowPosition="before">Kills</th>
+              <th mat-sort-header="deaths" start="desc" arrowPosition="before">Deaths</th>
+              <th mat-sort-header="kdr" start="desc" arrowPosition="before" title="Kill/death ratio">K/D</th>
+              <th mat-sort-header="teamkills" start="desc" arrowPosition="before" title="Team kills">TKs</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track $index) {
+              <tr>
+                <td class="left pinned" [ngClass]="row.factionId | factionColor">{{ row.name }}</td>
+                <td>{{ row.kills | number }}</td>
+                <td>{{ row.deaths | number }}</td>
+                @if (row.kdr === null) { <td class="dash">—</td> } @else { <td>{{ row.kdr | number: '1.2-2' }}</td> }
+                <td>{{ row.teamkills | number }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="stat-muted">No vehicles to show for this period.</p>
+    }
+  </mat-card-content>
+</mat-card>

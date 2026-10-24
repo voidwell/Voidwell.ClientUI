@@ -8,12 +8,12 @@ import { WeaponInfoResult } from '@core/api/models/ps2/weapon.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { ItemCardComponent } from './item-card/item-card.component';
-import { Breadcrumb } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
+import { Breadcrumb, BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
 
 @Component({
     templateUrl: './planetside-item.component.html',
     styleUrls: ['./planetside-item.component.css'],
-    imports: [LoaderComponent, ErrorCardComponent, ItemCardComponent, RouterOutlet]
+    imports: [LoaderComponent, ErrorCardComponent, BreadcrumbsComponent, ItemCardComponent, RouterOutlet]
 })
 
 export class PlanetsideItemComponent {
@@ -28,7 +28,7 @@ export class PlanetsideItemComponent {
     /** `itemId` as a stream, for the leaderboard's table data source. */
     readonly itemId$ = toObservable(this.itemId);
     readonly weaponData = signal<WeaponInfoResult | null>(null);
-    /** Where the current page sits under the weapon, shown in the item card; each page sets its own. */
+    /** Where the current page sits under the weapon, shown above the item card; each page sets its own. */
     readonly breadcrumbs = signal<Breadcrumb[]>([]);
 
     constructor() {

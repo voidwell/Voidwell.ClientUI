@@ -6,6 +6,9 @@ import { NavLink } from '@shared/ui/nav-link.model';
 import { Zone } from '@core/api/models/ps2/reference.model';
 import { ZoneRepository } from '@core/api/ps2/zone.repository';
 
+/** Zones players can visit: test and instance zones are left out. */
+export const isPlayableZone = (zoneId: number): boolean => zoneId === 344 || !(zoneId === 14 || zoneId === 10 || zoneId > 90);
+
 @Injectable()
 export class ZoneService {
     private zoneRepository = inject(ZoneRepository);
@@ -20,7 +23,7 @@ export class ZoneService {
 
     /** Tab links for the zones players can visit (test and instance zones are left out). */
     readonly zoneNavLinks = computed<NavLink[]>(() => (this.zones() ?? [])
-        .filter(zone => zone.id === 344 || !(zone.id === 14 || zone.id === 10 || zone.id > 90))
+        .filter(zone => isPlayableZone(zone.id))
         .map(zone => ({ path: String(zone.id), display: zone.name })));
 
     /** Name of a zone, or `undefined` while the zones load or when the id is unknown. */

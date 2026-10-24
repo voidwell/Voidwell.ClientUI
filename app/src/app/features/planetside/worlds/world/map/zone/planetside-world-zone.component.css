@@ -1,48 +1,97 @@
-﻿
-
-.map-container {
-    min-width: 800px;
+﻿.map-container {
     height: 600px;
 }
 
-.info-container {
-    vertical-align: top;
-    width: 100%;
+.territory {
+    display: block;
+    height: 26px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    border-radius: 4px;
 }
 
-.info-container vw-faction-bar {
-    height: 30px;
+.territory ::ng-deep .faction-bar {
+    font-size: 13px;
+    font-weight: 500;
+    height: 26px;
+    line-height: 26px;
 }
 
-.info-container vw-faction-bar ::ng-deep .faction-bar {
-    font-size: initial;
-    height: 30px;
-    line-height: 30px;
-}
-
-.map-log {
+.log-title {
+    margin: 0 0 8px;
     font-size: 14px;
-    height: 535px;
-    overflow-y: auto;
-}
-.map-log .timestamp {
-    opacity: 0.8;
-    margin-right: 5px;
-}
-.map-log .mat-icon {
-    width: initial;
-    margin-right: 5px;
+    font-weight: 500;
 }
 
-.map-log .facility-name {
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
+.log-title small {
+    margin-left: 8px;
+    color: #8a9ba1;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.log {
+    display: flex;
+    flex-direction: column;
+    max-height: 480px;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.log li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
+    font-size: 13px;
+}
+
+.log time {
+    flex: none;
+    width: 70px;
+    color: #8a9ba1;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+}
+
+.log .mat-icon {
+    flex: none;
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+.log .verb {
+    color: #8a9ba1;
+}
+
+/* A facility name focuses it on the map */
+.facility {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
+    text-underline-offset: 3px;
     cursor: pointer;
 }
 
-.map-log .faction-name {
-    text-transform: uppercase;
+.facility:hover {
+    opacity: .8;
 }
 
-.map-log .zone-event {
-    margin-bottom: 3px;
+.facility:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+@media (max-width: 700px) {
+    .map-container {
+        height: 360px;
+    }
 }

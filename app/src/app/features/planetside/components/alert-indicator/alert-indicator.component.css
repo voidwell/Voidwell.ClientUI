@@ -1,0 +1,44 @@
+:host {
+    display: inline-flex;
+    width: 16px;
+    height: 16px;
+}
+
+svg {
+    width: 100%;
+    height: 100%;
+}
+
+.ring,
+.arc {
+    fill: none;
+    stroke-width: 2.5;
+}
+
+.ring {
+    stroke: #d9453f;
+    stroke-opacity: .45;
+}
+
+.core {
+    fill: #d9453f;
+}
+
+.arc {
+    stroke: #ff4a40;
+    stroke-linecap: round;
+    transform-origin: 8px 8px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .arc {
+        animation: none;
+    }
+}

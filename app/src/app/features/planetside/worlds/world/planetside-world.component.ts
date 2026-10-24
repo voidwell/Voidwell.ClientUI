@@ -1,50 +1,63 @@
-﻿import { ChangeDetectorRef, Component, inject, signal, effect, input, untracked, numberAttribute, OnDestroy } from '@angular/core';
-import { RouterLink, RouterOutlet } from '@angular/router';
+﻿import { Component, OnDestroy, computed, effect, inject, input, numberAttribute, signal, untracked } from '@angular/core';
+import { DecimalPipe, NgClass } from '@angular/common';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { MatCard, MatCardFooter, MatCardTitle } from '@angular/material/card';
+import { MatIcon } from '@angular/material/icon';
 import { Observable, Subscription, timer } from 'rxjs';
-import { WorldNamePipe } from '../../pipes';
-import { mergeMapTo } from 'rxjs/operators';
+import { mergeMap } from 'rxjs/operators';
 import { WorldStateRepository } from '@core/api/ps2/world-state.repository';
 import { WorldRepository } from '@core/api/ps2/world.repository';
 import { AlertRepository } from '@core/api/ps2/alert.repository';
 import { WorldOnlineState } from '@core/api/models/ps2/world-state.model';
 import { WorldActivity } from '@core/api/models/ps2/world.model';
 import { OnlineCharacter } from '@core/api/models/ps2/character.model';
-import { AlertView, toAlertView } from '../../components/alert-card/alert-view';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { MatCard, MatCardTitle, MatCardContent, MatCardFooter } from '@angular/material/card';
-import { MatIcon } from '@angular/material/icon';
-import { NgClass, DecimalPipe, DatePipe } from '@angular/common';
+import { BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
 import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
+import { AlertView, toAlertView } from '../../components/alert-card/alert-view';
+import { AlertIndicatorComponent } from '../../components/alert-indicator/alert-indicator.component';
+import { ZoneService } from '../../data/zone.service';
+import { FactionCodePipe } from '../../pipes/faction-code.pipe';
 import { FactionColorPipe } from '../../pipes/faction-color.pipe';
-import { WorldNamePipe as WorldNamePipe_1 } from '../../pipes/world-name.pipe';
-
-type FactionKey = 'vs' | 'nc' | 'tr' | 'ns';
-const FACTION_KEYS: FactionKey[] = ['vs', 'nc', 'tr', 'ns'];
+import { WorldNamePipe } from '../../pipes/world-name.pipe';
+import { FACTION_KEYS } from '../world-list-figures';
+import { agoLabel, zoneTiles } from './world-figures';
 
 @Component({
     templateUrl: './planetside-world.component.html',
     styleUrls: ['./planetside-world.component.css'],
-    imports: [LoaderComponent, MatCard, MatCardTitle, MatIcon, MatCardContent, RouterLink, NgClass, MatCardFooter, VWTabNavSubBarComponent, RouterOutlet, DecimalPipe, DatePipe, FactionColorPipe, WorldNamePipe_1]
+    imports: [
+        LoaderComponent, MatCard, MatCardTitle, MatCardFooter, MatIcon, RouterLink, RouterLinkActive, RouterOutlet, NgClass, DecimalPipe,
+        VWTabNavSubBarComponent, BreadcrumbsComponent, AlertIndicatorComponent, FactionCodePipe, FactionColorPipe, WorldNamePipe
+    ]
 })
-
 export class PlanetsideWorldComponent implements OnDestroy {
     readonly worldId = input.required<number, string>({ transform: numberAttribute });
     private worldStateRepository = inject(WorldStateRepository);
     private worldRepository = inject(WorldRepository);
     private alertRepository = inject(AlertRepository);
+    private zoneService = inject(ZoneService);
     private worldName = inject(WorldNamePipe);
-    private cdr = inject(ChangeDetectorRef);
 
     private worldSub: Subscription;
     private activitySub: Subscription;
     private alertsSub: Subscription;
 
-    isLoading: boolean = false;
-    world: WorldOnlineState;
-    zoneTotal: Record<FactionKey, number> = { vs: 0, nc: 0, tr: 0, ns: 0 };
-
+    readonly isLoading = signal(false);
+    readonly world = signal<WorldOnlineState | null>(null);
     readonly activity = signal<WorldActivity | null>(null);
     readonly alerts = signal<AlertView[] | null>(null);
+
+    readonly factionKeys = FACTION_KEYS;
+    readonly agoLabel = agoLabel;
+
+    /** A tile per zone the server reports; refreshed with the server's state. */
+    readonly tiles = computed(() => zoneTiles(this.world(), id => this.zoneService.zoneName(id)));
+
+    readonly breadcrumbs = computed(() => [
+        { label: 'Servers', link: '/ps2/worlds' },
+        { label: this.world()?.name ?? this.worldName.transform(this.worldId()) ?? '' }
+    ]);
 
     navLinks = [
         { path: 'activity', display: 'Activity', icon: 'mdi-radar' },
@@ -53,7 +66,6 @@ export class PlanetsideWorldComponent implements OnDestroy {
     ];
 
     constructor() {
-
         effect(() => {
             const worldId = this.worldId();
 
@@ -62,49 +74,34 @@ export class PlanetsideWorldComponent implements OnDestroy {
                     return;
                 }
 
-                this.isLoading = true;
-                if (this.worldSub) this.worldSub.unsubscribe();
-                if (this.activitySub) this.activitySub.unsubscribe();
-                if (this.alertsSub) this.alertsSub.unsubscribe();
+                this.isLoading.set(true);
+                this.worldSub?.unsubscribe();
+                this.activitySub?.unsubscribe();
+                this.alertsSub?.unsubscribe();
 
+                this.world.set(null);
                 this.activity.set(null);
                 this.alerts.set(null);
 
                 this.worldSub = timer(0, 60000)
-                    .pipe(mergeMapTo(this.worldStateRepository.getWorldState(worldId)))
-                    .subscribe((worldState) => {
-                        this.world = worldState;
-
-                        FACTION_KEYS.forEach((f) => {
-                            this.zoneTotal[f] = 0;
-                        });
-
-                        worldState.zoneStates.forEach((zoneState) => {
-                            FACTION_KEYS.forEach((f) => {
-                                this.zoneTotal[f] += zoneState.population?.[f] ?? 0;
-                            });
-                        });
-
-                        this.isLoading = false;
-                        this.cdr.markForCheck();
+                    .pipe(mergeMap(() => this.worldStateRepository.getWorldState(worldId)))
+                    .subscribe(worldState => {
+                        this.world.set(worldState);
+                        this.isLoading.set(false);
                     });
-            
+
                 this.activitySub = timer(0, 60000)
-                    .pipe(mergeMapTo(this.worldRepository.getWorldActivity(worldId, 1)))
-                    .subscribe((activity) => {
-                        this.activity.set(activity);
-                    });
+                    .pipe(mergeMap(() => this.worldRepository.getWorldActivity(worldId, 1)))
+                    .subscribe(activity => this.activity.set(activity));
 
                 this.alertsSub = timer(0, 60000)
-                    .pipe(mergeMapTo(this.alertRepository.getAlerts(0, worldId)))
-                    .subscribe((alerts) => {
+                    .pipe(mergeMap(() => this.alertRepository.getAlerts(0, worldId)))
+                    .subscribe(alerts => {
                         const now = new Date();
 
-                        const activeAlerts = alerts
+                        this.alerts.set(alerts
                             .map(toAlertView)
-                            .filter(alert => alert.endDate !== null && alert.endDate > now);
-
-                        this.alerts.set(activeAlerts);
+                            .filter(alert => alert.endDate !== null && alert.endDate > now));
                     });
             });
         });
@@ -114,16 +111,9 @@ export class PlanetsideWorldComponent implements OnDestroy {
         return this.worldStateRepository.getOnlinePlayers(this.worldId());
     }
 
-    getMinutes(value: string | Date): number {
-        const now = new Date();
-        const valueDate = new Date(value);
-        const diffMs = (now.getTime() - valueDate.getTime());
-        return Math.round((diffMs / 1000) / 60);
-    }
-
     ngOnDestroy() {
-        if (this.worldSub) this.worldSub.unsubscribe();
-        if (this.activitySub) this.activitySub.unsubscribe();
-        if (this.alertsSub) this.alertsSub.unsubscribe();
+        this.worldSub?.unsubscribe();
+        this.activitySub?.unsubscribe();
+        this.alertsSub?.unsubscribe();
     }
 }

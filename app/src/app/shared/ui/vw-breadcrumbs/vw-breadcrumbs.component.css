@@ -1,10 +1,10 @@
 :host {
     display: block;
+    margin-bottom: 12px;
 }
 
 .breadcrumbs {
     padding: 12px 16px;
-    background: rgba(0, 0, 0, .18);
     font-size: 13px;
 }
 

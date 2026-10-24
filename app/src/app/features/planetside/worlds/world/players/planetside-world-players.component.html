@@ -1,38 +1,67 @@
-﻿<div class="online-players mt-6">
-  <mat-card class="player-totals mb-6">
-    <mat-card-content class="layout-padding">
-      <div>
-        @for (faction of players() | groupBy: 'character.factionId' | pairs ; track faction) {
-          <div class="total-row">
-            <span class="total-label" [ngClass]="faction[0] | factionColor">{{faction[0] | factionName}}:</span>
-            <span>{{faction[1].length}}</span>
-          </div>
-        }
-        <div class="total-row">
-          <span class="total-label">Total:</span>
-          <span>{{players().length}}</span>
+﻿<vw-loader variant="table" [rows]="8" [loading]="isLoading()"></vw-loader>
+@if (failed()) {
+  <vw-error-card></vw-error-card>
+} @else if (!isLoading()) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar">
+      <mat-card-title>Online players</mat-card-title>
+      <label class="stat-search">
+        <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+        <input type="search" placeholder="Filter by name" aria-label="Filter players by name" [value]="search()" (input)="onSearch($any($event.target).value)">
+      </label>
+    </div>
+    <div class="stat-chips" role="group" aria-label="Filter players by faction">
+      @for (id of factions; track id) {
+        <button type="button" class="stat-chip" [class.on]="faction() === id" [attr.aria-pressed]="faction() === id" (click)="setFaction(id)">
+          @if (id === 0) { All } @else { {{ id | factionCode }} }
+          <span class="stat-chip-count" [ngClass]="id === 0 ? '' : (id | factionColor)">{{ counts()[id] | number }}</span>
+        </button>
+      }
+    </div>
+    <mat-card-content>
+      @if (pageRows().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="onlineMinutes" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+            <thead>
+              <tr>
+                <th class="left pinned" mat-sort-header="name" start="asc">Player</th>
+                <th class="left" mat-sort-header="zoneName" start="asc">Zone</th>
+                <th mat-sort-header="onlineMinutes" start="desc" arrowPosition="before" title="Time since the player logged in">Online for</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of pageRows(); track $index) {
+                <tr>
+                  <td class="left pinned">
+                    @if (row.id) {
+                      <a class="stat-link stat-name" [ngClass]="row.factionId | factionColor" routerLink="/ps2/player/{{ row.id }}" [title]="row.name">{{ row.name }}</a>
+                    } @else {
+                      <span class="stat-name" [ngClass]="row.factionId | factionColor">{{ row.name }}</span>
+                    }
+                  </td>
+                  @if (row.zoneName) { <td class="left">{{ row.zoneName }}</td> } @else { <td class="left dash">—</td> }
+                  @if (row.loginDate) {
+                    <td class="stat-muted" [title]="(row.loginDate | date: 'medium') ?? ''">{{ agoLabel(row.loginDate) }}</td>
+                  } @else {
+                    <td class="dash">—</td>
+                  }
+                </tr>
+              }
+            </tbody>
+          </table>
         </div>
-      </div>
+        <div class="stat-pager">
+          <span>Players <strong>{{ firstRow() | number }}–{{ lastRow() | number }}</strong> of {{ filteredCount() | number }}</span>
+          <button type="button" class="stat-page-button" aria-label="Previous page" [disabled]="page() === 0" (click)="goToPage(page() - 1)">
+            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+          </button>
+          <button type="button" class="stat-page-button" aria-label="Next page" [disabled]="!hasNext()" (click)="goToPage(page() + 1)">
+            <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+          </button>
+        </div>
+      } @else {
+        <p class="stat-muted">{{ counts()[0] ? 'No players match.' : 'No one is online right now.' }}</p>
+      }
     </mat-card-content>
   </mat-card>
-
-  @for (faction of players() | groupBy: 'character.factionId' | pairs; track faction) {
-    <mat-card>
-      <mat-card-content>
-        <h3 [ngClass]="faction[0] | factionColor">{{faction[0] | factionName}}</h3>
-      </mat-card-content>
-      <mat-card-footer>
-        <div class="header-row">
-          <span class="player-col">Player</span>
-          <span class="date-col">Login date</span>
-        </div>
-        @for (player of faction[1] | orderBy: '-loginDate'; track player) {
-          <div class="player-row p-px">
-            <a routerLink="/ps2/player/{{player.character.characterId}}" [ngClass]="player.character.factionId | factionColor" class="player-col">{{player.character.name}}</a>
-            <span class="date-col">{{player.loginDate | date: 'short'}}</span>
-          </div>
-        }
-      </mat-card-footer>
-    </mat-card>
-  }
-</div>
+}

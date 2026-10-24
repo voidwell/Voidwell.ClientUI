@@ -3,6 +3,7 @@
       <vw-error-card></vw-error-card>
     }
     <div [hidden]="errorMessage">
+        <vw-breadcrumbs [crumbs]="crumbs()"></vw-breadcrumbs>
         <!-- Quick stats sit beside the character card, and take the full width once there is no room (24rem + 1rem gap + 16rem) -->
         <div class="@container flex flex-wrap gap-4 mb-4">
             <character-card class="flex-1 basis-96"></character-card>

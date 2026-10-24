@@ -7,11 +7,6 @@
     color: #edeff0;
 }
 
-/* Keep the breadcrumbs pinned to the bottom when the card stretches to match Quick Stats. */
-.character-card mat-card-content {
-    flex: 1 1 auto;
-}
-
 .player-name {
     display: inline-block;
     vertical-align: top;

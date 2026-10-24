@@ -1,7 +1,11 @@
 ﻿:host {
     display: block;
     position: relative;
-    margin-bottom: 25px;
+    margin-bottom: 16px;
+}
+
+mat-card-title {
+    font-size: 14px;
 }
 
 .activity-population-card {

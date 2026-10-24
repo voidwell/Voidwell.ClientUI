@@ -1,0 +1,50 @@
+<mat-card class="stat-card mb-4">
+  <mat-card-title>Top outfits <small>last hour</small></mat-card-title>
+  <mat-card-content>
+    @if (rows().length) {
+      <div class="stat-table-wrap">
+        <table class="stat-table" matSort matSortActive="kills" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+          <thead>
+            <tr>
+              <th class="left pinned" mat-sort-header="name" start="asc">Outfit</th>
+              <th mat-sort-header="kills" start="desc" arrowPosition="before">Kills</th>
+              <th mat-sort-header="deaths" start="desc" arrowPosition="before">Deaths</th>
+              <th mat-sort-header="kdr" start="desc" arrowPosition="before" title="Kill/death ratio">K/D</th>
+              <th mat-sort-header="killsPerMember" start="desc" arrowPosition="before" title="Kills per active member">Kills/mem</th>
+              <th mat-sort-header="deathsPerMember" start="desc" arrowPosition="before" title="Deaths per active member">Deaths/mem</th>
+              <th mat-sort-header="hsr" start="desc" arrowPosition="before" title="Headshot ratio">HSR</th>
+              <th mat-sort-header="members" start="desc" arrowPosition="before" title="Members active in the last hour">Active</th>
+              <th mat-sort-header="captures" start="desc" arrowPosition="before" title="Facility captures">Caps</th>
+              <th mat-sort-header="teamkills" start="desc" arrowPosition="before" title="Team kills">TKs</th>
+              <th mat-sort-header="suicides" start="desc" arrowPosition="before">Suicides</th>
+              <th mat-sort-header="vehicleKills" start="desc" arrowPosition="before" title="Vehicle kills">V.Kills</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.id) {
+              <tr>
+                <td class="left pinned">
+                  <a class="stat-link stat-name" [ngClass]="row.factionId | factionColor" routerLink="/ps2/outfit/{{ row.id }}" [title]="row.name">
+                    @if (row.alias) { <span class="stat-muted">[{{ row.alias }}]</span> }{{ row.name }}</a>
+                </td>
+                <td>{{ row.kills | number }}</td>
+                <td>{{ row.deaths | number }}</td>
+                @if (row.kdr === null) { <td class="dash">—</td> } @else { <td>{{ row.kdr | number: '1.2-2' }}</td> }
+                @if (row.killsPerMember === null) { <td class="dash">—</td> } @else { <td>{{ row.killsPerMember | number: '1.1-1' }}</td> }
+                @if (row.deathsPerMember === null) { <td class="dash">—</td> } @else { <td>{{ row.deathsPerMember | number: '1.1-1' }}</td> }
+                @if (row.hsr === null) { <td class="dash">—</td> } @else { <td>{{ row.hsr | percent: '1.1-1' }}</td> }
+                <td>{{ row.members | number }}</td>
+                <td>{{ row.captures | number }}</td>
+                <td>{{ row.teamkills | number }}</td>
+                <td>{{ row.suicides | number }}</td>
+                <td>{{ row.vehicleKills | number }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="stat-muted">No outfits to show for this period.</p>
+    }
+  </mat-card-content>
+</mat-card>
