@@ -1,26 +1,30 @@
-﻿@if (data) {
-  <mat-card class="outfit-card mb-8" [ngClass]="{'bg-vs': data.factionId===1, 'bg-nc': data.factionId===2, 'bg-tr': data.factionId===3}">
-    <mat-card-title>
-      <h1 class="outfit-name">@if (data.alias) {
-        <span>[{{data.alias}}]</span>
-      } {{data.name}}</h1>
-      <div class="stats pull-right">
-        <div>
-          {{data.memberCount}}
-          <label>Members</label>
+@let outfit = data();
+@if (outfit) {
+  <mat-card class="outfit-card mb-4" [class.bg-vs]="outfit.factionId === 1" [class.bg-nc]="outfit.factionId === 2" [class.bg-tr]="outfit.factionId === 3">
+    <div class="outfit-body">
+      @if (outfit.factionId) {
+        <vw-faction-icon class="emblem" [factionId]="outfit.factionId"></vw-faction-icon>
+      }
+      <div class="min-w-0">
+        <h1 class="outfit-name">
+          @if (outfit.alias) {
+            <span class="alias">[{{ outfit.alias }}]</span>
+          }
+          {{ outfit.name }}
+        </h1>
+        <div class="outfit-meta">
+          @if (outfit.factionName) {
+            <span class="pill">{{ outfit.factionName }}</span>
+          }
+          @if (outfit.worldName) {
+            <span>on <strong>{{ outfit.worldName }}</strong></span>
+          }
+          @if (outfit.leaderName) {
+            <span>Led by <a class="leader" routerLink="/ps2/player/{{ outfit.leaderCharacterId }}">{{ outfit.leaderName }}</a></span>
+          }
+          <span>Created <strong>{{ outfit.createdDate | date: 'mediumDate' }}</strong></span>
         </div>
       </div>
-    </mat-card-title>
-    <mat-card-subtitle>
-      <div class="outfit-title">
-        Outfit of the {{data.factionName}} on {{data.worldName}}
-      </div>
-      <div class="outfit-created-date">
-        Created on {{data.createdDate | date:'MMM d, y h:mm:ss a'}}
-      </div>
-    </mat-card-subtitle>
-    <mat-card-footer>
-      <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
-    </mat-card-footer>
+    </div>
   </mat-card>
 }
