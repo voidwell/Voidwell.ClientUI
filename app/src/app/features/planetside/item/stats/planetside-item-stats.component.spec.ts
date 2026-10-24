@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { of } from 'rxjs';
 import { WeaponInfoResult } from '@core/api/models/ps2/weapon.model';
 import { LeaderboardRepository } from '@core/api/ps2/leaderboard.repository';
-import { PlanetsideItemComponent } from './planetside-item.component';
+import { PlanetsideItemComponent } from '../planetside-item.component';
 import { PlanetsideItemStatsComponent } from './planetside-item-stats.component';
 
 const LMG: WeaponInfoResult = {
