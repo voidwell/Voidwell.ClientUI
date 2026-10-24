@@ -68,9 +68,7 @@ across shells:
 gh pr create --base main --head <branch> --title "<title>" --body-file <file>
 ```
 
-Body shape: a **Summary** of what changed and why, **Notes** for assumptions or things the reviewer should know, and
-a **Test plan** checklist: lint, tests and build ticked, plus unticked items for what only the real backend can
-confirm. The command prints the PR URL; give it to the user. If it says there are no commits between `main` and the
+Body shape: a **Summary** of what changed and why. The command prints the PR URL; give it to the user. If it says there are no commits between `main` and the
 branch, the commit or push didn't happen: go back and check.
 
 ## After
