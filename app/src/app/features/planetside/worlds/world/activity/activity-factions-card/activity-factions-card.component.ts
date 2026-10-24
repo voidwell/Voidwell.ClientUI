@@ -5,7 +5,7 @@ import { WorldActivityStats } from '@core/api/models/ps2/world.model';
 import { FactionCodePipe } from '../../../../pipes/faction-code.pipe';
 import { FactionColorPipe } from '../../../../pipes/faction-color.pipe';
 import { FACTION_KEYS, FactionKey } from '../../../world-list-figures';
-import { factionStatRows } from '../activity-figures';
+import { factionStatRows } from '../../../../components/combat-report/combat-report-figures';
 
 /** The factions side by side on each figure of the last hour. */
 @Component({

@@ -1,5 +1,5 @@
 <mat-card class="stat-card">
-  <mat-card-title>Top vehicles <small>last hour</small></mat-card-title>
+  <mat-card-title>Vehicles @if (caption()) { <small>{{ caption() }}</small> }</mat-card-title>
   <mat-card-content>
     @if (rows().length) {
       <div class="stat-table-wrap">

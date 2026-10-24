@@ -1,45 +1,14 @@
-﻿import { Component, OnInit, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
+﻿import { Component, computed, inject } from '@angular/core';
 import { PlanetsideCombatEventComponent } from '../../../components/combat-event/planetside-combat-event.component';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { RouterLink } from '@angular/router';
-import { NgClass, DecimalPipe } from '@angular/common';
-import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
-import { AlertWeaponsDataSource } from './planetside-alert-weapons.data-source';
+import { CombatWeaponsCardComponent } from '../../../components/combat-report/combat-weapons-card/combat-weapons-card.component';
 
+/** The weapons of an alert or event by their kills. */
 @Component({
-    templateUrl: './planetside-alert-weapons.component.html',
-    styleUrls: ['./planetside-alert-weapons.component.css'],
-    imports: [MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatSortHeader, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, FactionColorPipe]
+    template: '<combat-weapons-card [weapons]="weapons()"></combat-weapons-card>',
+    imports: [CombatWeaponsCardComponent]
 })
-
-export class PlanetsideAlertWeaponsComponent implements OnInit {
+export class PlanetsideAlertWeaponsComponent {
     private parentEventComponent = inject(PlanetsideCombatEventComponent);
-    private injector = inject(Injector);
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
-
-    dataSource: AlertWeaponsDataSource;
-
-    ngOnInit() {
-        effect(() => {
-            const alert = this.parentEventComponent.event();
-
-            untracked(() => {
-                if (alert == null) {
-                    return;
-                }
-
-                this.sort.sort(<MatSortable>{
-                    id: 'kills',
-                    start: 'desc'
-                });
-
-                this.dataSource = new AlertWeaponsDataSource(alert.log.stats.weapons, this.sort, this.paginator);
-            });
-        }, { injector: this.injector });
-    }
+    readonly weapons = computed(() => this.parentEventComponent.event()?.log?.stats?.weapons);
 }
-

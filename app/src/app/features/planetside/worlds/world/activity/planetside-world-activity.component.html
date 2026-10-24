@@ -1,7 +1,7 @@
 <vw-loader [loading]="!activity()"></vw-loader>
 @if (activity(); as activity) {
   <div class="world-activity">
-    <activity-alerts-card [alerts]="alerts()"></activity-alerts-card>
+    <active-alerts-card [alerts]="alerts()"></active-alerts-card>
     <activity-population-card [data]="activity.historicalPopulations"></activity-population-card>
     <div class="grid grid-cols-1 gap-4 mb-4 lg:grid-cols-[repeat(2,minmax(0,1fr))]">
       <activity-factions-card [stats]="activity.stats"></activity-factions-card>
@@ -10,8 +10,8 @@
     <activity-players-card [players]="players()"></activity-players-card>
     <activity-outfits-card [outfits]="outfits()"></activity-outfits-card>
     <div class="grid grid-cols-1 gap-4 lg:grid-cols-[repeat(2,minmax(0,1fr))]">
-      <activity-weapons-card [weapons]="activity.topWeapons"></activity-weapons-card>
-      <activity-vehicles-card [vehicles]="activity.topVehicles"></activity-vehicles-card>
+      <combat-weapons-card caption="last hour" [weapons]="activity.topWeapons"></combat-weapons-card>
+      <combat-vehicles-card caption="last hour" [vehicles]="activity.topVehicles"></combat-vehicles-card>
     </div>
   </div>
 }

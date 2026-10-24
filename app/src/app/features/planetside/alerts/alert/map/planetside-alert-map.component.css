@@ -1,72 +1,11 @@
-﻿.event-map > *:not(:last-child) {
-    margin-bottom: 30px;
-}
-
-.table-container {
-    overflow-x: auto;
-}
-
-.mat-mdc-table {
-    min-width: 800px;
-}
-
-.mat-mdc-table .mat-mdc-row {
-    min-height: 25px;
-}
-
-.mat-mdc-table .mat-mdc-row .mat-mdc-cell {
-    font-size: 0.8em;
-}
-
-
-.faction-bar-container {
+.bar {
     display: block;
-    white-space: nowrap;
-    margin-top: 10px;
-    height: 18px;
+    width: 150px;
+    margin-left: auto;
 }
 
-    .faction-bar-container .faction-bar {
-        display: block;
-        float: left;
-        height: 18px;
-        line-height: 18px;
-        text-align: center;
-    }
-
-.mat-column-time,
-.mat-column-winner,
-.mat-column-loser {
-    max-width: 80px;
-}
-
-.mat-column-mapper,
-.mat-column-zonepop {
-    width: 450px;
-}
-
-.mat-column-zonepop {
-    margin-left: 15px;
-}
-
-a.outfit-name {
-    color: #fff;
-    text-decoration: none;
-}
-
-.event-map.map-enabled .mat-column-facility .facility-name,
-.event-map.map-enabled .mat-column-time .timestamp {
-    border-bottom: 1px dashed rgba(255, 255, 255, 0.2);
-    cursor: pointer;
-}
-
-.map-events .filters {
-    margin-bottom: 5px;
-}
-.map-events .filters .mat-button-toggle:not(:last-of-type) {
-    margin-right: 5px;
-}
-
-small {
-    font-size: 80%;
+.note {
+    margin: 12px 0 0;
+    color: #8a9ba1;
+    font-size: 12px;
 }

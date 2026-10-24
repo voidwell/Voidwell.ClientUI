@@ -13,7 +13,7 @@ import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ZoneService } from '../../../data/zone.service';
 import { FactionCodePipe } from '../../../pipes/faction-code.pipe';
 import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
-import { cellOf, sortRows } from '../activity/activity-figures';
+import { cellOf, sortRows } from '../../../components/combat-report/combat-report-figures';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
 import { agoLabel } from '../world-figures';
 import { ALL_FACTIONS, PLAYERS_PAGE_SIZE, filterPlayers, onlinePlayerRows, playerCounts } from './online-players-figures';

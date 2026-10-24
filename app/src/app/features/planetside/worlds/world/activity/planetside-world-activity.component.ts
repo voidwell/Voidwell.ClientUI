@@ -2,15 +2,15 @@ import { Component, computed, inject } from '@angular/core';
 import { WorldActivity } from '@core/api/models/ps2/world.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
-import { ActivityAlertsCardComponent } from './activity-alerts-card/activity-alerts-card.component';
+import { ActiveAlertsCardComponent } from '../../../components/active-alerts-card/active-alerts-card.component';
 import { ActivityClassesCardComponent } from './activity-classes-card/activity-classes-card.component';
 import { ActivityFactionsCardComponent } from './activity-factions-card/activity-factions-card.component';
 import { ActivityOutfitsCardComponent } from './activity-outfits-card/activity-outfits-card.component';
 import { ActivityPlayersCardComponent } from './activity-players-card/activity-players-card.component';
 import { ActivityPopulationCardComponent } from './activity-population-card/activity-population-card.component';
-import { ActivityVehiclesCardComponent } from './activity-vehicles-card/activity-vehicles-card.component';
-import { ActivityWeaponsCardComponent } from './activity-weapons-card/activity-weapons-card.component';
-import { topOutfitRows, topPlayerRows } from './activity-figures';
+import { CombatVehiclesCardComponent } from '../../../components/combat-report/combat-vehicles-card/combat-vehicles-card.component';
+import { CombatWeaponsCardComponent } from '../../../components/combat-report/combat-weapons-card/combat-weapons-card.component';
+import { topOutfitRows, topPlayerRows } from '../../../components/combat-report/combat-report-figures';
 
 export type ActivityView = Omit<WorldActivity, 'activityPeriodStart' | 'activityPeriodEnd'> & {
     activityPeriodStart: Date;
@@ -20,8 +20,8 @@ export type ActivityView = Omit<WorldActivity, 'activityPeriodStart' | 'activity
 @Component({
     templateUrl: './planetside-world-activity.component.html',
     imports: [
-        LoaderComponent, ActivityAlertsCardComponent, ActivityPopulationCardComponent, ActivityFactionsCardComponent, ActivityClassesCardComponent,
-        ActivityPlayersCardComponent, ActivityOutfitsCardComponent, ActivityWeaponsCardComponent, ActivityVehiclesCardComponent
+        LoaderComponent, ActiveAlertsCardComponent, ActivityPopulationCardComponent, ActivityFactionsCardComponent, ActivityClassesCardComponent,
+        ActivityPlayersCardComponent, ActivityOutfitsCardComponent, CombatWeaponsCardComponent, CombatVehiclesCardComponent
     ]
 })
 export class PlanetsideWorldActivityComponent {

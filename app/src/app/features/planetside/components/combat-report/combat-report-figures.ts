@@ -1,7 +1,7 @@
 import { Sort } from '@angular/material/sort';
-import { CombatReportClassStats, CombatReportOutfitStats, CombatReportParticipantStats, CombatReportVehicleStats, CombatReportWeaponStats } from '@core/api/models/ps2/combat-report.model';
+import { CaptureLogRow, CombatReportClassStats, CombatReportOutfitStats, CombatReportParticipantStats, CombatReportVehicleStats, CombatReportWeaponStats } from '@core/api/models/ps2/combat-report.model';
 import { WorldActivityStats } from '@core/api/models/ps2/world.model';
-import { FactionKey } from '../../world-list-figures';
+import { FactionKey } from '../../worlds/world-list-figures';
 
 export type SortCell = string | number | null | undefined;
 
@@ -276,4 +276,121 @@ export function vehicleRows(vehicles: CombatReportVehicleStats[] | undefined): V
         kdr: kdr(stats.kills, stats.deaths),
         teamkills: stats.teamkills
     }));
+}
+
+/** A player of an alert or event with the figures its table shows. */
+export interface CombatPlayerRow {
+    id: string;
+    name: string;
+    factionId: number;
+    alias?: string;
+    outfitName?: string;
+    kills: number;
+    deaths: number;
+    kdr: number | null;
+    hsr: number | null;
+    vehicleKills: number;
+    teamkills: number;
+    suicides: number;
+    headshots: number;
+}
+
+export function combatPlayerRows(players: CombatReportParticipantStats[] | undefined): CombatPlayerRow[] {
+    return (players ?? [])
+        .filter(player => player.character?.id)
+        .map(player => ({
+            id: player.character.id,
+            name: player.character.name ?? 'Unknown',
+            factionId: player.character.factionId ?? 0,
+            alias: player.outfit?.alias || undefined,
+            outfitName: player.outfit?.name || undefined,
+            kills: player.kills,
+            deaths: player.deaths,
+            kdr: kdr(player.kills, player.deaths),
+            hsr: hsr(player.headshots, player.kills),
+            vehicleKills: player.vehicleKills,
+            teamkills: player.teamkills,
+            suicides: player.suicides,
+            headshots: player.headshots
+        }));
+}
+
+/** An outfit of an alert or event with the figures its table shows. */
+export interface CombatOutfitRow {
+    id: string;
+    name: string;
+    factionId: number;
+    alias?: string;
+    participants: number;
+    captures: number;
+    kills: number;
+    deaths: number;
+    kdr: number | null;
+    hsr: number | null;
+    vehicleKills: number;
+    teamkills: number;
+    suicides: number;
+    headshots: number;
+}
+
+export function combatOutfitRows(outfits: CombatReportOutfitStats[] | undefined): CombatOutfitRow[] {
+    return (outfits ?? [])
+        .filter(stats => stats.outfit?.id)
+        .map(stats => ({
+            id: stats.outfit.id,
+            name: stats.outfit.name ?? 'Unknown',
+            factionId: stats.outfit.factionId ?? 0,
+            alias: stats.outfit.alias || undefined,
+            participants: stats.participantCount,
+            captures: stats.facilityCaptures,
+            kills: stats.kills,
+            deaths: stats.deaths,
+            kdr: kdr(stats.kills, stats.deaths),
+            hsr: hsr(stats.headshots, stats.kills),
+            vehicleKills: stats.vehicleKills,
+            teamkills: stats.teamkills,
+            suicides: stats.suicides,
+            headshots: stats.headshots
+        }));
+}
+
+/** Which kinds of map events a capture log lists. */
+export interface CaptureFilter {
+    captures: boolean;
+    defends: boolean;
+}
+
+/** A facility changing hands (a capture) or being held (a defence), with the map and the continent's population then. */
+export interface CaptureRow {
+    timestamp: string;
+    facilityId?: number;
+    facility: string;
+    /** The faction that holds it after the event. */
+    winnerId: number;
+    /** The faction that held it before. */
+    loserId: number;
+    isCapture: boolean;
+    outfitId?: string;
+    outfitName?: string;
+    outfitAlias?: string;
+    control: { vs: number; nc: number; tr: number };
+    population: { vs: number; nc: number; tr: number };
+}
+
+export function captureRows(log: CaptureLogRow[] | undefined, filter: CaptureFilter): CaptureRow[] {
+    return (log ?? [])
+        .map((row): CaptureRow => ({
+            timestamp: row.timestamp,
+            facilityId: row.mapRegion?.id,
+            facility: row.mapRegion?.facilityName ?? 'Unknown',
+            winnerId: row.newFactionId ?? 0,
+            loserId: row.oldFactionId ?? 0,
+            isCapture: row.newFactionId !== row.oldFactionId,
+            outfitId: row.outfit?.id,
+            outfitName: row.outfit?.name,
+            outfitAlias: row.outfit?.alias || undefined,
+            control: { vs: row.factionVs ?? 0, nc: row.factionNc ?? 0, tr: row.factionTr ?? 0 },
+            population: { vs: row.zonePopVs ?? 0, nc: row.zonePopNc ?? 0, tr: row.zonePopTr ?? 0 }
+        }))
+        .filter(row => (filter.captures && row.isCapture) || (filter.defends && !row.isCapture));
 }

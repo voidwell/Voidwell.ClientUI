@@ -1,45 +1,24 @@
-﻿import { Component, OnInit, ViewChild, inject, Injector, effect, untracked } from '@angular/core';
-import { MatPaginator } from '@angular/material/paginator';
-import { MatSort, MatSortable, MatSortHeader } from '@angular/material/sort';
-import { PlanetsideCombatEventComponent } from '../../../components/combat-event/planetside-combat-event.component';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
+﻿import { Component, computed, inject, signal } from '@angular/core';
+import { DecimalPipe, NgClass, PercentPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { NgClass, DecimalPipe } from '@angular/common';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
+import { PlanetsideCombatEventComponent } from '../../../components/combat-event/planetside-combat-event.component';
+import { cellOf, combatOutfitRows, sortRows } from '../../../components/combat-report/combat-report-figures';
 import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
-import { AlertOutfitsDataSource } from './planetside-alert-outfits.data-source';
 
+/** The outfits of an alert or event by their figures, their names in their faction's colour. */
 @Component({
     templateUrl: './planetside-alert-outfits.component.html',
-    styleUrls: ['./planetside-alert-outfits.component.css'],
-    imports: [MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatSortHeader, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatPaginator, DecimalPipe, FactionColorPipe]
+    imports: [MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, RouterLink, NgClass, DecimalPipe, PercentPipe, FactionColorPipe]
 })
-
-export class PlanetsideAlertOutfitsComponent implements OnInit {
+export class PlanetsideAlertOutfitsComponent {
     private parentEventComponent = inject(PlanetsideCombatEventComponent);
-    private injector = inject(Injector);
 
-    @ViewChild(MatSort, { static: true }) sort: MatSort;
-    @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
+    readonly sort = signal<Sort>({ active: 'kills', direction: 'desc' });
+    readonly rows = computed(() => sortRows(combatOutfitRows(this.parentEventComponent.event()?.log?.stats?.outfits), this.sort(), cellOf));
 
-    dataSource: AlertOutfitsDataSource;
-
-    ngOnInit() {
-        effect(() => {
-            const alert = this.parentEventComponent.event();
-
-            untracked(() => {
-                if (alert == null) {
-                    return;
-                }
-
-                this.sort.sort(<MatSortable>{
-                    id: 'kills',
-                    start: 'desc'
-                });
-
-                this.dataSource = new AlertOutfitsDataSource(alert.log.stats.outfits, this.sort, this.paginator);
-            });
-        }, { injector: this.injector });
+    onSort(sort: Sort): void {
+        this.sort.set(sort);
     }
 }
-

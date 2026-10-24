@@ -25,7 +25,7 @@
               <tr>
                 <td class="left pinned">
                   <a class="stat-link stat-name" [ngClass]="row.factionId | factionColor" routerLink="/ps2/outfit/{{ row.id }}" [title]="row.name">
-                    @if (row.alias) { <span class="stat-muted">[{{ row.alias }}]</span> }{{ row.name }}</a>
+                    @if (row.alias) { <span class="stat-muted">[{{ row.alias }}]</span>&ngsp;}{{ row.name }}</a>
                 </td>
                 <td>{{ row.kills | number }}</td>
                 <td>{{ row.deaths | number }}</td>

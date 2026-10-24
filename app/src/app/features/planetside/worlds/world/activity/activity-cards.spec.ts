@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { CombatReportClassStats } from '@core/api/models/ps2/combat-report.model';
-import { AlertView } from '../../../components/alert-card/alert-view';
+import { AlertView } from '../../../components/alert-view';
 import { ZoneService } from '../../../data/zone.service';
-import { ActivityAlertsCardComponent } from './activity-alerts-card/activity-alerts-card.component';
+import { ActiveAlertsCardComponent } from '../../../components/active-alerts-card/active-alerts-card.component';
 import { ActivityClassesCardComponent } from './activity-classes-card/activity-classes-card.component';
 import { ActivityPlayersCardComponent } from './activity-players-card/activity-players-card.component';
-import { TopPlayerRow } from './activity-figures';
+import { TopPlayerRow } from '../../../components/combat-report/combat-report-figures';
 
 const classStats = (name: string, factionId: number, kills: number): CombatReportClassStats =>
     ({ profile: { name, factionId }, kills, deaths: 10, headshots: 1, suicides: 0, teamkills: 0, vehicleKills: 0 });
@@ -62,7 +62,7 @@ describe('ActivityPlayersCardComponent', () => {
     });
 });
 
-describe('ActivityAlertsCardComponent', () => {
+describe('ActiveAlertsCardComponent', () => {
     const alert = (id: number, name: string, startMinutesAgo: number): AlertView => ({
         worldId: 17, metagameInstanceId: id, zoneId: 2, startDate: new Date(Date.now() - startMinutesAgo * 60000),
         endDate: new Date(Date.now() + 30 * 60000), lastFactionVs: 35.4, lastFactionNc: 34, lastFactionTr: 30.6, metagameEvent: { id: 1, name }
@@ -70,7 +70,7 @@ describe('ActivityAlertsCardComponent', () => {
 
     function create(alerts: AlertView[]) {
         TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: ZoneService, useValue: { zoneName: (): string => 'Indar' } }] });
-        const fixture = TestBed.createComponent(ActivityAlertsCardComponent);
+        const fixture = TestBed.createComponent(ActiveAlertsCardComponent);
         fixture.componentRef.setInput('alerts', alerts);
         // The countdown ticks on a timer, so the zone never settles: render once instead of waiting for it
         fixture.detectChanges();

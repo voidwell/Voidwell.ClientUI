@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { signal } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { WorldActivity, WorldActivityStats } from '@core/api/models/ps2/world.model';
-import { AlertView } from '../../../components/alert-card/alert-view';
+import { AlertView } from '../../../components/alert-view';
 import { PlanetsideWorldComponent } from '../planetside-world.component';
 import { PlanetsideWorldActivityComponent } from './planetside-world-activity.component';
 

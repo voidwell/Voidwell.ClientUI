@@ -14,7 +14,7 @@ import { OnlineCharacter } from '@core/api/models/ps2/character.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
 import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
-import { AlertView, toAlertView } from '../../components/alert-card/alert-view';
+import { AlertView, toAlertView } from '../../components/alert-view';
 import { AlertIndicatorComponent } from '../../components/alert-indicator/alert-indicator.component';
 import { ZoneService } from '../../data/zone.service';
 import { FactionCodePipe } from '../../pipes/faction-code.pipe';
