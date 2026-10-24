@@ -1,7 +1,7 @@
 ﻿import { Component, computed, inject } from '@angular/core';
 import { DecimalPipe } from '@angular/common';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
-import { PlanetsideItemComponent } from './planetside-item.component';
+import { PlanetsideItemComponent } from '../planetside-item.component';
 import { DamageChartComponent } from './damage-chart/damage-chart.component';
 import { TopPlayersCardComponent } from './top-players-card/top-players-card.component';
 import { roundsPerMinute, shotsToKill, timeToKill } from './weapon-figures';

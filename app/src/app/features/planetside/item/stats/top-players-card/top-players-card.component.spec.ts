@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { of, throwError } from 'rxjs';
 import { WeaponLeaderboardRow } from '@core/api/models/ps2/weapon.model';
 import { LeaderboardRepository } from '@core/api/ps2/leaderboard.repository';
-import { PerformanceGrades } from '../../data/performance-grades.service';
+import { PerformanceGrades } from '../../../data/performance-grades.service';
 import { TopPlayersCardComponent } from './top-players-card.component';
 
 const row = (i: number): WeaponLeaderboardRow => ({

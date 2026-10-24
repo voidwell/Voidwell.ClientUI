@@ -11,10 +11,10 @@ import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
 import { LeaderboardSortDirection, WeaponLeaderboardRow } from '@core/api/models/ps2/weapon.model';
 import { LeaderboardRepository } from '@core/api/ps2/leaderboard.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { GradedFigureComponent } from '../components/graded-figure/graded-figure.component';
-import { FactionIconComponent } from '../components/faction-icon/faction-icon.component';
-import { PlanetsideItemComponent } from './planetside-item.component';
-import { LEADERBOARD_PAGE_SIZE, accuracy, hours, hsr, kdr, kph } from './leaderboard-figures';
+import { GradedFigureComponent } from '../../components/graded-figure/graded-figure.component';
+import { FactionIconComponent } from '../../components/faction-icon/faction-icon.component';
+import { PlanetsideItemComponent } from '../planetside-item.component';
+import { LEADERBOARD_PAGE_SIZE, accuracy, hours, hsr, kdr, kph } from '../leaderboard-figures';
 
 /** The API serves the top 1,000 players. */
 const MAX_RANK = 1000;
