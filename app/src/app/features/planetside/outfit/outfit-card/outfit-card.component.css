@@ -1,35 +1,69 @@
-﻿.outfit-card {
+:host {
+    display: block;
+}
+
+.outfit-card {
+    overflow: hidden;
     color: #edeff0;
 }
 
-.outfit-card ::ng-deep .vw-tab-nav-sub-bar {
-    box-shadow: none;
-    font-size: initial;
+.outfit-body {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding-top: 8px;
+    padding-bottom: 8px;
 }
 
-.stats, .outfit-name {
-    display: inline-block;
-    vertical-align: top;
+vw-faction-icon.emblem {
+    width: 64px;
+    height: 64px;
 }
 
-.stats > div {
-    display: inline-block;
-    text-align: center;
-    text-align: right;
-    font-size: 1.2em;
+.outfit-name {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
 }
 
-.stats > div:not(:last-child) {
-    margin-right: 50px;
+.alias {
+    margin-right: 4px;
+    color: rgba(255, 255, 255, .65);
 }
 
-.stats label {
-    display: block;
-    font-size: 0.7em;
-    opacity: 0.5;
-    text-transform: uppercase;
+.outfit-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin-top: 8px;
+    color: rgba(255, 255, 255, .8);
+    font-size: 13px;
 }
 
+.outfit-meta strong {
+    color: #fff;
+    font-weight: 500;
+}
+
+.pill {
+    padding: 2px 10px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .12);
+    font-size: 12px;
+}
+
+.leader {
+    color: #fff;
+    text-decoration: underline dashed;
+    text-decoration-color: rgba(255, 255, 255, .35);
+    text-underline-offset: 3px;
+}
+
+.leader:hover {
+    opacity: .8;
+}
 
 .bg-vs {
     background: #3f1f66;
@@ -41,4 +75,15 @@
 
 .bg-tr {
     background: #661f20;
+}
+
+@media (max-width: 700px) {
+    .outfit-body {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .outfit-name {
+        font-size: 24px;
+    }
 }

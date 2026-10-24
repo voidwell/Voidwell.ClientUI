@@ -1,96 +1,124 @@
-﻿<div>
-  @if (weaponData(); as weaponData) {
-    <div class="card-row flex flex-row flex-wrap">
-      <mat-card class="weapon-description-card pull-left mr-5">
-        <mat-card-content class="layout-padding">
-          <img [src]="weaponData.imageId | dgcImageUrl" />
-          <div class="item-description">
-            {{weaponData.description}}
-          </div>
-          @if (!weaponData.isVehicleWeapon) {
+﻿@if (weaponData(); as weapon) {
+  @let f = figures()!;
+  <div class="overview flex flex-col gap-4">
+    <mat-card>
+      <mat-card-title>Specifications</mat-card-title>
+      <mat-card-content>
+        <div class="tiles">
+          @if (f.hasDamage) {
+            <div class="tile">
+              <div class="tile-label">Damage</div>
+              <div class="tile-value">{{ weapon.maxDamage | number }}@if (weapon.minDamage !== weapon.maxDamage) { &rarr; {{ weapon.minDamage | number }}}</div>
+              @if (weapon.minDamage !== weapon.maxDamage) {
+                <div class="tile-note">{{ weapon.maxDamageRange }} m to {{ weapon.minDamageRange }} m</div>
+              }
+            </div>
+          }
+          @if (f.rpm) {
+            <div class="tile">
+              <div class="tile-label">Fire Rate</div>
+              <div class="tile-value">{{ f.rpm | number: '1.0-0' }} RPM</div>
+              <div class="tile-note">{{ weapon.fireRateMs | number }} ms between shots</div>
+            </div>
+          }
+          @if (weapon.clipSize) {
+            <div class="tile">
+              <div class="tile-label">Magazine</div>
+              <div class="tile-value">{{ weapon.clipSize | number }}</div>
+              @if (weapon.capacity) {
+                <div class="tile-note">{{ weapon.capacity | number }} carried</div>
+              }
+            </div>
+          }
+          @if (weapon.minReloadSpeed) {
+            <div class="tile">
+              <div class="tile-label">Reload</div>
+              <div class="tile-value">{{ weapon.minReloadSpeed / 1000 | number: '1.1-2' }} s</div>
+              @if (weapon.maxReloadSpeed && weapon.maxReloadSpeed !== weapon.minReloadSpeed) {
+                <div class="tile-note">{{ weapon.maxReloadSpeed / 1000 | number: '1.1-2' }} s when empty</div>
+              }
+            </div>
+          }
+          @if (weapon.muzzleVelocity) {
+            <div class="tile">
+              <div class="tile-label">Muzzle Velocity</div>
+              <div class="tile-value">{{ weapon.muzzleVelocity | number }} m/s</div>
+            </div>
+          }
+          @if (weapon.ironSightZoom) {
+            <div class="tile">
+              <div class="tile-label">Iron Sight Zoom</div>
+              <div class="tile-value">{{ weapon.ironSightZoom }}&times;</div>
+            </div>
+          }
+        </div>
+        <div class="facts">
+          @if (weapon.range) {
+            <div><span class="fact-label">Range</span>{{ weapon.range }}</div>
+          }
+          @if (weapon.fireModes?.length) {
+            <div><span class="fact-label">Fire modes</span>{{ weapon.fireModes!.join(', ') }}</div>
+          }
+          @if (weapon.damageRadius) {
+            <div><span class="fact-label">Damage radius</span>{{ weapon.damageRadius | number }} m</div>
+          }
+          @if (!weapon.isVehicleWeapon && weapon.indirectMaxDamage) {
             <div>
-              <planetside-item-damage-card [weaponData]="weaponData"></planetside-item-damage-card>
+              <span class="fact-label">Indirect damage</span>{{ weapon.indirectMaxDamage | number }} &rarr; {{ weapon.indirectMinDamage | number }}
+              ({{ weapon.indirectMaxDamageRange }} m to {{ weapon.indirectMinDamageRange }} m)
             </div>
           }
-        </mat-card-content>
-      </mat-card>
-      <mat-card class="weapon-info-card flex-1">
-        <mat-card-content class="layout-padding">
-          <div class="info-row p-2">
-            <span class="label">Type</span>
-            <span class="value">{{weaponData.category}}</span>
-          </div>
-          <div class="info-row p-2">
-            <span class="label">Range</span>
-            <span class="value">{{weaponData.range}}</span>
-          </div>
-          <div class="info-row p-2">
-            <span class="label">Fire rate</span>
-            <span class="value">{{60000 / weaponData.fireRateMs }} RPM ({{weaponData.fireRateMs / 1000}} s)</span>
-          </div>
-          @if (!weaponData.isVehicleWeapon) {
-            <div class="info-row p-2">
-              <span class="label">Damage</span>
-              <span class="value">{{weaponData.maxDamage}} / {{weaponData.maxDamageRange}}m / {{weaponData.minDamage}} / {{weaponData.minDamageRange}}m</span>
-            </div>
-          }
-          @if (!weaponData.isVehicleWeapon && weaponData.indirectMaxDamage) {
-            <div class="info-row p-2">
-              <span class="label">Indirect damage</span>
-              <span class="value">{{weaponData.indirectMaxDamage}} / {{weaponData.indirectMaxDamageRange}}m / {{weaponData.indirectMinDamage}} / {{weaponData.indirectMinDamageRange}}m</span>
-            </div>
-          }
-          @if (weaponData.damageRadius) {
-            <div class="info-row p-2">
-              <span class="label">Damage radius</span>
-              <span class="value">{{weaponData.damageRadius}}</span>
-            </div>
-          }
-          <div class="info-row p-2">
-            <span class="label">Muzzle velocity</span>
-            <span class="value">{{weaponData.muzzleVelocity}} m/sec</span>
-          </div>
-          <div class="info-row p-2">
-            <span class="label">Reload speed</span>
-            <span class="value">{{weaponData.minReloadSpeed / 1000}} sec / {{weaponData.maxReloadSpeed / 1000}} sec</span>
-          </div>
-          <div class="info-row p-2">
-            <span class="label">Ammunition</span>
-            <span class="value">{{weaponData.clipSize}} / {{weaponData.capacity}}</span>
-          </div>
-          @if (!weaponData.isVehicleWeapon && weaponData.hipAcc) {
-            <div class="info-row p-2">
-              <span class="label">Hip accuracy</span>
-              <span class="value">{{weaponData.hipAcc.crouching}} / {{weaponData.hipAcc.crouchWalking}} / {{weaponData.hipAcc.standing}} / {{weaponData.hipAcc.running}} / {{weaponData.hipAcc.cof}}</span>
-            </div>
-          }
-          @if (!weaponData.isVehicleWeapon && weaponData.aimAcc) {
-            <div class="info-row p-2">
-              <span class="label">Aim accuracy</span>
-              <span class="value">{{weaponData.aimAcc.crouching}} / {{weaponData.aimAcc.crouchWalking}} / {{weaponData.aimAcc.standing}} / {{weaponData.aimAcc.running}} / {{weaponData.aimAcc.cof}}</span>
-            </div>
-          }
-          @if (weaponData.ironSightZoom) {
-            <div class="info-row p-2">
-              <span class="label">Iron sight zoom</span>
-              <span class="value">{{weaponData.ironSightZoom}}x</span>
-            </div>
-          }
-          <div class="info-row p-2">
-            <span class="label">Fire modes</span>
-            <span class="value">{{weaponData.fireModes.join(' / ')}}</span>
-          </div>
-          <div class="info-row p-2">
-            <span class="label">Faction restriction</span>
-            @if (weaponData.factionId) {
-              <span class="value" [ngClass]="weaponData.factionId | factionColor">{{weaponData.factionId | factionName}}</span>
-            }
-            @if (!weaponData.factionId) {
-              <span class="value">None</span>
-            }
-          </div>
-        </mat-card-content>
-      </mat-card>
-    </div>
-  }
-</div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    @if (f.hasDamage || f.hasAccuracy) {
+      <div class="card-row flex flex-wrap gap-4">
+        @if (f.hasDamage) {
+          <mat-card class="flex-1 basis-96">
+            <mat-card-title>Damage by Range</mat-card-title>
+            <mat-card-content>
+              <item-damage-chart [weapon]="weapon"></item-damage-chart>
+              @if (f.timeToKill[0] != null) {
+                <div class="tiles kill-tiles">
+                  <div class="tile">
+                    <div class="tile-label">Shots to Kill</div>
+                    <div class="tile-value">{{ span(f.shotsToKill) }}</div>
+                    <div class="tile-note">close to far</div>
+                  </div>
+                  <div class="tile">
+                    <div class="tile-label">Time to Kill</div>
+                    <div class="tile-value">{{ span(f.timeToKill, ' ms') }}</div>
+                    <div class="tile-note">close to far</div>
+                  </div>
+                </div>
+                <p class="note">Body shots on standard infantry (1,000 health and shields), every shot hitting.</p>
+              }
+            </mat-card-content>
+          </mat-card>
+        }
+        @if (f.hasAccuracy) {
+          <mat-card class="flex-1 basis-96">
+            <mat-card-title>Accuracy</mat-card-title>
+            <mat-card-content>
+              <table class="accuracy">
+                <thead>
+                  <tr><th>Cone of fire</th><th>Hip</th><th>Aimed</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Standing</td><td>{{ weapon.hipAcc!.standing }}&deg;</td><td>{{ weapon.aimAcc!.standing }}&deg;</td></tr>
+                  <tr><td>Crouching</td><td>{{ weapon.hipAcc!.crouching }}&deg;</td><td>{{ weapon.aimAcc!.crouching }}&deg;</td></tr>
+                  <tr><td>Crouch-walking</td><td>{{ weapon.hipAcc!.crouchWalking }}&deg;</td><td>{{ weapon.aimAcc!.crouchWalking }}&deg;</td></tr>
+                  <tr><td>Running</td><td>{{ weapon.hipAcc!.running }}&deg;</td><td>{{ weapon.aimAcc!.running }}&deg;</td></tr>
+                  <tr><td>Bloom per shot</td><td>+{{ weapon.hipAcc!.cof }}&deg;</td><td>+{{ weapon.aimAcc!.cof }}&deg;</td></tr>
+                </tbody>
+              </table>
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
+    }
+
+    <item-top-players-card [itemId]="itemId()!"></item-top-players-card>
+  </div>
+}

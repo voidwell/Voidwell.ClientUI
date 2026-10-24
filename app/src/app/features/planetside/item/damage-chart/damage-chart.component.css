@@ -1,0 +1,37 @@
+:host {
+    display: block;
+}
+
+svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.grid {
+    stroke: rgba(255, 255, 255, .06);
+}
+
+.tick {
+    fill: #8a9ba1;
+    font-size: 11px;
+}
+
+.area {
+    fill: rgba(109, 187, 255, .12);
+}
+
+.line {
+    fill: none;
+    stroke: #6dbbff;
+    stroke-width: 2.5;
+}
+
+.dot {
+    fill: #6dbbff;
+}
+
+.mark {
+    fill: #edeff0;
+    font-size: 12px;
+}

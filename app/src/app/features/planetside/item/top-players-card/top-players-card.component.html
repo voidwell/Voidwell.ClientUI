@@ -1,0 +1,45 @@
+<mat-card>
+  <mat-card-title class="card-title">
+    <span>Top Players</span>
+    <a class="view-all" routerLink="/ps2/item/{{ itemId() }}/leaderboard">View All &rarr;</a>
+  </mat-card-title>
+  <mat-card-content>
+    @if (players(); as players) {
+      @if (players.length) {
+        <table>
+          <thead>
+            <tr>
+              <th class="rank">#</th>
+              <th class="player">Player</th>
+              <th>Kills</th>
+              <th>K/D</th>
+              <th class="wide">Accuracy</th>
+              <th class="wide" title="Kills per hour">KPH</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of players; track row.characterId; let i = $index) {
+              <tr>
+                <td class="rank">{{ i + 1 }}</td>
+                <td class="player">
+                  <vw-faction-icon class="faction-icon" [factionId]="row.factionId"></vw-faction-icon>
+                  <a class="player-link" routerLink="/ps2/player/{{ row.characterId }}">{{ row.name }}</a>
+                </td>
+                <td>{{ row.kills | number }}</td>
+                <td><vw-graded-figure [delta]="row.kdrDelta">{{ (kdr(row) | number: '1.2-2') ?? '—' }}</vw-graded-figure></td>
+                <td class="wide"><vw-graded-figure [delta]="row.accuracyDelta">{{ (accuracy(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></td>
+                <td class="wide"><vw-graded-figure [delta]="row.kphDelta">{{ (kph(row) | number: '1.1-1') ?? '—' }}</vw-graded-figure></td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      } @else {
+        <p class="muted">No one has a kill with this weapon yet.</p>
+      }
+    } @else if (players() === null) {
+      <p class="muted">The leaderboard is unavailable right now.</p>
+    } @else {
+      <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>

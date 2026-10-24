@@ -1,24 +1,21 @@
 ﻿import { Component, inject } from '@angular/core';
-import { PlanetsideItemComponent } from '../planetside-item.component';
-import { MatCard, MatCardTitle, MatCardSubtitle, MatCardFooter } from '@angular/material/card';
 import { NgClass } from '@angular/common';
-import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
+import { MatCard, MatCardFooter } from '@angular/material/card';
+import { BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
+import { FactionIconComponent } from '../../components/faction-icon/faction-icon.component';
+import { PlanetsideItemComponent } from '../planetside-item.component';
+import { DgcImageUrlPipe } from '../../pipes/dgc-image-url.pipe';
+import { FactionNamePipe } from '../../pipes/faction-name.pipe';
 
+/** The weapon's name, category, faction, description and image, with the page's breadcrumbs. */
 @Component({
     selector: 'item-card',
     templateUrl: './item-card.component.html',
     styleUrls: ['./item-card.component.css'],
-    imports: [MatCard, NgClass, MatCardTitle, MatCardSubtitle, MatCardFooter, VWTabNavSubBarComponent]
+    imports: [MatCard, MatCardFooter, NgClass, BreadcrumbsComponent, FactionIconComponent, DgcImageUrlPipe, FactionNamePipe]
 })
-
 export class ItemCardComponent {
-    itemComponent = inject(PlanetsideItemComponent);
+    readonly itemComponent = inject(PlanetsideItemComponent);
 
     readonly itemData = this.itemComponent.weaponData;
-
-    navLinks = [
-        { path: 'stats', display: 'Stats' },
-        { path: 'leaderboard', display: 'Leaderboard' }
-    ];
-
 }

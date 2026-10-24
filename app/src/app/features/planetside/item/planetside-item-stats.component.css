@@ -1,17 +1,105 @@
-﻿.weapon-description-card {
-    max-width: 380px;
-}
-.weapon-description-card img {
+﻿:host {
     display: block;
-    margin: 0 auto;
-}
-.weapon-description-card .item-description {
-    margin-bottom: 20px;
 }
 
-.weapon-info-card .label {
-    opacity: 0.8;
-    width: 130px;
-    display: inline-block;
+mat-card-title {
+    font-size: 14px;
 }
 
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+    margin-top: 8px;
+}
+
+.tile {
+    padding: 12px;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .05);
+}
+
+.tile-label {
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.tile-value {
+    margin-top: 4px;
+    color: #fff;
+    font-size: 22px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.tile-note {
+    margin-top: 2px;
+    color: #8a9ba1;
+    font-size: 11px;
+}
+
+.facts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 28px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid #344651;
+    font-size: 13px;
+}
+
+.facts:empty {
+    display: none;
+}
+
+.fact-label {
+    margin-right: 6px;
+    color: #8a9ba1;
+}
+
+.kill-tiles {
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.note {
+    margin: 10px 0 0;
+    color: #8a9ba1;
+    font-size: 11px;
+}
+
+.accuracy {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+
+.accuracy th {
+    padding: 8px 6px;
+    border-bottom: 1px solid #344651;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .03em;
+    text-align: right;
+    text-transform: uppercase;
+}
+
+.accuracy td {
+    height: 38px;
+    padding: 0 6px;
+    border-bottom: 1px solid #344651;
+    text-align: right;
+}
+
+.accuracy th:first-child,
+.accuracy td:first-child {
+    color: #8a9ba1;
+    text-align: left;
+}
+
+@media (max-width: 700px) {
+    .tiles {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
