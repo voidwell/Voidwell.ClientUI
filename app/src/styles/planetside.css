@@ -40,3 +40,250 @@
 .faction-tr-text {
     color: #C62828 !important;
 }
+
+/* Stat cards: tables of figures with a muted period in the title (server activity) */
+
+.stat-card mat-card-title {
+    font-size: 14px;
+}
+
+.stat-card mat-card-title small {
+    margin-left: 8px;
+    color: #8a9ba1;
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.stat-muted,
+.stat-table .dash {
+    color: #8a9ba1;
+}
+
+p.stat-muted {
+    margin: 0;
+}
+
+.stat-table-wrap {
+    overflow-x: auto;
+}
+
+.stat-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-table th {
+    height: 40px;
+    padding: 0 8px;
+    border-bottom: 1px solid #344651;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .03em;
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+.stat-table td {
+    height: 42px;
+    padding: 0 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.stat-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.stat-table th.left,
+.stat-table td.left {
+    text-align: left;
+}
+
+/* The identifying column stays in view while the figures scroll sideways */
+.stat-table .pinned {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #2b3942;
+}
+
+/* Numeric headers keep their arrow on the left so the labels line up with the figures */
+.stat-table th .mat-sort-header-container {
+    justify-content: flex-end;
+}
+
+.stat-table th.left .mat-sort-header-container {
+    justify-content: flex-start;
+}
+
+.stat-table .lead {
+    color: #fff;
+    font-weight: 500;
+}
+
+.stat-link {
+    color: inherit;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
+    text-underline-offset: 3px;
+}
+
+.stat-link:hover {
+    opacity: .8;
+}
+
+.stat-name {
+    display: inline-block;
+    max-width: 260px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: bottom;
+}
+
+/* The outfit alias leads a name */
+.stat-name .stat-muted {
+    margin-right: 4px;
+}
+
+.stat-pill {
+    display: inline-block;
+    padding: 1px 9px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    color: #b4bfc3;
+    font-size: 12px;
+}
+
+.stat-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 4px 16px 12px;
+}
+
+.stat-chip {
+    padding: 3px 12px;
+    border: 1px solid #344651;
+    border-radius: 999px;
+    background: none;
+    color: #8a9ba1;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.stat-chip.on {
+    border-color: rgba(109, 187, 255, .5);
+    background: rgba(109, 187, 255, .16);
+    color: #edeff0;
+}
+
+.stat-chip:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+@media (max-width: 700px) {
+    .stat-name {
+        max-width: 150px;
+    }
+}
+
+/* A card's title with a filter box beside it, and a pager under its table */
+
+.stat-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    padding: 0 16px;
+}
+
+.stat-toolbar mat-card-title {
+    flex: 1;
+    min-width: 120px;
+}
+
+.stat-search {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 240px;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    color: #8a9ba1;
+}
+
+.stat-search .mat-icon {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.stat-search input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: none;
+    color: #edeff0;
+    font: inherit;
+    font-size: 13px;
+}
+
+.stat-search:focus-within {
+    outline: 2px solid #6dbbff;
+}
+
+.stat-chip-count {
+    margin-left: 2px;
+}
+
+.stat-pager {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 12px;
+    padding-top: 12px;
+    color: #8a9ba1;
+    font-size: 13px;
+}
+
+.stat-pager strong {
+    color: #edeff0;
+    font-weight: 400;
+}
+
+.stat-page-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border: 1px solid #344651;
+    border-radius: 4px;
+    background: none;
+    color: #edeff0;
+    cursor: pointer;
+}
+
+.stat-page-button:disabled {
+    color: #4d5f68;
+    cursor: default;
+}
+
+.stat-page-button:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+@media (max-width: 700px) {
+    .stat-search {
+        width: 100%;
+    }
+}

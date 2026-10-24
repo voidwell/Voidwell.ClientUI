@@ -7,7 +7,6 @@ import { ZoneService } from '../../../data/zone.service';
 import { WorldStateRepository } from '@core/api/ps2/world-state.repository';
 import { ZoneRegionOwnership } from '@core/api/models/ps2/map.model';
 import { FacilityEvent } from '../../../components/ps2-zone-map/ps2-zone-map.component';
-import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
 
 /** A message of the Census event streaming service; all values arrive as strings. */
 interface CensusEventPayload {
@@ -49,8 +48,7 @@ const SocketConfig = {
 
 @Component({
     templateUrl: './planetside-world-map.component.html',
-    styleUrls: ['./planetside-world-map.component.css'],
-    imports: [VWTabNavSubBarComponent, RouterOutlet]
+    imports: [RouterOutlet]
 })
 
 export class PlanetsideWorldMapComponent implements OnDestroy {

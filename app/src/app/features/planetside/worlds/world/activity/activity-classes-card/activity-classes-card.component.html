@@ -1,0 +1,46 @@
+<mat-card class="stat-card">
+  <mat-card-title>Classes <small>last hour</small></mat-card-title>
+  <div class="stat-chips" role="group" aria-label="Faction">
+    @for (id of factions; track id) {
+      <button type="button" class="stat-chip" [class.on]="faction() === id" [attr.aria-pressed]="faction() === id" (click)="faction.set(id)">
+        {{ id | factionCode }}
+      </button>
+    }
+  </div>
+  <mat-card-content>
+    @if (rows().length) {
+      <div class="stat-table-wrap">
+        <table class="stat-table" matSort matSortActive="kills" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+          <thead>
+            <tr>
+              <th class="left pinned" mat-sort-header="name" start="asc">Class</th>
+              <th mat-sort-header="kills" start="desc" arrowPosition="before">Kills</th>
+              <th mat-sort-header="deaths" start="desc" arrowPosition="before">Deaths</th>
+              <th mat-sort-header="kdr" start="desc" arrowPosition="before" title="Kill/death ratio">K/D</th>
+              <th mat-sort-header="hsr" start="desc" arrowPosition="before" title="Headshot ratio">HSR</th>
+              <th mat-sort-header="teamkills" start="desc" arrowPosition="before" title="Team kills">TKs</th>
+              <th mat-sort-header="suicides" start="desc" arrowPosition="before">Suicides</th>
+              <th mat-sort-header="vehicleKills" start="desc" arrowPosition="before" title="Vehicle kills">V.Kills</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.name) {
+              <tr>
+                <td class="left pinned" [ngClass]="row.factionId | factionColor">{{ row.name }}</td>
+                <td>{{ row.kills | number }}</td>
+                <td>{{ row.deaths | number }}</td>
+                @if (row.kdr === null) { <td class="dash">—</td> } @else { <td>{{ row.kdr | number: '1.2-2' }}</td> }
+                @if (row.hsr === null) { <td class="dash">—</td> } @else { <td>{{ row.hsr | percent: '1.1-1' }}</td> }
+                <td>{{ row.teamkills | number }}</td>
+                <td>{{ row.suicides | number }}</td>
+                <td>{{ row.vehicleKills | number }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="stat-muted">No class figures for this faction.</p>
+    }
+  </mat-card-content>
+</mat-card>

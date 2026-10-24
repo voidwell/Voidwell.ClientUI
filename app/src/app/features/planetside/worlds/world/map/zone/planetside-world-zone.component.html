@@ -1,50 +1,50 @@
-﻿<div class="content-container">
-  <div class="zone-map flex flex-row flex-nowrap">
-    <div class="map-container flex">
-      <ps2-zone-map [zoneId]="zoneId()" [ownership]="ownership()" [captureStream]="captureSub" [defendStream]="defendSub" [focusFacility]="focusFacilityEmitter" (score)="onScoreChange($event)"></ps2-zone-map>
-    </div>
-    <mat-card class="info-container flex flex-col flex-nowrap">
-      <mat-card-content>
-        <vw-faction-bar [vs]="score[1]" [nc]="score[2]" [tr]="score[3]"></vw-faction-bar>
-      </mat-card-content>
-      <mat-card-footer>
-        <div class="map-log p-2.5">
-          @if (getZoneLogs().length === 0) {
-            <div>
-              Waiting for activity...
-            </div>
-          }
-          @for (item of getZoneLogs(); track item) {
-            <div class="zone-event">
-              <span class="timestamp">{{item.timestamp | date:'mediumTime'}}</span>
-              @if (item.event === 'defend') {
-                <span>
-                  <mat-icon fontSet="mdi" fontIcon="mdi-shield" [ngClass]="item.faction.id | factionColor"></mat-icon>
-                  <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> defended <span class="facility-name" (click)="focusFacility(item.facilityId)">{{getFacilityName(item.facilityId)}}</span>
-                </span>
-              }
-              @if (item.event === 'capture') {
-                <span>
-                  <mat-icon fontSet="mdi" fontIcon="mdi-sword-cross" [ngClass]="item.faction.id | factionColor"></mat-icon>
-                  <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> captured <span class="facility-name" (click)="focusFacility(item.facilityId)">{{getFacilityName(item.facilityId)}}</span>
-                </span>
-              }
-              @if (item.event === 'continent_lock') {
-                <span>
-                  <mat-icon fontSet="mdi" fontIcon="mdi-lock" [ngClass]="item.faction.id | factionColor"></mat-icon>
-                  <span [ngClass]="item.faction.id | factionColor" class="faction-name">{{item.faction.code}}</span> locked {{item.zone}}
-                </span>
-              }
-              @if (item.event === 'continent_unlock') {
-                <span>
+﻿<div class="grid grid-cols-1 gap-4 lg:grid-cols-[minmax(0,1fr)_360px]">
+  <mat-card class="stat-card map-card">
+    <mat-card-title>{{ zoneName() }}</mat-card-title>
+    <mat-card-content>
+      <div class="map-container">
+        <ps2-zone-map [zoneId]="zoneId()" [ownership]="ownership()" [captureStream]="captureSub" [defendStream]="defendSub" [focusFacility]="focusFacilityEmitter" (score)="onScoreChange($event)"></ps2-zone-map>
+      </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="stat-card">
+    <mat-card-title>Territory</mat-card-title>
+    <mat-card-content>
+      <vw-faction-bar class="territory" [vs]="score()[1]" [nc]="score()[2]" [tr]="score()[3]"></vw-faction-bar>
+      <h3 class="log-title">Activity <small>live</small></h3>
+      @if (logs().length === 0) {
+        <p class="stat-muted">Waiting for activity…</p>
+      } @else {
+        <ul class="log">
+          @for (item of logs(); track $index) {
+            <li>
+              <time>{{ item.timestamp | date: 'mediumTime' }}</time>
+              @switch (item.event) {
+                @case ('capture') {
+                  <mat-icon [ngClass]="(item.faction?.id ?? 0) | factionColor" fontSet="mdi" fontIcon="mdi-sword-cross"></mat-icon>
+                  <button type="button" class="facility" [ngClass]="(item.faction?.id ?? 0) | factionColor" (click)="focusFacility(item.facilityId)">{{ getFacilityName(item.facilityId) }}</button>
+                  <span class="verb">captured</span>
+                }
+                @case ('defend') {
+                  <mat-icon [ngClass]="(item.faction?.id ?? 0) | factionColor" fontSet="mdi" fontIcon="mdi-shield"></mat-icon>
+                  <button type="button" class="facility" [ngClass]="(item.faction?.id ?? 0) | factionColor" (click)="focusFacility(item.facilityId)">{{ getFacilityName(item.facilityId) }}</button>
+                  <span class="verb">defended</span>
+                }
+                @case ('continent_lock') {
+                  <mat-icon [ngClass]="(item.faction?.id ?? 0) | factionColor" fontSet="mdi" fontIcon="mdi-lock"></mat-icon>
+                  <span [ngClass]="(item.faction?.id ?? 0) | factionColor">{{ item.zone }}</span>
+                  <span class="verb">locked</span>
+                }
+                @case ('continent_unlock') {
                   <mat-icon fontSet="mdi" fontIcon="mdi-lock-open"></mat-icon>
-                  <span>{{item.zone}} is unlocked</span>
-                </span>
+                  <span>{{ item.zone }}</span>
+                  <span class="verb">unlocked</span>
+                }
               }
-            </div>
+            </li>
           }
-        </div>
-      </mat-card-footer>
-    </mat-card>
-  </div>
+        </ul>
+      }
+    </mat-card-content>
+  </mat-card>
 </div>

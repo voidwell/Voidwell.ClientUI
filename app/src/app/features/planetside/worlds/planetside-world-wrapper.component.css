@@ -1,3 +1,202 @@
-﻿.world-list {
-    min-height: 100px;
+﻿:host {
+    display: block;
+}
+
+mat-card-title {
+    font-size: 14px;
+}
+
+.muted {
+    color: #8a9ba1;
+}
+
+.servers-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 4px 12px;
+    padding: 0 16px 8px;
+}
+
+.servers-head .muted {
+    font-size: 13px;
+}
+
+.table-wrap {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    font-variant-numeric: tabular-nums;
+}
+
+th {
+    height: 40px;
+    padding: 0 8px;
+    border-bottom: 1px solid #344651;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .03em;
+    text-align: right;
+    text-transform: uppercase;
+    white-space: nowrap;
+}
+
+td {
+    height: 44px;
+    color: #edeff0;
+    padding: 0 8px;
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
+    text-align: right;
+    white-space: nowrap;
+}
+
+.dash {
+    color: #8a9ba1;
+}
+
+tbody:last-child tr:last-child td {
+    border-bottom: 0;
+}
+
+th.name,
+td.name,
+th.status,
+td.status {
+    text-align: left;
+}
+
+/* The server column stays in view while the zones scroll sideways */
+th.name,
+td.name {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: #2b3942;
+}
+
+th.zone {
+    min-width: 92px;
+}
+
+.link {
+    color: inherit;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
+    text-underline-offset: 3px;
+}
+
+.link:hover,
+a.cell:hover {
+    opacity: .8;
+}
+
+.state {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4cc38a;
+}
+
+.dot.off {
+    background: #e63734;
+}
+
+.cell {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+    color: inherit;
+    text-decoration: none;
+}
+
+.lock {
+    width: 16px;
+    height: 16px;
+    font-size: 16px;
+}
+
+/* Only shown on phones, where the zone columns are hidden */
+.expand,
+.detail {
+    display: none;
+}
+
+.expand {
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    margin-right: 2px;
+    border: 0;
+    background: none;
+    color: #8a9ba1;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+.expand:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+.expand .mat-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 20px;
+}
+
+@media (max-width: 700px) {
+    th.faction,
+    td.faction,
+    th.status,
+    td.status,
+    th.zone,
+    td.zone {
+        display: none;
+    }
+
+    .expand {
+        display: inline-block;
+    }
+
+    .detail {
+        display: table-row;
+    }
+
+    .detail td {
+        height: auto;
+        padding: 2px 8px 14px 32px;
+        background: rgba(255, 255, 255, .02);
+        text-align: left;
+        white-space: normal;
+    }
+
+    .detail ul {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .detail li {
+        display: flex;
+        align-items: center;
+        min-height: 24px;
+        justify-content: space-between;
+        gap: 8px;
+    }
 }

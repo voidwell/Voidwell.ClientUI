@@ -1,0 +1,42 @@
+<mat-card class="stat-card">
+  <mat-card-title>Factions <small>last hour</small></mat-card-title>
+  <mat-card-content>
+    @if (rows().length) {
+      <div class="stat-table-wrap">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th class="left pinned"><span class="sr-only">Figure</span></th>
+              @for (faction of factions; track faction.key) {
+                <th [ngClass]="faction.id | factionColor">{{ faction.id | factionCode }}</th>
+              }
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.label) {
+              <tr>
+                <td class="left pinned" [title]="row.title ?? ''">{{ row.label }}</td>
+                @for (faction of factions; track faction.key) {
+                  @let value = row.values[faction.key];
+                  @if (value === null) {
+                    <td class="dash">—</td>
+                  } @else {
+                    <td [class.lead]="row.leader === faction.key">
+                      @switch (row.format) {
+                        @case ('ratio') { {{ value | number: '1.2-2' }} }
+                        @case ('percent') { {{ value | percent: '1.1-1' }} }
+                        @default { {{ value | number }} }
+                      }
+                    </td>
+                  }
+                }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="stat-muted">No figures for this period.</p>
+    }
+  </mat-card-content>
+</mat-card>

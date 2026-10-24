@@ -3,6 +3,9 @@
     @if (errorMessage) {
         <vw-error-card></vw-error-card>
     } @else {
+        @if (!isLoading()) {
+            <vw-breadcrumbs [crumbs]="breadcrumbs()"></vw-breadcrumbs>
+        }
         <item-card></item-card>
         <div class="outlet-content content-container">
             <router-outlet></router-outlet>

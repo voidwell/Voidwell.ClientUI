@@ -1,0 +1,39 @@
+<mat-card class="stat-card">
+  <mat-card-title>Top weapons <small>last hour</small></mat-card-title>
+  <mat-card-content>
+    @if (rows().length) {
+      <div class="stat-table-wrap">
+        <table class="stat-table" matSort matSortActive="kills" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+          <thead>
+            <tr>
+              <th class="left pinned" mat-sort-header="name" start="asc">Weapon</th>
+              <th mat-sort-header="kills" start="desc" arrowPosition="before">Kills</th>
+              <th mat-sort-header="headshots" start="desc" arrowPosition="before">Headshots</th>
+              <th mat-sort-header="hsr" start="desc" arrowPosition="before" title="Headshot ratio">HSR</th>
+              <th mat-sort-header="teamkills" start="desc" arrowPosition="before" title="Team kills">TKs</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track $index) {
+              <tr>
+                <td class="left pinned">
+                  @if (row.id) {
+                    <a class="stat-link" [ngClass]="row.factionId | factionColor" routerLink="/ps2/item/{{ row.id }}">{{ row.name }}</a>
+                  } @else {
+                    <span [ngClass]="row.factionId | factionColor">{{ row.name }}</span>
+                  }
+                </td>
+                <td>{{ row.kills | number }}</td>
+                <td>{{ row.headshots | number }}</td>
+                @if (row.hsr === null) { <td class="dash">—</td> } @else { <td>{{ row.hsr | percent: '1.1-1' }}</td> }
+                <td>{{ row.teamkills | number }}</td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="stat-muted">No weapons to show for this period.</p>
+    }
+  </mat-card-content>
+</mat-card>
