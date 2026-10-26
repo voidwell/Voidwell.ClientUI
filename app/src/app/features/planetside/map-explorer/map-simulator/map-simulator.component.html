@@ -1,20 +1,19 @@
-﻿<div (keypress)="onKeypress($event)">
-  <div class="map-container">
-    <ps2-zone-map [zoneId]="zoneId()" [captureStream]="onFacilityCapture" (score)="onScoreChange($event)" (hexSelected)="onHexSelected($event)" [hideOverlay]="hideOverlay"></ps2-zone-map>
-    <button class="overlay-toggle p-1" mat-raised-button (click)="hideOverlay = !hideOverlay">
-      @if (hideOverlay) {
-        <mat-icon fontSet="mdi" fontIcon="mdi-layers-off"></mat-icon>
-      }
-      @if (!hideOverlay) {
-        <mat-icon fontSet="mdi" fontIcon="mdi-layers-outline"></mat-icon>
-      }
-    </button>
-    @if (!hideOverlay) {
-      <div class="score-box">
-        <div class="bars-container mx-auto my-0">
-          <vw-faction-bar [vs]="score[1]" [nc]="score[2]" [tr]="score[3]"></vw-faction-bar>
-        </div>
+﻿<div class="grid grid-cols-1 items-start gap-4 lg:grid-cols-[minmax(0,1fr)_360px]" (keypress)="onKeypress($event)">
+  <mat-card class="stat-card map-card">
+    <div class="stat-toolbar">
+      <mat-card-title>{{ zoneName() }}</mat-card-title>
+      <button type="button" class="stat-chip toggle" [class.on]="!hideOverlay()" [attr.aria-pressed]="!hideOverlay()" (click)="hideOverlay.set(!hideOverlay())">Territory colours</button>
+    </div>
+    <mat-card-content>
+      <div class="map-container">
+        <ps2-zone-map [zoneId]="zoneId()" [captureStream]="onFacilityCapture" (score)="onScoreChange($event)" (hexSelected)="onHexSelected($event)" [hideOverlay]="hideOverlay()"></ps2-zone-map>
       </div>
-    }
-  </div>
+    </mat-card-content>
+  </mat-card>
+  <mat-card class="stat-card">
+    <mat-card-title>Territory</mat-card-title>
+    <mat-card-content>
+      <vw-faction-bar class="territory" [vs]="score()[1]" [nc]="score()[2]" [tr]="score()[3]"></vw-faction-bar>
+    </mat-card-content>
+  </mat-card>
 </div>
