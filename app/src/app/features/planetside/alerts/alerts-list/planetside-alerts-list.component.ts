@@ -17,13 +17,14 @@ import { WorldService } from '../../data/world.service';
 import { ZoneService } from '../../data/zone.service';
 import { FactionCodePipe } from '../../pipes/faction-code.pipe';
 import { activeAlerts, pastAlertRows } from './alerts-list-figures';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 type Result = { alerts: AlertView[] } | { error: string };
 
 @Component({
     templateUrl: './planetside-alerts-list.component.html',
     imports: [
-        MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, DatePipe, DecimalPipe,
+        ChipsComponent, MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, DatePipe, DecimalPipe,
         LoaderComponent, ErrorCardComponent, ActiveAlertsCardComponent, FactionCodePipe
     ]
 })
@@ -36,6 +37,11 @@ export class PlanetsideAlertsListComponent {
     readonly page = signal(0);
     /** The server whose alerts are listed; everyone's when `null`. */
     readonly worldId = signal<number | null>(null);
+    /** "All", then one chip for each live server. */
+    readonly worldOptions = computed<ChipOption<number | null>[]>(() => [
+        { value: null, label: 'All' },
+        ...(this.worldService.activeWorlds() ?? []).map(world => ({ value: world.id, label: world.name ?? String(world.id) }))
+    ]);
     readonly sort = signal<Sort>({ active: 'startedAt', direction: 'desc' });
     /** Alerts whose hidden columns are showing on a phone. */
     readonly expanded = signal<ReadonlySet<string>>(new Set());

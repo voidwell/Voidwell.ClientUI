@@ -1,11 +1,7 @@
 @if (filterable()) {
   <div class="filters">
-    <mat-button-toggle-group aria-label="Weapon type" hideSingleSelectionIndicator [value]="kind()" (change)="kind.set($event.value)">
-      <mat-button-toggle value="all">All</mat-button-toggle>
-      <mat-button-toggle value="infantry">Infantry</mat-button-toggle>
-      <mat-button-toggle value="vehicle">Vehicle</mat-button-toggle>
-    </mat-button-toggle-group>
-    <label class="weapon-search">
+    <vw-chips label="Weapon type" [options]="kindOptions" [value]="kind()" (choose)="kind.set($event)"></vw-chips>
+    <label class="stat-search">
       <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
       <input type="search" placeholder="Find a weapon" aria-label="Find a weapon" [value]="search()" (input)="onSearch($event)">
     </label>
@@ -23,7 +19,7 @@
         <div class="weapon">
           <div class="min-w-0">
             <div class="weapon-name">
-              <a class="truncate weapon-link" routerLink="/ps2/item/{{ w.itemId }}" (click)="$event.stopPropagation()">{{ w.name || 'Unknown (' + w.itemId + ')' }}</a>
+              <a class="truncate stat-link" routerLink="/ps2/item/{{ w.itemId }}" (click)="$event.stopPropagation()">{{ w.name || 'Unknown (' + w.itemId + ')' }}</a>
             </div>
             <div class="weapon-category">{{ w.category }}</div>
           </div>

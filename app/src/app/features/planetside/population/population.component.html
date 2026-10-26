@@ -32,11 +32,7 @@
   <mat-card-title>Daily unique players</mat-card-title>
   <mat-card-content>
     <div class="stat-range-bar" [hidden]="isLoading || !hasStats">
-      <div class="stat-ranges" role="group" aria-label="Zoom">
-        @for (range of ranges; track range.id) {
-          <button type="button" class="stat-chip" [class.on]="activeRange() === range.id" [attr.aria-pressed]="activeRange() === range.id" (click)="onZoom(range.id)">{{ range.display }}</button>
-        }
-      </div>
+      <vw-chips label="Zoom" [options]="ranges" [value]="activeRange()" (choose)="onZoom($event)"></vw-chips>
       <div class="stat-dates">
         <span>From</span>
         <mat-form-field class="stat-input-date" subscriptSizing="dynamic">

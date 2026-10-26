@@ -49,7 +49,7 @@ describe('PlanetsideWorldWrapperComponent', () => {
     it('marks running alerts and locks, and dashes what has no data', async () => {
         const fixture = create(of(WORLDS));
         await fixture.whenStable();
-        const emerald = fixture.nativeElement.querySelectorAll('tbody')[1] as HTMLElement;
+        const emerald = fixture.nativeElement.querySelectorAll('tbody tr:not(.stat-detail)')[1] as HTMLElement;
         const cells = emerald.querySelectorAll('td.zone');
 
         expect(cells[0].querySelector('vw-alert-indicator')).not.toBeNull();
@@ -57,33 +57,33 @@ describe('PlanetsideWorldWrapperComponent', () => {
         expect(cells[1].textContent).toContain('—');
         expect(cells[2].textContent?.trim()).toBe('10');
 
-        const cobalt = fixture.nativeElement.querySelectorAll('tbody')[0] as HTMLElement;
+        const cobalt = fixture.nativeElement.querySelectorAll('tbody tr:not(.stat-detail)')[0] as HTMLElement;
         expect(cobalt.querySelectorAll('td.zone')[1].textContent?.trim()).toBe('—');
     });
 
     it('shows an offline server with dashes', async () => {
         const fixture = create(of(WORLDS));
         await fixture.whenStable();
-        const soltech = fixture.nativeElement.querySelectorAll('tbody')[2] as HTMLElement;
+        const soltech = fixture.nativeElement.querySelectorAll('tbody tr:not(.stat-detail)')[2] as HTMLElement;
 
-        expect(soltech.querySelector('.state')?.textContent?.trim()).toBe('Offline');
-        expect([...soltech.querySelectorAll('td:not(.name):not(.status)')].every(td => td.textContent?.trim() === '—')).toBe(true);
+        expect(soltech.querySelector('.stat-state')?.textContent?.trim()).toBe('Offline');
+        expect([...soltech.querySelectorAll('td:not(.pinned):not(.status)')].every(td => td.textContent?.trim() === '—')).toBe(true);
     });
 
     it('opens and closes a server\'s zones', async () => {
         const fixture = create(of(WORLDS));
         await fixture.whenStable();
         const el: HTMLElement = fixture.nativeElement;
-        const button = el.querySelector('button.expand') as HTMLButtonElement;
+        const button = el.querySelector('button.stat-expand') as HTMLButtonElement;
 
         button.click();
         await fixture.whenStable();
-        expect(el.querySelector('tr.detail')).not.toBeNull();
+        expect(el.querySelector('tr.stat-detail')).not.toBeNull();
         expect(button.getAttribute('aria-expanded')).toBe('true');
 
         button.click();
         await fixture.whenStable();
-        expect(el.querySelector('tr.detail')).toBeNull();
+        expect(el.querySelector('tr.stat-detail')).toBeNull();
     });
 
     it('shows the error card when the servers fail to load', async () => {

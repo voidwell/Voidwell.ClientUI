@@ -3,13 +3,13 @@ import { DecimalPipe, NgTemplateOutlet, PercentPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatSort, MatSortHeader } from '@angular/material/sort';
 import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { CharacterDetailsWeaponStat } from '@core/api/models/ps2/character.model';
 import { GradeComponent } from '../../components/vw-grade/vw-grade.component';
 import { PlanetsideStatTileComponent } from '../stat-tile/planetside-stat-tile.component';
 import { hours, perHour, perMinute, ratio } from '../stat-math';
 import { PlayerWeaponsDataSource } from './planetside-player-weapons-table.data-source';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 /** Kills that earn a weapon its Auraxium medal. */
 export const AURAXIUM_KILLS = 1160;
@@ -25,8 +25,8 @@ export type WeaponKind = 'all' | 'infantry' | 'vehicle';
     templateUrl: './planetside-player-weapons-table.component.html',
     styleUrls: ['./planetside-player-weapons-table.component.css'],
     imports: [
-        MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
-        MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatButtonToggleGroup, MatButtonToggle, MatIcon, RouterLink,
+        ChipsComponent, MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell,
+        MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatIcon, RouterLink,
         GradeComponent, PlanetsideStatTileComponent, NgTemplateOutlet, DecimalPipe, PercentPipe
     ]
 })
@@ -43,6 +43,7 @@ export class PlanetsidePlayerWeaponsTableComponent {
 
     readonly search = signal('');
     readonly kind = signal<WeaponKind>('all');
+    readonly kindOptions: ChipOption<WeaponKind>[] = [{ value: 'all', label: 'All' }, { value: 'infantry', label: 'Infantry' }, { value: 'vehicle', label: 'Vehicle' }];
     /** The weapon whose row is open, by item id. */
     readonly expanded = signal<number | null>(null);
 

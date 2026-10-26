@@ -26,7 +26,7 @@ describe('CharacterCardComponent', () => {
         const el: HTMLElement = fixture.nativeElement;
 
         expect(el.querySelector('.player-name')?.textContent).toContain('Someone');
-        expect(el.querySelector('.outfit-link')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('[VKTZ] Voidwell Veterans');
+        expect(el.querySelector('.stat-link')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('[VKTZ] Voidwell Veterans');
         expect(el.querySelector('vw-breadcrumbs')).toBeNull();
     });
 });

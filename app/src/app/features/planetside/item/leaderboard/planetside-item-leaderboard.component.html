@@ -1,121 +1,90 @@
-﻿<mat-card>
+﻿<mat-card class="stat-card">
   <mat-card-title>Leaderboard</mat-card-title>
   <mat-card-content>
     @if (failed()) {
-      <p class="muted">The leaderboard is unavailable right now.</p>
+      <p class="stat-muted">The leaderboard is unavailable right now.</p>
     } @else if (loading() && !rows().length) {
       <vw-loader variant="table" [rows]="8" [loading]="true"></vw-loader>
     }
 
-    <div class="table-wrap" [hidden]="failed() || !rows().length" [class.reloading]="loading()">
-      <table mat-table [dataSource]="rows()" multiTemplateDataRows matSort matSortActive="kills" matSortDirection="desc" matSortStart="desc" matSortDisableClear
+    <div class="stat-table-wrap" [hidden]="failed() || !rows().length" [class.reloading]="loading()">
+      <table class="stat-table stat-table-bright" matSort matSortActive="kills" matSortDirection="desc" matSortStart="desc" matSortDisableClear
         (matSortChange)="onSort($event)">
-        <ng-container matColumnDef="rank">
-          <th mat-header-cell *matHeaderCellDef>#</th>
-          <td mat-cell *matCellDef="let row; let i = dataIndex">{{ firstRank() + i | number }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="name">
-          <th mat-header-cell *matHeaderCellDef>Player</th>
-          <td mat-cell *matCellDef="let row">
-            <div class="player">
-              <vw-faction-icon class="faction-icon" [factionId]="row.factionId"></vw-faction-icon>
-              <a class="player-link truncate" routerLink="/ps2/player/{{ row.characterId }}" (click)="$event.stopPropagation()">{{ row.name }}</a>
-            </div>
-          </td>
-        </ng-container>
-
-        <ng-container matColumnDef="kills">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">Kills</th>
-          <td mat-cell *matCellDef="let row">{{ row.kills | number }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="vehicleKills">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Vehicle kills">V.Kills</th>
-          <td mat-cell *matCellDef="let row">{{ row.vehicleKills | number }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="deaths">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">Deaths</th>
-          <td mat-cell *matCellDef="let row">{{ row.deaths | number }}</td>
-        </ng-container>
-
-        <ng-container matColumnDef="kdr">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">K/D</th>
-          <td mat-cell *matCellDef="let row"><vw-graded-figure [delta]="row.kdrDelta">{{ (kdr(row) | number: '1.2-2') ?? '—' }}</vw-graded-figure></td>
-        </ng-container>
-
-        <ng-container matColumnDef="accuracy">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before">Accuracy</th>
-          <td mat-cell *matCellDef="let row"><vw-graded-figure [delta]="row.accuracyDelta">{{ (accuracy(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></td>
-        </ng-container>
-
-        <ng-container matColumnDef="hsr">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Headshot ratio">HSR</th>
-          <td mat-cell *matCellDef="let row"><vw-graded-figure [delta]="row.hsrDelta">{{ (hsr(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></td>
-        </ng-container>
-
-        <ng-container matColumnDef="kph">
-          <th mat-header-cell *matHeaderCellDef mat-sort-header arrowPosition="before" title="Kills per hour">KPH</th>
-          <td mat-cell *matCellDef="let row"><vw-graded-figure [delta]="row.kphDelta">{{ (kph(row) | number: '1.1-1') ?? '—' }}</vw-graded-figure></td>
-        </ng-container>
-
-        <ng-container matColumnDef="time">
-          <th mat-header-cell *matHeaderCellDef title="Time used">Time</th>
-          <td mat-cell *matCellDef="let row">{{ hours(row) | number: '1.1-1' }}h</td>
-        </ng-container>
-
-        <ng-container matColumnDef="expand">
-          <th mat-header-cell *matHeaderCellDef><span class="sr-only">Details</span></th>
-          <td mat-cell *matCellDef="let row">
-            <button type="button" class="expand-button" [attr.aria-expanded]="expanded() === row.characterId"
-              [attr.aria-label]="(expanded() === row.characterId ? 'Hide details of ' : 'Show details of ') + row.name"
-              (click)="$event.stopPropagation(); toggle(row)">
-              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-down"></mat-icon>
-            </button>
-          </td>
-        </ng-container>
-
-        <!-- Small screens: the figures the table hides there -->
-        <ng-container matColumnDef="detail">
-          <td mat-cell *matCellDef="let row" [attr.colspan]="columns.length">
+        <thead>
+          <tr>
+            <th class="left"><span class="sr-only">Rank</span>#</th>
+            <th class="left pinned">Player</th>
+            <th mat-sort-header="kills" arrowPosition="before">Kills</th>
+            <th class="hs" mat-sort-header="vehicleKills" arrowPosition="before" title="Vehicle kills">V.Kills</th>
+            <th class="hs" mat-sort-header="deaths" arrowPosition="before">Deaths</th>
+            <th mat-sort-header="kdr" arrowPosition="before" title="Kill/death ratio">K/D</th>
+            <th class="hs" mat-sort-header="accuracy" arrowPosition="before">Accuracy</th>
+            <th class="hs" mat-sort-header="hsr" arrowPosition="before" title="Headshot ratio">HSR</th>
+            <th class="hs" mat-sort-header="kph" arrowPosition="before" title="Kills per hour">KPH</th>
+            <th class="hs" title="Time used">Time</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (row of rows(); track row.characterId; let i = $index) {
+            <tr>
+              <td class="left stat-muted">{{ firstRank() + i | number }}</td>
+              <td class="left pinned">
+                <button type="button" class="stat-expand" [attr.aria-expanded]="expanded() === row.characterId"
+                  [attr.aria-label]="(expanded() === row.characterId ? 'Hide details of ' : 'Show details of ') + row.name"
+                  (click)="toggle(row)">
+                  <mat-icon fontSet="mdi" [fontIcon]="expanded() === row.characterId ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                </button>
+                <span class="player">
+                  <vw-faction-icon class="faction-icon" [factionId]="row.factionId"></vw-faction-icon>
+                  <a class="stat-link truncate" routerLink="/ps2/player/{{ row.characterId }}">{{ row.name }}</a>
+                </span>
+              </td>
+              <td>{{ row.kills | number }}</td>
+              <td class="hs">{{ row.vehicleKills | number }}</td>
+              <td class="hs">{{ row.deaths | number }}</td>
+              <td><vw-graded-figure [delta]="row.kdrDelta">{{ (kdr(row) | number: '1.2-2') ?? '—' }}</vw-graded-figure></td>
+              <td class="hs"><vw-graded-figure [delta]="row.accuracyDelta">{{ (accuracy(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></td>
+              <td class="hs"><vw-graded-figure [delta]="row.hsrDelta">{{ (hsr(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></td>
+              <td class="hs"><vw-graded-figure [delta]="row.kphDelta">{{ (kph(row) | number: '1.1-1') ?? '—' }}</vw-graded-figure></td>
+              <td class="hs">{{ hours(row) | number: '1.1-1' }}h</td>
+            </tr>
             @if (expanded() === row.characterId) {
-              <div class="detail">
-                <div class="tile"><div class="tile-label">Vehicle Kills</div><div class="tile-value">{{ row.vehicleKills | number }}</div></div>
-                <div class="tile"><div class="tile-label">Deaths</div><div class="tile-value">{{ row.deaths | number }}</div></div>
-                <div class="tile"><div class="tile-label">Accuracy</div><div class="tile-value"><vw-graded-figure [delta]="row.accuracyDelta">{{ (accuracy(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></div></div>
-                <div class="tile"><div class="tile-label">Headshot Ratio</div><div class="tile-value"><vw-graded-figure [delta]="row.hsrDelta">{{ (hsr(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></div></div>
-                <div class="tile"><div class="tile-label">Kills / Hour</div><div class="tile-value"><vw-graded-figure [delta]="row.kphDelta">{{ (kph(row) | number: '1.1-1') ?? '—' }}</vw-graded-figure></div></div>
-                <div class="tile"><div class="tile-label">Time</div><div class="tile-value">{{ hours(row) | number: '1.1-1' }}h</div></div>
-              </div>
+              <tr class="stat-detail">
+                <td colspan="4">
+                  <ul>
+                    <li><span>Vehicle kills</span><span>{{ row.vehicleKills | number }}</span></li>
+                    <li><span>Deaths</span><span>{{ row.deaths | number }}</span></li>
+                    <li><span>Accuracy</span><vw-graded-figure [delta]="row.accuracyDelta">{{ (accuracy(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></li>
+                    <li><span>Headshot ratio</span><vw-graded-figure [delta]="row.hsrDelta">{{ (hsr(row) | percent: '1.1-1') ?? '—' }}</vw-graded-figure></li>
+                    <li><span>Kills per hour</span><vw-graded-figure [delta]="row.kphDelta">{{ (kph(row) | number: '1.1-1') ?? '—' }}</vw-graded-figure></li>
+                    <li><span>Time</span><span>{{ hours(row) | number: '1.1-1' }}h</span></li>
+                  </ul>
+                </td>
+              </tr>
             }
-          </td>
-        </ng-container>
-
-        <tr mat-header-row *matHeaderRowDef="columns"></tr>
-        <tr mat-row *matRowDef="let row; columns: columns" class="leaderboard-row" [class.open]="expanded() === row.characterId" (click)="toggle(row)"></tr>
-        <tr mat-row *matRowDef="let row; columns: ['detail']" class="detail-row" [class.open]="expanded() === row.characterId"></tr>
+          }
+        </tbody>
       </table>
     </div>
 
     @if (!failed() && (rows().length || page() > 0)) {
-      <div class="pager">
+      <div class="stat-pager">
         @if (rows().length) {
           <span>Ranks <strong>{{ firstRank() | number }}–{{ lastRank() | number }}</strong></span>
         } @else {
           <span>No more players</span>
         }
-        <button type="button" class="page-button" aria-label="Previous page" [disabled]="page() === 0 || loading()" (click)="goToPage(page() - 1)">
+        <button type="button" class="stat-page-button" aria-label="Previous page" [disabled]="page() === 0 || loading()" (click)="goToPage(page() - 1)">
           <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
         </button>
-        <button type="button" class="page-button" aria-label="Next page" [disabled]="!hasNext() || loading()" (click)="goToPage(page() + 1)">
+        <button type="button" class="stat-page-button" aria-label="Next page" [disabled]="!hasNext() || loading()" (click)="goToPage(page() + 1)">
           <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
         </button>
       </div>
     }
 
     @if (!loading() && !failed() && !rows().length && page() === 0) {
-      <p class="muted">No one has a kill with this weapon yet.</p>
+      <p class="stat-muted">No one has a kill with this weapon yet.</p>
     }
   </mat-card-content>
 </mat-card>

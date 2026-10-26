@@ -3,7 +3,6 @@ import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { DatePipe, DecimalPipe, NgClass, NgTemplateOutlet, formatDate } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
-import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { combineLatest, of } from 'rxjs';
 import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
@@ -20,6 +19,7 @@ import { ZoneNamePipe } from '../../../pipes/zone-name.pipe';
 import {
     SessionEventFilter, SessionEventKind, SessionLogEntry, activityBuckets, formatDuration, matchesFilter, sessionStats, toLogEntry, weaponUsage, zonesVisited
 } from '../session-events';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 type SessionResult = { session: PlayerSession, playerId: string } | { error: string };
 
@@ -32,13 +32,11 @@ const MAX_BUCKETS = 48;
     templateUrl: './planetside-player-session.component.html',
     styleUrls: ['./planetside-player-session.component.css'],
     imports: [
-        LoaderComponent,
+        ChipsComponent, LoaderComponent,
         ErrorCardComponent,
         MatCard,
         MatCardTitle,
         MatCardContent,
-        MatButtonToggleGroup,
-        MatButtonToggle,
         MatIcon,
         RouterLink,
         NgClass,
@@ -137,5 +135,12 @@ export class PlanetsidePlayerSessionComponent {
         const entries = this.entries();
         const count = (logFilter: SessionEventFilter) => entries.filter(entry => matchesFilter(entry, logFilter)).length;
         return { all: entries.length, combat: count('combat'), vehicles: count('vehicles'), facilities: count('facilities') };
+    });
+    readonly logFilterOptions = computed<ChipOption<SessionEventFilter>[]>(() => {
+        const counts = this.filterCounts();
+        return [
+            { value: 'all', label: 'All', count: counts.all }, { value: 'combat', label: 'Combat', count: counts.combat },
+            { value: 'vehicles', label: 'Vehicles', count: counts.vehicles }, { value: 'facilities', label: 'Facilities', count: counts.facilities }
+        ];
     });
 }

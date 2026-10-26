@@ -2,38 +2,38 @@
 @if (errorMessage()) {
   <vw-error-card></vw-error-card>
 } @else if (!isLoading()) {
-  <mat-card class="servers mb-4">
-    <div class="servers-head">
+  <mat-card class="stat-card mb-4">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 pb-2">
       <mat-card-title>Servers</mat-card-title>
-      <span class="muted">{{ totalOnline() | number }} {{ totalOnline() === 1 ? 'player' : 'players' }} online across {{ onlineWorldCount() | number }} {{ onlineWorldCount() === 1 ? 'server' : 'servers' }}</span>
+      <span class="stat-muted">{{ totalOnline() | number }} {{ totalOnline() === 1 ? 'player' : 'players' }} online across {{ onlineWorldCount() | number }} {{ onlineWorldCount() === 1 ? 'server' : 'servers' }}</span>
     </div>
     <mat-card-content>
-      <div class="table-wrap">
-        <table>
+      <div class="stat-table-wrap">
+        <table class="stat-table stat-table-bright">
           <thead>
             <tr>
-              <th class="name">Server</th>
-              <th class="status">Status</th>
+              <th class="left pinned">Server</th>
+              <th class="left hs status">Status</th>
               <th>Online</th>
               @for (faction of factionKeys; track faction) {
-                <th class="faction" [ngClass]="factionIds[faction] | factionColor">{{ factionIds[faction] | factionCode }}</th>
+                <th class="hs" [ngClass]="factionIds[faction] | factionColor">{{ factionIds[faction] | factionCode }}</th>
               }
               @for (zone of zones(); track zone.id) {
-                <th class="zone">{{ zone.name }}</th>
+                <th class="hs zone">{{ zone.name }}</th>
               }
             </tr>
           </thead>
-          @for (row of rows(); track row.id) {
-            <tbody>
+          <tbody>
+            @for (row of rows(); track row.id) {
               <tr>
-                <td class="name">
-                  <button type="button" class="expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the zones of ' + row.name" (click)="toggle(row.id)">
+                <td class="left pinned">
+                  <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the zones of ' + row.name" (click)="toggle(row.id)">
                     <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
                   </button>
-                  <a class="link" routerLink="{{ row.id }}/activity">{{ row.name }}</a>
+                  <a class="stat-link" routerLink="{{ row.id }}/activity">{{ row.name }}</a>
                 </td>
-                <td class="status">
-                  <span class="state"><i class="dot" [class.off]="!row.isOnline"></i>{{ row.isOnline ? 'Online' : 'Offline' }}</span>
+                <td class="left hs status">
+                  <span class="stat-state"><i class="stat-dot" [class.off]="!row.isOnline"></i>{{ row.isOnline ? 'Online' : 'Offline' }}</span>
                 </td>
                 @if (row.online === null) {
                   <td class="dash">—</td>
@@ -43,19 +43,19 @@
                 @for (faction of factionKeys; track faction) {
                   @let total = row.factions[faction];
                   @if (total === null) {
-                    <td class="faction dash">—</td>
+                    <td class="hs dash">—</td>
                   } @else {
-                    <td class="faction" [ngClass]="factionIds[faction] | factionColor">{{ total | number }}</td>
+                    <td class="hs" [ngClass]="factionIds[faction] | factionColor">{{ total | number }}</td>
                   }
                 }
                 @for (zone of zones(); track zone.id) {
-                  <td class="zone">
+                  <td class="hs zone">
                     <ng-container [ngTemplateOutlet]="cell" [ngTemplateOutletContext]="{ row, zone }"></ng-container>
                   </td>
                 }
               </tr>
               @if (expanded().has(row.id)) {
-                <tr class="detail">
+                <tr class="stat-detail">
                   <td colspan="2">
                     <ul>
                       @for (zone of zones(); track zone.id) {
@@ -70,8 +70,8 @@
                   </td>
                 </tr>
               }
-            </tbody>
-          }
+            }
+          </tbody>
         </table>
       </div>
     </mat-card-content>

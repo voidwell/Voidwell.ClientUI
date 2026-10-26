@@ -2,8 +2,6 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatDialog } from '@angular/material/dialog';
 import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatChipListbox, MatChipListboxChange, MatChipOption } from '@angular/material/chips';
-import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { MatIcon } from '@angular/material/icon';
 import { of } from 'rxjs';
 import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
@@ -18,6 +16,7 @@ import { DirectiveTreeProgress, DirectiveTreeStatus, summarizeDirectives, treePr
 import { DirectivesSummaryComponent } from './directives-summary/directives-summary.component';
 import { DirectiveTreeCardComponent } from './directive-tree-card/directive-tree-card.component';
 import { DirectiveTreeDialog, DirectiveTreeDialogData } from './directive-tree-dialog/directive-tree-dialog.component';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 type DirectivesResult = { outline: CharacterDirectivesOutline } | { error: string };
 
@@ -33,14 +32,10 @@ interface CategoryGroup {
     templateUrl: './planetside-player-directives.component.html',
     styleUrls: ['./planetside-player-directives.component.css'],
     imports: [
-        LoaderComponent,
+        ChipsComponent, LoaderComponent,
         ErrorCardComponent,
         MatCard,
         MatCardContent,
-        MatChipListbox,
-        MatChipOption,
-        MatButtonToggleGroup,
-        MatButtonToggle,
         MatIcon,
         DirectiveTreeCardComponent,
         DirectivesSummaryComponent
@@ -82,6 +77,12 @@ export class PlanetsidePlayerDirectivesComponent {
 
     readonly category = signal<number | null>(null);
     readonly status = signal<StatusFilter>('all');
+    readonly statusOptions: ChipOption<StatusFilter>[] = [
+        { value: 'all', label: 'All' }, { value: 'inProgress', label: 'In progress' }, { value: 'mastered', label: 'Mastered' }, { value: 'notStarted', label: 'Not started' }
+    ];
+    readonly categoryOptions = computed<ChipOption<number | null>[]>(() => [
+        { value: null, label: 'All' }, ...(this.categories() ?? []).map(group => ({ value: group.id, label: group.name }))
+    ]);
     readonly search = signal('');
 
     private readonly allTrees = computed(() => (this.categories() ?? []).flatMap(category => category.trees));
@@ -106,10 +107,6 @@ export class PlanetsidePlayerDirectivesComponent {
             }))
             .filter(group => group.trees.length > 0);
     });
-
-    onCategoryChange(event: MatChipListboxChange): void {
-        this.category.set(event.value ?? null);
-    }
 
     onSearch(event: Event): void {
         this.search.set((event.target as HTMLInputElement).value);

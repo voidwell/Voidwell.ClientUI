@@ -17,17 +17,6 @@
     font-size: 14px;
 }
 
-.outfit-link {
-    color: inherit;
-    text-decoration: underline dashed;
-    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
-    text-underline-offset: 3px;
-}
-
-.outfit-link:hover {
-    opacity: 0.8;
-}
-
 .player-divider {
     width: 1px;
     height: 16px;

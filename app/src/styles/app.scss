@@ -92,14 +92,6 @@ a:focus, a:hover {
     color: rgba(255,255,255,0.8);
 }
 
-mat-table mat-row {
-    position: relative;
-}
-
-mat-table mat-row.mat-mdc-row {
-    color: inherit;
-}
-
 .mat-button-toggle,
 button.mat-button-toggle-button,
 .mat-button-toggle-group {

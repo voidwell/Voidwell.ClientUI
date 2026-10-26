@@ -20,7 +20,7 @@
       <div class="player-outfit mt-4 flex items-center gap-1">
         <mat-icon fontSet="mdi" fontIcon="mdi-account-group"></mat-icon>
         @if (playerData.outfit; as outfit) {
-          <a class="outfit-link" routerLink="/ps2/outfit/{{outfit.id}}">
+          <a class="stat-link" routerLink="/ps2/outfit/{{outfit.id}}">
             @if (outfit.alias) {
               <span>[{{outfit.alias}}]</span>
             }

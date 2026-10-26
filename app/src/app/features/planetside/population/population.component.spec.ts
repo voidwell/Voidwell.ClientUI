@@ -123,7 +123,7 @@ describe('PopulationComponent', () => {
     it('marks a zoom range as picked, and clears it when the dates are changed', () => {
         const fixture = create({ worlds: '17' });
         const el: HTMLElement = fixture.nativeElement;
-        const chips = () => [...el.querySelectorAll('.stat-ranges .stat-chip')] as HTMLButtonElement[];
+        const chips = () => [...el.querySelectorAll('vw-chips .stat-chip')] as HTMLButtonElement[];
 
         chips()[2].click();
         fixture.detectChanges();

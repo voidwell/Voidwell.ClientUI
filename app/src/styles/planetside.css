@@ -158,6 +158,11 @@ p.stat-muted {
     white-space: nowrap;
 }
 
+/* Figures in the text colour instead of the muted one; the older tables read this way */
+.stat-table-bright {
+    color: #edeff0;
+}
+
 .stat-table tbody tr:last-child td {
     border-bottom: 0;
 }
@@ -197,6 +202,7 @@ p.stat-muted {
 }
 
 .stat-link:hover {
+    color: inherit;
     opacity: .8;
 }
 
@@ -206,6 +212,65 @@ p.stat-muted {
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: bottom;
+}
+
+/* Online or offline, with its dot */
+
+.stat-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.stat-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4cc38a;
+}
+
+.stat-dot.off {
+    background: #e63734;
+}
+
+/* A small uppercase label above a figure or a field */
+
+.stat-label {
+    color: #8a9ba1;
+    font-size: 11px;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+/* One tile per figure of a record; they wrap as the card narrows */
+
+.stat-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    gap: 12px;
+    padding: 14px 16px 16px;
+}
+
+.stat-tile {
+    padding: 10px 12px;
+    border: 1px solid #344651;
+    border-radius: 6px;
+}
+
+.stat-tile-value {
+    margin-top: 2px;
+    font-size: 20px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-tile-sub {
+    margin-top: 4px;
+    color: #8a9ba1;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
 }
 
 /* A name that is not a link, in a table */
@@ -220,6 +285,29 @@ span.stat-name {
     background: rgba(255, 255, 255, .08);
     color: #b4bfc3;
     font-size: 12px;
+}
+
+/* An amber pill: time left, the leader of a roster */
+.stat-pill.amber {
+    background: rgba(255, 200, 87, .2);
+    color: #ffd27a;
+}
+
+/* A short list of running things, a line each */
+.stat-feed {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.stat-feed li {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 12px;
 }
 
 .stat-chips {
@@ -427,7 +515,9 @@ span.stat-name {
 
     .stat-detail li {
         display: flex;
+        align-items: center;
         justify-content: space-between;
+        min-height: 24px;
         gap: 8px;
     }
 }
@@ -444,12 +534,6 @@ span.stat-name {
 
 .stat-range-bar[hidden] {
     display: none;
-}
-
-.stat-ranges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
 }
 
 .stat-dates {

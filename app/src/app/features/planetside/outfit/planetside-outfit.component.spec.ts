@@ -31,9 +31,9 @@ describe('PlanetsideOutfitComponent', () => {
         fixture.detectChanges();
         return { fixture, element: fixture.nativeElement as HTMLElement };
     };
-    const names = (element: HTMLElement) => Array.from(element.querySelectorAll('td.mat-column-name')).map(e => e.textContent?.trim());
+    const names = (element: HTMLElement) => Array.from(element.querySelectorAll('td.pinned')).map(e => e.textContent?.trim());
     const click = (fixture: ReturnType<typeof setup>['fixture'], column: string) => {
-        (fixture.nativeElement.querySelector(`th.mat-column-${column}`) as HTMLElement).click();
+        (fixture.nativeElement.querySelector(`th[mat-sort-header="${column}"]`) as HTMLElement).click();
         fixture.detectChanges();
     };
 
@@ -66,7 +66,7 @@ describe('PlanetsideOutfitComponent', () => {
     it('filters the roster by name and by untracked members', () => {
         const { fixture, element } = setup();
 
-        const search = element.querySelector('.search input') as HTMLInputElement;
+        const search = element.querySelector('.stat-search input') as HTMLInputElement;
         search.value = 'b';
         search.dispatchEvent(new Event('input'));
         fixture.detectChanges();
@@ -74,7 +74,7 @@ describe('PlanetsideOutfitComponent', () => {
 
         search.value = '';
         search.dispatchEvent(new Event('input'));
-        (Array.from(element.querySelectorAll('.chip')).find(chip => chip.textContent?.includes('Untracked')) as HTMLElement).click();
+        (Array.from(element.querySelectorAll('.stat-chip')).find(chip => chip.textContent?.includes('Untracked')) as HTMLElement).click();
         fixture.detectChanges();
         expect(names(element)).toEqual(['Dev']);
     });

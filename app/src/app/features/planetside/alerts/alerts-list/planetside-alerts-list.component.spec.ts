@@ -43,10 +43,10 @@ describe('PlanetsideAlertsListComponent', () => {
         ]));
         const el: HTMLElement = fixture.nativeElement;
 
-        expect(el.querySelectorAll('.alerts li')).toHaveLength(1);
-        expect(el.querySelector('.alerts .name')?.textContent).toContain('Running');
+        expect(el.querySelectorAll('.stat-feed li')).toHaveLength(1);
+        expect(el.querySelector('.stat-feed a.stat-link')?.textContent).toContain('Running');
         expect(names(el)).toEqual(['Newer', 'Older']);
-        expect(el.querySelector('.alerts')?.textContent).toContain('Emerald');
+        expect(el.querySelector('.stat-feed')?.textContent).toContain('Emerald');
     });
 
     it('says so when no alert is running', () => {
@@ -78,7 +78,7 @@ describe('PlanetsideAlertsListComponent', () => {
 
         expect(calls).toEqual([[0, undefined], [0, 13]]);
         expect(names(el)).toEqual(['Cobalt alert']);
-        expect(el.querySelectorAll('.alerts li')).toHaveLength(1);
+        expect(el.querySelectorAll('.stat-feed li')).toHaveLength(1);
     });
 
     it('pages with the arrows', () => {

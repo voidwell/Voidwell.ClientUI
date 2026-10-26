@@ -251,18 +251,6 @@
 
 /* Event log */
 
-mat-button-toggle-group {
-    --mat-button-toggle-height: 30px;
-    --mat-button-toggle-shape: 8px;
-    --mat-button-toggle-label-text-size: 12.5px;
-    --mat-button-toggle-background-color: transparent;
-    --mat-button-toggle-text-color: #b4bfc3;
-    --mat-button-toggle-selected-state-background-color: #384a55;
-    --mat-button-toggle-selected-state-text-color: #edeff0;
-    --mat-button-toggle-divider-color: #3e505a;
-    border-color: #3e505a;
-}
-
 .log {
     margin: 0;
     padding: 0;

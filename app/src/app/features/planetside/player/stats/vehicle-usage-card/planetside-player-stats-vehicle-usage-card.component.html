@@ -2,10 +2,7 @@
   <mat-card-title class="card-title">
     <span class="flex flex-wrap items-center gap-3">
       <span>Vehicle Usage</span>
-      <mat-button-toggle-group aria-label="Seat" hideSingleSelectionIndicator [value]="seat()" (change)="seat.set($event.value)">
-        <mat-button-toggle value="pilot">Pilot</mat-button-toggle>
-        <mat-button-toggle value="passenger">Passenger</mat-button-toggle>
-      </mat-button-toggle-group>
+      <vw-chips label="Seat" [options]="seatOptions" [value]="seat()" (choose)="seat.set($event)"></vw-chips>
     </span>
     <a class="view-all" routerLink="/ps2/player/{{player().id}}/vehicles">View All &rarr;</a>
   </mat-card-title>

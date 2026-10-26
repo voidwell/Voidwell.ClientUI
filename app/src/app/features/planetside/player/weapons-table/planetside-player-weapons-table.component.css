@@ -13,50 +13,6 @@
     margin-bottom: 12px;
 }
 
-mat-button-toggle-group {
-    --mat-button-toggle-height: 32px;
-    --mat-button-toggle-shape: 8px;
-    --mat-button-toggle-label-text-size: 13px;
-    --mat-button-toggle-background-color: transparent;
-    --mat-button-toggle-text-color: #b4bfc3;
-    --mat-button-toggle-selected-state-background-color: #384a55;
-    --mat-button-toggle-selected-state-text-color: #edeff0;
-    --mat-button-toggle-divider-color: #3e505a;
-    border-color: #3e505a;
-}
-
-.weapon-search {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    height: 32px;
-    padding: 0 10px;
-    border: 1px solid #3e505a;
-    border-radius: 8px;
-    color: #8a9ba1;
-}
-
-.weapon-search:focus-within {
-    border-color: #6dbbff;
-}
-
-.weapon-search mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-    line-height: 18px;
-}
-
-.weapon-search input {
-    width: 180px;
-    border: 0;
-    outline: 0;
-    background: none;
-    color: #edeff0;
-    font: inherit;
-    font-size: 13px;
-}
-
 /* Table */
 
 .table-wrap {
@@ -247,17 +203,6 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     gap: 10px;
 }
 
-.weapon-link {
-    color: inherit;
-    text-decoration: underline dashed;
-    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
-    text-underline-offset: 3px;
-}
-
-.weapon-link:hover {
-    opacity: .8;
-}
-
 /* The open row repeats a column only where the table hides it */
 @media (min-width: 701px) {
     .tiles .in-table {
@@ -300,12 +245,6 @@ th.mat-column-name ::ng-deep .mat-sort-header-container {
     td.mat-mdc-cell,
     th.mat-mdc-header-cell {
         padding: 0 6px;
-    }
-
-    .weapon-search,
-    .weapon-search input {
-        flex: 1;
-        width: auto;
     }
 
     .filters {

@@ -22,6 +22,7 @@ import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import { cellOf, sortRows } from '../components/combat-report/combat-report-figures';
 import { TrackerRow, escapeHtml, selectionDiffers, trackerRows } from './weapon-tracker-figures';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 const statOptions = [
     { id: 'kills', display: 'Kills' },
@@ -82,7 +83,7 @@ const categoryOptions = [
 @Component({
     templateUrl: './weapon-tracker.component.html',
     styleUrls: ['./weapon-tracker.component.css'],
-    imports: [MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, RouterLink, DecimalPipe, MatFormField, MatLabel, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatAutocompleteTrigger, MatChipInput, MatAutocomplete, MatButton, LoaderComponent, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, AsyncPipe]
+    imports: [ChipsComponent, MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, RouterLink, DecimalPipe, MatFormField, MatLabel, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatAutocompleteTrigger, MatChipInput, MatAutocomplete, MatButton, LoaderComponent, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, AsyncPipe]
 })
 
 export class WeaponTrackerComponent implements OnInit {
@@ -104,9 +105,9 @@ export class WeaponTrackerComponent implements OnInit {
     errorMessage: string = null;
 
     /** The zoom shortcuts above the chart. */
-    readonly ranges = [
-        { id: '1m', display: '1m' }, { id: '3m', display: '3m' }, { id: '6m', display: '6m' },
-        { id: 'ytd', display: 'YTD' }, { id: '1y', display: '1y' }, { id: 'all', display: 'All' }
+    readonly ranges: ChipOption<string>[] = [
+        { value: '1m', label: '1m' }, { value: '3m', label: '3m' }, { value: '6m', label: '6m' },
+        { value: 'ytd', label: 'YTD' }, { value: '1y', label: '1y' }, { value: 'all', label: 'All' }
     ];
 
     statOptions = statOptions;

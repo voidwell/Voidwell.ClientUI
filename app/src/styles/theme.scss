@@ -43,14 +43,6 @@ html {
     header-headline-weight: 500
   ));
 
-  @include mat.paginator-overrides((
-    container-background-color: #2b3942,
-    container-text-color: #b4bfc3,
-    container-text-weight: 500,
-    enabled-icon-color: #fff,
-    disabled-icon-color: #585858
-  ));
-
   @include mat.tabs-overrides((
     inactive-label-text-color: rgba(180, 191, 195, .6),
     inactive-hover-label-text-color: rgba(180, 191, 195, .6),

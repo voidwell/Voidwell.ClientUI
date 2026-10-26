@@ -34,88 +34,98 @@
       </div>
     }
 
-    <mat-card class="roster mb-4">
-      <div class="roster-head">
+    <mat-card class="stat-card mb-4">
+      <div class="stat-toolbar">
         <mat-card-title>Roster</mat-card-title>
-        <label class="search">
+        <label class="stat-search">
           <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
           <input type="search" placeholder="Filter by name" aria-label="Filter members by name" [value]="search()" (input)="onSearch($any($event.target).value)">
         </label>
       </div>
-      <div class="chips" role="group" aria-label="Filter members">
-        @for (option of filters; track option.id) {
-          <button type="button" class="chip" [class.on]="activeFilter() === option.id" [attr.aria-pressed]="activeFilter() === option.id" (click)="setFilter(option.id)">
-            {{ option.label }} <span class="chip-count">{{ counts()[option.id] | number }}</span>
-          </button>
-        }
+      <div class="px-4 pt-1 pb-3">
+        <vw-chips label="Filter members" [options]="filterOptions()" [value]="activeFilter()" (choose)="setFilter($event)"></vw-chips>
       </div>
       <mat-card-content>
         @if (membersFailed()) {
-          <p class="muted">The roster is unavailable right now.</p>
+          <p class="stat-muted">The roster is unavailable right now.</p>
         } @else if (isLoadingMembers()) {
           <vw-loader variant="table" [rows]="8" [loading]="true"></vw-loader>
         } @else {
-          <div class="table-wrap">
-            <table mat-table [dataSource]="rows()" matSort matSortActive="rank" matSortDirection="asc" matSortDisableClear (matSortChange)="onSort($event)">
-              <ng-container matColumnDef="name">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Player</th>
-                <td mat-cell *matCellDef="let member"><a class="player-link" routerLink="/ps2/player/{{ member.characterId }}">{{ member.name }}</a></td>
-              </ng-container>
-              <ng-container matColumnDef="rank">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header>Rank</th>
-                <td mat-cell *matCellDef="let member"><span class="rank" [class.leader]="member.rankOrdinal === 0">{{ member.rank }}</span></td>
-              </ng-container>
-              <ng-container matColumnDef="battleRank">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before" title="Battle rank">BR</th>
-                <td mat-cell *matCellDef="let member">{{ member.battleRank | number }}</td>
-              </ng-container>
-              <ng-container matColumnDef="kdr">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before" title="Kill/death ratio">K/D</th>
-                <td mat-cell *matCellDef="let member">{{ (kdr(member) | number: '1.2-2') ?? '—' }}</td>
-              </ng-container>
-              <ng-container matColumnDef="accuracy">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before">Accuracy</th>
-                <td mat-cell *matCellDef="let member">{{ (accuracy(member) | percent: '1.1-1') ?? '—' }}</td>
-              </ng-container>
-              <ng-container matColumnDef="hsr">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before" title="Headshot ratio">HSR</th>
-                <td mat-cell *matCellDef="let member">{{ (hsr(member) | percent: '1.1-1') ?? '—' }}</td>
-              </ng-container>
-              <ng-container matColumnDef="siege">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before" title="Facility captures per defence, as a percentage">Siege</th>
-                <td mat-cell *matCellDef="let member">{{ (siege(member) | number: '1.0-0') ?? '—' }}</td>
-              </ng-container>
-              <ng-container matColumnDef="score">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before">Score</th>
-                <td mat-cell *matCellDef="let member">{{ (member.lifetimeStats?.weaponScore | number) ?? '—' }}</td>
-              </ng-container>
-              <ng-container matColumnDef="spm">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before" title="Score per minute">SPM</th>
-                <td mat-cell *matCellDef="let member">{{ (spm(member) | number: '1.0-0') ?? '—' }}</td>
-              </ng-container>
-              <ng-container matColumnDef="memberSinceDate">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before">Joined</th>
-                <td mat-cell *matCellDef="let member" class="muted-cell">{{ member.memberSinceDate | date: 'mediumDate' }}</td>
-              </ng-container>
-              <ng-container matColumnDef="lastLogin">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header start="desc" arrowPosition="before">Last login</th>
-                <td mat-cell *matCellDef="let member" class="muted-cell" [title]="(member.lastLoginDate | date: 'medium') ?? ''">{{ timeAgo(member.lastLoginDate) || '—' }}</td>
-              </ng-container>
-
-              <tr mat-header-row *matHeaderRowDef="columns"></tr>
-              <tr mat-row *matRowDef="let row; columns: columns"></tr>
+          <div class="stat-table-wrap">
+            <table class="stat-table stat-table-bright" matSort matSortActive="rank" matSortDirection="asc" matSortDisableClear (matSortChange)="onSort($event)">
+              <thead>
+                <tr>
+                  <th class="left pinned" mat-sort-header="name" start="asc">Player</th>
+                  <th class="left" mat-sort-header="rank" start="asc">Rank</th>
+                  <th mat-sort-header="battleRank" start="desc" arrowPosition="before" title="Battle rank">BR</th>
+                  <th mat-sort-header="kdr" start="desc" arrowPosition="before" title="Kill/death ratio">K/D</th>
+                  <th class="hs" mat-sort-header="accuracy" start="desc" arrowPosition="before">Accuracy</th>
+                  <th class="hs" mat-sort-header="hsr" start="desc" arrowPosition="before" title="Headshot ratio">HSR</th>
+                  <th class="hs" mat-sort-header="siege" start="desc" arrowPosition="before" title="Facility captures per defence, as a percentage">Siege</th>
+                  <th class="hs" mat-sort-header="score" start="desc" arrowPosition="before">Score</th>
+                  <th mat-sort-header="spm" start="desc" arrowPosition="before" title="Score per minute">SPM</th>
+                  <th class="hs" mat-sort-header="memberSinceDate" start="desc" arrowPosition="before">Joined</th>
+                  <th class="hs" mat-sort-header="lastLogin" start="desc" arrowPosition="before">Last login</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (member of rows(); track member.characterId) {
+                  @let kd = kdr(member);
+                  @let acc = accuracy(member);
+                  @let hs = hsr(member);
+                  @let sg = siege(member);
+                  @let pm = spm(member);
+                  @let score = member.lifetimeStats?.weaponScore;
+                  <tr>
+                    <td class="left pinned">
+                      <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(member.characterId)" [attr.aria-label]="'Show the details of ' + member.name" (click)="toggle(member.characterId)">
+                        <mat-icon fontSet="mdi" [fontIcon]="expanded().has(member.characterId) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                      </button>
+                      <a class="stat-link stat-name" routerLink="/ps2/player/{{ member.characterId }}" [title]="member.name">{{ member.name }}</a>
+                    </td>
+                    <td class="left"><span class="stat-pill" [class.amber]="member.rankOrdinal === 0">{{ member.rank }}</span></td>
+                    @if (member.battleRank == null) { <td class="dash">—</td> } @else { <td>{{ member.battleRank | number }}</td> }
+                    @if (kd === null) { <td class="dash">—</td> } @else { <td>{{ kd | number: '1.2-2' }}</td> }
+                    @if (acc === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ acc | percent: '1.1-1' }}</td> }
+                    @if (hs === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ hs | percent: '1.1-1' }}</td> }
+                    @if (sg === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ sg | number: '1.0-0' }}</td> }
+                    @if (score == null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ score | number }}</td> }
+                    @if (pm === null) { <td class="dash">—</td> } @else { <td>{{ pm | number: '1.0-0' }}</td> }
+                    <td class="hs stat-muted">{{ member.memberSinceDate | date: 'mediumDate' }}</td>
+                    @if (timeAgo(member.lastLoginDate); as ago) {
+                      <td class="hs stat-muted" [title]="(member.lastLoginDate | date: 'medium') ?? ''">{{ ago }}</td>
+                    } @else {
+                      <td class="hs dash">—</td>
+                    }
+                  </tr>
+                  @if (expanded().has(member.characterId)) {
+                    <tr class="stat-detail">
+                      <td colspan="3">
+                        <ul>
+                          <li><span>Accuracy</span><span>{{ acc === null ? '—' : (acc | percent: '1.1-1') }}</span></li>
+                          <li><span>Headshot ratio</span><span>{{ hs === null ? '—' : (hs | percent: '1.1-1') }}</span></li>
+                          <li><span>Siege</span><span>{{ sg === null ? '—' : (sg | number: '1.0-0') }}</span></li>
+                          <li><span>Score</span><span>{{ score == null ? '—' : (score | number) }}</span></li>
+                          <li><span>Joined</span><span>{{ member.memberSinceDate | date: 'mediumDate' }}</span></li>
+                          <li><span>Last login</span><span>{{ timeAgo(member.lastLoginDate) || '—' }}</span></li>
+                        </ul>
+                      </td>
+                    </tr>
+                  }
+                }
+              </tbody>
             </table>
           </div>
 
           @if (!filteredCount()) {
-            <p class="muted">No members match.</p>
+            <p class="stat-muted">No members match.</p>
           } @else {
-            <div class="pager">
+            <div class="stat-pager">
               <span>Members <strong>{{ firstRow() | number }}–{{ lastRow() | number }}</strong> of {{ filteredCount() | number }}</span>
-              <button type="button" class="page-button" aria-label="Previous page" [disabled]="page() === 0" (click)="goToPage(page() - 1)">
+              <button type="button" class="stat-page-button" aria-label="Previous page" [disabled]="page() === 0" (click)="goToPage(page() - 1)">
                 <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
               </button>
-              <button type="button" class="page-button" aria-label="Next page" [disabled]="!hasNext()" (click)="goToPage(page() + 1)">
+              <button type="button" class="stat-page-button" aria-label="Next page" [disabled]="!hasNext()" (click)="goToPage(page() + 1)">
                 <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
               </button>
             </div>

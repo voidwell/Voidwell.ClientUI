@@ -28,7 +28,7 @@ describe('PlanetsideItemLeaderboardComponent', () => {
         fixture.detectChanges();
         return { fixture, item, element: fixture.nativeElement as HTMLElement };
     };
-    const ranks = (element: HTMLElement) => Array.from(element.querySelectorAll('tr.leaderboard-row td.mat-column-rank')).map(e => e.textContent?.trim());
+    const ranks = (element: HTMLElement) => Array.from(element.querySelectorAll('tbody tr:not(.stat-detail) td:first-child')).map(e => e.textContent?.trim());
 
     it('ranks the first page by kills and sets the breadcrumbs', () => {
         const calls: unknown[][] = [];
@@ -36,7 +36,7 @@ describe('PlanetsideItemLeaderboardComponent', () => {
 
         expect(calls).toEqual([['1894', 0, 'kills', 'desc']]);
         expect(ranks(element).slice(0, 2)).toEqual(['1', '2']);
-        expect(element.querySelector('.pager')?.textContent).toContain('Ranks 1–50');
+        expect(element.querySelector('.stat-pager')?.textContent).toContain('Ranks 1–50');
         expect(item.breadcrumbs()).toEqual([{ label: 'Overview', link: '/ps2/item/1894/stats' }, { label: 'Leaderboard' }]);
     });
 
@@ -46,7 +46,7 @@ describe('PlanetsideItemLeaderboardComponent', () => {
         fixture.detectChanges();
 
         expect(ranks(element)[0]).toBe('51');
-        expect(element.querySelector('.pager')?.textContent).toContain('Ranks 51–70');
+        expect(element.querySelector('.stat-pager')?.textContent).toContain('Ranks 51–70');
         expect((element.querySelector('[aria-label="Next page"]') as HTMLButtonElement).disabled).toBe(true);
         expect((element.querySelector('[aria-label="Previous page"]') as HTMLButtonElement).disabled).toBe(false);
     });
@@ -56,7 +56,7 @@ describe('PlanetsideItemLeaderboardComponent', () => {
         const { fixture, element } = setup((...args) => { calls.push(args); return of(page(0, 50)); });
         (element.querySelector('[aria-label="Next page"]') as HTMLButtonElement).click();
         fixture.detectChanges();
-        (element.querySelector('th.mat-column-kdr') as HTMLElement).click();
+        (element.querySelector('th[mat-sort-header="kdr"]') as HTMLElement).click();
         fixture.detectChanges();
 
         expect(calls[calls.length - 1]).toEqual(['1894', 0, 'kdr', 'desc']);
@@ -66,6 +66,6 @@ describe('PlanetsideItemLeaderboardComponent', () => {
         const { element } = setup(() => throwError(() => new Error('down')));
 
         expect(element.textContent).toContain('unavailable');
-        expect(element.querySelector('.pager')).toBeNull();
+        expect(element.querySelector('.stat-pager')).toBeNull();
     });
 });

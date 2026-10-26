@@ -99,13 +99,7 @@
     <mat-card>
       <mat-card-title class="card-title flex-wrap gap-3">
         <span>Event Log</span>
-        @let c = filterCounts();
-        <mat-button-toggle-group aria-label="Show" hideSingleSelectionIndicator [value]="logFilter()" (change)="logFilter.set($event.value)">
-          <mat-button-toggle value="all">All {{ c.all }}</mat-button-toggle>
-          <mat-button-toggle value="combat">Combat {{ c.combat }}</mat-button-toggle>
-          <mat-button-toggle value="vehicles">Vehicles {{ c.vehicles }}</mat-button-toggle>
-          <mat-button-toggle value="facilities">Facilities {{ c.facilities }}</mat-button-toggle>
-        </mat-button-toggle-group>
+        <vw-chips label="Show" [options]="logFilterOptions()" [value]="logFilter()" (choose)="logFilter.set($event)"></vw-chips>
       </mat-card-title>
       <mat-card-content>
         <ol class="log">

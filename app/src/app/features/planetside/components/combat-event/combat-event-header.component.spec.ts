@@ -28,14 +28,14 @@ describe('CombatEventHeaderComponent', () => {
         expect(text(el, '.sub')).toBe('Emerald › Indar');
         expect(text(el, '.status')).toContain('Duration');
         expect(text(el, '.status b')).toBe('45 min');
-        expect(el.querySelector('.time-left')).toBeNull();
+        expect(el.querySelector('.stat-pill.amber')).toBeNull();
     });
 
     it('shows the time left, and an alarm for an alert, while it runs', () => {
         const running = { ...base, start: minutes(-10), end: minutes(35) };
 
         const alert: HTMLElement = create({ ...running, alarm: true }).nativeElement;
-        expect(alert.querySelector('.time-left')?.textContent).toContain('remaining');
+        expect(alert.querySelector('.stat-pill.amber')?.textContent).toContain('remaining');
         expect(alert.querySelector('vw-alert-indicator')).not.toBeNull();
     });
 
@@ -43,7 +43,7 @@ describe('CombatEventHeaderComponent', () => {
         TestBed.resetTestingModule();
         const event: HTMLElement = create({ ...base, start: minutes(-10), end: minutes(35) }).nativeElement;
 
-        expect(event.querySelector('.time-left')).not.toBeNull();
+        expect(event.querySelector('.stat-pill.amber')).not.toBeNull();
         expect(event.querySelector('vw-alert-indicator')).toBeNull();
     });
 
@@ -51,24 +51,24 @@ describe('CombatEventHeaderComponent', () => {
         const el: HTMLElement = create({
             ...base, scores: { vs: 41, nc: 33, tr: 26 }, startScores: { vs: 36, nc: 35, tr: 29 }
         }).nativeElement;
-        const values = [...el.querySelectorAll('.tile-value')] as HTMLElement[];
+        const values = [...el.querySelectorAll('.stat-tile-value')] as HTMLElement[];
 
         expect(values.slice(0, 3).map(v => v.textContent?.trim())).toEqual(['41%', '33%', '26%']);
         expect(values.slice(0, 3).map(v => [...v.classList].find(c => c.startsWith('faction-')))).toEqual(['faction-vs-text', 'faction-nc-text', 'faction-tr-text']);
-        expect(text(el, '.tile-sub')).toBe('Started at 36% · +5');
+        expect(text(el, '.stat-tile-sub')).toBe('Started at 36% · +5');
     });
 
     it('describes the score as the end of the event when the start is not known', () => {
         const el: HTMLElement = create({ ...base, scores: { vs: 38, nc: 34, tr: 28 }, showEnd: true }).nativeElement;
 
-        expect(text(el, '.tile-sub')).toBe('Territory at the end');
-        expect([...el.querySelectorAll('.tile-label')].map(l => l.textContent?.trim())).toEqual(['Vanu Sovereignty', 'New Conglomerate', 'Terran Republic', 'Started', 'Ended']);
+        expect(text(el, '.stat-tile-sub')).toBe('Territory at the end');
+        expect([...el.querySelectorAll('.stat-tile .stat-label')].map(l => l.textContent?.trim())).toEqual(['Vanu Sovereignty', 'New Conglomerate', 'Terran Republic', 'Started', 'Ended']);
     });
 
     it('has no faction tiles without scores', () => {
         const el: HTMLElement = create(base).nativeElement;
 
-        expect([...el.querySelectorAll('.tile-label')].map(l => l.textContent?.trim())).toEqual(['Started']);
+        expect([...el.querySelectorAll('.stat-tile .stat-label')].map(l => l.textContent?.trim())).toEqual(['Started']);
     });
 });
 

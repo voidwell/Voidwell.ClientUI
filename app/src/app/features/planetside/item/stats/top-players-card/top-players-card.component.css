@@ -57,17 +57,6 @@ td {
     vertical-align: middle;
 }
 
-.player-link {
-    color: inherit;
-    text-decoration: underline dashed;
-    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
-    text-underline-offset: 3px;
-}
-
-.player-link:hover {
-    opacity: .8;
-}
-
 .muted {
     margin: 0;
     color: #8a9ba1;
