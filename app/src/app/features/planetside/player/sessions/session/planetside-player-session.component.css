@@ -6,13 +6,6 @@
     color: #8a9ba1;
 }
 
-.live {
-    color: #4caf50;
-    font-weight: 500;
-}
-
-/* Overview: laid out like the General card on the stats page */
-
 .overview {
     display: flex;
     flex-direction: column;
@@ -27,14 +20,6 @@
     gap: 16px;
 }
 
-.hero-value {
-    margin: 0;
-    color: #fff;
-    font-size: 28px;
-    font-weight: 500;
-    line-height: 1.2;
-}
-
 .hero-label {
     margin-top: 2px;
     color: #8a9ba1;
@@ -43,16 +28,26 @@
     text-transform: uppercase;
 }
 
-.hero-stats {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 16px 28px;
-}
-
 .hero-stat {
     display: flex;
     flex-direction: column;
     align-items: flex-end;
+}
+
+/* Overview: laid out like the General card on the stats page */
+
+.hero-value {
+    margin: 0;
+    color: #fff;
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 1.2;
+}
+
+.hero-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px 28px;
 }
 
 .pills {
@@ -62,50 +57,12 @@
     gap: 6px;
 }
 
-.pill {
-    display: inline-block;
-    padding: 2px 10px;
-    border-radius: 999px;
-    background: rgba(59, 130, 246, .2);
-    color: #93c5fd;
-    font-size: 14px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.zone-pill {
-    background: rgba(255, 255, 255, .08);
-    color: #edeff0;
-}
-
 /* Ten tiles: two rows of five, or five rows of two on narrow screens */
 .tiles {
     display: grid;
     grid-template-columns: repeat(5, minmax(0, 1fr));
     gap: 12px;
     margin-top: 20px;
-}
-
-.tile {
-    padding: 12px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, .04);
-}
-
-.tile-label {
-    overflow: hidden;
-    font-size: 12px;
-    opacity: .7;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.tile-value {
-    margin-top: 4px;
-    color: #fff;
-    font-size: 20px;
-    font-weight: 500;
-    font-variant-numeric: tabular-nums;
 }
 
 @media (max-width: 600px) {
@@ -130,12 +87,6 @@
     .hero-stat:not(:last-child) .pills {
         justify-content: flex-start;
     }
-}
-
-.card-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
 }
 
 /* Activity chart: kills rise above the axis, deaths hang below it */

@@ -10,20 +10,6 @@
     height: 600px;
 }
 
-.territory {
-    display: block;
-    height: 26px;
-    overflow: hidden;
-    border-radius: 4px;
-}
-
-.territory ::ng-deep .faction-bar {
-    font-size: 13px;
-    font-weight: 500;
-    height: 26px;
-    line-height: 26px;
-}
-
 @media (max-width: 700px) {
     .map-container {
         height: 360px;

@@ -6,49 +6,49 @@
       <mat-card-content>
         <div class="tiles">
           @if (f.hasDamage) {
-            <div class="tile">
-              <div class="tile-label">Damage</div>
-              <div class="tile-value">{{ weapon.maxDamage | number }}@if (weapon.minDamage !== weapon.maxDamage) { &rarr; {{ weapon.minDamage | number }}}</div>
+            <div class="stat-metric">
+              <div class="stat-metric-label">Damage</div>
+              <div class="stat-metric-value whitespace-nowrap">{{ weapon.maxDamage | number }}@if (weapon.minDamage !== weapon.maxDamage) { &rarr; {{ weapon.minDamage | number }}}</div>
               @if (weapon.minDamage !== weapon.maxDamage) {
-                <div class="tile-note">{{ weapon.maxDamageRange }} m to {{ weapon.minDamageRange }} m</div>
+                <div class="stat-metric-note">{{ weapon.maxDamageRange }} m to {{ weapon.minDamageRange }} m</div>
               }
             </div>
           }
           @if (f.rpm) {
-            <div class="tile">
-              <div class="tile-label">Fire Rate</div>
-              <div class="tile-value">{{ f.rpm | number: '1.0-0' }} RPM</div>
-              <div class="tile-note">{{ weapon.fireRateMs | number }} ms between shots</div>
+            <div class="stat-metric">
+              <div class="stat-metric-label">Fire Rate</div>
+              <div class="stat-metric-value whitespace-nowrap">{{ f.rpm | number: '1.0-0' }} RPM</div>
+              <div class="stat-metric-note">{{ weapon.fireRateMs | number }} ms between shots</div>
             </div>
           }
           @if (weapon.clipSize) {
-            <div class="tile">
-              <div class="tile-label">Magazine</div>
-              <div class="tile-value">{{ weapon.clipSize | number }}</div>
+            <div class="stat-metric">
+              <div class="stat-metric-label">Magazine</div>
+              <div class="stat-metric-value whitespace-nowrap">{{ weapon.clipSize | number }}</div>
               @if (weapon.capacity) {
-                <div class="tile-note">{{ weapon.capacity | number }} carried</div>
+                <div class="stat-metric-note">{{ weapon.capacity | number }} carried</div>
               }
             </div>
           }
           @if (weapon.minReloadSpeed) {
-            <div class="tile">
-              <div class="tile-label">Reload</div>
-              <div class="tile-value">{{ weapon.minReloadSpeed / 1000 | number: '1.1-2' }} s</div>
+            <div class="stat-metric">
+              <div class="stat-metric-label">Reload</div>
+              <div class="stat-metric-value whitespace-nowrap">{{ weapon.minReloadSpeed / 1000 | number: '1.1-2' }} s</div>
               @if (weapon.maxReloadSpeed && weapon.maxReloadSpeed !== weapon.minReloadSpeed) {
-                <div class="tile-note">{{ weapon.maxReloadSpeed / 1000 | number: '1.1-2' }} s when empty</div>
+                <div class="stat-metric-note">{{ weapon.maxReloadSpeed / 1000 | number: '1.1-2' }} s when empty</div>
               }
             </div>
           }
           @if (weapon.muzzleVelocity) {
-            <div class="tile">
-              <div class="tile-label">Muzzle Velocity</div>
-              <div class="tile-value">{{ weapon.muzzleVelocity | number }} m/s</div>
+            <div class="stat-metric">
+              <div class="stat-metric-label">Muzzle Velocity</div>
+              <div class="stat-metric-value whitespace-nowrap">{{ weapon.muzzleVelocity | number }} m/s</div>
             </div>
           }
           @if (weapon.ironSightZoom) {
-            <div class="tile">
-              <div class="tile-label">Iron Sight Zoom</div>
-              <div class="tile-value">{{ weapon.ironSightZoom }}&times;</div>
+            <div class="stat-metric">
+              <div class="stat-metric-label">Iron Sight Zoom</div>
+              <div class="stat-metric-value whitespace-nowrap">{{ weapon.ironSightZoom }}&times;</div>
             </div>
           }
         </div>
@@ -81,15 +81,15 @@
               <item-damage-chart [weapon]="weapon"></item-damage-chart>
               @if (f.timeToKill[0] != null) {
                 <div class="tiles kill-tiles">
-                  <div class="tile">
-                    <div class="tile-label">Shots to Kill</div>
-                    <div class="tile-value">{{ span(f.shotsToKill) }}</div>
-                    <div class="tile-note">close to far</div>
+                  <div class="stat-metric">
+                    <div class="stat-metric-label">Shots to Kill</div>
+                    <div class="stat-metric-value whitespace-nowrap">{{ span(f.shotsToKill) }}</div>
+                    <div class="stat-metric-note">close to far</div>
                   </div>
-                  <div class="tile">
-                    <div class="tile-label">Time to Kill</div>
-                    <div class="tile-value">{{ span(f.timeToKill, ' ms') }}</div>
-                    <div class="tile-note">close to far</div>
+                  <div class="stat-metric">
+                    <div class="stat-metric-label">Time to Kill</div>
+                    <div class="stat-metric-value whitespace-nowrap">{{ span(f.timeToKill, ' ms') }}</div>
+                    <div class="stat-metric-note">close to far</div>
                   </div>
                 </div>
                 <p class="stat-hint m-0 mt-2.5">Body shots on standard infantry (1,000 health and shields), every shot hitting.</p>

@@ -66,12 +66,6 @@
     outline-offset: 2px;
 }
 
-.empty {
-    margin: 24px 0;
-    color: #8a9ba1;
-    text-align: center;
-}
-
 @media (max-width: 600px) {
     .toolbar-end {
         width: 100%;

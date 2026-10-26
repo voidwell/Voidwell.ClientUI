@@ -13,31 +13,6 @@ mat-card-title {
     margin-top: 8px;
 }
 
-.tile {
-    padding: 12px;
-    border-radius: 8px;
-    background: rgba(255, 255, 255, .05);
-}
-
-.tile-label {
-    color: #8a9ba1;
-    font-size: 12px;
-}
-
-.tile-value {
-    margin-top: 4px;
-    color: #fff;
-    font-size: 22px;
-    font-weight: 500;
-    white-space: nowrap;
-}
-
-.tile-note {
-    margin-top: 2px;
-    color: #8a9ba1;
-    font-size: 11px;
-}
-
 .facts {
     display: flex;
     flex-wrap: wrap;

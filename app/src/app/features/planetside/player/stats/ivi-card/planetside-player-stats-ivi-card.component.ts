@@ -7,7 +7,7 @@ import { GradeComponent } from '../../../components/vw-grade/vw-grade.component'
 @Component({
     selector: 'planetside-player-stats-ivi-card',
     templateUrl: './planetside-player-stats-ivi-card.component.html',
-    styleUrls: ['./planetside-player-stats-ivi-card.component.css'],
+    styleUrls: ['../stat-card.css', './planetside-player-stats-ivi-card.component.css'],
     imports: [MatCard, MatCardTitle, MatCardContent, DecimalPipe, GradeComponent]
 })
 

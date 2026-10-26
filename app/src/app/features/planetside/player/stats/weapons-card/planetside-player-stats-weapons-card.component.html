@@ -1,44 +1,44 @@
 <mat-card class="vw-character-weapons">
   <mat-card-title>Overall Weapon Performance</mat-card-title>
   <mat-card-content>
-    <div class="hero">
+    <div class="stat-hero">
       <div>
-        <div class="hero-value">{{stats().hitCount / stats().fireCount * 100 | number: '.2-2'}}%</div>
-        <div class="hero-label">Accuracy</div>
+        <div class="stat-hero-value">{{stats().hitCount / stats().fireCount * 100 | number: '.2-2'}}%</div>
+        <div class="stat-label mt-0.5">Accuracy</div>
       </div>
-      <div class="spread">
-        <span class="spread-value" [ngClass]="{'positive': stats().damageGiven - stats().damageTakenBy > 0, 'negative': stats().damageGiven - stats().damageTakenBy < 0}">
+      <div class="text-right">
+        <span class="stat-badge" [ngClass]="{'positive': stats().damageGiven - stats().damageTakenBy > 0, 'negative': stats().damageGiven - stats().damageTakenBy < 0}">
           @if (stats().damageGiven - stats().damageTakenBy > 0) {
             <span>+</span>
           }
           <span>{{stats().damageGiven - stats().damageTakenBy | number}}</span>
         </span>
-        <div class="spread-label">Damage Spread</div>
+        <div class="stat-label mt-1">Damage Spread</div>
       </div>
     </div>
-    <div class="bar" role="img" aria-label="Shots landed compared with shots fired">
-      <div class="bar-fill accuracy" [style.width.%]="stats().hitCount / stats().fireCount * 100"></div>
+    <div class="stat-meter mt-5" role="img" aria-label="Shots landed compared with shots fired">
+      <div class="accuracy" [style.width.%]="stats().hitCount / stats().fireCount * 100"></div>
     </div>
-    <div class="bar-legend">
+    <div class="stat-meter-legend">
       <span>{{stats().fireCount / stats().kills | number: '.2-2'}} shots per kill</span>
       <span>{{stats().hitCount / stats().kills | number: '.2-2'}} landed per kill</span>
     </div>
-    <div class="tiles">
-      <div class="tile">
-        <div class="tile-label">Shots Fired</div>
-        <div class="tile-value">{{stats().fireCount | number}}</div>
+    <div class="grid grid-cols-2 gap-3 mt-5">
+      <div class="stat-metric">
+        <div class="stat-metric-label">Shots Fired</div>
+        <div class="stat-metric-value">{{stats().fireCount | number}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-label">Shots Hit</div>
-        <div class="tile-value">{{stats().hitCount | number}}</div>
+      <div class="stat-metric">
+        <div class="stat-metric-label">Shots Hit</div>
+        <div class="stat-metric-value">{{stats().hitCount | number}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-label">Damage Given</div>
-        <div class="tile-value">{{stats().damageGiven | number}}</div>
+      <div class="stat-metric">
+        <div class="stat-metric-label">Damage Given</div>
+        <div class="stat-metric-value">{{stats().damageGiven | number}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-label">Damage Taken</div>
-        <div class="tile-value">{{stats().damageTakenBy | number}}</div>
+      <div class="stat-metric">
+        <div class="stat-metric-label">Damage Taken</div>
+        <div class="stat-metric-value">{{stats().damageTakenBy | number}}</div>
       </div>
     </div>
   </mat-card-content>

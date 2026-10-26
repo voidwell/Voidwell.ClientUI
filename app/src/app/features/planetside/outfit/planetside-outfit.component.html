@@ -9,25 +9,25 @@
     @if (outfitData) {
       <div class="tiles mb-4">
         <mat-card class="tile">
-          <div class="tile-label">Members</div>
+          <div class="stat-label">Members</div>
           <div class="tile-value">{{ outfitData.memberCount | number }}</div>
           <div class="tile-sub">{{ outfitData.trackedMemberCount | number }} tracked</div>
         </mat-card>
         @for (period of activity(); track period.label) {
           <mat-card class="tile">
-            <div class="tile-label">{{ period.label }}</div>
+            <div class="stat-label">{{ period.label }}</div>
             <div class="tile-value">{{ period.count | number }}</div>
             <div class="bar"><i [style.width.%]="period.share * 100"></i></div>
             <div class="tile-sub">{{ period.share | percent: '1.0-0' }} of members</div>
           </mat-card>
         }
         <mat-card class="tile">
-          <div class="tile-label">Avg K/D</div>
+          <div class="stat-label">Avg K/D</div>
           <div class="tile-value">{{ (summary().kdr.mean | number: '1.2-2') ?? '—' }}</div>
           <div class="tile-sub">median {{ (summary().kdr.median | number: '1.2-2') ?? '—' }}</div>
         </mat-card>
         <mat-card class="tile">
-          <div class="tile-label">Avg SPM</div>
+          <div class="stat-label">Avg SPM</div>
           <div class="tile-value">{{ (summary().spm.mean | number: '1.0-0') ?? '—' }}</div>
           <div class="tile-sub">median {{ (summary().spm.median | number: '1.0-0') ?? '—' }}</div>
         </mat-card>

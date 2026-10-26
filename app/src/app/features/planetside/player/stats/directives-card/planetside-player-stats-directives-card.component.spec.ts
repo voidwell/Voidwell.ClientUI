@@ -35,7 +35,7 @@ describe('PlanetsidePlayerStatsDirectivesCardComponent', () => {
         expect(summary?.mastered).toBe(1);
         expect(summary?.total).toBe(2);
         expect(fixture.nativeElement.querySelector('directives-summary')).not.toBeNull();
-        expect(fixture.nativeElement.querySelector('.view-all').getAttribute('href')).toBe('/ps2/player/42/directives');
+        expect(fixture.nativeElement.querySelector('.stat-action').getAttribute('href')).toBe('/ps2/player/42/directives');
     });
 
     it('says so when the directives cannot be loaded', () => {

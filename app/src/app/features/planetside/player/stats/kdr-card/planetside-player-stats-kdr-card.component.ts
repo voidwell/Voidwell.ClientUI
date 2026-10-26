@@ -6,7 +6,7 @@ import { NgClass, DecimalPipe } from '@angular/common';
 @Component({
     selector: 'planetside-player-stats-kdr-card',
     templateUrl: './planetside-player-stats-kdr-card.component.html',
-    styleUrls: ['./planetside-player-stats-kdr-card.component.css'],
+    styleUrls: ['../stat-card.css', './planetside-player-stats-kdr-card.component.css'],
     imports: [MatCard, MatCardTitle, MatCardContent, NgClass, DecimalPipe]
 })
 

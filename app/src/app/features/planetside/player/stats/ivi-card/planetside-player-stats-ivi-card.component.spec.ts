@@ -22,14 +22,14 @@ describe('PlanetsidePlayerStatsIviCardComponent', () => {
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
-        expect(el.querySelector('.score-value').textContent).toBe('500');
+        expect(el.querySelector('.stat-hero-value').textContent).toBe('500');
         expect(el.querySelector('.meta').textContent).toContain('1.200');
         expect(el.querySelector('.meta').textContent).toContain('900');
         expect(el.querySelector('.meta').textContent).toContain('10 / 2');
 
-        const tiles = Array.from(el.querySelectorAll('.tile')).map(tile => [
-            tile.querySelector('.tile-label').textContent.trim(),
-            tile.querySelector('.tile-value').textContent.trim(),
+        const tiles = Array.from(el.querySelectorAll('.stat-metric')).map(tile => [
+            tile.querySelector('.stat-metric-label').textContent.trim(),
+            tile.querySelector('.stat-metric-value').textContent.trim(),
             tile.querySelector('.grade').textContent.trim()
         ]);
         expect(tiles).toEqual([

@@ -4,7 +4,7 @@ import { Component, input } from '@angular/core';
 @Component({
     selector: 'planetside-stat-tile',
     templateUrl: './planetside-stat-tile.component.html',
-    styleUrl: './planetside-stat-tile.component.css'
+    host: { class: 'stat-metric block' }
 })
 export class PlanetsideStatTileComponent {
     readonly label = input.required<string>();

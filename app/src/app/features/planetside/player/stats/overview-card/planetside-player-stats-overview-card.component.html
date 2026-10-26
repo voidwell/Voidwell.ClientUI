@@ -1,41 +1,41 @@
 <mat-card class="vw-character-overview">
   <mat-card-title>General</mat-card-title>
   <mat-card-content>
-    <div class="hero">
+    <div class="stat-hero">
       <div>
-        <div class="hero-value">{{player().lifetimeStats.score | number}}</div>
-        <div class="hero-label">Score</div>
+        <div class="stat-hero-value">{{player().lifetimeStats.score | number}}</div>
+        <div class="stat-label mt-0.5">Score</div>
       </div>
-      <div class="spm">
-        <span class="spm-value">{{player().lifetimeStats.score / player().times.minutesPlayed | number: '.1-1'}}</span>
-        <div class="spm-label">Score / Min</div>
+      <div class="text-right">
+        <span class="stat-badge info">{{player().lifetimeStats.score / player().times.minutesPlayed | number: '.1-1'}}</span>
+        <div class="stat-label mt-0.5">Score / Min</div>
       </div>
     </div>
-    <div class="tiles">
-      <div class="tile">
-        <div class="tile-label">Certs</div>
-        <div class="tile-value">{{player().certsEarned | number}}</div>
+    <div class="grid grid-cols-3 max-[600px]:grid-cols-2 gap-3 mt-5">
+      <div class="stat-metric">
+        <div class="stat-metric-label">Certs</div>
+        <div class="stat-metric-value">{{player().certsEarned | number}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-label">Medals</div>
-        <div class="tile-value">{{player().lifetimeStats.medalCount | number}}</div>
+      <div class="stat-metric">
+        <div class="stat-metric-label">Medals</div>
+        <div class="stat-metric-value">{{player().lifetimeStats.medalCount | number}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-label">Dominations</div>
-        <div class="tile-value">{{player().lifetimeStats.dominationCount | number}}</div>
+      <div class="stat-metric">
+        <div class="stat-metric-label">Dominations</div>
+        <div class="stat-metric-value">{{player().lifetimeStats.dominationCount | number}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-label">Revenge</div>
-        <div class="tile-value">{{player().lifetimeStats.revengeCount | number}}</div>
+      <div class="stat-metric">
+        <div class="stat-metric-label">Revenge</div>
+        <div class="stat-metric-value">{{player().lifetimeStats.revengeCount | number}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-label">Vehicle Kills</div>
-        <div class="tile-value">{{player().lifetimeStats.vehicleKills | number}}</div>
+      <div class="stat-metric">
+        <div class="stat-metric-label">Vehicle Kills</div>
+        <div class="stat-metric-value">{{player().lifetimeStats.vehicleKills | number}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-label">Hours Played</div>
-        <div class="tile-value">{{player().lifetimeStats.playTime / 3600 | number: '.1-1'}}</div>
-        <div class="tile-note">({{player().times.minutesPlayed / 60 | number: '.1-1'}})</div>
+      <div class="stat-metric">
+        <div class="stat-metric-label">Hours Played</div>
+        <div class="stat-metric-value">{{player().lifetimeStats.playTime / 3600 | number: '.1-1'}}</div>
+        <div class="stat-metric-note">({{player().times.minutesPlayed / 60 | number: '.1-1'}})</div>
       </div>
     </div>
     <div class="created">

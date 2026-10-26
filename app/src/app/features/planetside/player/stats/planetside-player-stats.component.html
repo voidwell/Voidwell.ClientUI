@@ -10,9 +10,9 @@
     </div>
     <planetside-player-stats-directives-card class="card" [player]="playerData"></planetside-player-stats-directives-card>
     <div class="card-grid flex flex-wrap gap-4">
-      <planetside-player-stats-kdr-card class="card flex-auto" [stats]="playerData.lifetimeStats"></planetside-player-stats-kdr-card>
-      <planetside-player-stats-weapons-card class="card flex-auto" [stats]="playerData.lifetimeStats"></planetside-player-stats-weapons-card>
-      <planetside-player-stats-ivi-card class="card flex-auto" [stats]="playerData.infantryStats"></planetside-player-stats-ivi-card>
+      <planetside-player-stats-kdr-card class="card flex-auto max-w-112" [stats]="playerData.lifetimeStats"></planetside-player-stats-kdr-card>
+      <planetside-player-stats-weapons-card class="card flex-auto max-w-112" [stats]="playerData.lifetimeStats"></planetside-player-stats-weapons-card>
+      <planetside-player-stats-ivi-card class="card flex-auto max-w-112" [stats]="playerData.infantryStats"></planetside-player-stats-ivi-card>
     </div>
     <div class="card-grid flex flex-wrap gap-4">
       <planetside-player-stats-recent-sessions-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-recent-sessions-card>

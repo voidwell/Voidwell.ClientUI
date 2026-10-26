@@ -110,6 +110,17 @@ considering work finished.
 ### Style
 - Match surrounding code: 4-space indentation, single quotes, standalone components, Tailwind utilities plus Material
   theming (`styles/theme.scss`). PlanetSide-specific styles go in `styles/planetside.css`.
+- Reuse the shared `stat-*` classes in `styles/planetside.css` before writing component CSS; a second copy of a rule
+  belongs there, not in another component. They cover: cards and titles (`stat-card`, `stat-toolbar`,
+  `stat-title-row`), tables (`stat-table`, `pinned`, `hs`, `stat-expand`/`stat-detail`, `stat-table-bright`), paging and
+  search (`stat-pager`, `stat-page-button`, `stat-search`), links and buttons (`stat-link`, `stat-action`, `stat-ghost`),
+  text (`stat-muted`, `stat-hint`, `stat-label`, `stat-empty`), pills (`stat-pill`, `stat-badge`), tiles
+  (`stat-tile*`, `stat-metric*`, `stat-hero*`, `stat-meter`), charts (`stat-range-bar`, `stat-line-graph`,
+  `stat-chart-tooltip`, `stat-swatch`) and header cards (`faction-head-*`, `stat-head-title`).
+- Single-choice filters and ranges use `<vw-chips>` (`shared/ui/vw-chips`), not Material button toggles or chip lists.
+- Tailwind utilities sit in a CSS layer, so an unlayered rule beats them: a shared class that sets `margin` or `display`
+  cannot be adjusted with `mb-3` or `flex`. Leave such properties out of shared classes, and give a rule that must beat
+  Material's own (`mat-card-title`, `mat-card`) an element in its selector, as `mat-card-title.stat-title-row` does.
 
 ## Design philosophy
 

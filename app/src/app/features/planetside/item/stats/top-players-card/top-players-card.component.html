@@ -1,7 +1,7 @@
 <mat-card>
-  <mat-card-title class="card-title">
+  <mat-card-title class="stat-title-row">
     <span>Top Players</span>
-    <a class="view-all" routerLink="/ps2/item/{{ itemId() }}/leaderboard">View All &rarr;</a>
+    <a class="stat-action" routerLink="/ps2/item/{{ itemId() }}/leaderboard">View All &rarr;</a>
   </mat-card-title>
   <mat-card-content>
     @if (players(); as players) {

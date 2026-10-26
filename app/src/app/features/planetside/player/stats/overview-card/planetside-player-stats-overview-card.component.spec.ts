@@ -14,11 +14,11 @@ describe('PlanetsidePlayerStatsOverviewCardComponent', () => {
         fixture.detectChanges();
 
         const el: HTMLElement = fixture.nativeElement;
-        expect(el.querySelector('.hero-value').textContent).toBe('100,000');
-        expect(el.querySelector('.spm-value').textContent).toBe('16.7');
-        const tiles = Array.from(el.querySelectorAll('.tile')).map(t => [
-            t.querySelector('.tile-label').textContent.trim(),
-            t.querySelector('.tile-value').textContent.trim()
+        expect(el.querySelector('.stat-hero-value').textContent).toBe('100,000');
+        expect(el.querySelector('.stat-badge').textContent).toBe('16.7');
+        const tiles = Array.from(el.querySelectorAll('.stat-metric')).map(t => [
+            t.querySelector('.stat-metric-label').textContent.trim(),
+            t.querySelector('.stat-metric-value').textContent.trim()
         ]);
         expect(tiles).toEqual([
             ['Certs', '1,000'],
@@ -28,7 +28,7 @@ describe('PlanetsidePlayerStatsOverviewCardComponent', () => {
             ['Vehicle Kills', '3'],
             ['Hours Played', '100.0']
         ]);
-        expect(el.querySelector('.tile-note').textContent.trim()).toBe('(100.0)');
+        expect(el.querySelector('.stat-metric-note').textContent.trim()).toBe('(100.0)');
         expect(el.querySelector('.created').textContent).toContain('Created on');
     });
 });

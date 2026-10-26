@@ -6,20 +6,6 @@ mat-card {
     height: 100%;
 }
 
-.card-title {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 8px 12px;
-}
-
-.view-all {
-    font-size: 13px;
-    font-weight: 400;
-    color: #6dbbff;
-}
-
 .empty {
     margin: 0;
     color: #8a9ba1;
