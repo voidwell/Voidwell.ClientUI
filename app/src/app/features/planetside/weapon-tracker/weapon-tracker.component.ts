@@ -1,5 +1,5 @@
-﻿import { ChangeDetectorRef, Component, OnInit, ElementRef, ViewChild, inject, input } from '@angular/core';
-import { Router } from '@angular/router';
+﻿import { ChangeDetectorRef, Component, OnInit, ElementRef, ViewChild, DestroyRef, computed, inject, input, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteSelectedEvent, MatAutocompleteTrigger, MatAutocomplete } from '@angular/material/autocomplete';
 import { Observable, throwError } from 'rxjs';
@@ -10,15 +10,18 @@ import { OracleStatsByWeapon, SimpleItem } from '@core/api/models/ps2/weapon.mod
 import { MatSelectChange, MatSelect, MatOption } from '@angular/material/select';
 import { getErrorMessage } from '@core/util/error-message';
 import { definedParams } from '@shared/utils/query-params';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatFormField, MatSuffix } from '@angular/material/form-field';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
 import { MatChipGrid, MatChipRow, MatChipRemove, MatChipInput } from '@angular/material/chips';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
-import { AsyncPipe } from '@angular/common';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
+import { cellOf, sortRows } from '../components/combat-report/combat-report-figures';
+import { TrackerRow, escapeHtml, selectionDiffers, trackerRows } from './weapon-tracker-figures';
 
 const statOptions = [
     { id: 'kills', display: 'Kills' },
@@ -79,7 +82,7 @@ const categoryOptions = [
 @Component({
     templateUrl: './weapon-tracker.component.html',
     styleUrls: ['./weapon-tracker.component.css'],
-    imports: [MatCard, MatCardContent, MatFormField, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatAutocompleteTrigger, MatChipInput, MatAutocomplete, MatButton, LoaderComponent, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, AsyncPipe]
+    imports: [MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, RouterLink, DecimalPipe, MatFormField, MatLabel, MatSelect, FormsModule, ReactiveFormsModule, MatOption, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatAutocompleteTrigger, MatChipInput, MatAutocomplete, MatButton, LoaderComponent, MatInput, MatDatepickerInput, MatDatepickerToggle, MatSuffix, MatDatepicker, AsyncPipe]
 })
 
 export class WeaponTrackerComponent implements OnInit {
@@ -91,6 +94,7 @@ export class WeaponTrackerComponent implements OnInit {
     private router = inject(Router);
     private oracleRepository = inject(OracleRepository);
     private cdr = inject(ChangeDetectorRef);
+    private destroyRef = inject(DestroyRef);
 
     @ViewChild('linegraph', { static: true }) graphElement: ElementRef<HTMLElement>;
     @ViewChild('weaponInput') weaponInput: ElementRef<HTMLInputElement>;
@@ -98,6 +102,12 @@ export class WeaponTrackerComponent implements OnInit {
 
     isLoading: boolean;
     errorMessage: string = null;
+
+    /** The zoom shortcuts above the chart. */
+    readonly ranges = [
+        { id: '1m', display: '1m' }, { id: '3m', display: '3m' }, { id: '6m', display: '6m' },
+        { id: 'ytd', display: 'YTD' }, { id: '1y', display: '1y' }, { id: 'all', display: 'All' }
+    ];
 
     statOptions = statOptions;
     categoryOptions = categoryOptions;
@@ -115,11 +125,22 @@ export class WeaponTrackerComponent implements OnInit {
     selectedWeapons: SimpleItem[] = [];
     graphWeapons: SimpleItem[] = [];
 
+    /** The zoom range last picked, until the chart is zoomed or the dates are changed by hand. */
+    readonly activeRange = signal<string | null>(null);
+    readonly sort = signal<Sort>({ active: 'latest', direction: 'desc' });
+    /** The weapons plotted, with the figures the table shows. */
+    readonly rows = signal<TrackerRow[]>([]);
+    /** What the chart shows, named for its title. */
+    readonly plotted = signal<{ stat: string; category: string } | null>(null);
+    readonly sortedRows = computed(() => sortRows(this.rows(), this.sort(), cellOf));
+
     svg: d3.Selection<SVGGElement, unknown, null, undefined>;
     svgMargin = { top: 0, right: 0, bottom: 30, left: 0 };
     lineColors: d3.ScaleOrdinal<string, string> = null;
 
     graphHeight: number;
+    /** The width of the chart's container when it was last drawn. */
+    private measuredWidth = 0;
     graphWidth: number;
     zoom: d3.ZoomBehavior<SVGRectElement, unknown>;
     zoomRect: d3.Selection<SVGRectElement, unknown, null, undefined>;
@@ -145,14 +166,35 @@ export class WeaponTrackerComponent implements OnInit {
         return Object.keys(this.stats).length > 0;
     }
 
+    /** Whether the weapons picked differ from the ones on the chart. */
+    get selectionChanged(): boolean {
+        return this.hasStats && selectionDiffers(this.selectedWeapons, this.graphWeapons);
+    }
+
     ngOnInit() {
         this.queryParams = definedParams({
             stat: this.stat(), category: this.category(), startDate: this.startDate(), endDate: this.endDate(), weapons: this.weapons()
         });
 
-        this.createSvg();
-
         this.setupFromQueryParams();
+        this.redrawOnResize();
+    }
+
+    /** Draws the chart again, at the new size, when its container changes width (the sidebar loading, or the window resizing). */
+    private redrawOnResize() {
+        if (typeof ResizeObserver === 'undefined') {
+            return;
+        }
+
+        const element = this.graphElement.nativeElement;
+        const observer = new ResizeObserver(() => {
+            if (this.hasStats && element.offsetWidth && Math.abs(element.offsetWidth - this.measuredWidth) > 1) {
+                d3.select(element).selectAll('*').remove();
+                this.renderGraph();
+            }
+        });
+        observer.observe(element);
+        this.destroyRef.onDestroy(() => observer.disconnect());
     }
 
     private createSvg() {
@@ -160,6 +202,7 @@ export class WeaponTrackerComponent implements OnInit {
 
         const svgHeight = element.offsetHeight;
         const svgWidth = element.offsetWidth;
+        this.measuredWidth = svgWidth;
         this.graphWidth = element.offsetWidth - this.svgMargin.left - this.svgMargin.right;
         this.graphHeight = element.offsetHeight - this.svgMargin.top - this.svgMargin.bottom
 
@@ -211,7 +254,9 @@ export class WeaponTrackerComponent implements OnInit {
         this.isLoading = true;
         this.stats = {};
         this.graphWeapons = [];
-        this.svg.selectAll('*').remove();
+        this.rows.set([]);
+        this.plotted.set(null);
+        d3.select(this.graphElement.nativeElement).selectAll('*').remove();
 
         const statId = this.selectedStat.value;
 
@@ -229,11 +274,17 @@ export class WeaponTrackerComponent implements OnInit {
             .subscribe(data => {
                 this.stats = data;
                 this.graphWeapons = this.selectedWeapons.slice();
+                this.rows.set(trackerRows(this.graphWeapons, data, index => this.getLegendColor(index)));
+                this.plotted.set({
+                    stat: this.statOptions.find(option => option.id === statId)?.display ?? statId,
+                    category: this.categoryOptions.find(option => option.id === this.selectedCategory.value)?.display ?? ''
+                });
                 this.renderGraph();
             });
     }
 
     onZoom(zoomLevel: string) {
+        this.activeRange.set(zoomLevel);
         let start: Date = new Date(this.xExtent[1]);
         let end: Date = new Date(this.xExtent[1]);
 
@@ -264,9 +315,14 @@ export class WeaponTrackerComponent implements OnInit {
     }
 
     onDateChange(_event?: unknown) {
+        this.activeRange.set(null);
         const start = this.selectedStartDate.value;
         const end = this.selectedEndDate.value;
         this.zoomBetween(start, end);
+    }
+
+    onSort(sort: Sort) {
+        this.sort.set(sort);
     }
 
     getLegendColor(index: number | string): string {
@@ -274,7 +330,13 @@ export class WeaponTrackerComponent implements OnInit {
     }
 
     renderGraph() {
+        // Measured now, once the chart has its place on the page, rather than when the component was created
+        this.createSvg();
+
         const zoomed = (ev: d3.D3ZoomEvent<SVGRectElement, unknown>) => {
+            if (ev.sourceEvent) {
+                this.activeRange.set(null);
+            }
             const xz = ev.transform.rescaleX(this.x);
             xGroup.call(xAxis.scale(xz)).select('.domain').remove();
             seriesGroup.selectAll('.line').attr('d', line.x((d) => {
@@ -318,11 +380,12 @@ export class WeaponTrackerComponent implements OnInit {
                 .selectAll()
                 .data(series).enter()
                 .append('div')
-                .style('color', (d, i) => this.lineColors(i.toString()))
                 .html((d, i) => {
                     const match = d.find(h => h.period.getTime() === matchingDate.getTime());
                     const matchValue = match ? match.value : 0;
-                    return this.graphWeapons[i].id + ' - ' + this.graphWeapons[i].name + ': ' + (matchValue ? matchValue.toLocaleString() : '-');
+                    const weapon = this.graphWeapons[i];
+                    return '<span class="tooltip-swatch" style="background:' + this.lineColors(i.toString()) + '"></span>' +
+                        escapeHtml(weapon.name || 'Weapon ' + weapon.id) + ': ' + (matchValue ? matchValue.toLocaleString() : '—');
                 });
         };
 
