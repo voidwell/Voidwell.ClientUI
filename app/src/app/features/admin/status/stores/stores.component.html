@@ -1,44 +1,58 @@
-﻿<div class="content-container">
-  <h3>Planetside</h3>
-  <vw-loader variant="table" [rows]="8" [loading]="isLoading()"></vw-loader>
-  @if (hasError()) {
-    <vw-error-card></vw-error-card>
-  } @else if (!isLoading()) {
-    <div class="table-filter px-13 py-0 text-right">
-      <mat-form-field>
-        <input matInput #filterInput (input)="filter.set(filterInput.value)" placeholder="Filter stores">
-      </mat-form-field>
+﻿<vw-loader variant="table" [rows]="8" [loading]="isLoading()"></vw-loader>
+@if (hasError()) {
+  <vw-error-card></vw-error-card>
+} @else if (!isLoading()) {
+  @if (total() > filterFrom) {
+    <div class="filter-row">
+      <label class="stat-search">
+        <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+        <input type="search" placeholder="Filter stores" aria-label="Filter stores" [value]="filter()" (input)="filter.set($any($event.target).value)">
+      </label>
     </div>
-
-    @for (group of groups(); track group.platform.id) {
-      <vw-platform-section [platform]="group.platform" [count]="group.items.length">
-        <mat-table [dataSource]="group.items" class="striped">
-          <ng-container matColumnDef="storeName">
-            <mat-header-cell *matHeaderCellDef>Store Name</mat-header-cell>
-            <mat-cell *matCellDef="let store">{{store.storeName}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="updateInterval">
-            <mat-header-cell *matHeaderCellDef>Update Interval</mat-header-cell>
-            <mat-cell *matCellDef="let store">{{store.updateInterval}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="lastUpdated">
-            <mat-header-cell *matHeaderCellDef>Last Updated</mat-header-cell>
-            <mat-cell *matCellDef="let store">{{store.lastUpdated | date:'dd MMM yyyy HH:mm'}}</mat-cell>
-          </ng-container>
-
-          <ng-container matColumnDef="refreshButton">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            <mat-cell *matCellDef="let store">
-              <button mat-raised-button (click)="onStoreRefresh(store)" [disabled]="store.isLoading">Refresh</button>
-            </mat-cell>
-          </ng-container>
-
-          <mat-header-row *matHeaderRowDef="columns"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: columns;"></mat-row>
-        </mat-table>
-      </vw-platform-section>
-    }
   }
-</div>
+
+  @for (group of groups(); track group.platform.id) {
+    <vw-platform-section [platform]="group.platform" [count]="group.items.length">
+      <mat-card class="stat-card mb-4">
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort [matSortActive]="sort().active" [matSortDirection]="sort().direction" matSortDisableClear (matSortChange)="onSort($event)">
+            <thead>
+              <tr>
+                <th class="left pinned" mat-sort-header="storeName" start="asc">Store</th>
+                <th class="left hs" mat-sort-header="updateInterval" start="asc" title="How often the store updates">Interval</th>
+                <th class="left" mat-sort-header="lastUpdated" start="desc">Last updated</th>
+                <th><span class="sr-only">Refresh</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (store of group.items; track store.storeName) {
+                <tr>
+                  <td class="left pinned">
+                    <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(key(store))" [attr.aria-label]="'Show the details of ' + store.storeName" (click)="toggle(store)">
+                      <mat-icon fontSet="mdi" [fontIcon]="expanded().has(key(store)) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                    </button>
+                    <span class="stat-name" [title]="store.storeName">{{ store.storeName }}</span>
+                  </td>
+                  <td class="left hs stat-muted">{{ interval(store) }}</td>
+                  @if (store.lastUpdated) { <td class="left stat-muted">{{ store.lastUpdated | date: 'MMM d, y, HH:mm' }}</td> } @else { <td class="left dash">—</td> }
+                  <td><button type="button" class="refresh" [disabled]="store.isLoading" (click)="onStoreRefresh(store)">Refresh</button></td>
+                </tr>
+                @if (expanded().has(key(store))) {
+                  <tr class="stat-detail">
+                    <td colspan="3">
+                      <ul>
+                        <li><span>Interval</span><span>{{ interval(store) }}</span></li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      </mat-card>
+    </vw-platform-section>
+  } @empty {
+    <p class="hint">No stores match.</p>
+  }
+}

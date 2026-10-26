@@ -1,49 +1,65 @@
-﻿<div class="content-container">
-  <div class="events-list">
-    <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-    @if (errorMessage) {
-      <vw-error-card></vw-error-card>
-    }
-    @if (!isLoading && !errorMessage) {
-      <div>
-        <div class="header-buttons">
-          <button mat-raised-button (click)="onEdit(null)">
-            <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-            <span>New Event</span>
-          </button>
+﻿<vw-loader variant="table" [rows]="8" [loading]="isLoading()"></vw-loader>
+@if (hasError()) {
+  <vw-error-card></vw-error-card>
+} @else if (!isLoading()) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar">
+      <mat-card-title>Events</mat-card-title>
+      <button mat-flat-button class="new" (click)="onEdit(null)">
+        <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
+        New event
+      </button>
+    </div>
+    <mat-card-content>
+      @if (rows().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="start" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+            <thead>
+              <tr>
+                <th class="left pinned" mat-sort-header="name" start="asc">Event</th>
+                <th class="left" mat-sort-header="start" start="desc">Start</th>
+                <th class="left hs" mat-sort-header="end" start="desc">End</th>
+                <th class="left hs" mat-sort-header="server" start="asc">Server</th>
+                <th class="left hs" mat-sort-header="map" start="asc">Map</th>
+                <th><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of rows(); track row.id) {
+                <tr>
+                  <td class="left pinned">
+                    <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the details of ' + row.name" (click)="toggle(row.id)">
+                      <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                    </button>
+                    <span class="stat-name" [title]="row.name">{{ row.name }}</span>
+                  </td>
+                  <td class="left stat-muted">{{ row.start | date: 'MMM d, y, h:mm a' }}</td>
+                  <td class="left hs stat-muted">{{ row.end | date: 'MMM d, y, h:mm a' }}</td>
+                  @if (row.server) { <td class="left hs">{{ row.server }}</td> } @else { <td class="left hs dash">—</td> }
+                  @if (row.map) { <td class="left hs">{{ row.map }}</td> } @else { <td class="left hs dash">—</td> }
+                  <td class="actions">
+                    <button type="button" class="stat-button action" (click)="onEdit(row.event)">Edit</button>
+                    <a class="action" routerLink="/ps2/events/{{ row.id }}">Stats</a>
+                  </td>
+                </tr>
+                @if (expanded().has(row.id)) {
+                  <tr class="stat-detail">
+                    <td colspan="3">
+                      <ul>
+                        <li><span>End</span><span>{{ row.end | date: 'MMM d, y, h:mm a' }}</span></li>
+                        <li><span>Server</span><span>{{ row.server || '—' }}</span></li>
+                        <li><span>Map</span><span>{{ row.map || '—' }}</span></li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
         </div>
-        <mat-table #table [dataSource]="dataSource" class="striped">
-          <ng-container matColumnDef="name">
-            <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-            <mat-cell *matCellDef="let event">{{event.name}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="start">
-            <mat-header-cell *matHeaderCellDef>Start</mat-header-cell>
-            <mat-cell *matCellDef="let event">{{event.startDate | date: 'short'}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="end">
-            <mat-header-cell *matHeaderCellDef>End</mat-header-cell>
-            <mat-cell *matCellDef="let event">{{event.endDate | date: 'short'}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="server">
-            <mat-header-cell *matHeaderCellDef>Server</mat-header-cell>
-            <mat-cell *matCellDef="let event">{{worldNames()[event.serverId] ?? event.serverId}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="map">
-            <mat-header-cell *matHeaderCellDef>Map</mat-header-cell>
-            <mat-cell *matCellDef="let event">{{event.mapId}}</mat-cell>
-          </ng-container>
-          <ng-container matColumnDef="options">
-            <mat-header-cell *matHeaderCellDef></mat-header-cell>
-            <mat-cell *matCellDef="let event">
-              <button mat-raised-button (click)="onEdit(event)">Edit</button>
-              <a mat-raised-button routerLink="/ps2/events/{{event.id}}">Stats</a>
-            </mat-cell>
-          </ng-container>
-          <mat-header-row *matHeaderRowDef="['name','start','end','server','map','options']"></mat-header-row>
-          <mat-row *matRowDef="let row; columns: ['name','start','end','server','map','options'];"></mat-row>
-        </mat-table>
-      </div>
-    }
-  </div>
-</div>
+      } @else {
+        <p class="hint">No events yet.</p>
+      }
+    </mat-card-content>
+  </mat-card>
+}

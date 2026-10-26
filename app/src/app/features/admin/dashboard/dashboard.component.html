@@ -1,15 +1,16 @@
-﻿<div class="content-container">
-    <!--
-    <nav mat-tab-nav-bar>
-        <a mat-tab-link
-           *ngFor="let link of navLinks"
-           [routerLink]="link.path"
-           routerLinkActive #rla="routerLinkActive"
-           [active]="rla.isActive">
-            {{link.label}}
+﻿<mat-card class="stat-card mb-4">
+  <mat-card-title>Admin</mat-card-title>
+  <mat-card-content>
+    <p class="hint">The areas your account can manage.</p>
+    <div class="tiles">
+      @for (section of sections(); track section.path) {
+        <a class="tile" [routerLink]="'/admin/' + section.path">
+          <strong>{{ section.display }}</strong>
+          <span>{{ section.description }}</span>
         </a>
-    </nav>
-
-    <router-outlet></router-outlet>
-        -->
-</div>
+      } @empty {
+        <p class="hint">Your account has no admin areas yet.</p>
+      }
+    </div>
+  </mat-card-content>
+</mat-card>

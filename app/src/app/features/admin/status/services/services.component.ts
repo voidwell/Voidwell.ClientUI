@@ -1,24 +1,25 @@
-﻿import { ChangeDetectorRef, Component, inject } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { PlatformServiceState, ServiceState } from '@core/api/models/ps2/admin.model';
 import { ServicesRepository } from '@core/api/ps2/services.repository';
-
-/** A service of one Daybreak instance plus the UI state of its toggle. */
-type ServiceRow = PlatformServiceState & { isLoading?: boolean; errorMessage?: string | null };
 import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorMessageComponent } from '@shared/ui/error-message/error-message.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { PlatformSectionComponent } from '@shared/ui/platform-section/platform-section.component';
 import { PlatformGroup, groupByPlatform } from '@shared/utils/platforms';
-import { MatCard, MatCardHeader, MatCardTitle, MatCardContent } from '@angular/material/card';
+import { MatCard } from '@angular/material/card';
 import { JsonPipe } from '@angular/common';
+
+/** A service of one Daybreak instance plus the UI state of its toggle. */
+type ServiceRow = PlatformServiceState & { isLoading?: boolean; errorMessage?: string | null };
 
 @Component({
     templateUrl: './services.component.html',
-    imports: [LoaderComponent, ErrorMessageComponent, ErrorCardComponent, PlatformSectionComponent, MatCard, MatCardHeader, MatCardTitle, MatSlideToggle, MatCardContent, JsonPipe]
+    styleUrls: ['./services.component.css'],
+    imports: [LoaderComponent, ErrorMessageComponent, ErrorCardComponent, PlatformSectionComponent, MatCard, MatSlideToggle, JsonPipe]
 })
 
 export class ServicesComponent {
@@ -28,6 +29,9 @@ export class ServicesComponent {
     isLoading: boolean;
     errorMessage: string;
     serviceGroups: PlatformGroup<ServiceRow>[] = [];
+
+    /** The services whose details are open, as `platform/name`. */
+    readonly open = signal<ReadonlySet<string>>(new Set());
 
     constructor() {
         this.isLoading = true;
@@ -47,7 +51,22 @@ export class ServicesComponent {
             });
     }
 
-    private onServiceUpdate(service: ServiceRow, event: MatSlideToggleChange) {
+    key(service: ServiceRow): string {
+        return `${service.platform}/${service.name}`;
+    }
+
+    toggleDetails(service: ServiceRow) {
+        this.open.update(open => {
+            const next = new Set(open);
+            const key = this.key(service);
+            if (!next.delete(key)) {
+                next.add(key);
+            }
+            return next;
+        });
+    }
+
+    onServiceUpdate(service: ServiceRow, event: MatSlideToggleChange) {
         service.isLoading = true;
         service.errorMessage = null;
 

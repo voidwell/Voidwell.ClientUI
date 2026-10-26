@@ -1,38 +1,32 @@
-﻿<div class="content-container">
-  <h3>Planetside</h3>
-  <vw-loader [loading]="isLoading"></vw-loader>
-  @if (errorMessage) {
-    <vw-error-card></vw-error-card>
-  } @else {
-    @for (group of serviceGroups; track group.platform.id) {
-      <vw-platform-section [platform]="group.platform" [count]="group.items.length">
-        @for (service of group.items; track service) {
-          <div>
-            <mat-card>
-              <mat-card-header>
-                <mat-card-title>
-                  <mat-slide-toggle class="pull-right"
-                    [checked]="service.isEnabled"
-                    [disabled]="service.isLoading"
-                    (change)="onServiceUpdate(service, $event)">
-                    <span>{{service.name}}</span>
-                  </mat-slide-toggle>
-                </mat-card-title>
-              </mat-card-header>
-              @if (service.details || service.errorMessage) {
-                <mat-card-content class="layout-padding">
-                  <vw-error-message [message]="service.errorMessage"></vw-error-message>
-                  @if (service.details) {
-                    <div>
-                      <pre>{{service.details | json}}</pre>
-                    </div>
-                  }
-                </mat-card-content>
+﻿<vw-loader [loading]="isLoading"></vw-loader>
+@if (errorMessage) {
+  <vw-error-card></vw-error-card>
+} @else {
+  @for (group of serviceGroups; track group.platform.id) {
+    <vw-platform-section [platform]="group.platform" [count]="group.items.length">
+      <mat-card class="stat-card mb-4">
+        <ul class="services">
+          @for (service of group.items; track service) {
+            <li>
+              <div class="service">
+                <span class="name">{{ service.name }}</span>
+                @if (service.details) {
+                  <button type="button" class="details-button" [attr.aria-expanded]="open().has(key(service))" (click)="toggleDetails(service)">Details</button>
+                }
+                <mat-slide-toggle
+                  [checked]="service.isEnabled"
+                  [disabled]="service.isLoading"
+                  [attr.aria-label]="service.name"
+                  (change)="onServiceUpdate(service, $event)"></mat-slide-toggle>
+              </div>
+              <vw-error-message [message]="service.errorMessage"></vw-error-message>
+              @if (service.details && open().has(key(service))) {
+                <pre class="details">{{ service.details | json }}</pre>
               }
-            </mat-card>
-          </div>
-        }
-      </vw-platform-section>
-    }
+            </li>
+          }
+        </ul>
+      </mat-card>
+    </vw-platform-section>
   }
-</div>
+}
