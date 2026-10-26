@@ -1,7 +1,7 @@
-﻿import { ChangeDetectorRef, Component, OnInit, ElementRef, Injector, ViewChild, effect, inject, untracked, input } from '@angular/core';
-import { Router } from '@angular/router';
+﻿import { ChangeDetectorRef, Component, OnInit, ElementRef, DestroyRef, Injector, ViewChild, computed, effect, inject, untracked, input, signal } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonToggleChange, MatButtonToggleGroup, MatButtonToggle } from '@angular/material/button-toggle';
+import { DecimalPipe, NgClass } from '@angular/common';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { WorldService } from '../data/world.service';
@@ -10,18 +10,22 @@ import { WorldRepository } from '@core/api/ps2/world.repository';
 import { World, WorldPopulationHistory } from '@core/api/models/ps2/world.model';
 import { getErrorMessage } from '@core/util/error-message';
 import { definedParams } from '@shared/utils/query-params';
-import { MatCard, MatCardContent } from '@angular/material/card';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { MatFormField, MatSuffix } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular/material/datepicker';
-import { MatIcon } from '@angular/material/icon';
+import { cellOf, sortRows } from '../components/combat-report/combat-report-figures';
+import { FactionColorPipe } from '../pipes/faction-color.pipe';
+import { PopulationRow, dailyTotal, escapeHtml, populationRows, selectionDiffers } from './population-figures';
 
 @Component({
     templateUrl: './population.component.html',
     styleUrls: ['./population.component.css'],
-    imports: [MatCard, MatCardContent, MatButtonToggleGroup, MatButtonToggle, MatButton, LoaderComponent, MatFormField, MatInput, MatDatepickerInput, FormsModule, ReactiveFormsModule, MatDatepickerToggle, MatSuffix, MatDatepicker, MatIcon]
+    imports: [MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, MatIcon, RouterLink, NgClass, DecimalPipe, FactionColorPipe, MatButton, LoaderComponent, MatFormField, MatInput, MatDatepickerInput, FormsModule, ReactiveFormsModule, MatDatepickerToggle, MatSuffix, MatDatepicker]
 })
 
 export class PopulationComponent implements OnInit {
@@ -33,11 +37,23 @@ export class PopulationComponent implements OnInit {
     private worldService = inject(WorldService);
     private injector = inject(Injector);
     private cdr = inject(ChangeDetectorRef);
+    private destroyRef = inject(DestroyRef);
 
     @ViewChild('linegraph', { static: true }) graphElement: ElementRef<HTMLElement>;
 
     isLoading: boolean;
     errorMessage: string = null;
+
+    /** The zoom shortcuts above the chart. */
+    readonly ranges = [
+        { id: '1m', display: '1m' }, { id: '3m', display: '3m' }, { id: '6m', display: '6m' },
+        { id: 'ytd', display: 'YTD' }, { id: '1y', display: '1y' }, { id: 'all', display: 'All' }
+    ];
+
+    /** The faction columns of the table, with the faction ids that colour them. */
+    readonly factions = [
+        { key: 'vs', id: 1, code: 'VS' }, { key: 'nc', id: 2, code: 'NC' }, { key: 'tr', id: 3, code: 'TR' }, { key: 'ns', id: 4, code: 'NS' }
+    ] as const;
 
     selectedStartDate = new FormControl();
     selectedEndDate = new FormControl();
@@ -47,12 +63,22 @@ export class PopulationComponent implements OnInit {
     selectedWorlds: World[] = [];
     graphWorlds: World[] = [];
 
+    /** The zoom range last picked, until the chart is zoomed or the dates are changed by hand. */
+    readonly activeRange = signal<string | null>(null);
+    readonly sort = signal<Sort>({ active: 'latest', direction: 'desc' });
+    /** The servers plotted, with the figures the table shows. */
+    readonly rows = signal<PopulationRow[]>([]);
+    readonly sortedRows = computed(() => sortRows(this.rows(), this.sort(), cellOf));
+    readonly expanded = signal<ReadonlySet<number>>(new Set());
+
     svg: d3.Selection<SVGGElement, unknown, null, undefined>;
     svgMargin = { top: 0, right: 0, bottom: 30, left: 0 };
     lineColors: d3.ScaleOrdinal<string, string> = null;
 
     graphHeight: number;
     graphWidth: number;
+    /** The width of the chart's container when it was last drawn. */
+    private measuredWidth = 0;
     zoom: d3.ZoomBehavior<SVGRectElement, unknown>;
     zoomRect: d3.Selection<SVGRectElement, unknown, null, undefined>;
     xExtent: [Date, Date];
@@ -74,10 +100,13 @@ export class PopulationComponent implements OnInit {
         return Object.keys(this.stats).length > 0;
     }
 
+    /** Whether the servers picked differ from the ones on the chart. */
+    get selectionChanged(): boolean {
+        return this.hasStats && selectionDiffers(this.selectedWorlds, this.graphWorlds);
+    }
+
     ngOnInit() {
         this.queryParams = definedParams({ startDate: this.startDate(), endDate: this.endDate(), worlds: this.worlds() });
-
-        this.createSvg();
 
         this.isLoading = true;
 
@@ -94,6 +123,25 @@ export class PopulationComponent implements OnInit {
                 this.cdr.markForCheck();
             });
         }, { injector: this.injector });
+
+        this.redrawOnResize();
+    }
+
+    /** Draws the chart again, at the new size, when its container changes width (the sidebar loading, or the window resizing). */
+    private redrawOnResize() {
+        if (typeof ResizeObserver === 'undefined') {
+            return;
+        }
+
+        const element = this.graphElement.nativeElement;
+        const observer = new ResizeObserver(() => {
+            if (this.hasStats && element.offsetWidth && Math.abs(element.offsetWidth - this.measuredWidth) > 1) {
+                d3.select(element).selectAll('*').remove();
+                this.renderGraph();
+            }
+        });
+        observer.observe(element);
+        this.destroyRef.onDestroy(() => observer.disconnect());
     }
 
     private createSvg() {
@@ -101,15 +149,16 @@ export class PopulationComponent implements OnInit {
 
         const svgHeight = element.offsetHeight;
         const svgWidth = element.offsetWidth;
+        this.measuredWidth = svgWidth;
         this.graphWidth = element.offsetWidth - this.svgMargin.left - this.svgMargin.right;
-        this.graphHeight = element.offsetHeight - this.svgMargin.top - this.svgMargin.bottom            
-    
+        this.graphHeight = element.offsetHeight - this.svgMargin.top - this.svgMargin.bottom
+
         this.svg = d3.select(element)
             .append('svg:svg')
             .attr('viewBox', '0 0 ' + svgWidth + ' ' + svgHeight)
             .append("g")
             .attr("transform", "translate(" + this.svgMargin.left + "," + this.svgMargin.top + ")");
-    
+
         this.svg.append('clipPath')
             .attr('id', 'clip')
             .append('rect')
@@ -117,14 +166,22 @@ export class PopulationComponent implements OnInit {
             .attr('height', this.graphHeight);
     }
 
-    onWorldSelected(event: MatButtonToggleChange) {
-        this.selectedWorlds = event.value;
-        this.onSelectedWorldChange();
+    isSelected(world: World): boolean {
+        return this.selectedWorlds.includes(world);
     }
 
-    onRemoveSelectedWorld(world: World) {
-        const idx = this.selectedWorlds.indexOf(world);
-        this.selectedWorlds.splice(idx, 1);
+    /** The colour of the line a picked server will have, or `null` when it is not picked. */
+    selectedColor(world: World): string | null {
+        const index = this.selectedWorlds.indexOf(world);
+        return index < 0 ? null : this.getLegendColor(index);
+    }
+
+    onToggleWorld(world: World) {
+        if (this.isSelected(world)) {
+            this.selectedWorlds = this.selectedWorlds.filter(selected => selected !== world);
+        } else {
+            this.selectedWorlds = [...this.selectedWorlds, world];
+        }
         this.onSelectedWorldChange();
     }
 
@@ -132,7 +189,9 @@ export class PopulationComponent implements OnInit {
         this.errorMessage = '';
         this.isLoading = true;
         this.stats = {};
-        this.svg.selectAll('*').remove();
+        this.graphWorlds = [];
+        this.rows.set([]);
+        d3.select(this.graphElement.nativeElement).selectAll('*').remove();
 
         const worldIds = this.selectedWorlds.map(a => a.id);
 
@@ -149,12 +208,14 @@ export class PopulationComponent implements OnInit {
             .subscribe(data => {
                 this.stats = data;
                 this.graphWorlds = this.selectedWorlds.slice();
+                this.rows.set(populationRows(this.graphWorlds, data, index => this.getLegendColor(index)));
                 this.renderGraph();
                 this.cdr.markForCheck();
             });
     }
 
     onZoom(zoomLevel: string) {
+        this.activeRange.set(zoomLevel);
         let start: Date = new Date(this.xExtent[1]);
         let end: Date = new Date(this.xExtent[1]);
 
@@ -185,9 +246,24 @@ export class PopulationComponent implements OnInit {
     }
 
     onDateChange(_event?: unknown) {
+        this.activeRange.set(null);
         const start = this.selectedStartDate.value;
         const end = this.selectedEndDate.value;
         this.zoomBetween(start, end);
+    }
+
+    onSort(sort: Sort) {
+        this.sort.set(sort);
+    }
+
+    toggle(id: number): void {
+        this.expanded.update(open => {
+            const next = new Set(open);
+            if (!next.delete(id)) {
+                next.add(id);
+            }
+            return next;
+        });
     }
 
     getLegendColor(index: number | string): string {
@@ -195,7 +271,13 @@ export class PopulationComponent implements OnInit {
     }
 
     renderGraph() {
+        // Measured now, once the chart has its place on the page, rather than when the component was created
+        this.createSvg();
+
         const zoomed = (ev: d3.D3ZoomEvent<SVGRectElement, unknown>) => {
+            if (ev.sourceEvent) {
+                this.activeRange.set(null);
+            }
             const xz = ev.transform.rescaleX(this.x);
             xGroup.call(xAxis.scale(xz)).select('.domain').remove();
             seriesGroup.selectAll('.line').attr('d', line.x((d) => {
@@ -218,7 +300,7 @@ export class PopulationComponent implements OnInit {
             const mousePos = d3.pointer(ev, tipElement);
             const dayMs = 1000 * 60 * 60 * 24;
 
-            const zoomScale = d3.scaleTime().domain(xAxis.scale().domain()).range([0, this.graphWidth]);;
+            const zoomScale = d3.scaleTime().domain(xAxis.scale().domain()).range([0, this.graphWidth]);
             const postDate = Math.round(zoomScale.invert(mousePos[0]).getTime() / dayMs) * dayMs + dayMs;
 
             const matchingDate = new Date(postDate);
@@ -239,38 +321,39 @@ export class PopulationComponent implements OnInit {
                 .selectAll()
                 .data(series).enter()
                 .append('div')
-                .style('color', (d, i) => this.lineColors(i.toString()))
                 .html((d, i) => {
                     const match = d.find(h => h.date.getTime() === matchingDate.getTime());
-                    const matchValue = match ? (match.vsCount + match.ncCount + match.trCount + match.nsCount) : 0;
-                    return this.graphWorlds[i].id + ' - ' + this.graphWorlds[i].name + ': ' + (matchValue ? matchValue.toLocaleString() : '-');
+                    const matchValue = match ? dailyTotal(match) : 0;
+                    const world = this.graphWorlds[i];
+                    return '<span class="tooltip-swatch" style="background:' + this.lineColors(i.toString()) + '"></span>' +
+                        escapeHtml(world.name || 'Server ' + world.id) + ': ' + (matchValue ? matchValue.toLocaleString() : '—');
                 });
         };
 
-        const series: DailyPopulation[][] = [...Array(this.graphWorlds.length)];
+        const series: DailyPopulation[][] = this.graphWorlds.map((): DailyPopulation[] => []);
         for (const k in this.stats) {
             const statId = parseInt(k);
             const idx = this.graphWorlds.findIndex(a => a.id === statId);
-            const stats = this.stats[statId].map((d):  DailyPopulation => {
+            if (idx < 0) {
+                continue;
+            }
+            series[idx] = this.stats[statId].map((d): DailyPopulation => {
                 const date = new Date(d.date);
                 return {
                     date: new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate()),
-                    worldId: d.worldId,
                     vsCount: d.vsCount,
                     ncCount: d.ncCount,
                     trCount: d.trCount,
-                    nsCount: d.nsCount,
-                    vsAvgPlayTime: d.vsAvgPlayTime,
-                    ncAvgPlayTime: d.ncAvgPlayTime,
-                    trAvgPlayTime: d.trAvgPlayTime,
-                    nsAvgPlayTime: d.nsAvgPlayTime,
-                    avgPlayTime: d.avgPlayTime
+                    nsCount: d.nsCount
                 };
             });
-            series[idx] = stats;
         }
 
-        this.xExtent = d3.extent(series[0], (d) => { return new Date(d.date); }) as [Date, Date];
+        this.xExtent = d3.extent(series.flat(), (d) => { return new Date(d.date); }) as [Date, Date];
+
+        if (!this.xExtent[0]) {
+            return;
+        }
 
         if (!this.selectedStartDate.value) {
             this.selectedStartDate.setValue(this.xExtent[0]);
@@ -283,16 +366,16 @@ export class PopulationComponent implements OnInit {
             .domain(this.xExtent)
             .range([0, this.graphWidth]);
 
-        const maxY = d3.max(series, (s) => { return d3.max(s, (d) => { return d.vsCount + d.ncCount + d.trCount + d.nsCount; }) });
+        const maxY = d3.max(series, (s) => { return d3.max(s, dailyTotal) }) || 0;
 
         const y = d3.scaleLinear()
             .domain([0, maxY])
             .rangeRound([this.graphHeight, 0]);
 
         const line = d3.line<DailyPopulation>()
-            .defined((d) => { return d.vsCount + d.ncCount + d.trCount + d.nsCount > 0; })
+            .defined((d) => { return dailyTotal(d) > 0; })
             .x((d) => { return this.x(d.date); })
-            .y((d) => { return y(d.vsCount + d.ncCount + d.trCount + d.nsCount); });
+            .y((d) => { return y(dailyTotal(d)); });
 
         this.zoom = d3.zoom<SVGRectElement, unknown>()
             .scaleExtent([1, 32])
@@ -321,6 +404,7 @@ export class PopulationComponent implements OnInit {
         xGroup.select('.domain').remove();
 
         const yAxis = d3.axisRight(y)
+            .ticks(6)
             .tickSize(this.graphWidth);
         const yGroup = this.svg.append("g");
         yGroup.call(yAxis);
@@ -365,12 +449,14 @@ export class PopulationComponent implements OnInit {
             const worldIds = this.queryParams['worlds'].split(',').map(a => parseInt(a));
             worldIds.forEach(worldId => {
                 const world = this.availableWorlds.find(a => a.id === worldId);
-                if (world) {
+                if (world && !this.selectedWorlds.includes(world)) {
                     this.selectedWorlds.push(world);
                 }
             });
 
-            this.onSubmit();
+            if (this.selectedWorlds.length) {
+                this.onSubmit();
+            }
         }
     }
 
@@ -400,7 +486,7 @@ export class PopulationComponent implements OnInit {
 
         this.queryParams[key] = sVal;
 
-        this.router.navigate([], { queryParams: this.queryParams, replaceUrl: true });
+        this.router.navigate([], { queryParams: this.queryParams, queryParamsHandling: 'merge', replaceUrl: true });
     }
 
     private toDateString(d: Date): string {
@@ -410,14 +496,8 @@ export class PopulationComponent implements OnInit {
 
 interface DailyPopulation {
     date: Date;
-    worldId: number;
     vsCount: number;
     ncCount: number;
     trCount: number;
     nsCount: number;
-    vsAvgPlayTime: number;
-    ncAvgPlayTime: number;
-    trAvgPlayTime: number;
-    nsAvgPlayTime: number;
-    avgPlayTime: number;
 }
