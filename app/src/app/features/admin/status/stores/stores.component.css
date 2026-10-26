@@ -1,0 +1,42 @@
+:host {
+    display: block;
+}
+
+.filter-row {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.hint {
+    margin: 16px 0 0;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.refresh {
+    padding: 4px 12px;
+    border: 1px solid #344651;
+    border-radius: 4px;
+    background: none;
+    color: #edeff0;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.refresh:hover:not(:disabled) {
+    background: rgba(255, 255, 255, .06);
+}
+
+.refresh:disabled {
+    opacity: .5;
+    cursor: default;
+}
+
+.refresh:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+.stat-name {
+    color: #edeff0;
+}

@@ -1,13 +1,19 @@
-﻿.mat-mdc-table .mat-mdc-row {
-    min-height: 25px;
+﻿:host {
+    display: block;
 }
 
-.mat-mdc-table .mat-mdc-row .mat-mdc-cell {
-    font-size: 11.2px;
+.load {
+    margin-left: auto;
 }
 
-.mat-mdc-cell a {
-    text-decoration: none;
-    color: inherit;
-    font-weight: bold;
+.hint {
+    margin: 0 0 12px;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.empty {
+    margin: 0;
+    padding: 28px 0;
+    text-align: center;
 }

@@ -1,0 +1,46 @@
+:host {
+    display: block;
+}
+
+.hint {
+    margin: 0 0 14px;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 12px;
+}
+
+.tile {
+    display: block;
+    padding: 16px;
+    border: 1px solid #344651;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, .02);
+    color: inherit;
+    text-decoration: none;
+}
+
+.tile:hover {
+    border-color: rgba(109, 187, 255, .5);
+    background: rgba(109, 187, 255, .06);
+}
+
+.tile:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+.tile strong {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 15px;
+    font-weight: 500;
+}
+
+.tile span {
+    color: #8a9ba1;
+    font-size: 13px;
+}

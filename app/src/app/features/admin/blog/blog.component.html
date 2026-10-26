@@ -1,43 +1,66 @@
-﻿<div class="content-container">
-    <div>
-        <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-        @if (errorMessage) {
-          <vw-error-card></vw-error-card>
-        }
-        <div [hidden]="isLoading || errorMessage">
-            <div class="header-buttons">
-                <button mat-raised-button (click)="newPost()">
-                    <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
-                    <span>New Post</span>
-                </button>
-            </div>
-            <mat-table #table [dataSource]="dataSource" class="striped">
-                <ng-container matColumnDef="published">
-                    <mat-header-cell *matHeaderCellDef>Publish date</mat-header-cell>
-                    <mat-cell *matCellDef="let entry">{{entry.publishDate | date}}</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="title">
-                    <mat-header-cell *matHeaderCellDef>Title</mat-header-cell>
-                    <mat-cell *matCellDef="let entry">{{entry.title}}</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="author">
-                    <mat-header-cell *matHeaderCellDef>Author</mat-header-cell>
-                    <mat-cell *matCellDef="let entry">{{entry.authorName}}</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="options">
-                    <mat-header-cell *matHeaderCellDef></mat-header-cell>
-                    <mat-cell *matCellDef="let entry">
-                        <button mat-raised-button (click)="onEdit(entry)">Edit</button>
-                    </mat-cell>
-                </ng-container>
-
-                <mat-header-row *matHeaderRowDef="['published','title','author','options']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['published','title','author','options'];"></mat-row>
-            </mat-table>
-            <mat-paginator #paginator [length]="dataSource.data ? dataSource.data.length : 0" [pageIndex]="0" [pageSize]="50"></mat-paginator>
-        </div>
+﻿<vw-loader variant="table" [rows]="8" [loading]="isLoading()"></vw-loader>
+@if (hasError()) {
+  <vw-error-card></vw-error-card>
+} @else if (!isLoading()) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar">
+      <mat-card-title>Blog posts</mat-card-title>
+      <button mat-flat-button class="new" (click)="newPost()">
+        <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
+        New post
+      </button>
     </div>
-</div>
+    <mat-card-content>
+      @if (pageRows().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="published" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+            <thead>
+              <tr>
+                <th class="left" mat-sort-header="published" start="desc">Published</th>
+                <th class="left pinned" mat-sort-header="title" start="asc">Title</th>
+                <th class="left hs" mat-sort-header="author" start="asc">Author</th>
+                <th><span class="sr-only">Actions</span></th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of pageRows(); track row.id) {
+                <tr>
+                  <td class="left stat-muted">
+                    <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the details of ' + row.title" (click)="toggle(row.id)">
+                      <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                    </button>{{ row.published | date: 'mediumDate' }}
+                  </td>
+                  <td class="left pinned"><span class="stat-name" [title]="row.title">{{ row.title }}</span></td>
+                  @if (row.author) { <td class="left hs stat-muted">{{ row.author }}</td> } @else { <td class="left hs dash">—</td> }
+                  <td><button type="button" class="stat-button action" (click)="onEdit(row.post)">Edit</button></td>
+                </tr>
+                @if (expanded().has(row.id)) {
+                  <tr class="stat-detail">
+                    <td colspan="3">
+                      <ul>
+                        <li><span>Author</span><span>{{ row.author || '—' }}</span></li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (total() > pageSize) {
+          <div class="stat-pager">
+            <span>Posts <strong>{{ firstRow() }}–{{ lastRow() }}</strong> of {{ total() }}</span>
+            <button type="button" class="stat-page-button" aria-label="Previous page" [disabled]="page() === 0" (click)="goToPage(page() - 1)">
+              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+            </button>
+            <button type="button" class="stat-page-button" aria-label="Next page" [disabled]="!hasNext()" (click)="goToPage(page() + 1)">
+              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+            </button>
+          </div>
+        }
+      } @else {
+        <p class="hint">No posts yet.</p>
+      }
+    </mat-card-content>
+  </mat-card>
+}

@@ -2,9 +2,9 @@
 import { Store } from '@ngrx/store';
 import { NavLink } from '@shared/ui/nav-link.model';
 import { AppState, selectAuthState } from '@core/store/app.states';
-import { VoidwellAuthService } from '@core/auth/voidwell-auth.service';
 import { VWTabNavBarComponent } from '@shared/ui/vw-tab-nav-bar/vw-tab-nav-bar.component';
 import { RouterOutlet } from '@angular/router';
+import { permittedSections } from './admin-sections';
 
 @Component({
     selector: 'voidwell-admin-wrapper',
@@ -13,52 +13,13 @@ import { RouterOutlet } from '@angular/router';
 })
 
 export class AdminWrapperComponent {
-    private auth = inject(VoidwellAuthService);
     private store = inject<Store<AppState>>(Store);
 
     private authState = this.store.selectSignal(selectAuthState);
 
-    readonly userRoles = computed(() => this.authState().userRoles);
-
-    navLinks: NavLink[] = [
-        { path: 'dashboard', display: 'Dashboard', roles: undefined },
-        { path: 'events', display: 'Events', roles: ['Administrator', 'Events'] },
-        { path: 'psb', display: 'PSB', roles: ['Administrator', 'PSB'] },
-        { path: 'blog', display: 'Blog', roles: ['Administrator', 'Blog'] },
-        { path: 'status', display: 'Status', roles: ['Administrator'] }
-    ];
-
-    getNavLinks(): NavLink[] {
-        const permittedLinks: NavLink[] = [];
-
-        for (let i = 0; i < this.navLinks.length; i++) {
-            if (this.navLinks[i].roles == null || this.hasRoles(this.navLinks[i].roles)) {
-                permittedLinks.push(this.navLinks[i]);
-            }
-        }
-
-        return permittedLinks;
-    }
-
-    hasRoles(roles?: string[]) {
-        if (!roles) {
-            return true;
-        }
-
-        for (let i = 0; i < roles.length; i++) {
-            if (this.hasRole(roles[i])) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    hasRole(role: string): boolean {
-        if (this.userRoles()?.indexOf(role) > -1) {
-            return true;
-        }
-
-        return false;
-    }
+    /** The dashboard, then the areas the user's roles allow. */
+    readonly navLinks = computed<NavLink[]>(() => [
+        { path: 'dashboard', display: 'Dashboard' },
+        ...permittedSections(this.authState().userRoles).map(section => ({ path: section.path, display: section.display }))
+    ]);
 }

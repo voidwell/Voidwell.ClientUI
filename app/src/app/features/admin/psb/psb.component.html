@@ -1,67 +1,88 @@
-﻿<div class="content-container layout-margin">
-    <div class="account-sessions">
-        <div class="header-buttons">
-            <button mat-raised-button (click)="loadAccountSessions()">
-                <span>Load Accounts</span>
+﻿<mat-card class="stat-card mb-4">
+  <div class="stat-toolbar">
+    <mat-card-title>Account sessions</mat-card-title>
+    @if (!loaded()) {
+      <button mat-flat-button class="load" [disabled]="isLoading()" (click)="loadAccountSessions()">Load accounts</button>
+    } @else if (total() > pageSize) {
+      <label class="stat-search">
+        <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+        <input type="search" placeholder="Character id or partial name" aria-label="Filter accounts by character id or name" [value]="search()" (input)="onSearch($any($event.target).value)">
+      </label>
+    }
+  </div>
+  <mat-card-content>
+    <vw-loader variant="table" [rows]="8" [loading]="isLoading()"></vw-loader>
+    @if (hasError()) {
+      <vw-error-card></vw-error-card>
+    } @else if (!isLoading()) {
+      @if (!loaded()) {
+        <p class="hint empty">Load the accounts to see when they last played. This takes a few seconds.</p>
+      } @else if (pageRows().length) {
+        <p class="hint">The last session of every account.</p>
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="login" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+            <thead>
+              <tr>
+                <th class="left pinned" mat-sort-header="name" start="asc">Player</th>
+                <th class="left" mat-sort-header="login" start="desc">Login (UTC)</th>
+                <th class="left hs" mat-sort-header="logout" start="desc">Logout (UTC)</th>
+                <th mat-sort-header="minutes" start="desc" arrowPosition="before" title="Duration in minutes">Mins</th>
+                <th class="hs">Session</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of pageRows(); track row.characterId) {
+                <tr>
+                  <td class="left pinned">
+                    <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.characterId)" [attr.aria-label]="'Show the details of ' + row.name" (click)="toggle(row.characterId)">
+                      <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.characterId) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                    </button>
+                    <a class="stat-link stat-name" routerLink="/ps2/player/{{ row.characterId }}" [title]="row.name">{{ row.name }}</a>
+                  </td>
+                  @if (row.login) { <td class="left stat-muted">{{ row.login | date: 'yyyy-MM-dd HH:mm':'UTC' }}</td> } @else { <td class="left dash">—</td> }
+                  @if (row.logout) { <td class="left hs stat-muted">{{ row.logout | date: 'yyyy-MM-dd HH:mm':'UTC' }}</td> } @else { <td class="left hs dash">—</td> }
+                  @if (row.minutes === null) { <td class="dash">—</td> } @else { <td>{{ row.minutes | number: '1.0-0' }}</td> }
+                  @if (row.sessionId === null) {
+                    <td class="hs dash">—</td>
+                  } @else {
+                    <td class="hs"><a class="stat-link" routerLink="/ps2/player/{{ row.characterId }}/sessions/{{ row.sessionId }}">#{{ row.sessionId }}</a></td>
+                  }
+                </tr>
+                @if (expanded().has(row.characterId)) {
+                  <tr class="stat-detail">
+                    <td colspan="3">
+                      <ul>
+                        <li><span>Logout (UTC)</span><span>{{ row.logout ? (row.logout | date: 'yyyy-MM-dd HH:mm':'UTC') : '—' }}</span></li>
+                        <li>
+                          <span>Session</span>
+                          @if (row.sessionId === null) {
+                            <span>—</span>
+                          } @else {
+                            <a class="stat-link" routerLink="/ps2/player/{{ row.characterId }}/sessions/{{ row.sessionId }}">#{{ row.sessionId }}</a>
+                          }
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (filteredCount() > pageSize) {
+          <div class="stat-pager">
+            <span>Accounts <strong>{{ firstRow() | number }}–{{ lastRow() | number }}</strong> of {{ filteredCount() | number }}</span>
+            <button type="button" class="stat-page-button" aria-label="Previous page" [disabled]="page() === 0" (click)="goToPage(page() - 1)">
+              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
             </button>
-            <small>May take a few seconds to load</small>
-        </div>
-
-        <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-        @if (errorMessage) {
-          <vw-error-card></vw-error-card>
+            <button type="button" class="stat-page-button" aria-label="Next page" [disabled]="!hasNext()" (click)="goToPage(page() + 1)">
+              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+            </button>
+          </div>
         }
-
-        <div [hidden]="!sessions || isLoading || errorMessage">
-            <div class="table-filter px-13 py-0 text-right">
-                <mat-form-field floatPlaceholder="never">
-                    <input matInput #filter placeholder="Character id or partial name">
-                </mat-form-field>
-            </div>
-
-            <mat-table #table [dataSource]="dataSource" class="striped" matSort>
-                <ng-container matColumnDef="name">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Player</mat-header-cell>
-                    <mat-cell *matCellDef="let session">
-                        <div class="character-name">
-                            <a routerLink="/ps2/player/{{session.characterId}}">
-                                <div class="name">{{session.name}}</div>
-                            </a>
-                        </div>
-                    </mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="loginDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Login (UTC)</mat-header-cell>
-                    <mat-cell *matCellDef="let session">{{session.loginDate | date:'yyyy-MM-dd HH:mm':'UTC'}}</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="logoutDate">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Logout (UTC)</mat-header-cell>
-                    <mat-cell *matCellDef="let session">{{session.logoutDate | date:'yyyy-MM-dd HH:mm':'UTC'}}</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="duration">
-                    <mat-header-cell *matHeaderCellDef mat-sort-header>Duration (mins)</mat-header-cell>
-                    <mat-cell *matCellDef="let session">{{session.duration / (1000 * 60) | number:'.0-0'}}</mat-cell>
-                </ng-container>
-
-                <ng-container matColumnDef="session">
-                    <mat-header-cell *matHeaderCellDef>Session</mat-header-cell>
-                    <mat-cell *matCellDef="let session">
-                        <div class="session-link">
-                            <a routerLink="/ps2/player/{{session.characterId}}/sessions/{{session.sessionId}}">
-                                #{{session.sessionId}}
-                            </a>
-                        </div>
-                    </mat-cell>
-                </ng-container>
-
-                <mat-header-row *matHeaderRowDef="['name','loginDate','logoutDate','duration','session']"></mat-header-row>
-                <mat-row *matRowDef="let row; columns: ['name','loginDate','logoutDate','duration','session'];"></mat-row>
-            </mat-table>
-
-            <mat-paginator #paginator [length]="dataSource.data.length" [pageIndex]="0" [pageSize]="50"></mat-paginator>
-        </div>
-    </div>
-</div>
+      } @else {
+        <p class="hint">{{ total() ? 'No accounts match.' : 'No accounts found.' }}</p>
+      }
+    }
+  </mat-card-content>
+</mat-card>

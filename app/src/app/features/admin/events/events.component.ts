@@ -1,89 +1,105 @@
-﻿import { ChangeDetectorRef, Component, OnDestroy, inject } from '@angular/core';
+﻿import { Component, computed, inject, signal } from '@angular/core';
+import { DatePipe } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { Subscription, of } from 'rxjs';
+import { of } from 'rxjs';
 import { catchError, map } from 'rxjs/operators';
+import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { CustomEvent } from '@core/api/models/platform/custom-event.model';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
 import { WorldRepository } from '@core/api/ps2/world.repository';
+import { ZoneRepository } from '@core/api/ps2/zone.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
-import { MatButton } from '@angular/material/button';
-import { MatIcon } from '@angular/material/icon';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { RouterLink } from '@angular/router';
-import { DatePipe } from '@angular/common';
-import { EventsTableDataSource } from './events.data-source';
+import { cellOf, sortRows } from '../../planetside/components/combat-report/combat-report-figures';
+import { EventRow, eventRows } from '../admin-figures';
 import { EventEditorDialog } from './event-editor-dialog/event-editor-dialog.component';
+
+type Names = Record<string, string | undefined>;
 
 @Component({
     selector: 'voidwell-admin-events',
     templateUrl: './events.component.html',
-    imports: [LoaderComponent, ErrorCardComponent, MatButton, MatIcon, MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, RouterLink, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DatePipe]
+    styleUrls: ['./events.component.css'],
+    imports: [LoaderComponent, ErrorCardComponent, MatButton, MatIcon, MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, RouterLink, DatePipe]
 })
 
-export class EventsComponent implements OnDestroy {
+export class EventsComponent {
     private customEventRepository = inject(CustomEventRepository);
     private dialog = inject(MatDialog);
-    private cdr = inject(ChangeDetectorRef);
-    private worldRepository = inject(WorldRepository);
 
     /** World names keyed by world id. */
-    worldNames = toSignal(
-        this.worldRepository.getWorlds().pipe(
-            map(worlds => Object.fromEntries(worlds.map(world => [world.id.toString(), world.name]))),
-            catchError(() => of({} as Record<string, string | undefined>))),
-        { initialValue: {} as Record<string, string | undefined> });
+    private readonly worldNames = toSignal(
+        inject(WorldRepository).getWorlds().pipe(
+            map(worlds => Object.fromEntries(worlds.map(world => [world.id.toString(), world.name])) as Names),
+            catchError(() => of({} as Names))),
+        { initialValue: {} as Names });
 
-    isLoading: boolean = true;
-    errorMessage: string = null;
-    getEventsRequest: Subscription;
+    /** Zone names keyed by zone id. */
+    private readonly zoneNames = toSignal(
+        inject(ZoneRepository).getZones().pipe(
+            map(zones => Object.fromEntries(zones.map(zone => [zone.id.toString(), zone.name])) as Names),
+            catchError(() => of({} as Names))),
+        { initialValue: {} as Names });
 
-    private events: CustomEvent[];
-    private dataSource: EventsTableDataSource;
+    readonly isLoading = signal(true);
+    readonly hasError = signal(false);
+    readonly sort = signal<Sort>({ active: 'start', direction: 'desc' });
+    readonly expanded = signal<ReadonlySet<number>>(new Set());
+
+    private readonly events = signal<CustomEvent[]>([]);
+    readonly rows = computed<EventRow[]>(() => sortRows(eventRows(this.events(), this.worldNames(), this.zoneNames()), this.sort(), cellOf));
 
     constructor() {
-        this.isLoading = true;
-
-        this.getEventsRequest = this.customEventRepository.getEvents()
-            .subscribe(events => {
-                this.events = events;
-                this.dataSource = new EventsTableDataSource(this.events);
-
-                this.isLoading = false;
-                this.cdr.markForCheck();
-            });
+        this.customEventRepository.getEvents().subscribe({
+            next: events => {
+                this.events.set(events || []);
+                this.isLoading.set(false);
+            },
+            error: () => {
+                this.hasError.set(true);
+                this.isLoading.set(false);
+            }
+        });
     }
 
-    onEdit(event: CustomEvent) {
+    onEdit(event: CustomEvent | null) {
         const dialogRef = this.dialog.open(EventEditorDialog, {
-            data: { event: event }
+            data: { event }
         });
 
-        dialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe((result: CustomEvent | undefined) => {
             if (!result) {
                 return;
             }
 
-            for (let i = 0; i < this.events.length; i++) {
-                if (this.events[i].id == result.id) {
-                    this.events[i] = result;
-                    this.dataSource.refresh();
-                    this.cdr.markForCheck();
-                    return;
+            this.events.update(events => {
+                const idx = events.findIndex(e => e.id === result.id);
+                if (idx < 0) {
+                    return [...events, result];
                 }
-            }
-
-            this.events.push(result);
-            this.dataSource.refresh();
-            this.cdr.markForCheck();
+                const next = [...events];
+                next[idx] = result;
+                return next;
+            });
         });
     }
 
-    ngOnDestroy() {
-        if (this.getEventsRequest) {
-            this.getEventsRequest.unsubscribe();
-        }
+    onSort(sort: Sort) {
+        this.sort.set(sort);
+    }
+
+    toggle(id: number) {
+        this.expanded.update(open => {
+            const next = new Set(open);
+            if (!next.delete(id)) {
+                next.add(id);
+            }
+            return next;
+        });
     }
 }
-
