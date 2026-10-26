@@ -1,11 +1,14 @@
-﻿.rank-table mat-row {
-    min-height: 30px;
+﻿:host {
+    display: block;
 }
 
-.rank-table .mat-column-idx,
-.rank-table .mat-column-rating,
-.rank-table .mat-column-deviation,
-.rank-table .mat-column-battlerank,
-.rank-table .mat-column-world {
-    max-width: 110px;
+.note,
+.hint {
+    margin: 0 0 12px;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.note {
+    margin-top: 8px;
 }
