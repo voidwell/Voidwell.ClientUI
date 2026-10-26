@@ -1,92 +1,177 @@
-﻿#line-graph {
-    height: 500px;
+﻿:host {
+    display: block;
 }
 
-    #line-graph ::ng-deep .domain,
-    #line-graph ::ng-deep line {
-        stroke: rgba(138, 155, 161, 0.3);
-    }
+.error-text {
+    margin: 0 0 12px;
+    color: #e63734;
+}
 
-    #tooltip,
-    #line-graph ::ng-deep line,
-    #line-graph ::ng-deep .line,
-    #line-graph ::ng-deep .tick {
-        pointer-events: none;
-    }
+.hint {
+    margin: 0;
+    color: #8a9ba1;
+    font-size: 12px;
+}
 
-        #line-graph ::ng-deep .tick text {
-            fill: #8a9ba1;
-        }
+.note {
+    margin-top: 8px;
+}
 
-#tooltip {
+.label {
+    display: block;
+    margin-bottom: 6px;
+    color: #8a9ba1;
+    font-size: 11px;
+    letter-spacing: .03em;
+    text-transform: uppercase;
+}
+
+.servers {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.servers .stat-chip {
+    display: inline-flex;
+    align-items: center;
+    padding: 5px 12px;
+}
+
+.plot-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.swatch,
+#tooltip ::ng-deep .tooltip-swatch {
+    display: inline-block;
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+/* Zoom and date range */
+
+.range-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    margin-bottom: 8px;
+}
+
+.range-bar[hidden] {
     display: none;
 }
 
-.graph-controls {
-    line-height: 45px;
-    overflow: hidden;
+.ranges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
-.zoom-controls,
-.date-controls {
-    display: inline-block;
+.dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    color: #8a9ba1;
+    font-size: 12px;
 }
 
-.zoom-controls {
-    font-size: 11px;
+.input-date {
+    --mat-form-field-container-text-size: 13px;
+    --mat-form-field-container-height: 40px;
+    width: 150px;
 }
 
-    .zoom-controls ul {
-        display: inline-block;
-        list-style: none;
-        padding: 0;
-        margin: 0;
-        margin-right: 5px;
-        padding: 3px 5px;
-    }
-
-    .zoom-controls li {
-        color: rgba(177, 188, 192, 0.47);
-        display: inline-block;
-        background: #22313a;
-        margin-right: 7px;
-        padding: 3px 10px;
-        line-height: initial;
-        cursor: pointer;
-    }
-
-.date-controls > *:not(:last-child) {
-    margin-right: 5px;
+.input-date ::ng-deep .mat-datepicker-toggle-default-icon {
+    fill: rgba(177, 188, 192, .87);
 }
 
-.date-controls .input-date {
-    max-width: 100px;
+/* The chart */
+
+.chart-area {
+    position: relative;
 }
 
-    .date-controls .input-date ::ng-deep .mat-datepicker-toggle-default-icon {
-        fill: rgba(177, 188, 192, 0.87);
-    }
+.overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.overlay vw-loader {
+    width: 100%;
+}
 
 .graph-container {
     position: relative;
 }
 
+#line-graph {
+    height: 320px;
+}
+
+#line-graph ::ng-deep .domain,
+#line-graph ::ng-deep line {
+    stroke: rgba(138, 155, 161, .3);
+}
+
+#tooltip,
+#line-graph ::ng-deep line,
+#line-graph ::ng-deep .line,
+#line-graph ::ng-deep .tick {
+    pointer-events: none;
+}
+
+#line-graph ::ng-deep .tick text {
+    fill: #8a9ba1;
+}
+
+#line-graph ::ng-deep .line {
+    stroke-width: 2;
+}
+
 #tooltip {
     position: absolute;
-    padding: 2px;
-    background: rgba(34, 49, 58, 0.8);
-    border: 1px solid #1e2a31;
+    display: none;
+    padding: 8px 10px;
+    border: 1px solid #3e505a;
+    border-radius: 6px;
+    background: rgba(34, 49, 58, .96);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+    font-size: 12px;
+    white-space: nowrap;
 }
 
-.weapon-chips-list {
-    width: 100%;
+#tooltip ::ng-deep div {
+    display: flex;
+    align-items: center;
+    font-variant-numeric: tabular-nums;
 }
 
-.legend > *:not(:first-child) {
-    margin-left: 10px;
+.stat-table-wrap {
+    margin-top: 12px;
 }
 
-.legend .legend-color {
-    width: 15px;
-    line-height: 12px;
+@media (max-width: 700px) {
+    .dates {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    #line-graph {
+        height: 260px;
+    }
 }
