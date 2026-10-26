@@ -1,189 +1,130 @@
-﻿import { ChangeDetectorRef, Component, OnInit, ViewChild, inject, input } from '@angular/core';
+﻿import { ChangeDetectorRef, Component, OnInit, inject, input, signal, computed } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { DecimalPipe, NgClass, PercentPipe } from '@angular/common';
 import { throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { MatChipInputEvent, MatChipGrid, MatChipRow, MatChipRemove, MatChipInput } from '@angular/material/chips';
-import { MatSort, MatSortHeader } from '@angular/material/sort';
-import { CharacterRepository } from '@core/api/ps2/character.repository';
-import { getErrorMessage } from '@core/util/error-message';
-import { definedParams } from '@shared/utils/query-params';
-import { SimpleCharacterDetails } from '@core/api/models/ps2/character.model';
-import { MatCard, MatCardContent } from '@angular/material/card';
-import { MatFormField } from '@angular/material/form-field';
+import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
+import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton } from '@angular/material/button';
+import { CharacterRepository } from '@core/api/ps2/character.repository';
+import { SimpleCharacterDetails } from '@core/api/models/ps2/character.model';
+import { getErrorMessage } from '@core/util/error-message';
+import { definedParams } from '@shared/utils/query-params';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
-import { NgClass, DecimalPipe } from '@angular/common';
+import { cellOf, sortRows } from '../components/combat-report/combat-report-figures';
 import { FactionColorPipe } from '../pipes/faction-color.pipe';
-import { BulkCharacterStatsDataSource } from './bulk-character-stats.data-source';
+import { BulkRow, MAX_NAMES, addNames, bulkRows, missingNames, toCsv } from './bulk-character-stats-figures';
 
 @Component({
     templateUrl: './bulk-character-stats.component.html',
     styleUrls: ['./bulk-character-stats.component.css'],
-    imports: [MatCard, MatCardContent, MatFormField, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatChipInput, MatButton, LoaderComponent, MatTable, MatSort, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatSortHeader, MatCellDef, MatCell, RouterLink, NgClass, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, DecimalPipe, FactionColorPipe]
+    imports: [MatCard, MatCardTitle, MatCardContent, MatFormField, MatLabel, MatChipGrid, MatChipRow, MatIcon, MatChipRemove, MatChipInput, MatButton, LoaderComponent, MatSort, MatSortHeader, RouterLink, NgClass, DecimalPipe, PercentPipe, FactionColorPipe]
 })
 
 export class BulkCharacterStatsComponent implements OnInit {
-  readonly names = input<string>();
-  private router = inject(Router);
-  private characterRepository = inject(CharacterRepository);
-  private cdr = inject(ChangeDetectorRef);
+    readonly names = input<string>();
+    private router = inject(Router);
+    private characterRepository = inject(CharacterRepository);
+    private cdr = inject(ChangeDetectorRef);
 
-  @ViewChild(MatSort, { static: true }) sort: MatSort;
+    isLoading: boolean;
+    errorMessage: string = null;
 
-  isLoading: boolean;
-  errorMessage: string = null;
+    readonly maxNames = MAX_NAMES;
+    readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+    characterNames: string[] = [];
 
-  characterNames: string[] = [];
-  readonly separatorKeysCodes: number[] = [ENTER, COMMA];
+    /** What the API returned, for the CSV, and the names it had no character for. */
+    private stats: SimpleCharacterDetails[] = [];
+    readonly missing = signal<string[]>([]);
+    readonly looked = signal(false);
+    readonly rows = signal<BulkRow[]>([]);
+    readonly sort = signal<Sort>({ active: 'kills', direction: 'desc' });
+    readonly sortedRows = computed(() => sortRows(this.rows(), this.sort(), cellOf));
+    readonly expanded = signal<ReadonlySet<string>>(new Set());
 
-  stats: SimpleCharacterDetails[] = [];
-  dataSource: BulkCharacterStatsDataSource;
-
-  queryParams: {
-    [key: string]: string
-  };
-
-  constructor() {
-  }
-
-  ngOnInit() {
-    this.queryParams = definedParams({ names: this.names() });
-
-    if (this.queryParams['names']) {
-      this.characterNames = this.queryParams['names'].split(',');
-    }
-  }
-
-  add(event: MatChipInputEvent): void {
-    const input = event.input;
-    const value = event.value;
-
-    const values = value.split(",");
-
-    for (let i = 0; i < values.length; i++) {
-      const value = (values[i] || '').trim();
-      if (value) {
-        this.characterNames.push(value);
-      }
-    }
-
-    this.setQueryParam('names', this.characterNames);
-
-    if (input) {
-      input.value = '';
-    }
-  }
-
-  remove(characterName: string): void {
-    const index = this.characterNames.indexOf(characterName);
-
-    if (index >= 0) {
-      this.characterNames.splice(index, 1);
-      this.setQueryParam('names', this.characterNames);
-    }
-  }
-
-  onSubmit() {
-    this.isLoading = true;
-
-    this.characterRepository.getCharactersByName(this.characterNames)
-      .pipe(catchError(error => {
-        this.errorMessage = getErrorMessage(error)
-        return throwError(() => error);
-      }))
-      .pipe(finalize(() => {
-        this.isLoading = false;
-        this.cdr.markForCheck();
-      }))
-      .subscribe(data => {
-        this.stats = data;
-        this.dataSource = new BulkCharacterStatsDataSource(this.stats, this.sort);
-        this.cdr.markForCheck();
-      });
-  }
-
-  onExport() {
-    const rows: unknown[][] = [];
-    const columns: string[] = [];
-
-    for (let i = 0; i < this.stats.length; i++) {
-      const cols = Object.keys(this.stats[i]);
-
-      for (let c = 0; c < cols.length; c++) {
-        if (columns.indexOf(cols[c]) === -1) {
-          columns.push(cols[c]);
+    ngOnInit() {
+        const queryNames = definedParams({ names: this.names() })['names'];
+        if (queryNames) {
+            this.characterNames = addNames([], queryNames);
+            this.onSubmit();
         }
-      }
     }
 
-    rows.push(columns);
+    add(event: MatChipInputEvent): void {
+        this.characterNames = addNames(this.characterNames, event.value);
+        this.setQueryParam('names', this.characterNames);
 
-    for (let i = 0; i < this.stats.length; i++) {
-      const row: unknown[] = [];
-
-      for (let c = 0; c < columns.length; c++) {
-        row.push((this.stats[i] as unknown as Record<string, unknown>)[columns[c]]);
-      }
-
-      rows.push(row);
+        if (event.input) {
+            event.input.value = '';
+        }
     }
 
-    this.exportToCsv("characters.csv", rows);
-  }
+    remove(characterName: string): void {
+        const index = this.characterNames.indexOf(characterName);
 
-  private setQueryParam(key: string, value: string | string[]) {
-      let sVal: string;
+        if (index >= 0) {
+            this.characterNames = this.characterNames.filter(name => name !== characterName);
+            this.setQueryParam('names', this.characterNames);
+        }
+    }
 
-      if (value instanceof Array) {
-          sVal = value.join(',');
-      } else {
-          sVal = value;
-      }
+    onSubmit() {
+        this.errorMessage = null;
+        this.isLoading = true;
+        const requested = this.characterNames.slice();
 
-      this.queryParams[key] = sVal;
+        this.characterRepository.getCharactersByName(requested)
+            .pipe(catchError(error => {
+                this.errorMessage = getErrorMessage(error);
+                return throwError(() => error);
+            }))
+            .pipe(finalize(() => {
+                this.isLoading = false;
+                this.cdr.markForCheck();
+            }))
+            .subscribe(data => {
+                this.stats = data;
+                this.rows.set(bulkRows(data));
+                this.missing.set(missingNames(requested, data));
+                this.expanded.set(new Set());
+                this.looked.set(true);
+                this.cdr.markForCheck();
+            });
+    }
 
-      this.router.navigate([], { queryParams: this.queryParams, queryParamsHandling: 'merge', replaceUrl: true });
-  }
+    onSort(sort: Sort) {
+        this.sort.set(sort);
+    }
 
-  private exportToCsv(filename: string, rows: unknown[][]) {
-      const processRow = function (row: unknown[]) {
-          let finalVal = '';
-          for (let j = 0; j < row.length; j++) {
-              let innerValue = row[j] === null || row[j] === undefined ? '' : String(row[j]);
-              if (row[j] instanceof Date) {
-                  innerValue = (row[j] as Date).toLocaleString();
-              };
-              let result = innerValue.replace(/"/g, '""');
-              if (result.search(/("|,|\n)/g) >= 0)
-                  result = '"' + result + '"';
-              if (j > 0)
-                  finalVal += ',';
-              finalVal += result;
-          }
-          return finalVal + '\n';
-      };
+    toggle(id: string): void {
+        this.expanded.update(open => {
+            const next = new Set(open);
+            if (!next.delete(id)) {
+                next.add(id);
+            }
+            return next;
+        });
+    }
 
-      let csvFile = '';
-      for (let i = 0; i < rows.length; i++) {
-          csvFile += processRow(rows[i]);
-      }
+    onExport() {
+        const blob = new Blob([toCsv(this.stats)], { type: 'text/csv;charset=utf-8;' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.setAttribute('href', url);
+        link.setAttribute('download', 'characters.csv');
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        URL.revokeObjectURL(url);
+    }
 
-      const blob = new Blob([csvFile], { type: 'text/csv;charset=utf-8;' });
-
-          const link = document.createElement("a");
-          if (link.download !== undefined) { // feature detection
-              // Browsers that support HTML5 download attribute
-              const url = URL.createObjectURL(blob);
-              link.setAttribute("href", url);
-              link.setAttribute("download", filename);
-              link.style.visibility = 'hidden';
-              document.body.appendChild(link);
-              link.click();
-              document.body.removeChild(link);
-          }
+    private setQueryParam(key: string, value: string[]) {
+        this.router.navigate([], { queryParams: { [key]: value.length ? value.join(',') : null }, queryParamsHandling: 'merge', replaceUrl: true });
     }
 }
-

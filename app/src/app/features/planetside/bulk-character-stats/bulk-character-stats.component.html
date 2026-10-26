@@ -1,88 +1,105 @@
-﻿<div>
-  <h1>Bulk Player Stats</h1>
-  <mat-card>
-    <mat-card-content>
-      <mat-form-field class="name-chip-list">
-        <mat-chip-grid #chipList>
-          @for (characterName of characterNames; track characterName) {
-            <mat-chip-row
-              (removed)="remove(characterName)">
-              {{characterName}}
-              <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" matChipRemove></mat-icon>
-            </mat-chip-row>
-          }
-          <input placeholder="Player names..."
-            [matChipInputFor]="chipList"
-            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-            [matChipInputAddOnBlur]="true"
-            (matChipInputTokenEnd)="add($event)">
-        </mat-chip-grid>
-      </mat-form-field>
-      <button mat-raised-button (click)="onSubmit()" [disabled]="isLoading || characterNames.length === 0">Submit</button>
-      <br />
-      <br />
-      <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-      @if (errorMessage) {
-        <div class="error-text">{{errorMessage}}</div>
-      }
-      <div [hidden]="isLoading || stats.length === 0">
-        <button mat-raised-button (click)="onExport()">Export</button>
-        <div>
-          <mat-table #table [dataSource]="dataSource" class="striped stats-table" matSort>
-            <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
-              <mat-cell *matCellDef="let item">
-                <a routerLink="/ps2/player/{{item.id}}" [ngClass]="item.factionId | factionColor">
-                  <div class="name">{{item.name}}</div>
-                </a>
-              </mat-cell>
-            </ng-container>
+﻿<mat-card class="stat-card mb-4">
+  <mat-card-title>Bulk player stats</mat-card-title>
+  <mat-card-content>
+    <mat-form-field class="name-chip-list" subscriptSizing="dynamic">
+      <mat-label>Players</mat-label>
+      <mat-chip-grid #chipList aria-label="Players to look up">
+        @for (characterName of characterNames; track characterName) {
+          <mat-chip-row (removed)="remove(characterName)">
+            {{ characterName }}
+            <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" matChipRemove></mat-icon>
+          </mat-chip-row>
+        }
+        <input placeholder="Type or paste names…"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          [matChipInputAddOnBlur]="true"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-grid>
+    </mat-form-field>
+    <div class="submit-row">
+      <button mat-flat-button (click)="onSubmit()" [disabled]="isLoading || characterNames.length === 0">Look up</button>
+      <span class="hint">
+        @if (characterNames.length) {
+          {{ characterNames.length }} of {{ maxNames }} players
+        } @else {
+          Separate names with commas. Up to {{ maxNames }} players at a time.
+        }
+      </span>
+    </div>
+  </mat-card-content>
+</mat-card>
 
-            <ng-container matColumnDef="world">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Server</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.world}}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="faction">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Faction</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.factionName}}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="battlerank">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Battle Rank</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.battleRank | number}}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="playTime">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Hours Played</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.totalPlayTimeMinutes / 60 | number:'.1-1'}}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="kills">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>Kills</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.kills | number}}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="kdr">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>KDR</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.killDeathRatio | number:'.2-2'}}</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="hsr">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>HSR</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.headshotRatio * 100 | number:'.1-1'}}%</mat-cell>
-            </ng-container>
-
-            <ng-container matColumnDef="kph">
-              <mat-header-cell *matHeaderCellDef mat-sort-header>KpH</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.killsPerHour | number:'.1-1'}}</mat-cell>
-            </ng-container>
-
-            <mat-header-row *matHeaderRowDef="['name','world','faction','battlerank','playTime','kills','kdr','hsr','kph']"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: ['name','world','faction','battlerank','playTime','kills','kdr','hsr','kph'];"></mat-row>
-          </mat-table>
+<mat-card class="stat-card mb-4">
+  <div class="stat-toolbar">
+    <mat-card-title>Results</mat-card-title>
+    @if (rows().length) {
+      <button type="button" class="export" (click)="onExport()">Export CSV</button>
+    }
+  </div>
+  <mat-card-content>
+    @if (errorMessage) {
+      <p class="error-text">{{ errorMessage }}</p>
+    }
+    <vw-loader variant="table" [rows]="5" [loading]="isLoading"></vw-loader>
+    @if (!isLoading) {
+      @if (rows().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="kills" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+            <thead>
+              <tr>
+                <th class="left pinned" mat-sort-header="name" start="asc">Player</th>
+                <th class="left hs" mat-sort-header="world" start="asc">Server</th>
+                <th class="hs" mat-sort-header="battleRank" start="desc" arrowPosition="before" title="Battle rank">BR</th>
+                <th mat-sort-header="hours" start="desc" arrowPosition="before" title="Hours played">Hours</th>
+                <th mat-sort-header="kills" start="desc" arrowPosition="before">Kills</th>
+                <th mat-sort-header="kdr" start="desc" arrowPosition="before" title="Kill/death ratio">K/D</th>
+                <th class="hs" mat-sort-header="hsr" start="desc" arrowPosition="before" title="Headshot ratio">HSR</th>
+                <th class="hs" mat-sort-header="kph" start="desc" arrowPosition="before" title="Kills per hour">KPH</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of sortedRows(); track row.id) {
+                <tr>
+                  <td class="left pinned">
+                    <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the details of ' + row.name" (click)="toggle(row.id)">
+                      <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                    </button>
+                    <a class="stat-link stat-name" [ngClass]="row.factionId | factionColor" routerLink="/ps2/player/{{ row.id }}" [title]="row.name">
+                      @if (row.alias) { <span class="stat-muted">[{{ row.alias }}]</span>&ngsp;}{{ row.name }}</a>
+                  </td>
+                  @if (row.world) { <td class="left hs stat-muted">{{ row.world }}</td> } @else { <td class="left hs dash">—</td> }
+                  <td class="hs">{{ row.battleRank | number }}</td>
+                  <td>{{ row.hours | number: '1.1-1' }}</td>
+                  <td>{{ row.kills | number }}</td>
+                  @if (row.kdr === null) { <td class="dash">—</td> } @else { <td>{{ row.kdr | number: '1.2-2' }}</td> }
+                  @if (row.hsr === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ row.hsr | percent: '1.1-1' }}</td> }
+                  @if (row.kph === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ row.kph | number: '1.1-1' }}</td> }
+                </tr>
+                @if (expanded().has(row.id)) {
+                  <tr class="stat-detail">
+                    <td colspan="4">
+                      <ul>
+                        <li><span>Server</span><span>{{ row.world || '—' }}</span></li>
+                        <li><span>Battle rank</span><span>{{ row.battleRank | number }}</span></li>
+                        <li><span>Headshot ratio</span><span>{{ row.hsr === null ? '—' : (row.hsr | percent: '1.1-1') }}</span></li>
+                        <li><span>Kills per hour</span><span>{{ row.kph === null ? '—' : (row.kph | number: '1.1-1') }}</span></li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
         </div>
-      </div>
-    </mat-card-content>
-  </mat-card>
-</div>
+      } @else if (looked()) {
+        <p class="hint">No players found.</p>
+      } @else {
+        <p class="hint empty">Add the players above and press Look up.</p>
+      }
+      @if (missing().length) {
+        <p class="hint missing">Not found: <strong>{{ missing().join(', ') }}</strong></p>
+      }
+    }
+  </mat-card-content>
+</mat-card>
