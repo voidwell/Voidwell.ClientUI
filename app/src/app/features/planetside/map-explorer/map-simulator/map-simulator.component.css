@@ -1,39 +1,31 @@
 ﻿:host {
     display: block;
-    position: relative;
-    overflow: hidden;
+}
+
+.toggle {
+    margin-left: auto;
 }
 
 .map-container {
     height: 600px;
 }
 
-.score-box {
-    position: absolute;
-    top: 5px;
-    left: 0;
-    right: 0;
-    z-index: 999;
+.territory {
+    display: block;
+    height: 26px;
+    overflow: hidden;
+    border-radius: 4px;
 }
 
-.bars-container {
-    width: 350px;
+.territory ::ng-deep .faction-bar {
+    font-size: 13px;
+    font-weight: 500;
+    height: 26px;
+    line-height: 26px;
 }
 
-vw-faction-bar {
-    height: 20px;
-}
-
-.bars-container ::ng-deep .faction-bar {
-    line-height: 20px;
-    height: 20px;
-    font-size: 15px;
-}
-
-.overlay-toggle {
-    position: absolute;
-    top: 80px;
-    left: 10px;
-    min-width: 0px;
-    z-index: 999;
+@media (max-width: 700px) {
+    .map-container {
+        height: 360px;
+    }
 }
