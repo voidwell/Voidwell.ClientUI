@@ -1,100 +1,134 @@
-﻿<div>
-  <h1>Weapon Stat Tracker</h1>
-  <mat-card>
-    <mat-card-content>
-      @if (errorMessage) {
-        <div class="error-text">{{errorMessage}}</div>
-      }
-      <div>
-        <mat-form-field>
-          <mat-select placeholder="Stat" [formControl]="selectedStat" (selectionChange)="onStatChange($event)" [attr.disabled]="isLoading">
-            @for (stat of statOptions; track stat) {
-              <mat-option [value]="stat.id">
-                {{stat.display}}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        <mat-form-field>
-          <mat-select placeholder="Category" [formControl]="selectedCategory" (selectionChange)="onCategoryChange($event)" [attr.disabled]="isLoading">
-            @for (category of categoryOptions; track category) {
-              <mat-option [value]="category.id">
-                {{category.display}}
-              </mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-        @if (availableWeapons && availableWeapons.length > 0) {
-          <div>
-            <mat-form-field class="weapon-chips-list">
-              <mat-chip-grid #weaponChips>
-                @for (selectedWeapon of selectedWeapons; track selectedWeapon) {
-                  <mat-chip-row
-                    (removed)="onRemoveSelectedWeapon(selectedWeapon)">
-                    {{selectedWeapon.id}} - {{selectedWeapon.name}}
-                    <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" matChipRemove></mat-icon>
-                  </mat-chip-row>
-                }
-                <input placeholder="Weapons"
-                  #weaponInput
-                  [formControl]="selectedWeaponControl"
-                  [matAutocomplete]="auto"
-                  [matChipInputFor]="weaponChips">
-              </mat-chip-grid>
-              <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onWeaponSelected($event)">
-                @for (weapon of filteredWeapons | async; track weapon) {
-                  <mat-option [value]="weapon">
-                    {{weapon.id}} - {{weapon.name}}
-                  </mat-option>
-                }
-              </mat-autocomplete>
-            </mat-form-field>
-            <button mat-raised-button (click)="onSubmit()" [disabled]="isLoading || selectedWeapons.length === 0">Submit</button>
-          </div>
+﻿<mat-card class="stat-card mb-4">
+  <mat-card-title>Weapon tracker</mat-card-title>
+  <mat-card-content>
+    @if (errorMessage) {
+      <p class="error-text">{{ errorMessage }}</p>
+    }
+    <div class="controls">
+      <mat-form-field class="field" subscriptSizing="dynamic">
+        <mat-label>Stat</mat-label>
+        <mat-select [formControl]="selectedStat" (selectionChange)="onStatChange($event)" [attr.disabled]="isLoading">
+          @for (stat of statOptions; track stat.id) {
+            <mat-option [value]="stat.id">{{ stat.display }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="field" subscriptSizing="dynamic">
+        <mat-label>Category</mat-label>
+        <mat-select [formControl]="selectedCategory" (selectionChange)="onCategoryChange($event)" [attr.disabled]="isLoading">
+          @for (category of categoryOptions; track $index) {
+            <mat-option [value]="category.id">{{ category.display }}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    @if (availableWeapons && availableWeapons.length > 0) {
+      <mat-form-field class="weapon-chips-list" subscriptSizing="dynamic">
+        <mat-label>Weapons</mat-label>
+        <mat-chip-grid #weaponChips aria-label="Weapons to plot">
+          @for (selectedWeapon of selectedWeapons; track selectedWeapon; let i = $index) {
+            <mat-chip-row (removed)="onRemoveSelectedWeapon(selectedWeapon)">
+              <span class="swatch" [style.background]="getLegendColor(i)"></span>{{ selectedWeapon.name }}&ngsp;<span class="weapon-id">{{ selectedWeapon.id }}</span>
+              <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" matChipRemove></mat-icon>
+            </mat-chip-row>
+          }
+          <input placeholder="Add a weapon…"
+            #weaponInput
+            [formControl]="selectedWeaponControl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="weaponChips">
+        </mat-chip-grid>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onWeaponSelected($event)">
+          @for (weapon of filteredWeapons | async; track weapon.id) {
+            <mat-option [value]="weapon">{{ weapon.name }}&ngsp;<span class="weapon-id">{{ weapon.id }}</span></mat-option>
+          }
+        </mat-autocomplete>
+      </mat-form-field>
+      <div class="plot-row">
+        <button mat-flat-button (click)="onSubmit()" [disabled]="isLoading || selectedWeapons.length === 0">Plot</button>
+        <span class="hint">
+          @if (selectionChanged) {
+            The weapons have changed. Press Plot to update the chart.
+          } @else if (selectedWeapons.length) {
+            {{ selectedWeapons.length }} {{ selectedWeapons.length === 1 ? 'weapon' : 'weapons' }} selected
+          } @else {
+            Add the weapons to compare.
+          }
+        </span>
+      </div>
+    } @else {
+      <p class="hint">Pick a category to choose its weapons.</p>
+    }
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="stat-card mb-4">
+  <mat-card-title>
+    @if (plotted(); as plotted) {
+      {{ plotted.stat }} @if (plotted.category) { <small>{{ plotted.category }}</small> }
+    } @else {
+      Chart
+    }
+  </mat-card-title>
+  <mat-card-content>
+    <div class="range-bar" [hidden]="isLoading || !hasStats">
+      <div class="ranges" role="group" aria-label="Zoom">
+        @for (range of ranges; track range.id) {
+          <button type="button" class="stat-chip" [class.on]="activeRange() === range.id" [attr.aria-pressed]="activeRange() === range.id" (click)="onZoom(range.id)">{{ range.display }}</button>
         }
       </div>
-      <div>
-        <vw-loader [loading]="isLoading"></vw-loader>
-        <div class="graph-controls" [hidden]="isLoading || !hasStats">
-          <div class="zoom-controls">
-            <span>Zoom</span>
-            <ul>
-              <li (click)="onZoom('1m')">1m</li>
-              <li (click)="onZoom('3m')">3m</li>
-              <li (click)="onZoom('6m')">6m</li>
-              <li (click)="onZoom('ytd')">YTD</li>
-              <li (click)="onZoom('1y')">1y</li>
-              <li (click)="onZoom('all')">All</li>
-            </ul>
-          </div>
-          <div class="date-controls pull-right">
-            <span>From</span>
-            <mat-form-field class="input-date">
-              <input matInput [matDatepicker]="picker1" [formControl]="selectedStartDate" (dateChange)="onDateChange($event)">
-              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
-              <mat-datepicker #picker1></mat-datepicker>
-            </mat-form-field>
-            <span>To</span>
-            <mat-form-field class="input-date">
-              <input matInput [matDatepicker]="picker2" [formControl]="selectedEndDate" (dateChange)="onDateChange($event)">
-              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
-              <mat-datepicker #picker2></mat-datepicker>
-            </mat-form-field>
-          </div>
-        </div>
-        <div class="graph-container">
-          <div #linegraph id="line-graph"></div>
-          <div id="tooltip"></div>
-          <div class="legend">
-            @for (weapon of graphWeapons; track weapon; let i = $index) {
-              <span [attr.data-index]="i">
-                <mat-icon class="legend-color" fontSet="mdi" fontIcon="mdi-square" [style.color]="getLegendColor(i)"></mat-icon>
-                <span>{{weapon.id}} - {{weapon.name}}</span>
-              </span>
-            }
-          </div>
-        </div>
+      <div class="dates">
+        <span>From</span>
+        <mat-form-field class="input-date" subscriptSizing="dynamic">
+          <input matInput [matDatepicker]="picker1" [formControl]="selectedStartDate" (dateChange)="onDateChange($event)" aria-label="From date">
+          <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          <mat-datepicker #picker1></mat-datepicker>
+        </mat-form-field>
+        <span>To</span>
+        <mat-form-field class="input-date" subscriptSizing="dynamic">
+          <input matInput [matDatepicker]="picker2" [formControl]="selectedEndDate" (dateChange)="onDateChange($event)" aria-label="To date">
+          <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+          <mat-datepicker #picker2></mat-datepicker>
+        </mat-form-field>
       </div>
-    </mat-card-content>
-  </mat-card>
-</div>
+    </div>
+
+    <div class="chart-area">
+      <div class="graph-container">
+        <div #linegraph id="line-graph"></div>
+        <div id="tooltip"></div>
+      </div>
+      @if (isLoading) {
+        <div class="overlay"><vw-loader variant="panel" [loading]="true"></vw-loader></div>
+      } @else if (!hasStats) {
+        <p class="overlay hint">Choose weapons above and press Plot.</p>
+      }
+    </div>
+
+    @if (sortedRows().length) {
+      <div class="stat-table-wrap">
+        <table class="stat-table" matSort matSortActive="latest" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+          <thead>
+            <tr>
+              <th class="left pinned" mat-sort-header="name" start="asc">Weapon</th>
+              <th mat-sort-header="latest" start="desc" arrowPosition="before" title="The most recent value">Latest</th>
+              <th mat-sort-header="peak" start="desc" arrowPosition="before" title="The highest value plotted">Peak</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of sortedRows(); track row.id) {
+              <tr>
+                <td class="left pinned">
+                  <span class="swatch" [style.background]="row.color"></span><a class="stat-link stat-name" routerLink="/ps2/item/{{ row.id }}" [title]="row.name">{{ row.name }}</a>&ngsp;<span class="weapon-id">{{ row.id }}</span>
+                </td>
+                @if (row.latest === null) { <td class="dash">—</td> } @else { <td>{{ row.latest | number: '1.0-2' }}</td> }
+                @if (row.peak === null) { <td class="dash">—</td> } @else { <td>{{ row.peak | number: '1.0-2' }}</td> }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </mat-card-content>
+</mat-card>
