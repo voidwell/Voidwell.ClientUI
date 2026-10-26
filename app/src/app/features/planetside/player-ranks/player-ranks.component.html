@@ -1,50 +1,77 @@
-﻿<div>
-  <h1>Player Ranks</h1>
-  <mat-card>
+﻿<vw-loader variant="table" [rows]="8" [loading]="isLoading()"></vw-loader>
+@if (errorMessage()) {
+  <vw-error-card></vw-error-card>
+} @else if (!isLoading()) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar">
+      <mat-card-title>Player ranks</mat-card-title>
+      @if (total() > pageSize) {
+        <label class="stat-search">
+          <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+          <input type="search" placeholder="Filter by name" aria-label="Filter players by name" [value]="search()" (input)="onSearch($any($event.target).value)">
+        </label>
+      }
+    </div>
     <mat-card-content>
-      This page was inspired by <a href="http://melbalabs.com/ps2ranks">http://melbalabs.com/ps2ranks</a>!
-    </mat-card-content>
-    <mat-card-footer>
-      <vw-loader variant="table" [rows]="8" [loading]="isLoading"></vw-loader>
-      @if (errorMessage) {
-        <div class="error-text">{{errorMessage}}</div>
-      }
-      @if (!isLoading && playerRankings) {
-        <div>
-          <mat-table #table [dataSource]="dataSource" class="striped rank-table">
-            <ng-container matColumnDef="idx">
-              <mat-header-cell *matHeaderCellDef>#</mat-header-cell>
-              <mat-cell *matCellDef="let idx = index">{{idx + 1 | number}}</mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="name">
-              <mat-header-cell *matHeaderCellDef>Name</mat-header-cell>
-              <mat-cell *matCellDef="let item">
-                <a routerLink="/ps2/player/{{item.characterId}}" [ngClass]="item.factionId | factionColor">
-                  <div class="name">{{item.name}}</div>
-                </a>
-              </mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="rating">
-              <mat-header-cell *matHeaderCellDef>Rating</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.rating | number:'.0-0'}}</mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="deviation">
-              <mat-header-cell *matHeaderCellDef>Deviation</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.deviation | number:'.0-0'}}</mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="battlerank">
-              <mat-header-cell *matHeaderCellDef>Battle Rank</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.battleRank | number}}</mat-cell>
-            </ng-container>
-            <ng-container matColumnDef="world">
-              <mat-header-cell *matHeaderCellDef>Server</mat-header-cell>
-              <mat-cell *matCellDef="let item">{{item.worldId | worldName}}</mat-cell>
-            </ng-container>
-            <mat-header-row *matHeaderRowDef="['idx','name','rating','deviation','battlerank','world']"></mat-header-row>
-            <mat-row *matRowDef="let row; columns: ['idx','name','rating','deviation','battlerank','world'];"></mat-row>
-          </mat-table>
+      <p class="note">The {{ total() | number }} highest-rated players. Inspired by <a class="stat-link" href="http://melbalabs.com/ps2ranks">melbalabs.com/ps2ranks</a>.</p>
+      @if (pageRows().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="rating" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+            <thead>
+              <tr>
+                <th class="left" mat-sort-header="rank" start="asc" title="Place by rating"><span class="sr-only">Rank</span>#</th>
+                <th class="left pinned" mat-sort-header="name" start="asc">Player</th>
+                <th class="left hs" mat-sort-header="world" start="asc">Server</th>
+                <th class="hs" mat-sort-header="battleRank" start="desc" arrowPosition="before" title="Battle rank">BR</th>
+                <th mat-sort-header="rating" start="desc" arrowPosition="before">Rating</th>
+                <th class="hs" mat-sort-header="deviation" start="desc" arrowPosition="before" title="Rating deviation: how uncertain the rating is">Deviation</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of pageRows(); track row.rank) {
+                <tr>
+                  <td class="left stat-muted">
+                    <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the details of ' + row.name" (click)="toggle(row.id)">
+                      <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                    </button>{{ row.rank | number }}
+                  </td>
+                  <td class="left pinned">
+                    <a class="stat-link stat-name" [ngClass]="row.factionId | factionColor" routerLink="/ps2/player/{{ row.id }}" [title]="row.name">{{ row.name }}</a>
+                  </td>
+                  @if (row.world) { <td class="left hs stat-muted">{{ row.world }}</td> } @else { <td class="left hs dash">—</td> }
+                  @if (row.battleRank === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ row.battleRank | number }}</td> }
+                  <td>{{ row.rating | number: '1.0-0' }}</td>
+                  @if (row.deviation === null) { <td class="hs dash">—</td> } @else { <td class="hs">±{{ row.deviation | number: '1.0-0' }}</td> }
+                </tr>
+                @if (expanded().has(row.id)) {
+                  <tr class="stat-detail">
+                    <td colspan="3">
+                      <ul>
+                        <li><span>Server</span><span>{{ row.world || '—' }}</span></li>
+                        <li><span>Battle rank</span><span>{{ row.battleRank === null ? '—' : (row.battleRank | number) }}</span></li>
+                        <li><span>Deviation</span><span>{{ row.deviation === null ? '—' : '±' + (row.deviation | number: '1.0-0') }}</span></li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
         </div>
+        @if (filteredCount() > pageSize) {
+          <div class="stat-pager">
+            <span>Players <strong>{{ firstRow() | number }}–{{ lastRow() | number }}</strong> of {{ filteredCount() | number }}</span>
+            <button type="button" class="stat-page-button" aria-label="Previous page" [disabled]="page() === 0" (click)="goToPage(page() - 1)">
+              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+            </button>
+            <button type="button" class="stat-page-button" aria-label="Next page" [disabled]="!hasNext()" (click)="goToPage(page() + 1)">
+              <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+            </button>
+          </div>
+        }
+      } @else {
+        <p class="hint">{{ total() ? 'No players match.' : 'No players ranked yet.' }}</p>
       }
-    </mat-card-footer>
+    </mat-card-content>
   </mat-card>
-</div>
+}
