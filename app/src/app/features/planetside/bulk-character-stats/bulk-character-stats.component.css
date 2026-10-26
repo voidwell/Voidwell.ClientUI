@@ -1,3 +1,61 @@
-﻿.name-chip-list {
+﻿:host {
     display: block;
+}
+
+.name-chip-list {
+    display: block;
+    width: 100%;
+}
+
+.submit-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+}
+
+.hint {
+    margin: 0;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.hint strong {
+    color: #edeff0;
+    font-weight: 500;
+}
+
+.empty {
+    padding: 28px 0;
+    text-align: center;
+}
+
+.missing {
+    margin-top: 10px;
+}
+
+.error-text {
+    margin: 0 0 12px;
+    color: #e63734;
+}
+
+.export {
+    margin-left: auto;
+    padding: 5px 14px;
+    border: 1px solid #344651;
+    border-radius: 4px;
+    background: none;
+    color: #edeff0;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.export:hover {
+    background: rgba(255, 255, 255, .06);
+}
+
+.export:focus-visible {
+    outline: 2px solid #6dbbff;
 }
