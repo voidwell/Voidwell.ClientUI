@@ -61,12 +61,6 @@ mat-card-title {
     grid-template-columns: repeat(2, 1fr);
 }
 
-.note {
-    margin: 10px 0 0;
-    color: #8a9ba1;
-    font-size: 11px;
-}
-
 .accuracy {
     width: 100%;
     border-collapse: collapse;

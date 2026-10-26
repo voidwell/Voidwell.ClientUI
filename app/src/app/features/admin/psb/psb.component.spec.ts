@@ -21,7 +21,7 @@ function create(sessions: CharacterLastSession[] | Error = SESSIONS) {
     const fixture = TestBed.createComponent(PsbComponent);
     fixture.detectChanges();
     const load = () => {
-        (fixture.nativeElement.querySelector('button.load') as HTMLElement).click();
+        (fixture.nativeElement.querySelector('button.ml-auto') as HTMLElement).click();
         fixture.detectChanges();
     };
     return { fixture, el: fixture.nativeElement as HTMLElement, getLastOnlineSessions, load };
@@ -46,7 +46,7 @@ describe('PsbComponent', () => {
         expect(names(el)).toEqual(['Wakeful', 'Pyrrhic', 'NoOutfitNick']);
         expect([...rows(el)[0].querySelectorAll('td')].slice(1).map(td => td.textContent?.trim())).toEqual(['2026-10-25 20:14', '2026-10-25 20:14', '154', '#1000']);
         expect(rows(el)[0].querySelector('a[href$="/sessions/1000"]')).not.toBeNull();
-        expect(el.querySelector('button.load')).toBeNull();
+        expect(el.querySelector('button.ml-auto')).toBeNull();
     });
 
     it('sorts by a column header', () => {
@@ -99,6 +99,6 @@ describe('PsbComponent', () => {
         load();
 
         expect(el.querySelector('vw-error-card')).not.toBeNull();
-        expect(el.querySelector('button.load')).not.toBeNull();
+        expect(el.querySelector('button.ml-auto')).not.toBeNull();
     });
 });

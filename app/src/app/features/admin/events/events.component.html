@@ -5,7 +5,7 @@
   <mat-card class="stat-card mb-4">
     <div class="stat-toolbar">
       <mat-card-title>Events</mat-card-title>
-      <button mat-flat-button class="new" (click)="onEdit(null)">
+      <button mat-flat-button class="ml-auto" (click)="onEdit(null)">
         <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
         New event
       </button>
@@ -37,9 +37,9 @@
                   <td class="left hs stat-muted">{{ row.end | date: 'MMM d, y, h:mm a' }}</td>
                   @if (row.server) { <td class="left hs">{{ row.server }}</td> } @else { <td class="left hs dash">—</td> }
                   @if (row.map) { <td class="left hs">{{ row.map }}</td> } @else { <td class="left hs dash">—</td> }
-                  <td class="actions">
-                    <button type="button" class="stat-button action" (click)="onEdit(row.event)">Edit</button>
-                    <a class="action" routerLink="/ps2/events/{{ row.id }}">Stats</a>
+                  <td>
+                    <button type="button" class="stat-action" (click)="onEdit(row.event)">Edit</button>
+                    <a class="stat-action" routerLink="/ps2/events/{{ row.id }}">Stats</a>
                   </td>
                 </tr>
                 @if (expanded().has(row.id)) {
@@ -58,7 +58,7 @@
           </table>
         </div>
       } @else {
-        <p class="hint">No events yet.</p>
+        <p class="stat-hint m-0">No events yet.</p>
       }
     </mat-card-content>
   </mat-card>

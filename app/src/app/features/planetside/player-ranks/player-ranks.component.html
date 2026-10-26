@@ -13,7 +13,7 @@
       }
     </div>
     <mat-card-content>
-      <p class="note">The {{ total() | number }} highest-rated players. Inspired by <a class="stat-link" href="http://melbalabs.com/ps2ranks">melbalabs.com/ps2ranks</a>.</p>
+      <p class="stat-hint m-0 mt-2 mb-3">The {{ total() | number }} highest-rated players. Inspired by <a class="stat-link" href="http://melbalabs.com/ps2ranks">melbalabs.com/ps2ranks</a>.</p>
       @if (pageRows().length) {
         <div class="stat-table-wrap">
           <table class="stat-table" matSort matSortActive="rating" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
@@ -70,7 +70,7 @@
           </div>
         }
       } @else {
-        <p class="hint">{{ total() ? 'No players match.' : 'No players ranked yet.' }}</p>
+        <p class="stat-hint m-0">{{ total() ? 'No players match.' : 'No players ranked yet.' }}</p>
       }
     </mat-card-content>
   </mat-card>

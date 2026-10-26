@@ -17,9 +17,9 @@
           (matChipInputTokenEnd)="add($event)">
       </mat-chip-grid>
     </mat-form-field>
-    <div class="submit-row">
+    <div class="flex flex-wrap items-center gap-3 mt-3">
       <button mat-flat-button (click)="onSubmit()" [disabled]="isLoading || characterNames.length === 0">Look up</button>
-      <span class="hint">
+      <span class="stat-hint">
         @if (characterNames.length) {
           {{ characterNames.length }} of {{ maxNames }} players
         } @else {
@@ -34,12 +34,12 @@
   <div class="stat-toolbar">
     <mat-card-title>Results</mat-card-title>
     @if (rows().length) {
-      <button type="button" class="export" (click)="onExport()">Export CSV</button>
+      <button type="button" class="stat-ghost ml-auto" (click)="onExport()">Export CSV</button>
     }
   </div>
   <mat-card-content>
     @if (errorMessage) {
-      <p class="error-text">{{ errorMessage }}</p>
+      <p class="error-text m-0 mb-3">{{ errorMessage }}</p>
     }
     <vw-loader variant="table" [rows]="5" [loading]="isLoading"></vw-loader>
     @if (!isLoading) {
@@ -93,12 +93,12 @@
           </table>
         </div>
       } @else if (looked()) {
-        <p class="hint">No players found.</p>
+        <p class="stat-hint m-0">No players found.</p>
       } @else {
-        <p class="hint empty">Add the players above and press Look up.</p>
+        <p class="stat-hint m-0 stat-empty">Add the players above and press Look up.</p>
       }
       @if (missing().length) {
-        <p class="hint missing">Not found: <strong>{{ missing().join(', ') }}</strong></p>
+        <p class="stat-hint m-0 mt-2.5">Not found: <strong>{{ missing().join(', ') }}</strong></p>
       }
     }
   </mat-card-content>

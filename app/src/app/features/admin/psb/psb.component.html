@@ -2,7 +2,7 @@
   <div class="stat-toolbar">
     <mat-card-title>Account sessions</mat-card-title>
     @if (!loaded()) {
-      <button mat-flat-button class="load" [disabled]="isLoading()" (click)="loadAccountSessions()">Load accounts</button>
+      <button mat-flat-button class="ml-auto" [disabled]="isLoading()" (click)="loadAccountSessions()">Load accounts</button>
     } @else if (total() > pageSize) {
       <label class="stat-search">
         <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
@@ -16,9 +16,9 @@
       <vw-error-card></vw-error-card>
     } @else if (!isLoading()) {
       @if (!loaded()) {
-        <p class="hint empty">Load the accounts to see when they last played. This takes a few seconds.</p>
+        <p class="stat-hint m-0 stat-empty">Load the accounts to see when they last played. This takes a few seconds.</p>
       } @else if (pageRows().length) {
-        <p class="hint">The last session of every account.</p>
+        <p class="stat-hint m-0 mb-3">The last session of every account.</p>
         <div class="stat-table-wrap">
           <table class="stat-table" matSort matSortActive="login" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
             <thead>
@@ -81,7 +81,7 @@
           </div>
         }
       } @else {
-        <p class="hint">{{ total() ? 'No accounts match.' : 'No accounts found.' }}</p>
+        <p class="stat-hint m-0">{{ total() ? 'No accounts match.' : 'No accounts found.' }}</p>
       }
     }
   </mat-card-content>

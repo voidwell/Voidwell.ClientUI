@@ -60,7 +60,7 @@ describe('BlogComponent', () => {
         const saved = post('9', 'Fresh', '2026-10-25T12:00:00Z', 'Wakeful');
         const { fixture, el, open } = create(POSTS, { action: 'saved', post: saved });
 
-        (el.querySelector('button.new') as HTMLElement).click();
+        (el.querySelector('button.ml-auto') as HTMLElement).click();
         fixture.detectChanges();
 
         expect(open).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ data: {} }));
@@ -70,7 +70,7 @@ describe('BlogComponent', () => {
     it('opens the editor for a post, and drops it when it is deleted', () => {
         const { fixture, el, open } = create(POSTS, { action: 'deleted', id: '2' });
 
-        (el.querySelector('tbody .action') as HTMLElement).click();
+        (el.querySelector('tbody .stat-action') as HTMLElement).click();
         fixture.detectChanges();
 
         expect(open).toHaveBeenCalledWith(expect.anything(), expect.objectContaining({ data: { entry: POSTS[1] } }));

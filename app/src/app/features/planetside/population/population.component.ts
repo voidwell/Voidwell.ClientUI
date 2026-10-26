@@ -325,7 +325,7 @@ export class PopulationComponent implements OnInit {
                     const match = d.find(h => h.date.getTime() === matchingDate.getTime());
                     const matchValue = match ? dailyTotal(match) : 0;
                     const world = this.graphWorlds[i];
-                    return '<span class="tooltip-swatch" style="background:' + this.lineColors(i.toString()) + '"></span>' +
+                    return '<span class="stat-swatch" style="background:' + this.lineColors(i.toString()) + '"></span>' +
                         escapeHtml(world.name || 'Server ' + world.id) + ': ' + (matchValue ? matchValue.toLocaleString() : '—');
                 });
         };

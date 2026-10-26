@@ -50,7 +50,7 @@ describe('BulkCharacterStatsComponent', () => {
 
         expect(el.querySelector('table')).not.toBeNull();
         expect([...el.querySelectorAll('mat-chip-row')].map(chip => chip.textContent?.replace(/\s+/g, ' ').trim().replace(/ ?mdi-close-circle$/, ''))).toEqual(['Wakeful', 'Pyrrhic']);
-        expect(el.querySelector('.hint')?.textContent?.trim()).toBe('2 of 25 players');
+        expect(el.querySelector('.stat-hint')?.textContent?.trim()).toBe('2 of 25 players');
     });
 
     it('looks the names up and lists them by kills, with the outfit tag and dashes for what has no value', () => {
@@ -62,7 +62,7 @@ describe('BulkCharacterStatsComponent', () => {
         expect(names(el)).toEqual(['Pyrrhic', '[VOID] Wakeful', 'Idle']);
         expect(cells(rowsOf(el)[1])).toEqual(['Osprey', '100', '2.0', '200', '2.00', '25.0%', '100.0']);
         expect(cells(rowsOf(el)[2])).toEqual(['Osprey', '100', '0.0', '0', '—', '—', '—']);
-        expect(el.querySelector('.missing')).toBeNull();
+        expect(el.textContent).not.toContain('Not found');
     });
 
     it('names the players it could not find', () => {
@@ -70,7 +70,7 @@ describe('BulkCharacterStatsComponent', () => {
         (fixture.nativeElement.querySelector('button[mat-flat-button]') as HTMLElement).click();
         fixture.detectChanges();
 
-        expect(fixture.nativeElement.querySelector('.missing')?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Not found: Typo');
+        expect(fixture.nativeElement.querySelector('p.stat-hint strong')?.parentElement?.textContent?.replace(/\s+/g, ' ').trim()).toBe('Not found: Typo');
     });
 
     it('sorts the table by a column header, and opens a row for what is hidden on a phone', () => {

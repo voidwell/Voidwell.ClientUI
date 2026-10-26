@@ -42,7 +42,7 @@ describe('WeaponTrackerComponent', () => {
         expect(el.textContent).toContain('Pick a category to choose its weapons.');
         expect(el.textContent).toContain('Choose weapons above and press Plot.');
         expect(el.querySelector('table')).toBeNull();
-        expect(el.querySelector('.range-bar')?.hasAttribute('hidden')).toBe(true);
+        expect(el.querySelector('.stat-range-bar')?.hasAttribute('hidden')).toBe(true);
     });
 
     it('plots the weapons named in the address and lists each with its latest and highest value', () => {
@@ -53,15 +53,15 @@ describe('WeaponTrackerComponent', () => {
         expect(text(el, 'mat-card:nth-of-type(2) mat-card-title')).toContain('Assault Rifles');
         expect(names(el)).toEqual(['Gauss SAW 7210', 'NS-15M 1894', 'T9 CARV 43']);
         expect([...el.querySelectorAll('tbody tr')[0].querySelectorAll('td')].slice(1).map(td => td.textContent?.trim())).toEqual(['45', '50']);
-        expect(el.querySelectorAll('.chart-area svg').length).toBe(1);
-        expect(el.querySelector('.range-bar')?.hasAttribute('hidden')).toBe(false);
-        expect(text(el, '.hint')).toBe('3 weapons selected');
+        expect(el.querySelectorAll('.stat-chart-area svg').length).toBe(1);
+        expect(el.querySelector('.stat-range-bar')?.hasAttribute('hidden')).toBe(false);
+        expect(text(el, '.stat-hint')).toBe('3 weapons selected');
     });
 
     it('gives each weapon its line colour in the picker and the table', () => {
         const el: HTMLElement = create({ stat: 'kills', category: 'assault-rifles', weapons: '1894,7210' }).nativeElement;
-        const chips = [...el.querySelectorAll('mat-chip-row .swatch')] as HTMLElement[];
-        const rows = [...el.querySelectorAll('tbody .swatch')] as HTMLElement[];
+        const chips = [...el.querySelectorAll('mat-chip-row .stat-swatch')] as HTMLElement[];
+        const rows = [...el.querySelectorAll('tbody .stat-swatch')] as HTMLElement[];
 
         expect(chips.map(c => c.style.background)).toEqual(['rgb(31, 119, 180)', 'rgb(174, 199, 232)']);
         expect(rows.map(r => r.style.background).sort()).toEqual(['rgb(174, 199, 232)', 'rgb(31, 119, 180)'].sort());
@@ -92,7 +92,7 @@ describe('WeaponTrackerComponent', () => {
     it('marks a zoom range as picked, and clears it when the dates are changed', () => {
         const fixture = create({ stat: 'kills', category: 'assault-rifles', weapons: '1894' });
         const el: HTMLElement = fixture.nativeElement;
-        const chips = () => [...el.querySelectorAll('.ranges .stat-chip')] as HTMLButtonElement[];
+        const chips = () => [...el.querySelectorAll('.stat-ranges .stat-chip')] as HTMLButtonElement[];
 
         chips()[2].click();
         fixture.detectChanges();
@@ -110,7 +110,7 @@ describe('WeaponTrackerComponent', () => {
         fixture.componentInstance.onRemoveSelectedWeapon(fixture.componentInstance.selectedWeapons[0]);
         fixture.detectChanges();
 
-        expect(text(el, '.hint')).toBe('The weapons have changed. Press Plot to update the chart.');
+        expect(text(el, '.stat-hint')).toBe('The weapons have changed. Press Plot to update the chart.');
     });
 
     it('shows the error when the stats fail to load', () => {

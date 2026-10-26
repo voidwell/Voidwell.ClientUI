@@ -2,18 +2,3 @@
     display: block;
 }
 
-.hint {
-    margin: 0 0 12px;
-    color: #8a9ba1;
-    font-size: 12px;
-}
-
-.zones {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.zones .stat-chip {
-    text-decoration: none;
-}

@@ -63,6 +63,69 @@ p.stat-muted {
     margin: 0;
 }
 
+/* Small muted text: a note under a title, a count beside a button, an empty list */
+
+.stat-hint {
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.stat-hint strong {
+    color: #edeff0;
+    font-weight: 500;
+}
+
+.stat-empty {
+    padding: 28px 0;
+    text-align: center;
+}
+
+/* A small outlined button, and a link-style action in a table row */
+
+.stat-ghost {
+    padding: 4px 12px;
+    border: 1px solid #344651;
+    border-radius: 4px;
+    background: none;
+    color: #edeff0;
+    font: inherit;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.stat-ghost:hover:not(:disabled),
+.stat-ghost[aria-expanded="true"] {
+    background: rgba(255, 255, 255, .06);
+}
+
+.stat-ghost:disabled {
+    opacity: .5;
+    cursor: default;
+}
+
+.stat-action {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #6dbbff;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.stat-action:hover {
+    text-decoration: underline;
+}
+
+.stat-action + .stat-action {
+    margin-left: 14px;
+}
+
+.stat-ghost:focus-visible,
+.stat-action:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
 .stat-table-wrap {
     overflow-x: auto;
 }
@@ -143,6 +206,11 @@ p.stat-muted {
     overflow: hidden;
     text-overflow: ellipsis;
     vertical-align: bottom;
+}
+
+/* A name that is not a link, in a table */
+span.stat-name {
+    color: #edeff0;
 }
 
 .stat-pill {
@@ -361,5 +429,126 @@ p.stat-muted {
         display: flex;
         justify-content: space-between;
         gap: 8px;
+    }
+}
+
+/* Line charts (population, weapon tracker): zoom shortcuts and dates above, the chart with its tooltip below */
+
+.stat-range-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 16px;
+    margin-bottom: 8px;
+}
+
+.stat-range-bar[hidden] {
+    display: none;
+}
+
+.stat-ranges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.stat-dates {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-left: auto;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.stat-input-date {
+    --mat-form-field-container-text-size: 13px;
+    --mat-form-field-container-height: 40px;
+    width: 150px;
+}
+
+.stat-input-date .mat-datepicker-toggle-default-icon {
+    fill: rgba(177, 188, 192, .87);
+}
+
+.stat-chart-area,
+.stat-chart {
+    position: relative;
+}
+
+.stat-chart-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+.stat-chart-overlay vw-loader {
+    width: 100%;
+}
+
+.stat-line-graph {
+    height: 320px;
+}
+
+.stat-line-graph .domain,
+.stat-line-graph line {
+    stroke: rgba(138, 155, 161, .3);
+}
+
+.stat-line-graph .tick text {
+    fill: #8a9ba1;
+}
+
+.stat-line-graph .line {
+    stroke-width: 2;
+}
+
+.stat-line-graph line,
+.stat-line-graph .line,
+.stat-line-graph .tick,
+.stat-chart-tooltip {
+    pointer-events: none;
+}
+
+.stat-chart-tooltip {
+    position: absolute;
+    display: none;
+    padding: 8px 10px;
+    border: 1px solid #3e505a;
+    border-radius: 6px;
+    background: rgba(34, 49, 58, .96);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.stat-chart-tooltip div {
+    display: flex;
+    align-items: center;
+    font-variant-numeric: tabular-nums;
+}
+
+/* The colour of a line, beside its name */
+.stat-swatch {
+    display: inline-block;
+    flex: none;
+    width: 10px;
+    height: 10px;
+    margin-right: 8px;
+    border-radius: 2px;
+}
+
+@media (max-width: 700px) {
+    .stat-dates {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .stat-line-graph {
+        height: 260px;
     }
 }

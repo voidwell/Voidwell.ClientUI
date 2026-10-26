@@ -2,20 +2,20 @@
   <mat-card-title>Population</mat-card-title>
   <mat-card-content>
     @if (errorMessage) {
-      <p class="error-text">{{ errorMessage }}</p>
+      <p class="error-text m-0 mb-3">{{ errorMessage }}</p>
     }
     <span class="label" id="servers-label">Servers</span>
     <div class="servers" role="group" aria-labelledby="servers-label">
       @for (world of availableWorlds; track world.id) {
         <button type="button" class="stat-chip" [class.on]="isSelected(world)" [attr.aria-pressed]="isSelected(world)" [disabled]="isLoading" (click)="onToggleWorld(world)">
           @if (selectedColor(world); as color) {
-            <span class="swatch" [style.background]="color"></span>
+            <span class="stat-swatch" [style.background]="color"></span>
           }{{ world.name || 'Server ' + world.id }}</button>
       }
     </div>
-    <div class="plot-row">
+    <div class="flex flex-wrap items-center gap-3 mt-3">
       <button mat-flat-button (click)="onSubmit()" [disabled]="isLoading || selectedWorlds.length === 0">Plot</button>
-      <span class="hint">
+      <span class="stat-hint">
         @if (selectionChanged) {
           The servers have changed. Press Plot to update the chart.
         } @else if (selectedWorlds.length) {
@@ -31,21 +31,21 @@
 <mat-card class="stat-card mb-4">
   <mat-card-title>Daily unique players</mat-card-title>
   <mat-card-content>
-    <div class="range-bar" [hidden]="isLoading || !hasStats">
-      <div class="ranges" role="group" aria-label="Zoom">
+    <div class="stat-range-bar" [hidden]="isLoading || !hasStats">
+      <div class="stat-ranges" role="group" aria-label="Zoom">
         @for (range of ranges; track range.id) {
           <button type="button" class="stat-chip" [class.on]="activeRange() === range.id" [attr.aria-pressed]="activeRange() === range.id" (click)="onZoom(range.id)">{{ range.display }}</button>
         }
       </div>
-      <div class="dates">
+      <div class="stat-dates">
         <span>From</span>
-        <mat-form-field class="input-date" subscriptSizing="dynamic">
+        <mat-form-field class="stat-input-date" subscriptSizing="dynamic">
           <input matInput [matDatepicker]="picker1" [formControl]="selectedStartDate" (dateChange)="onDateChange($event)" aria-label="From date">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
         <span>To</span>
-        <mat-form-field class="input-date" subscriptSizing="dynamic">
+        <mat-form-field class="stat-input-date" subscriptSizing="dynamic">
           <input matInput [matDatepicker]="picker2" [formControl]="selectedEndDate" (dateChange)="onDateChange($event)" aria-label="To date">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
@@ -53,15 +53,15 @@
       </div>
     </div>
 
-    <div class="chart-area">
-      <div class="graph-container">
-        <div #linegraph id="line-graph"></div>
-        <div id="tooltip"></div>
+    <div class="stat-chart-area">
+      <div class="stat-chart">
+        <div #linegraph id="line-graph" class="stat-line-graph"></div>
+        <div id="tooltip" class="stat-chart-tooltip"></div>
       </div>
       @if (isLoading) {
-        <div class="overlay"><vw-loader variant="panel" [loading]="true"></vw-loader></div>
+        <div class="stat-chart-overlay"><vw-loader variant="panel" [loading]="true"></vw-loader></div>
       } @else if (!hasStats) {
-        <p class="overlay hint">Choose servers above and press Plot.</p>
+        <p class="stat-chart-overlay stat-hint">Choose servers above and press Plot.</p>
       }
     </div>
 
@@ -85,7 +85,7 @@
                   <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the factions of ' + row.name" (click)="toggle(row.id)">
                     <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
                   </button>
-                  <span class="swatch" [style.background]="row.color"></span><a class="stat-link stat-name" routerLink="/ps2/worlds/{{ row.id }}/activity" [title]="row.name">{{ row.name }}</a>
+                  <span class="stat-swatch" [style.background]="row.color"></span><a class="stat-link stat-name" routerLink="/ps2/worlds/{{ row.id }}/activity" [title]="row.name">{{ row.name }}</a>
                 </td>
                 @for (faction of factions; track faction.key) {
                   @let count = row[faction.key];
@@ -113,7 +113,7 @@
           </tbody>
         </table>
       </div>
-      <p class="hint note">Players seen on a day. The total adds the four factions, so someone who played more than one faction that day counts once for each.</p>
+      <p class="stat-hint m-0 mt-2">Players seen on a day. The total adds the four factions, so someone who played more than one faction that day counts once for each.</p>
     }
   </mat-card-content>
 </mat-card>

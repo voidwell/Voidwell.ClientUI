@@ -47,10 +47,10 @@ describe('ServicesComponent', () => {
     it('opens the details of a service that has some', () => {
         const { fixture, el } = create();
 
-        expect(el.querySelectorAll('.details-button')).toHaveLength(1);
+        expect(el.querySelectorAll('.stat-ghost')).toHaveLength(1);
         expect(el.querySelector('pre.details')).toBeNull();
 
-        (el.querySelector('.details-button') as HTMLElement).click();
+        (el.querySelector('.stat-ghost') as HTMLElement).click();
         fixture.detectChanges();
 
         expect(el.querySelector('pre.details')?.textContent).toContain('"connected": true');

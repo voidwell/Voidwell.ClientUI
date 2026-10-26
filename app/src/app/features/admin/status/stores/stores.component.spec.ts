@@ -80,7 +80,7 @@ describe('StoresComponent', () => {
         const { fixture, el } = create({ forceUpdate } as unknown as Partial<StoreRepository>);
         const row = sections(el)[0].querySelectorAll('tbody tr')[2];
 
-        (row.querySelector('button.refresh') as HTMLElement).click();
+        (row.querySelector('button.stat-ghost') as HTMLElement).click();
         fixture.detectChanges();
 
         expect(forceUpdate).toHaveBeenCalledWith('Weapon stats', 'pc');

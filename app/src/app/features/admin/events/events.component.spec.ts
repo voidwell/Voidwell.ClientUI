@@ -49,7 +49,7 @@ describe('EventsComponent', () => {
     it('links each event to its stats', () => {
         const { el } = create();
 
-        expect(el.querySelector('tbody a.action')?.getAttribute('href')).toBe('/ps2/events/2');
+        expect(el.querySelector('tbody a.stat-action')?.getAttribute('href')).toBe('/ps2/events/2');
     });
 
     it('sorts by a column header', () => {
@@ -68,7 +68,7 @@ describe('EventsComponent', () => {
     it('opens the editor for a new event, and adds the saved one', () => {
         const { fixture, el, open } = create(EVENTS, event(4, 'Late addition', '2026-10-30T20:00:00Z'));
 
-        (el.querySelector('button.new') as HTMLElement).click();
+        (el.querySelector('button.ml-auto') as HTMLElement).click();
         fixture.detectChanges();
 
         expect(open).toHaveBeenCalledWith(expect.anything(), { data: { event: null } });
@@ -78,7 +78,7 @@ describe('EventsComponent', () => {
     it('opens the editor for an event, and replaces it with the saved one', () => {
         const { fixture, el, open } = create(EVENTS, event(2, 'Finals (moved)', '2026-10-24T19:00:00Z'));
 
-        (el.querySelector('tbody button.action') as HTMLElement).click();
+        (el.querySelector('tbody button.stat-action') as HTMLElement).click();
         fixture.detectChanges();
 
         expect(open).toHaveBeenCalledWith(expect.anything(), { data: { event: EVENTS[1] } });

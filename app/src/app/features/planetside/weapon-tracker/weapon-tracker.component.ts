@@ -384,7 +384,7 @@ export class WeaponTrackerComponent implements OnInit {
                     const match = d.find(h => h.period.getTime() === matchingDate.getTime());
                     const matchValue = match ? match.value : 0;
                     const weapon = this.graphWeapons[i];
-                    return '<span class="tooltip-swatch" style="background:' + this.lineColors(i.toString()) + '"></span>' +
+                    return '<span class="stat-swatch" style="background:' + this.lineColors(i.toString()) + '"></span>' +
                         escapeHtml(weapon.name || 'Weapon ' + weapon.id) + ': ' + (matchValue ? matchValue.toLocaleString() : '—');
                 });
         };

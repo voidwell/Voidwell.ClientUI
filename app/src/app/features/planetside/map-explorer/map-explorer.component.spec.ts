@@ -42,7 +42,7 @@ describe('PlanetsideMapExplorerComponent', () => {
     it('lists the continents players can visit as links, and marks the one shown', async () => {
         const harness = await create('/map/4');
         const el: HTMLElement = harness.routeNativeElement as HTMLElement;
-        const chips = [...el.querySelectorAll('.zones a.stat-chip')] as HTMLAnchorElement[];
+        const chips = [...el.querySelectorAll('nav a.stat-chip')] as HTMLAnchorElement[];
 
         expect(chips.map(chip => chip.textContent?.trim())).toEqual(['Indar', 'Hossin', 'Oshur']);
         expect(chips.map(chip => chip.classList.contains('on'))).toEqual([false, true, false]);
@@ -56,7 +56,7 @@ describe('PlanetsideMapExplorerComponent', () => {
         await router.navigateByUrl('/map/344');
         harness.detectChanges();
 
-        const chips = [...(harness.routeNativeElement as HTMLElement).querySelectorAll('.zones a.stat-chip')];
+        const chips = [...(harness.routeNativeElement as HTMLElement).querySelectorAll('nav a.stat-chip')];
         expect(chips.map(chip => chip.classList.contains('on'))).toEqual([false, false, true]);
     });
 });
