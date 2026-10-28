@@ -14,6 +14,7 @@ import { AlertIndicatorComponent } from '../components/alert-indicator/alert-ind
 import { ZoneService } from '../data/zone.service';
 import { FactionCodePipe } from '../pipes/faction-code.pipe';
 import { FactionColorPipe } from '../pipes/faction-color.pipe';
+import { WorldsPopulationCardComponent } from './worlds-population-card/worlds-population-card.component';
 import { FACTION_KEYS, FactionKey, ZoneCell, factionTotal, zoneCell, zoneColumnIds } from './world-list-figures';
 
 /** A server's row of the list. */
@@ -34,7 +35,7 @@ type Result = { worlds: WorldOnlineState[] } | { error: string };
     styleUrls: ['./planetside-world-wrapper.component.css'],
     imports: [
         MatCard, MatCardTitle, MatCardContent, MatIcon, RouterLink, NgClass, NgTemplateOutlet, DecimalPipe, DatePipe,
-        LoaderComponent, ErrorCardComponent, AlertIndicatorComponent, FactionCodePipe, FactionColorPipe
+        LoaderComponent, ErrorCardComponent, AlertIndicatorComponent, FactionCodePipe, FactionColorPipe, WorldsPopulationCardComponent
     ]
 })
 export class PlanetsideWorldWrapperComponent {
@@ -82,6 +83,9 @@ export class PlanetsideWorldWrapperComponent {
                 cells: Object.fromEntries(zoneIds.map(id => [id, zoneCell(world.zoneStates?.find(zone => zone.id === id))]))
             }));
     });
+
+    /** The servers that are up, for the population chart. */
+    readonly onlineWorlds = computed(() => this.rows().filter(row => row.isOnline).map(row => ({ id: row.id, name: row.name })));
 
     readonly totalOnline = computed(() => this.worlds().reduce((total, world) => total + (world.isOnline ? world.onlineCharacters : 0), 0));
     readonly onlineWorldCount = computed(() => this.worlds().filter(world => world.isOnline).length);

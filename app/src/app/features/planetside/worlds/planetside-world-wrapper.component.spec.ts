@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { Observable, of, throwError } from 'rxjs';
 import { WorldOnlineState, WorldOnlineZoneState } from '@core/api/models/ps2/world-state.model';
+import { WorldRepository } from '@core/api/ps2/world.repository';
 import { WorldStateRepository } from '@core/api/ps2/world-state.repository';
 import { ZoneService } from '../data/zone.service';
 import { PlanetsideWorldWrapperComponent } from './planetside-world-wrapper.component';
@@ -27,6 +28,7 @@ function create(states: Observable<WorldOnlineState[]>) {
         providers: [
             provideRouter([]),
             { provide: WorldStateRepository, useValue: { getWorldStates: () => states } },
+            { provide: WorldRepository, useValue: { getWorldActivity: () => of({ activityPeriodStart: '', activityPeriodEnd: '', historicalPopulations: [] }) } },
             { provide: ZoneService, useValue: { zoneName: (): string | undefined => undefined } }
         ]
     });
