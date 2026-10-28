@@ -53,14 +53,13 @@ export class CombatEventHeaderComponent {
     readonly startScores = input<FactionScores | null>(null);
     /** Shows an alarm beside the time left, for an alert. */
     readonly alarm = input(false);
-    /** Gives the end its own tile, for an event. */
-    readonly showEnd = input(false);
     readonly tabs = input<NavLink[]>([]);
     /** The continent it happened on, for the artwork behind the header. */
     readonly zoneId = input<number | string | null>(null);
 
     readonly art = computed(() => zoneImageUrl(this.zoneId()));
 
+    readonly sameDay = computed(() => this.start().toDateString() === this.end().toDateString());
     readonly running = computed(() => this.end().getTime() > Date.now());
     readonly durationMinutes = computed(() => Math.round((this.end().getTime() - this.start().getTime()) / 60000));
 
