@@ -20,6 +20,17 @@
     margin: 0 10px;
 }
 
+/* Square buttons, with the icon in the middle rather than offset by the label spacing Material leaves for it */
+.replay-controls > button {
+    min-width: 0;
+    width: 44px;
+    padding: 0;
+}
+
+.replay-controls > button > .mat-icon {
+    margin: 0;
+}
+
 .score-box {
     position: absolute;
     top: 5px;
@@ -47,23 +58,36 @@ vw-faction-bar {
     bottom: 0;
     right: 0;
     z-index: 999;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    height: 22px;
     pointer-events: none;
 }
 
     .time-settings .replay-time {
         color: rgba(255, 255, 255, 0.8);
-        float: right;
+        line-height: 22px;
         padding-right: 10px;
     }
 
     .time-settings .options-menu {
-        float: right;
+        display: flex;
         pointer-events: all;
     }
 
         .time-settings .options-menu .options-menu-button {
+            display: flex;
+            align-items: center;
             cursor: pointer;
             color: rgba(255, 255, 255, 0.8);
+        }
+
+        .time-settings .options-menu .mat-icon {
+            width: 18px;
+            height: 18px;
+            font-size: 18px;
+            line-height: 18px;
         }
 
 .progress-bar {
