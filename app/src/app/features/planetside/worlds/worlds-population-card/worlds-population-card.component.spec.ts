@@ -18,18 +18,38 @@ function create(getWorldActivity: (worldId: number) => ReturnType<WorldRepositor
 }
 
 describe('WorldsPopulationCardComponent', () => {
-    it('offers a chip for each server, and narrows the chart to the one chosen', () => {
+    it('offers a chip for each server, all of them on to begin with', () => {
+        const fixture = create(id => of(activity(id)));
+        const chips = [...fixture.nativeElement.querySelectorAll('button.stat-chip')] as HTMLButtonElement[];
+
+        expect(chips.map(chip => chip.textContent?.trim())).toEqual(['Cobalt', 'Emerald']);
+        expect(chips.map(chip => chip.getAttribute('aria-pressed'))).toEqual(['true', 'true']);
+        expect(fixture.componentInstance.shown().map(series => series.name)).toEqual(['Cobalt', 'Emerald']);
+    });
+
+    it('switches a server off and on again with its chip', () => {
         const fixture = create(id => of(activity(id)));
         const chips = () => [...fixture.nativeElement.querySelectorAll('button.stat-chip')] as HTMLButtonElement[];
 
-        expect(chips().map(chip => chip.textContent?.trim())).toEqual(['All servers', 'Cobalt', 'Emerald']);
-        expect(fixture.componentInstance.shown().map(series => series.name)).toEqual(['Cobalt', 'Emerald']);
+        chips()[0].click();
+        fixture.detectChanges();
+        expect(fixture.componentInstance.shown().map(series => series.name)).toEqual(['Emerald']);
+        expect(chips()[0].getAttribute('aria-pressed')).toBe('false');
 
-        chips()[2].click();
+        chips()[0].click();
+        fixture.detectChanges();
+        expect(fixture.componentInstance.shown().map(series => series.name)).toEqual(['Cobalt', 'Emerald']);
+    });
+
+    it('asks for a server when every one is switched off', () => {
+        const fixture = create(id => of(activity(id)));
+
+        for (const chip of fixture.nativeElement.querySelectorAll('button.stat-chip') as NodeListOf<HTMLButtonElement>) {
+            chip.click();
+        }
         fixture.detectChanges();
 
-        expect(fixture.componentInstance.shown().map(series => series.name)).toEqual(['Emerald']);
-        expect(fixture.nativeElement.textContent).toContain('Emerald');
+        expect(fixture.nativeElement.textContent).toContain('Pick a server to plot');
     });
 
     it('keeps the other servers when one history fails to load', () => {
