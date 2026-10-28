@@ -6,6 +6,7 @@ import { VWCountdownComponent } from '@shared/ui/vw-countdown/vw-countdown.compo
 import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
 import { FactionColorPipe } from '../../pipes/faction-color.pipe';
 import { FactionNamePipe } from '../../pipes/faction-name.pipe';
+import { zoneImageUrl } from '../zone-image/zone-image';
 import { AlertIndicatorComponent } from '../alert-indicator/alert-indicator.component';
 
 /** Each faction's score, as a percentage. */
@@ -55,6 +56,10 @@ export class CombatEventHeaderComponent {
     /** Gives the end its own tile, for an event. */
     readonly showEnd = input(false);
     readonly tabs = input<NavLink[]>([]);
+    /** The continent it happened on, for the artwork behind the header. */
+    readonly zoneId = input<number | string | null>(null);
+
+    readonly art = computed(() => zoneImageUrl(this.zoneId()));
 
     readonly running = computed(() => this.end().getTime() > Date.now());
     readonly durationMinutes = computed(() => Math.round((this.end().getTime() - this.start().getTime()) / 60000));

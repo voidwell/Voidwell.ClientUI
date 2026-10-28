@@ -10,6 +10,7 @@ import { AlertRepository } from '@core/api/ps2/alert.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
+import { ZoneImageComponent } from '../../components/zone-image/zone-image.component';
 import { ActiveAlertsCardComponent } from '../../components/active-alerts-card/active-alerts-card.component';
 import { AlertView, toAlertView } from '../../components/alert-view';
 import { cellOf, sortRows } from '../../components/combat-report/combat-report-figures';
@@ -24,7 +25,7 @@ type Result = { alerts: AlertView[] } | { error: string };
 @Component({
     templateUrl: './planetside-alerts-list.component.html',
     imports: [
-        ChipsComponent, MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, DatePipe, DecimalPipe,
+        ChipsComponent, ZoneImageComponent, MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, DatePipe, DecimalPipe,
         LoaderComponent, ErrorCardComponent, ActiveAlertsCardComponent, FactionCodePipe
     ]
 })

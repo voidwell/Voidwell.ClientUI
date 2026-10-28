@@ -8,6 +8,7 @@ export interface PastAlertRow {
     instanceId: number;
     name: string;
     serverName: string;
+    zoneId: number | null;
     zoneName: string;
     startDate: Date;
     startedAt: number;
@@ -41,6 +42,7 @@ export function pastAlertRows(alerts: AlertView[], serverName: (worldId: number)
                 instanceId: alert.metagameInstanceId,
                 name: alert.metagameEvent?.name ?? 'Alert',
                 serverName: serverName(alert.worldId),
+                zoneId: alert.zoneId ?? null,
                 zoneName: alert.zoneId ? zoneName(alert.zoneId) : '',
                 startDate: alert.startDate,
                 startedAt: alert.startDate.getTime(),

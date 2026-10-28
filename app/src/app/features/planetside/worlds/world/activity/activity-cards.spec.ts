@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { CombatReportClassStats } from '@core/api/models/ps2/combat-report.model';
 import { AlertView } from '../../../components/alert-view';
+import { WorldService } from '../../../data/world.service';
 import { ZoneService } from '../../../data/zone.service';
 import { ActiveAlertsCardComponent } from '../../../components/active-alerts-card/active-alerts-card.component';
 import { ActivityClassesCardComponent } from './activity-classes-card/activity-classes-card.component';
@@ -69,7 +70,7 @@ describe('ActiveAlertsCardComponent', () => {
     });
 
     function create(alerts: AlertView[]) {
-        TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: ZoneService, useValue: { zoneName: (): string => 'Indar' } }] });
+        TestBed.configureTestingModule({ providers: [provideRouter([]), { provide: ZoneService, useValue: { zoneName: (): string => 'Indar' } }, { provide: WorldService, useValue: { worlds: () => [{ id: 17, name: 'Osprey' }] } }] });
         const fixture = TestBed.createComponent(ActiveAlertsCardComponent);
         fixture.componentRef.setInput('alerts', alerts);
         // The countdown ticks on a timer, so the zone never settles: render once instead of waiting for it
@@ -88,6 +89,16 @@ describe('ActiveAlertsCardComponent', () => {
         expect(el.querySelector('li a.stat-link')?.className).not.toMatch(/faction-/);
         expect(el.querySelector('vw-alert-indicator')).not.toBeNull();
         expect(el.querySelector('.stat-pill.amber')?.textContent).toContain('remaining');
+        expect(el.querySelector('vw-zone-image')).not.toBeNull();
+        expect(el.querySelector('.where .stat-pill')).toBeNull();
+    });
+
+    it('names the server in a pill when asked to', () => {
+        const fixture = create([alert(1, 'Older', 10)]);
+        fixture.componentRef.setInput('showServer', true);
+        fixture.detectChanges();
+
+        expect(fixture.nativeElement.querySelector('.where .stat-pill')?.textContent).toBe('Osprey');
     });
 
     it('shows nothing without alerts', async () => {
