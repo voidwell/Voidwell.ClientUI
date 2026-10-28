@@ -9,11 +9,8 @@
 
   <mat-card class="stat-card mb-4">
     <mat-card-title>Past alerts</mat-card-title>
-    <div class="stat-chips" role="group" aria-label="Filter alerts by server">
-      <button type="button" class="stat-chip" [class.on]="worldId() === null" [attr.aria-pressed]="worldId() === null" (click)="setWorld(null)">All</button>
-      @for (world of worldService.activeWorlds(); track world.id) {
-        <button type="button" class="stat-chip" [class.on]="worldId() === world.id" [attr.aria-pressed]="worldId() === world.id" (click)="setWorld(world.id)">{{ world.name }}</button>
-      }
+    <div class="px-4 pt-1 pb-3">
+      <vw-chips label="Filter alerts by server" [options]="worldOptions()" [value]="worldId()" (choose)="setWorld($event)"></vw-chips>
     </div>
     <mat-card-content>
       @if (isLoading()) {

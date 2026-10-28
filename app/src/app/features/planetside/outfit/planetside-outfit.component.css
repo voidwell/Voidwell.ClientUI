@@ -1,14 +1,5 @@
-﻿:host {
+:host {
     display: block;
-}
-
-mat-card-title {
-    font-size: 14px;
-}
-
-.muted {
-    margin: 0;
-    color: #8a9ba1;
 }
 
 /* Summary tiles */
@@ -21,13 +12,6 @@ mat-card-title {
 
 .tile {
     padding: 14px 16px;
-}
-
-.tile-label {
-    color: #8a9ba1;
-    font-size: 11px;
-    letter-spacing: .03em;
-    text-transform: uppercase;
 }
 
 .tile-value {
@@ -57,238 +41,14 @@ mat-card-title {
     background: #6dbbff;
 }
 
-/* Roster */
-
-.roster-head {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    padding: 0 16px;
-}
-
-.roster-head mat-card-title {
-    flex: 1;
-}
-
-.search {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 240px;
-    padding: 4px 12px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .08);
-    color: #8a9ba1;
-}
-
-.search mat-icon {
-    flex: none;
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-}
-
-.search input {
-    flex: 1;
-    min-width: 0;
-    border: 0;
-    outline: 0;
-    background: none;
-    color: #edeff0;
-    font: inherit;
-    font-size: 13px;
-}
-
-.search:focus-within {
-    outline: 2px solid #6dbbff;
-}
-
-.chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 12px 16px;
-}
-
-.chip {
-    padding: 3px 12px;
-    border: 1px solid #344651;
-    border-radius: 999px;
-    background: none;
-    color: #8a9ba1;
-    font: inherit;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.chip.on {
-    border-color: rgba(109, 187, 255, .5);
-    background: rgba(109, 187, 255, .16);
-    color: #edeff0;
-}
-
-.chip:focus-visible {
-    outline: 2px solid #6dbbff;
-}
-
-.chip-count {
-    margin-left: 2px;
-    opacity: .7;
-}
-
-/* Table */
-
-.table-wrap {
-    overflow-x: auto;
-}
-
-table {
-    --mat-table-background-color: transparent;
-    --mat-table-row-item-label-text-size: 13px;
-    --mat-table-header-headline-color: #8a9ba1;
-    --mat-table-header-headline-size: 11px;
-    --mat-table-header-headline-weight: 500;
-    --mat-table-header-headline-tracking: .03em;
-    --mat-table-row-item-label-text-color: #edeff0;
-    --mat-table-row-item-outline-color: #344651;
-    --mat-table-header-container-height: 40px;
-    --mat-table-row-item-container-height: 44px;
-    width: 100%;
-}
-
-th.mat-mdc-header-cell {
-    text-transform: uppercase;
-    white-space: nowrap;
-}
-
-td.mat-mdc-cell,
-th.mat-mdc-header-cell {
-    padding: 0 8px;
-    text-align: right;
-    font-variant-numeric: tabular-nums;
-    white-space: nowrap;
-}
-
-/* Numeric headers keep their arrow on the left so the labels line up with the figures */
-th.mat-mdc-header-cell ::ng-deep .mat-sort-header-container {
-    justify-content: flex-end;
-}
-
-.mat-column-name,
-.mat-column-rank {
-    text-align: left !important;
-}
-
-.mat-column-name ::ng-deep .mat-sort-header-container,
-.mat-column-rank ::ng-deep .mat-sort-header-container {
-    justify-content: flex-start !important;
-}
-
-/* The player column stays in view while the figures scroll sideways */
-.mat-column-name {
-    position: sticky;
-    left: 0;
-    /* Above the sort headers, which make their own stacking layer */
-    z-index: 3;
-}
-
-/* Material gives header cells the table's (transparent) background with a more specific rule */
-.mat-mdc-table .mat-column-name {
-    background: #2b3942;
-}
-
-.player-link {
-    color: inherit;
-    text-decoration: underline dashed;
-    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
-    text-underline-offset: 3px;
-}
-
-.player-link:hover {
-    opacity: .8;
-}
-
-.rank {
-    display: inline-block;
-    padding: 1px 9px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, .08);
-    font-size: 12px;
-}
-
-.rank.leader {
-    background: rgba(255, 200, 87, .2);
-    color: #ffd27a;
-}
-
-.muted-cell {
-    color: #8a9ba1;
-}
-
-/* Pager */
-
-.pager {
-    display: flex;
-    align-items: center;
-    justify-content: flex-end;
-    gap: 12px;
-    padding-top: 12px;
-    color: #8a9ba1;
-    font-size: 13px;
-}
-
-.pager strong {
-    color: #edeff0;
-    font-weight: 400;
-}
-
-.page-button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border: 1px solid #344651;
-    border-radius: 4px;
-    background: none;
-    color: #edeff0;
-    cursor: pointer;
-}
-
-.page-button:disabled {
-    color: #4d5f68;
-    cursor: default;
-}
-
-.page-button:focus-visible {
-    outline: 2px solid #6dbbff;
-}
-
 @media (max-width: 900px) {
     .tiles {
         grid-template-columns: repeat(3, 1fr);
     }
 }
 
-/* Phones keep the essentials; the rest scrolls away */
 @media (max-width: 700px) {
     .tiles {
         grid-template-columns: repeat(2, 1fr);
-    }
-
-    .roster-head {
-        flex-wrap: wrap;
-    }
-
-    .search {
-        width: 100%;
-    }
-
-    .mat-column-accuracy,
-    .mat-column-hsr,
-    .mat-column-siege,
-    .mat-column-score,
-    .mat-column-memberSinceDate {
-        display: none;
     }
 }

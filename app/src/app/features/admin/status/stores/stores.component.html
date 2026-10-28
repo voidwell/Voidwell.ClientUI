@@ -3,7 +3,7 @@
   <vw-error-card></vw-error-card>
 } @else if (!isLoading()) {
   @if (total() > filterFrom) {
-    <div class="filter-row">
+    <div class="flex justify-end">
       <label class="stat-search">
         <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
         <input type="search" placeholder="Filter stores" aria-label="Filter stores" [value]="filter()" (input)="filter.set($any($event.target).value)">
@@ -35,7 +35,7 @@
                   </td>
                   <td class="left hs stat-muted">{{ interval(store) }}</td>
                   @if (store.lastUpdated) { <td class="left stat-muted">{{ store.lastUpdated | date: 'MMM d, y, HH:mm' }}</td> } @else { <td class="left dash">—</td> }
-                  <td><button type="button" class="refresh" [disabled]="store.isLoading" (click)="onStoreRefresh(store)">Refresh</button></td>
+                  <td><button type="button" class="stat-ghost" [disabled]="store.isLoading" (click)="onStoreRefresh(store)">Refresh</button></td>
                 </tr>
                 @if (expanded().has(key(store))) {
                   <tr class="stat-detail">
@@ -53,6 +53,6 @@
       </mat-card>
     </vw-platform-section>
   } @empty {
-    <p class="hint">No stores match.</p>
+    <p class="stat-hint m-0 mt-4">No stores match.</p>
   }
 }

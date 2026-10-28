@@ -10,7 +10,6 @@ import { WorldNamePipe } from '../../pipes/world-name.pipe';
 @Component({
     selector: 'active-events-card',
     templateUrl: './active-events-card.component.html',
-    styleUrls: ['./active-events-card.component.css'],
     imports: [MatCard, MatCardTitle, MatCardContent, RouterLink, VWCountdownComponent, ZoneNamePipe, WorldNamePipe]
 })
 export class ActiveEventsCardComponent {

@@ -6,14 +6,3 @@ mat-card {
     height: 100%;
 }
 
-.card-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.view-all {
-    font-size: 13px;
-    font-weight: 400;
-    color: #6dbbff;
-}

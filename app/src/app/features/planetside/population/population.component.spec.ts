@@ -50,10 +50,10 @@ describe('PopulationComponent', () => {
         const el: HTMLElement = create().nativeElement;
 
         expect([...el.querySelectorAll('.servers .stat-chip')].map(chip => chip.textContent?.trim())).toEqual(['Osprey', 'Wainwright', 'Connery']);
-        expect(text(el, '.hint')).toBe('Pick the servers to compare.');
+        expect(text(el, '.stat-hint')).toBe('Pick the servers to compare.');
         expect(el.textContent).toContain('Choose servers above and press Plot.');
         expect(el.querySelector('table')).toBeNull();
-        expect(el.querySelector('.range-bar')?.hasAttribute('hidden')).toBe(true);
+        expect(el.querySelector('.stat-range-bar')?.hasAttribute('hidden')).toBe(true);
         expect(el.querySelector('button[mat-flat-button]')?.hasAttribute('disabled')).toBe(true);
     });
 
@@ -65,15 +65,15 @@ describe('PopulationComponent', () => {
         expect(names(el)).toEqual(['Osprey', 'Wainwright']);
         expect(cells(rows[0])).toEqual(['150', '140', '130', '15', '435', '490']);
         expect(cells(rows[1])).toEqual(['10', '10', '10', '1', '31', '93']);
-        expect(el.querySelectorAll('.chart-area svg').length).toBe(1);
-        expect(el.querySelector('.range-bar')?.hasAttribute('hidden')).toBe(false);
-        expect(text(el, '.hint')).toBe('2 servers selected');
+        expect(el.querySelectorAll('.stat-chart-area svg').length).toBe(1);
+        expect(el.querySelector('.stat-range-bar')?.hasAttribute('hidden')).toBe(false);
+        expect(text(el, '.stat-hint')).toBe('2 servers selected');
     });
 
     it('gives each picked server its line colour on its chip and in the table', () => {
         const el: HTMLElement = create({ worlds: '17,40' }).nativeElement;
-        const chips = [...el.querySelectorAll('.servers .swatch')] as HTMLElement[];
-        const rows = [...el.querySelectorAll('tbody .swatch')] as HTMLElement[];
+        const chips = [...el.querySelectorAll('.servers .stat-swatch')] as HTMLElement[];
+        const rows = [...el.querySelectorAll('tbody .stat-swatch')] as HTMLElement[];
 
         expect(chips.map(c => c.style.background)).toEqual(['rgb(31, 119, 180)', 'rgb(174, 199, 232)']);
         expect(rows.map(r => r.style.background)).toEqual(['rgb(31, 119, 180)', 'rgb(174, 199, 232)']);
@@ -87,11 +87,11 @@ describe('PopulationComponent', () => {
         chips()[1].click();
         fixture.detectChanges();
         expect(chips().map(c => c.getAttribute('aria-pressed'))).toEqual(['true', 'true', 'false']);
-        expect(text(el, '.hint')).toBe('The servers have changed. Press Plot to update the chart.');
+        expect(text(el, '.stat-hint')).toBe('The servers have changed. Press Plot to update the chart.');
 
         chips()[1].click();
         fixture.detectChanges();
-        expect(text(el, '.hint')).toBe('1 server selected');
+        expect(text(el, '.stat-hint')).toBe('1 server selected');
     });
 
     it('sorts the table by a column header, and shows a dash for a server with no data', () => {
@@ -123,7 +123,7 @@ describe('PopulationComponent', () => {
     it('marks a zoom range as picked, and clears it when the dates are changed', () => {
         const fixture = create({ worlds: '17' });
         const el: HTMLElement = fixture.nativeElement;
-        const chips = () => [...el.querySelectorAll('.ranges .stat-chip')] as HTMLButtonElement[];
+        const chips = () => [...el.querySelectorAll('vw-chips .stat-chip')] as HTMLButtonElement[];
 
         chips()[2].click();
         fixture.detectChanges();

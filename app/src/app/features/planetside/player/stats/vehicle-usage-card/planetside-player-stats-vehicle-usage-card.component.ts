@@ -2,11 +2,11 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { MatCard, MatCardTitle, MatCardContent } from '@angular/material/card';
-import { MatButtonToggle, MatButtonToggleGroup } from '@angular/material/button-toggle';
 import { CharacterDetails } from '@core/api/models/ps2/character.model';
 import { VehicleRepository } from '@core/api/ps2/vehicle.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { PlanetsidePlayerStatsUsageDonutComponent, UsageEntry } from '../usage-donut/planetside-player-stats-usage-donut.component';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 /** Vehicles shown on their own; the rest are added up as "Other". */
 const MAX_VEHICLES = 6;
@@ -22,7 +22,7 @@ export type VehicleSeat = 'pilot' | 'passenger';
     selector: 'planetside-player-stats-vehicle-usage-card',
     templateUrl: './planetside-player-stats-vehicle-usage-card.component.html',
     styleUrls: ['./planetside-player-stats-vehicle-usage-card.component.css'],
-    imports: [LoaderComponent, MatCard, MatCardTitle, MatCardContent, MatButtonToggleGroup, MatButtonToggle, RouterLink, PlanetsidePlayerStatsUsageDonutComponent]
+    imports: [ChipsComponent, LoaderComponent, MatCard, MatCardTitle, MatCardContent, RouterLink, PlanetsidePlayerStatsUsageDonutComponent]
 })
 
 export class PlanetsidePlayerStatsVehicleUsageCardComponent {
@@ -31,6 +31,7 @@ export class PlanetsidePlayerStatsVehicleUsageCardComponent {
     readonly player = input.required<CharacterDetails>();
 
     readonly seat = signal<VehicleSeat>('pilot');
+    readonly seatOptions: ChipOption<VehicleSeat>[] = [{ value: 'pilot', label: 'Pilot' }, { value: 'passenger', label: 'Passenger' }];
 
     /** Every vehicle, `undefined` until loaded. */
     readonly vehicles = toSignal(this.vehicleRepository.getVehicles());

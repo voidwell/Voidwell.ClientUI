@@ -1,8 +1,8 @@
 <mat-card class="stat-card mb-4">
   <mat-card-title>Map explorer</mat-card-title>
   <mat-card-content>
-    <p class="hint">Click a facility to give it to the next faction and see how the territory shifts.</p>
-    <nav class="zones" aria-label="Continents">
+    <p class="stat-hint m-0 mb-3">Click a facility to give it to the next faction and see how the territory shifts.</p>
+    <nav class="flex flex-wrap gap-1.5" aria-label="Continents">
       @for (link of navLinks(); track link.path) {
         <a class="stat-chip" [routerLink]="link.path" routerLinkActive="on" ariaCurrentWhenActive="page">{{ link.display }}</a>
       }

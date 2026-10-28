@@ -2,15 +2,15 @@
   <mat-card-title>Active events</mat-card-title>
   <mat-card-content>
     @if (sorted().length) {
-      <ul class="events">
+      <ul class="stat-feed">
         @for (item of sorted(); track item.event.id) {
           <li>
-            <a class="stat-link name" routerLink="/ps2/events/{{ item.event.id }}">{{ item.event.name }}</a>
+            <a class="stat-link font-medium" routerLink="/ps2/events/{{ item.event.id }}">{{ item.event.name }}</a>
             <span class="stat-muted">{{ (item.event.serverId | worldName) ?? '' }}{{ item.event.mapId ? ' · ' : '' }}{{ (item.event.mapId | zoneName) ?? '' }}</span>
             @for (team of item.teams; track team.teamId) {
               <span class="stat-pill">{{ team.name }}</span>
             }
-            <span class="time-left"><vw-countdown [end]="item.end"></vw-countdown> remaining</span>
+            <span class="stat-pill amber ml-auto tabular-nums"><vw-countdown [end]="item.end"></vw-countdown> remaining</span>
           </li>
         }
       </ul>

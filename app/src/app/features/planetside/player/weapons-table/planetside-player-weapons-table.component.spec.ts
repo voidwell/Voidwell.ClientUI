@@ -151,7 +151,7 @@ describe('PlanetsidePlayerWeaponsTableComponent', () => {
 
     it('links the weapon name to its page without opening the row', () => {
         const fixture = setup(WEAPONS.slice(0, 1));
-        const link = fixture.nativeElement.querySelector('tr.weapon-row .weapon-link') as HTMLAnchorElement;
+        const link = fixture.nativeElement.querySelector('tr.weapon-row .stat-link') as HTMLAnchorElement;
 
         expect(link.getAttribute('href')).toBe('/ps2/item/1');
         link.click();

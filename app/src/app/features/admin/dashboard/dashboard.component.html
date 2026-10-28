@@ -1,7 +1,7 @@
 ﻿<mat-card class="stat-card mb-4">
   <mat-card-title>Admin</mat-card-title>
   <mat-card-content>
-    <p class="hint">The areas your account can manage.</p>
+    <p class="stat-hint m-0 mb-3.5">The areas your account can manage.</p>
     <div class="tiles">
       @for (section of sections(); track section.path) {
         <a class="tile" [routerLink]="'/admin/' + section.path">
@@ -9,7 +9,7 @@
           <span>{{ section.description }}</span>
         </a>
       } @empty {
-        <p class="hint">Your account has no admin areas yet.</p>
+        <p class="stat-hint m-0">Your account has no admin areas yet.</p>
       }
     </div>
   </mat-card-content>

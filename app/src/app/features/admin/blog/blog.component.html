@@ -5,7 +5,7 @@
   <mat-card class="stat-card mb-4">
     <div class="stat-toolbar">
       <mat-card-title>Blog posts</mat-card-title>
-      <button mat-flat-button class="new" (click)="newPost()">
+      <button mat-flat-button class="ml-auto" (click)="newPost()">
         <mat-icon fontSet="mdi" fontIcon="mdi-plus"></mat-icon>
         New post
       </button>
@@ -32,7 +32,7 @@
                   </td>
                   <td class="left pinned"><span class="stat-name" [title]="row.title">{{ row.title }}</span></td>
                   @if (row.author) { <td class="left hs stat-muted">{{ row.author }}</td> } @else { <td class="left hs dash">—</td> }
-                  <td><button type="button" class="stat-button action" (click)="onEdit(row.post)">Edit</button></td>
+                  <td><button type="button" class="stat-action" (click)="onEdit(row.post)">Edit</button></td>
                 </tr>
                 @if (expanded().has(row.id)) {
                   <tr class="stat-detail">
@@ -59,7 +59,7 @@
           </div>
         }
       } @else {
-        <p class="hint">No posts yet.</p>
+        <p class="stat-hint m-0">No posts yet.</p>
       }
     </mat-card-content>
   </mat-card>

@@ -42,7 +42,7 @@ describe('PlanetsidePlayerStatsVehicleUsageCardComponent', () => {
 
         expect(legend(element)).toEqual([['Vanguard', '10h'], ['Liberator', '5h']]);
         expect(element.textContent).toContain('15h');
-        expect(element.querySelector('.view-all')?.getAttribute('href')).toBe('/ps2/player/42/vehicles');
+        expect(element.querySelector('.stat-action')?.getAttribute('href')).toBe('/ps2/player/42/vehicles');
 
         fixture.componentInstance.seat.set('passenger');
         fixture.detectChanges();

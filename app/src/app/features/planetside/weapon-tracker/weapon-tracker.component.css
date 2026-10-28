@@ -2,24 +2,6 @@
     display: block;
 }
 
-mat-card-title small {
-    margin-left: 8px;
-    color: #8a9ba1;
-    font-size: 12px;
-    font-weight: 400;
-}
-
-.error-text {
-    margin: 0 0 12px;
-    color: #e63734;
-}
-
-.hint {
-    margin: 0;
-    color: #8a9ba1;
-    font-size: 12px;
-}
-
 .controls {
     display: flex;
     flex-wrap: wrap;
@@ -38,131 +20,8 @@ mat-card-title small {
     width: 100%;
 }
 
-.plot-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 12px;
-    margin-top: 12px;
-}
-
-.swatch,
-#tooltip ::ng-deep .tooltip-swatch {
-    display: inline-block;
-    flex: none;
-    width: 10px;
-    height: 10px;
-    margin-right: 8px;
-    border-radius: 2px;
-}
-
 .weapon-id {
     color: #8a9ba1;
-}
-
-/* Zoom and date range */
-
-.range-bar {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px 16px;
-    margin-bottom: 8px;
-}
-
-.range-bar[hidden] {
-    display: none;
-}
-
-.ranges {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.dates {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 8px;
-    margin-left: auto;
-    color: #8a9ba1;
-    font-size: 12px;
-}
-
-.input-date {
-    --mat-form-field-container-text-size: 13px;
-    --mat-form-field-container-height: 40px;
-    width: 150px;
-}
-
-.input-date ::ng-deep .mat-datepicker-toggle-default-icon {
-    fill: rgba(177, 188, 192, .87);
-}
-
-/* The chart */
-
-.chart-area {
-    position: relative;
-}
-
-.overlay {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 0;
-}
-
-.overlay vw-loader {
-    width: 100%;
-}
-
-.graph-container {
-    position: relative;
-}
-
-#line-graph {
-    height: 320px;
-}
-
-#line-graph ::ng-deep .domain,
-#line-graph ::ng-deep line {
-    stroke: rgba(138, 155, 161, .3);
-}
-
-#tooltip,
-#line-graph ::ng-deep line,
-#line-graph ::ng-deep .line,
-#line-graph ::ng-deep .tick {
-    pointer-events: none;
-}
-
-#line-graph ::ng-deep .tick text {
-    fill: #8a9ba1;
-}
-
-#line-graph ::ng-deep .line {
-    stroke-width: 2;
-}
-
-#tooltip {
-    position: absolute;
-    display: none;
-    padding: 8px 10px;
-    border: 1px solid #3e505a;
-    border-radius: 6px;
-    background: rgba(34, 49, 58, .96);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .4);
-    font-size: 12px;
-    white-space: nowrap;
-}
-
-#tooltip ::ng-deep div {
-    display: flex;
-    align-items: center;
-    font-variant-numeric: tabular-nums;
 }
 
 .stat-table-wrap {
@@ -172,14 +31,5 @@ mat-card-title small {
 @media (max-width: 700px) {
     .field {
         max-width: none;
-    }
-
-    .dates {
-        width: 100%;
-        margin-left: 0;
-    }
-
-    #line-graph {
-        height: 260px;
     }
 }

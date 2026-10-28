@@ -10,13 +10,8 @@
         <input type="search" placeholder="Filter by name" aria-label="Filter players by name" [value]="search()" (input)="onSearch($any($event.target).value)">
       </label>
     </div>
-    <div class="stat-chips" role="group" aria-label="Filter players by faction">
-      @for (id of factions; track id) {
-        <button type="button" class="stat-chip" [class.on]="faction() === id" [attr.aria-pressed]="faction() === id" (click)="setFaction(id)">
-          @if (id === 0) { All } @else { {{ id | factionCode }} }
-          <span class="stat-chip-count" [ngClass]="id === 0 ? '' : (id | factionColor)">{{ counts()[id] | number }}</span>
-        </button>
-      }
+    <div class="px-4 pt-1 pb-3">
+      <vw-chips label="Filter players by faction" [options]="factionOptions()" [value]="faction()" (choose)="setFaction($event)"></vw-chips>
     </div>
     <mat-card-content>
       @if (pageRows().length) {

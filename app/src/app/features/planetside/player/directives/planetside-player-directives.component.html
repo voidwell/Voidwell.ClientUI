@@ -9,20 +9,10 @@
     </mat-card>
 
     <div class="toolbar">
-      <mat-chip-listbox aria-label="Category" hideSingleSelectionIndicator [value]="category()" (change)="onCategoryChange($event)">
-        <mat-chip-option [value]="null">All</mat-chip-option>
-        @for (group of categories; track group.id) {
-          <mat-chip-option [value]="group.id">{{ group.name }}</mat-chip-option>
-        }
-      </mat-chip-listbox>
+      <vw-chips label="Category" [options]="categoryOptions()" [value]="category()" (choose)="category.set($event)"></vw-chips>
       <div class="toolbar-end">
-        <mat-button-toggle-group aria-label="Status" hideSingleSelectionIndicator [value]="status()" (change)="status.set($event.value)">
-          <mat-button-toggle value="all">All</mat-button-toggle>
-          <mat-button-toggle value="inProgress">In progress</mat-button-toggle>
-          <mat-button-toggle value="mastered">Mastered</mat-button-toggle>
-          <mat-button-toggle value="notStarted">Not started</mat-button-toggle>
-        </mat-button-toggle-group>
-        <label class="tree-search">
+        <vw-chips label="Status" [options]="statusOptions" [value]="status()" (choose)="status.set($event)"></vw-chips>
+        <label class="stat-search">
           <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
           <input type="search" placeholder="Find a tree" aria-label="Find a tree" [value]="search()" (input)="onSearch($event)">
         </label>
@@ -44,7 +34,7 @@
         </div>
       </section>
     } @empty {
-      <p class="empty">No directive trees match these filters.</p>
+      <p class="stat-muted stat-empty">No directive trees match these filters.</p>
     }
   </div>
 } @else {

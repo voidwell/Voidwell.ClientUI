@@ -1,35 +1,3 @@
 :host {
     display: block;
 }
-
-.new {
-    margin-left: auto;
-}
-
-.hint {
-    margin: 0;
-    color: #8a9ba1;
-    font-size: 12px;
-}
-
-.action {
-    color: #6dbbff;
-    font-size: 13px;
-    text-decoration: none;
-}
-
-.action:hover {
-    text-decoration: underline;
-}
-
-.actions {
-    white-space: nowrap;
-}
-
-.actions .action + .action {
-    margin-left: 14px;
-}
-
-.stat-name {
-    color: #edeff0;
-}

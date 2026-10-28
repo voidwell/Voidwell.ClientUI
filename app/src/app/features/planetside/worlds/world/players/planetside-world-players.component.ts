@@ -17,14 +17,15 @@ import { cellOf, sortRows } from '../../../components/combat-report/combat-repor
 import { PlanetsideWorldComponent } from '../planetside-world.component';
 import { agoLabel } from '../world-figures';
 import { ALL_FACTIONS, PLAYERS_PAGE_SIZE, filterPlayers, onlinePlayerRows, playerCounts } from './online-players-figures';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 type Result = { players: OnlineCharacter[] } | { error: string };
 
 @Component({
     templateUrl: './planetside-world-players.component.html',
     imports: [
-        MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, NgClass, DecimalPipe, DatePipe,
-        LoaderComponent, ErrorCardComponent, FactionCodePipe, FactionColorPipe
+        ChipsComponent, MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, NgClass, DecimalPipe, DatePipe,
+        LoaderComponent, ErrorCardComponent, FactionColorPipe
     ]
 })
 export class PlanetsideWorldPlayersComponent {
@@ -54,6 +55,14 @@ export class PlanetsideWorldPlayersComponent {
             : [];
     });
     readonly counts = computed(() => playerCounts(this.rows()));
+    private readonly factionCode = new FactionCodePipe();
+    private readonly factionColor = new FactionColorPipe();
+    readonly factionOptions = computed<ChipOption<number>[]>(() => this.factions.map(id => ({
+        value: id,
+        label: id === ALL_FACTIONS ? 'All' : this.factionCode.transform(id),
+        count: this.counts()[id],
+        countClass: id === ALL_FACTIONS ? '' : this.factionColor.transform(id)
+    })));
 
     private readonly filtered = computed(() => sortRows(filterPlayers(this.rows(), this.faction(), this.search()), this.sort(), cellOf));
     readonly filteredCount = computed(() => this.filtered().length);

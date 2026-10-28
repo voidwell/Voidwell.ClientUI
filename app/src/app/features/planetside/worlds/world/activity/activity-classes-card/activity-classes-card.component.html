@@ -1,11 +1,7 @@
 <mat-card class="stat-card">
   <mat-card-title>Classes <small>last hour</small></mat-card-title>
-  <div class="stat-chips" role="group" aria-label="Faction">
-    @for (id of factions; track id) {
-      <button type="button" class="stat-chip" [class.on]="faction() === id" [attr.aria-pressed]="faction() === id" (click)="faction.set(id)">
-        {{ id | factionCode }}
-      </button>
-    }
+  <div class="px-4 pt-1 pb-3">
+    <vw-chips label="Faction" [options]="factionOptions" [value]="faction()" (choose)="faction.set($event)"></vw-chips>
   </div>
   <mat-card-content>
     @if (rows().length) {

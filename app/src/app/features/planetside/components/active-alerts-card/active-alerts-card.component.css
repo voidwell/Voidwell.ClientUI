@@ -1,35 +1,5 @@
-.alerts {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.alerts li {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 4px 12px;
-}
-
-.name {
-    font-weight: 500;
-}
-
 .scores {
     display: inline-flex;
     gap: 10px;
-    font-variant-numeric: tabular-nums;
-}
-
-.time-left {
-    margin-left: auto;
-    padding: 1px 10px;
-    border-radius: 999px;
-    background: rgba(255, 200, 87, .2);
-    color: #ffd27a;
-    font-size: 12px;
     font-variant-numeric: tabular-nums;
 }

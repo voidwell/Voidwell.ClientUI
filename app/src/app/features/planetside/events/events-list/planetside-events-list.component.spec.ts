@@ -40,9 +40,9 @@ describe('PlanetsideEventsListComponent', () => {
         ]));
         const el: HTMLElement = fixture.nativeElement;
 
-        expect(el.querySelector('.events .name')?.textContent).toContain('Running');
-        expect([...el.querySelectorAll('.events .stat-pill')].map(p => p.textContent?.trim())).toEqual(['Voidwell Veterans', 'Goon Squad']);
-        expect(el.querySelector('.events')?.textContent).toContain('Emerald · Indar');
+        expect(el.querySelector('.stat-feed a.stat-link')?.textContent).toContain('Running');
+        expect([...el.querySelectorAll('.stat-feed .stat-pill:not(.amber)')].map(p => p.textContent?.trim())).toEqual(['Voidwell Veterans', 'Goon Squad']);
+        expect(el.querySelector('.stat-feed')?.textContent).toContain('Emerald · Indar');
         expect(names(el)).toEqual(['Newer', 'Older']);
     });
 

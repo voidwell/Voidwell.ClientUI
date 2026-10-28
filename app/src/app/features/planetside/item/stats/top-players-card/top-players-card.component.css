@@ -2,18 +2,6 @@
     display: block;
 }
 
-.card-title {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.view-all {
-    color: #6dbbff;
-    font-size: 13px;
-    font-weight: 400;
-}
-
 table {
     width: 100%;
     border-collapse: collapse;
@@ -55,17 +43,6 @@ td {
 .faction-icon {
     margin-right: 8px;
     vertical-align: middle;
-}
-
-.player-link {
-    color: inherit;
-    text-decoration: underline dashed;
-    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
-    text-underline-offset: 3px;
-}
-
-.player-link:hover {
-    opacity: .8;
 }
 
 .muted {

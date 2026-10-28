@@ -81,13 +81,13 @@ describe('ActiveAlertsCardComponent', () => {
         const fixture = create([alert(2, 'Newer', 1), alert(1, 'Older', 10)]);
         const el: HTMLElement = fixture.nativeElement;
 
-        expect([...el.querySelectorAll('.name')].map(a => a.textContent?.trim())).toEqual(['Older', 'Newer']);
+        expect([...el.querySelectorAll('li a.stat-link')].map(a => a.textContent?.trim())).toEqual(['Older', 'Newer']);
         const scores = [...el.querySelector('li')!.querySelectorAll('.scores span')];
         expect(scores.map(s => s.textContent?.trim())).toEqual(['35%', '34%', '31%']);
         expect(scores.map(s => [...s.classList].find(c => c.startsWith('faction-')))).toEqual(['faction-vs-text', 'faction-nc-text', 'faction-tr-text']);
-        expect(el.querySelector('.name')?.className).not.toMatch(/faction-/);
+        expect(el.querySelector('li a.stat-link')?.className).not.toMatch(/faction-/);
         expect(el.querySelector('vw-alert-indicator')).not.toBeNull();
-        expect(el.querySelector('.time-left')?.textContent).toContain('remaining');
+        expect(el.querySelector('.stat-pill.amber')?.textContent).toContain('remaining');
     });
 
     it('shows nothing without alerts', async () => {

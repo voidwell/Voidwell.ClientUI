@@ -33,6 +33,6 @@ describe('PlanetsidePlayerStatsClassUsageCardComponent', () => {
         expect(names).toEqual(['Infiltrator', 'Light Assault']);
         expect(fixture.nativeElement.querySelectorAll('svg path').length).toBe(2);
         expect(fixture.nativeElement.textContent).toContain('100h');
-        expect(fixture.nativeElement.querySelector('.view-all').getAttribute('href')).toBe('/ps2/player/42/classes');
+        expect(fixture.nativeElement.querySelector('.stat-action').getAttribute('href')).toBe('/ps2/player/42/classes');
     });
 });

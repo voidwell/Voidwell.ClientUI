@@ -4,7 +4,6 @@ import { DatePipe, DecimalPipe, PercentPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
 import { of } from 'rxjs';
 import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
@@ -13,8 +12,10 @@ import { OutfitRepository } from '@core/api/ps2/outfit.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
+import { sortRows } from '../components/combat-report/combat-report-figures';
 import { OutfitCardComponent } from './outfit-card/outfit-card.component';
 import { accuracy, hsr, isWithin, kdr, mean, median, siege, spm, timeAgo } from './outfit-figures';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 /** The roster's rows per page. */
 export const ROSTER_PAGE_SIZE = 25;
@@ -26,7 +27,7 @@ type Result<T> = { data: T } | { error: string };
 /** A member's figure for a sortable column; missing figures sort last. */
 const sortValue = (member: OutfitMemberDetails, column: string): string | number | null => {
     switch (column) {
-        case 'name': return member.name?.toLowerCase() ?? null;
+        case 'name': return member.name ?? null;
         case 'rank': return member.rankOrdinal;
         case 'battleRank': return member.battleRank ?? null;
         case 'kdr': return kdr(member);
@@ -46,8 +47,7 @@ const sortValue = (member: OutfitMemberDetails, column: string): string | number
     templateUrl: './planetside-outfit.component.html',
     styleUrls: ['./planetside-outfit.component.css'],
     imports: [
-        MatCard, MatCardTitle, MatCardContent, MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCellDef, MatHeaderCell,
-        MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatIcon, RouterLink, DecimalPipe, PercentPipe, DatePipe,
+        ChipsComponent, MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, MatIcon, RouterLink, DecimalPipe, PercentPipe, DatePipe,
         LoaderComponent, ErrorCardComponent, OutfitCardComponent
     ]
 })
@@ -56,7 +56,6 @@ export class PlanetsideOutfitComponent {
 
     readonly id = input<string>();
 
-    readonly columns = ['name', 'rank', 'battleRank', 'kdr', 'accuracy', 'hsr', 'siege', 'score', 'spm', 'memberSinceDate', 'lastLogin'];
     readonly filters: { id: RosterFilter; label: string }[] = [
         { id: 'all', label: 'All' },
         { id: 'active7', label: 'Active 7 days' },
@@ -76,6 +75,7 @@ export class PlanetsideOutfitComponent {
     readonly activeFilter = signal<RosterFilter>('all');
     readonly page = signal(0);
     readonly pageSize = ROSTER_PAGE_SIZE;
+    readonly expanded = signal<ReadonlySet<string | undefined>>(new Set());
 
     private readonly outfitResult = toSignal(toObservable(this.id).pipe(
         filter((id): id is string => !!id),
@@ -155,24 +155,7 @@ export class PlanetsideOutfitComponent {
 
     readonly filteredCount = computed(() => this.filtered().length);
 
-    private readonly sorted = computed(() => {
-        const { active, direction } = this.sort();
-        if (!active || !direction) {
-            return this.filtered();
-        }
-
-        const flip = direction === 'asc' ? 1 : -1;
-        return [...this.filtered()].sort((a, b) => {
-            const valueA = sortValue(a, active);
-            const valueB = sortValue(b, active);
-
-            // Missing figures go last whichever way the column sorts
-            if (valueA === null || valueB === null) {
-                return valueA === valueB ? 0 : valueA === null ? 1 : -1;
-            }
-            return (valueA < valueB ? -1 : valueA > valueB ? 1 : 0) * flip;
-        });
-    });
+    private readonly sorted = computed(() => sortRows(this.filtered(), this.sort(), sortValue));
 
     readonly rows = computed(() => this.sorted().slice(this.page() * this.pageSize, (this.page() + 1) * this.pageSize));
     readonly firstRow = computed(() => this.page() * this.pageSize + 1);
@@ -189,6 +172,9 @@ export class PlanetsideOutfitComponent {
             untracked: members.filter(member => !member.lifetimeStats).length
         } satisfies Record<RosterFilter, number>;
     });
+
+    readonly filterOptions = computed<ChipOption<RosterFilter>[]>(() =>
+        this.filters.map(option => ({ value: option.id, label: option.label, count: this.counts()[option.id] })));
 
     onSort(sort: Sort) {
         this.sort.set(sort);
@@ -207,5 +193,15 @@ export class PlanetsideOutfitComponent {
 
     goToPage(page: number) {
         this.page.set(page);
+    }
+
+    toggle(id: string | undefined) {
+        this.expanded.update(open => {
+            const next = new Set(open);
+            if (!next.delete(id)) {
+                next.add(id);
+            }
+            return next;
+        });
     }
 }

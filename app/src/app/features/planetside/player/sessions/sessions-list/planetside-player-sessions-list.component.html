@@ -48,7 +48,7 @@
                 @if (session.logoutDate) {
                   {{ session.logoutDate | date: 'h:mm a' }}
                 } @else {
-                  <span class="live">In progress</span>
+                  <span class="stat-live">In progress</span>
                 }
               </span>
               <span class="duration">{{ formatDuration(session.duration) }}</span>
@@ -58,7 +58,7 @@
         </div>
       </section>
     } @empty {
-      <p class="empty">No sessions recorded yet.</p>
+      <p class="stat-muted stat-empty">No sessions recorded yet.</p>
     }
 
     @if (hasMore()) {

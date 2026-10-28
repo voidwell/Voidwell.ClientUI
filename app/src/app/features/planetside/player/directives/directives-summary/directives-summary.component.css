@@ -39,14 +39,6 @@
     font-size: 18px;
 }
 
-.stat-label {
-    color: #8a9ba1;
-    font-size: 11px;
-    font-weight: 500;
-    letter-spacing: .08em;
-    text-transform: uppercase;
-}
-
 .ranks {
     flex: 1 1 280px;
 }

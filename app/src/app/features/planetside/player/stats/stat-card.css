@@ -1,0 +1,15 @@
+:host {
+    display: block;
+}
+
+mat-card {
+    height: 100%;
+    overflow: hidden;
+}
+
+mat-card-content {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    justify-content: flex-start;
+}

@@ -23,6 +23,6 @@ describe('PlanetsidePlayerStatsTopWeaponsCardComponent', () => {
         const names = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('tbody tr td:first-child')).map(e => e.textContent.trim());
         expect(names).toEqual(['B', 'D', 'E', 'F', 'G']);
         expect(fixture.nativeElement.textContent).toContain('25.0%');
-        expect(fixture.nativeElement.querySelector('.view-all').getAttribute('href')).toBe('/ps2/player/42/weapons');
+        expect(fixture.nativeElement.querySelector('.stat-action').getAttribute('href')).toBe('/ps2/player/42/weapons');
     });
 });

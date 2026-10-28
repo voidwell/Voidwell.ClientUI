@@ -2,13 +2,3 @@
     display: block;
 }
 
-.note,
-.hint {
-    margin: 0 0 12px;
-    color: #8a9ba1;
-    font-size: 12px;
-}
-
-.note {
-    margin-top: 8px;
-}

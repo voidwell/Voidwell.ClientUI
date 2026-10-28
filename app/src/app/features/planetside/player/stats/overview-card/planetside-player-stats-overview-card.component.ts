@@ -7,7 +7,7 @@ import { DecimalPipe, DatePipe } from '@angular/common';
 @Component({
     selector: 'planetside-player-stats-overview-card',
     templateUrl: './planetside-player-stats-overview-card.component.html',
-    styleUrls: ['./planetside-player-stats-overview-card.component.css'],
+    styleUrls: ['../stat-card.css', './planetside-player-stats-overview-card.component.css'],
     imports: [MatCard, MatCardTitle, MatCardContent, MatIcon, DecimalPipe, DatePipe]
 })
 

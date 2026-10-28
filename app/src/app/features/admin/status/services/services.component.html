@@ -11,7 +11,7 @@
               <div class="service">
                 <span class="name">{{ service.name }}</span>
                 @if (service.details) {
-                  <button type="button" class="details-button" [attr.aria-expanded]="open().has(key(service))" (click)="toggleDetails(service)">Details</button>
+                  <button type="button" class="stat-ghost" [attr.aria-expanded]="open().has(key(service))" (click)="toggleDetails(service)">Details</button>
                 }
                 <mat-slide-toggle
                   [checked]="service.isEnabled"

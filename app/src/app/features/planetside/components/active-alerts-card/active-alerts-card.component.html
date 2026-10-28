@@ -3,11 +3,11 @@
     <mat-card-title>Active alerts</mat-card-title>
     <mat-card-content>
       @if (sorted().length) {
-        <ul class="alerts">
+        <ul class="stat-feed">
           @for (alert of sorted(); track alert.metagameInstanceId) {
             <li>
               <vw-alert-indicator></vw-alert-indicator>
-              <a class="stat-link name" routerLink="/ps2/alerts/{{ alert.worldId }}/{{ alert.metagameInstanceId }}">{{ alert.metagameEvent?.name }}</a>
+              <a class="stat-link font-medium" routerLink="/ps2/alerts/{{ alert.worldId }}/{{ alert.metagameInstanceId }}">{{ alert.metagameEvent?.name }}</a>
               <span class="stat-muted">
                 @if (showServer()) { {{ alert.worldId | worldName }} · }{{ alert.zoneId | zoneName }}
               </span>
@@ -17,7 +17,7 @@
                 }
               </span>
               @if (alert.endDate) {
-                <span class="time-left"><vw-countdown [end]="alert.endDate"></vw-countdown> remaining</span>
+                <span class="stat-pill amber ml-auto tabular-nums"><vw-countdown [end]="alert.endDate"></vw-countdown> remaining</span>
               }
             </li>
           }

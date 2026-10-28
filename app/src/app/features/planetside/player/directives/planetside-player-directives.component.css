@@ -25,50 +25,6 @@
     gap: 12px;
 }
 
-mat-button-toggle-group {
-    --mat-button-toggle-height: 34px;
-    --mat-button-toggle-shape: 8px;
-    --mat-button-toggle-label-text-size: 13px;
-    --mat-button-toggle-background-color: transparent;
-    --mat-button-toggle-text-color: #b4bfc3;
-    --mat-button-toggle-selected-state-background-color: #384a55;
-    --mat-button-toggle-selected-state-text-color: #edeff0;
-    --mat-button-toggle-divider-color: #3e505a;
-    border-color: #3e505a;
-}
-
-.tree-search {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    height: 34px;
-    padding: 0 10px;
-    border: 1px solid #3e505a;
-    border-radius: 8px;
-    color: #8a9ba1;
-}
-
-.tree-search:focus-within {
-    border-color: #6dbbff;
-}
-
-.tree-search mat-icon {
-    width: 18px;
-    height: 18px;
-    font-size: 18px;
-    line-height: 18px;
-}
-
-.tree-search input {
-    width: 160px;
-    border: 0;
-    outline: 0;
-    background: none;
-    color: #edeff0;
-    font: inherit;
-    font-size: 13px;
-}
-
 /* Trees */
 
 .group-title {
@@ -110,20 +66,8 @@ mat-button-toggle-group {
     outline-offset: 2px;
 }
 
-.empty {
-    margin: 24px 0;
-    color: #8a9ba1;
-    text-align: center;
-}
-
 @media (max-width: 600px) {
-    .toolbar-end,
-    .tree-search {
+    .toolbar-end {
         width: 100%;
-    }
-
-    .tree-search input {
-        flex: 1;
-        width: auto;
     }
 }

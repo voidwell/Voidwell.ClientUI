@@ -32,10 +32,10 @@ describe('TopPlayersCardComponent', () => {
         const rows = element.querySelectorAll('tbody tr');
 
         expect(rows.length).toBe(10);
-        expect(rows[0].querySelector('.player-link')?.getAttribute('href')).toBe('/ps2/player/0');
+        expect(rows[0].querySelector('.stat-link')?.getAttribute('href')).toBe('/ps2/player/0');
         expect(rows[0].querySelector('vw-grade')?.textContent).toBe('A');
         expect(rows[1].querySelector('.placeholder')).not.toBeNull();
-        expect(element.querySelector('.view-all')?.getAttribute('href')).toBe('/ps2/item/1894/leaderboard');
+        expect(element.querySelector('.stat-action')?.getAttribute('href')).toBe('/ps2/item/1894/leaderboard');
     });
 
     it('says so when the leaderboard cannot be loaded, or is empty', () => {

@@ -1,10 +1,10 @@
 <mat-card class="vw-character-ivi">
   <mat-card-title>Infantry vs Infantry</mat-card-title>
   <mat-card-content>
-    <div class="hero">
+    <div class="stat-hero">
       <div class="score">
-        <div class="score-value">{{stats().iviScore | number}}</div>
-        <div class="score-label">IVI Score</div>
+        <div class="stat-hero-value">{{stats().iviScore | number}}</div>
+        <div class="stat-label mt-0.5">IVI Score</div>
       </div>
       <dl class="meta">
         <div>
@@ -21,34 +21,34 @@
         </div>
       </dl>
     </div>
-    <div class="tiles">
-      <div class="tile">
-        <div class="tile-head">
-          <span class="tile-label">Accuracy</span>
+    <div class="grid grid-cols-2 gap-3 mt-5">
+      <div class="stat-metric">
+        <div class="flex items-center justify-between">
+          <span class="stat-metric-label">Accuracy</span>
           <span class="grade"><vw-grade [delta]="stats().accuracyDelta"></vw-grade></span>
         </div>
-        <div class="tile-value">{{stats().accuracy * 100 | number: '.3-3'}}%</div>
+        <div class="stat-metric-value">{{stats().accuracy * 100 | number: '.3-3'}}%</div>
       </div>
-      <div class="tile">
-        <div class="tile-head">
-          <span class="tile-label">HSR</span>
+      <div class="stat-metric">
+        <div class="flex items-center justify-between">
+          <span class="stat-metric-label">HSR</span>
           <span class="grade"><vw-grade [delta]="stats().headshotRatioDelta"></vw-grade></span>
         </div>
-        <div class="tile-value">{{stats().headshotRatio * 100 | number: '.3-3'}}%</div>
+        <div class="stat-metric-value">{{stats().headshotRatio * 100 | number: '.3-3'}}%</div>
       </div>
-      <div class="tile">
-        <div class="tile-head">
-          <span class="tile-label">KDR</span>
+      <div class="stat-metric">
+        <div class="flex items-center justify-between">
+          <span class="stat-metric-label">KDR</span>
           <span class="grade"><vw-grade [delta]="stats().killDeathRatioDelta"></vw-grade></span>
         </div>
-        <div class="tile-value">{{stats().killDeathRatio | number: '.3-3'}}</div>
+        <div class="stat-metric-value">{{stats().killDeathRatio | number: '.3-3'}}</div>
       </div>
-      <div class="tile">
-        <div class="tile-head">
-          <span class="tile-label">KpM</span>
+      <div class="stat-metric">
+        <div class="flex items-center justify-between">
+          <span class="stat-metric-label">KpM</span>
           <span class="grade"><vw-grade [delta]="stats().killsPerMinuteDelta"></vw-grade></span>
         </div>
-        <div class="tile-value">{{stats().killsPerMinute | number: '.3-3'}}</div>
+        <div class="stat-metric-value">{{stats().killsPerMinute | number: '.3-3'}}</div>
       </div>
     </div>
   </mat-card-content>

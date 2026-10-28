@@ -21,11 +21,12 @@ import { MatDatepickerInput, MatDatepickerToggle, MatDatepicker } from '@angular
 import { cellOf, sortRows } from '../components/combat-report/combat-report-figures';
 import { FactionColorPipe } from '../pipes/faction-color.pipe';
 import { PopulationRow, dailyTotal, escapeHtml, populationRows, selectionDiffers } from './population-figures';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 @Component({
     templateUrl: './population.component.html',
     styleUrls: ['./population.component.css'],
-    imports: [MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, MatIcon, RouterLink, NgClass, DecimalPipe, FactionColorPipe, MatButton, LoaderComponent, MatFormField, MatInput, MatDatepickerInput, FormsModule, ReactiveFormsModule, MatDatepickerToggle, MatSuffix, MatDatepicker]
+    imports: [ChipsComponent, MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, MatIcon, RouterLink, NgClass, DecimalPipe, FactionColorPipe, MatButton, LoaderComponent, MatFormField, MatInput, MatDatepickerInput, FormsModule, ReactiveFormsModule, MatDatepickerToggle, MatSuffix, MatDatepicker]
 })
 
 export class PopulationComponent implements OnInit {
@@ -45,9 +46,9 @@ export class PopulationComponent implements OnInit {
     errorMessage: string = null;
 
     /** The zoom shortcuts above the chart. */
-    readonly ranges = [
-        { id: '1m', display: '1m' }, { id: '3m', display: '3m' }, { id: '6m', display: '6m' },
-        { id: 'ytd', display: 'YTD' }, { id: '1y', display: '1y' }, { id: 'all', display: 'All' }
+    readonly ranges: ChipOption<string>[] = [
+        { value: '1m', label: '1m' }, { value: '3m', label: '3m' }, { value: '6m', label: '6m' },
+        { value: 'ytd', label: 'YTD' }, { value: '1y', label: '1y' }, { value: 'all', label: 'All' }
     ];
 
     /** The faction columns of the table, with the faction ids that colour them. */
@@ -325,7 +326,7 @@ export class PopulationComponent implements OnInit {
                     const match = d.find(h => h.date.getTime() === matchingDate.getTime());
                     const matchValue = match ? dailyTotal(match) : 0;
                     const world = this.graphWorlds[i];
-                    return '<span class="tooltip-swatch" style="background:' + this.lineColors(i.toString()) + '"></span>' +
+                    return '<span class="stat-swatch" style="background:' + this.lineColors(i.toString()) + '"></span>' +
                         escapeHtml(world.name || 'Server ' + world.id) + ': ' + (matchValue ? matchValue.toLocaleString() : '—');
                 });
         };

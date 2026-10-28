@@ -5,19 +5,19 @@
     <mat-card-title class="world-name">{{ worldId() | worldName }}</mat-card-title>
     @let state = world();
     @if (state) {
-      <span class="state"><i class="dot" [class.off]="!state.isOnline"></i>{{ state.isOnline ? 'Online' : 'Offline' }}</span>
+      <span class="stat-state pt-4"><i class="stat-dot" [class.off]="!state.isOnline"></i>{{ state.isOnline ? 'Online' : 'Offline' }}</span>
       <div class="online">
         <b>{{ state.isOnline ? (state.onlineCharacters | number) : '—' }}</b>
-        <span>Players online</span>
+        <span class="stat-label">Players online</span>
       </div>
     }
   </div>
   @if (tiles().length) {
-    <div class="tiles">
+    <div class="stat-tiles">
       @for (tile of tiles(); track tile.id) {
-        <div class="tile" routerLinkActive="current">
-          <div class="tile-label">
-            <a class="zone-link" routerLink="/ps2/worlds/{{ worldId() }}/map/{{ tile.id }}">{{ tile.name }}</a>
+        <div class="stat-tile" routerLinkActive="current">
+          <div class="stat-label flex items-center justify-between min-h-4">
+            <a class="stat-link" routerLink="/ps2/worlds/{{ worldId() }}/map/{{ tile.id }}">{{ tile.name }}</a>
             @if (tile.cell.kind === 'alert') {
               <vw-alert-indicator></vw-alert-indicator>
             } @else if (tile.lockedBy !== null) {
@@ -26,11 +26,11 @@
             }
           </div>
           @if (tile.population !== null) {
-            <div class="tile-value">{{ tile.population | number }}</div>
+            <div class="stat-tile-value">{{ tile.population | number }}</div>
           } @else {
-            <div class="tile-value dash">—</div>
+            <div class="stat-tile-value stat-muted">—</div>
           }
-          <div class="tile-sub">
+          <div class="stat-tile-sub">
             @if (tile.populations; as populations) {
               @for (faction of factionKeys; track faction; let i = $index) {
                 @if (i > 0) { / }<span [ngClass]="(i + 1) | factionColor">{{ populations[faction] | number }}</span>

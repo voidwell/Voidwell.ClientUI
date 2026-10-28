@@ -29,8 +29,8 @@ describe('PlanetsideItemStatsComponent', () => {
         fixture.detectChanges();
         return { element: fixture.nativeElement as HTMLElement, item };
     };
-    const labels = (element: HTMLElement) => Array.from(element.querySelectorAll('.tile-label')).map(e => e.textContent);
-    const values = (element: HTMLElement) => Array.from(element.querySelectorAll('.tile-value')).map(e => e.textContent?.replace(/\s+/g, ' ').trim());
+    const labels = (element: HTMLElement) => Array.from(element.querySelectorAll('.stat-metric-label')).map(e => e.textContent);
+    const values = (element: HTMLElement) => Array.from(element.querySelectorAll('.stat-metric-value')).map(e => e.textContent?.replace(/\s+/g, ' ').trim());
 
     it('shows an infantry weapon\'s specifications, damage, kill figures and accuracy', () => {
         const { element, item } = setup(LMG);

@@ -2,12 +2,6 @@
     display: block;
 }
 
-.hint {
-    margin: 0 0 14px;
-    color: #8a9ba1;
-    font-size: 12px;
-}
-
 .tiles {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));

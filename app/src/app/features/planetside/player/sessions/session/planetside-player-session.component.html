@@ -13,7 +13,7 @@
               @if (session.logoutDate) {
                 {{ session.logoutDate | date: 'h:mm a' }}
               } @else {
-                <span class="live">In progress</span>
+                <span class="stat-live">In progress</span>
               }
             </div>
           </div>
@@ -22,36 +22,36 @@
               <div class="hero-stat">
                 <div class="pills">
                   @for (zoneId of zones(); track zoneId) {
-                    <span class="pill zone-pill">{{ zoneId | zoneName }}</span>
+                    <span class="stat-badge">{{ zoneId | zoneName }}</span>
                   }
                 </div>
                 <div class="hero-label">Played on</div>
               </div>
             }
             <div class="hero-stat">
-              <div class="pills"><span class="pill">{{ formatDuration(session.duration) }}</span></div>
+              <div class="pills"><span class="stat-badge info">{{ formatDuration(session.duration) }}</span></div>
               <div class="hero-label">Duration</div>
             </div>
           </div>
         </div>
         <div class="tiles">
-          <div class="tile"><div class="tile-label">Kills</div><div class="tile-value">{{ s.kills | number }}</div></div>
-          <div class="tile"><div class="tile-label">Deaths</div><div class="tile-value">{{ s.deaths | number }}</div></div>
-          <div class="tile"><div class="tile-label">K/D</div><div class="tile-value">{{ s.kdr | number: '1.2-2' }}</div></div>
-          <div class="tile"><div class="tile-label">Headshots</div><div class="tile-value">{{ s.headshotRatio | number: '1.0-0' }}%</div></div>
-          <div class="tile"><div class="tile-label">Vehicles Destroyed</div><div class="tile-value">{{ s.vehicleKills | number }}</div></div>
-          <div class="tile"><div class="tile-label">Vehicles Lost</div><div class="tile-value">{{ s.vehiclesLost | number }}</div></div>
-          <div class="tile"><div class="tile-label">Captured</div><div class="tile-value">{{ s.facilitiesCaptured | number }}</div></div>
-          <div class="tile"><div class="tile-label">Defended</div><div class="tile-value">{{ s.facilitiesDefended | number }}</div></div>
-          <div class="tile" title="Not counted as kills"><div class="tile-label">Teamkills</div><div class="tile-value">{{ s.teamkills | number }}</div></div>
-          <div class="tile" title="Counted as deaths"><div class="tile-label">Suicides</div><div class="tile-value">{{ s.suicides | number }}</div></div>
+          <div class="stat-metric"><div class="stat-metric-label">Kills</div><div class="stat-metric-value">{{ s.kills | number }}</div></div>
+          <div class="stat-metric"><div class="stat-metric-label">Deaths</div><div class="stat-metric-value">{{ s.deaths | number }}</div></div>
+          <div class="stat-metric"><div class="stat-metric-label">K/D</div><div class="stat-metric-value">{{ s.kdr | number: '1.2-2' }}</div></div>
+          <div class="stat-metric"><div class="stat-metric-label">Headshots</div><div class="stat-metric-value">{{ s.headshotRatio | number: '1.0-0' }}%</div></div>
+          <div class="stat-metric"><div class="stat-metric-label">Vehicles Destroyed</div><div class="stat-metric-value">{{ s.vehicleKills | number }}</div></div>
+          <div class="stat-metric"><div class="stat-metric-label">Vehicles Lost</div><div class="stat-metric-value">{{ s.vehiclesLost | number }}</div></div>
+          <div class="stat-metric"><div class="stat-metric-label">Captured</div><div class="stat-metric-value">{{ s.facilitiesCaptured | number }}</div></div>
+          <div class="stat-metric"><div class="stat-metric-label">Defended</div><div class="stat-metric-value">{{ s.facilitiesDefended | number }}</div></div>
+          <div class="stat-metric" title="Not counted as kills"><div class="stat-metric-label">Teamkills</div><div class="stat-metric-value">{{ s.teamkills | number }}</div></div>
+          <div class="stat-metric" title="Counted as deaths"><div class="stat-metric-label">Suicides</div><div class="stat-metric-value">{{ s.suicides | number }}</div></div>
         </div>
       </mat-card-content>
     </mat-card>
 
     <div class="flex flex-wrap gap-4">
       <mat-card class="flex-[2_1_420px]">
-        <mat-card-title class="card-title">
+        <mat-card-title class="stat-title-row">
           <span>Activity</span>
           <span class="legend"><span class="dot kill"></span>Kills <span class="dot death"></span>Deaths</span>
         </mat-card-title>
@@ -73,7 +73,7 @@
       </mat-card>
 
       <mat-card class="flex-[1_1_280px]">
-        <mat-card-title class="card-title">Top Weapons</mat-card-title>
+        <mat-card-title class="stat-title-row">Top Weapons</mat-card-title>
         <mat-card-content>
           @for (usage of weapons(); track usage.weapon.id) {
             <div class="weapon">
@@ -97,15 +97,9 @@
     </div>
 
     <mat-card>
-      <mat-card-title class="card-title flex-wrap gap-3">
+      <mat-card-title class="stat-title-row flex-wrap gap-3">
         <span>Event Log</span>
-        @let c = filterCounts();
-        <mat-button-toggle-group aria-label="Show" hideSingleSelectionIndicator [value]="logFilter()" (change)="logFilter.set($event.value)">
-          <mat-button-toggle value="all">All {{ c.all }}</mat-button-toggle>
-          <mat-button-toggle value="combat">Combat {{ c.combat }}</mat-button-toggle>
-          <mat-button-toggle value="vehicles">Vehicles {{ c.vehicles }}</mat-button-toggle>
-          <mat-button-toggle value="facilities">Facilities {{ c.facilities }}</mat-button-toggle>
-        </mat-button-toggle-group>
+        <vw-chips label="Show" [options]="logFilterOptions()" [value]="logFilter()" (choose)="logFilter.set($event)"></vw-chips>
       </mat-card-title>
       <mat-card-content>
         <ol class="log">

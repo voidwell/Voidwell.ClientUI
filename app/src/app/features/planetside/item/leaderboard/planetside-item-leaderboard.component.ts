@@ -4,7 +4,6 @@ import { DecimalPipe, PercentPipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
-import { MatTable, MatColumnDef, MatHeaderCellDef, MatHeaderCell, MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow } from '@angular/material/table';
 import { MatIcon } from '@angular/material/icon';
 import { combineLatest, of } from 'rxjs';
 import { catchError, filter, map, startWith, switchMap } from 'rxjs/operators';
@@ -26,8 +25,7 @@ type LeaderboardResult = { rows: WeaponLeaderboardRow[] } | { error: true };
     templateUrl: './planetside-item-leaderboard.component.html',
     styleUrls: ['./planetside-item-leaderboard.component.css'],
     imports: [
-        MatCard, MatCardTitle, MatCardContent, MatTable, MatSort, MatSortHeader, MatColumnDef, MatHeaderCellDef, MatHeaderCell,
-        MatCellDef, MatCell, MatHeaderRowDef, MatHeaderRow, MatRowDef, MatRow, MatIcon, RouterLink, DecimalPipe, PercentPipe,
+        MatCard, MatCardTitle, MatCardContent, MatSort, MatSortHeader, MatIcon, RouterLink, DecimalPipe, PercentPipe,
         LoaderComponent, GradedFigureComponent, FactionIconComponent
     ]
 })
@@ -35,7 +33,6 @@ export class PlanetsideItemLeaderboardComponent {
     private itemComponent = inject(PlanetsideItemComponent);
     private leaderboardRepository = inject(LeaderboardRepository);
 
-    readonly columns = ['rank', 'name', 'kills', 'vehicleKills', 'deaths', 'kdr', 'accuracy', 'hsr', 'kph', 'time', 'expand'];
     readonly pageSize = LEADERBOARD_PAGE_SIZE;
 
     readonly kdr = kdr;

@@ -2,7 +2,7 @@
   <mat-card-title>Weapon tracker</mat-card-title>
   <mat-card-content>
     @if (errorMessage) {
-      <p class="error-text">{{ errorMessage }}</p>
+      <p class="error-text m-0 mb-3">{{ errorMessage }}</p>
     }
     <div class="controls">
       <mat-form-field class="field" subscriptSizing="dynamic">
@@ -29,7 +29,7 @@
         <mat-chip-grid #weaponChips aria-label="Weapons to plot">
           @for (selectedWeapon of selectedWeapons; track selectedWeapon; let i = $index) {
             <mat-chip-row (removed)="onRemoveSelectedWeapon(selectedWeapon)">
-              <span class="swatch" [style.background]="getLegendColor(i)"></span>{{ selectedWeapon.name }}&ngsp;<span class="weapon-id">{{ selectedWeapon.id }}</span>
+              <span class="stat-swatch" [style.background]="getLegendColor(i)"></span>{{ selectedWeapon.name }}&ngsp;<span class="weapon-id">{{ selectedWeapon.id }}</span>
               <mat-icon fontSet="mdi" fontIcon="mdi-close-circle" matChipRemove></mat-icon>
             </mat-chip-row>
           }
@@ -45,9 +45,9 @@
           }
         </mat-autocomplete>
       </mat-form-field>
-      <div class="plot-row">
+      <div class="flex flex-wrap items-center gap-3 mt-3">
         <button mat-flat-button (click)="onSubmit()" [disabled]="isLoading || selectedWeapons.length === 0">Plot</button>
-        <span class="hint">
+        <span class="stat-hint">
           @if (selectionChanged) {
             The weapons have changed. Press Plot to update the chart.
           } @else if (selectedWeapons.length) {
@@ -58,7 +58,7 @@
         </span>
       </div>
     } @else {
-      <p class="hint">Pick a category to choose its weapons.</p>
+      <p class="stat-hint m-0">Pick a category to choose its weapons.</p>
     }
   </mat-card-content>
 </mat-card>
@@ -72,21 +72,17 @@
     }
   </mat-card-title>
   <mat-card-content>
-    <div class="range-bar" [hidden]="isLoading || !hasStats">
-      <div class="ranges" role="group" aria-label="Zoom">
-        @for (range of ranges; track range.id) {
-          <button type="button" class="stat-chip" [class.on]="activeRange() === range.id" [attr.aria-pressed]="activeRange() === range.id" (click)="onZoom(range.id)">{{ range.display }}</button>
-        }
-      </div>
-      <div class="dates">
+    <div class="stat-range-bar" [hidden]="isLoading || !hasStats">
+      <vw-chips label="Zoom" [options]="ranges" [value]="activeRange()" (choose)="onZoom($event)"></vw-chips>
+      <div class="stat-dates">
         <span>From</span>
-        <mat-form-field class="input-date" subscriptSizing="dynamic">
+        <mat-form-field class="stat-input-date" subscriptSizing="dynamic">
           <input matInput [matDatepicker]="picker1" [formControl]="selectedStartDate" (dateChange)="onDateChange($event)" aria-label="From date">
           <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
           <mat-datepicker #picker1></mat-datepicker>
         </mat-form-field>
         <span>To</span>
-        <mat-form-field class="input-date" subscriptSizing="dynamic">
+        <mat-form-field class="stat-input-date" subscriptSizing="dynamic">
           <input matInput [matDatepicker]="picker2" [formControl]="selectedEndDate" (dateChange)="onDateChange($event)" aria-label="To date">
           <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
           <mat-datepicker #picker2></mat-datepicker>
@@ -94,15 +90,15 @@
       </div>
     </div>
 
-    <div class="chart-area">
-      <div class="graph-container">
-        <div #linegraph id="line-graph"></div>
-        <div id="tooltip"></div>
+    <div class="stat-chart-area">
+      <div class="stat-chart">
+        <div #linegraph id="line-graph" class="stat-line-graph"></div>
+        <div id="tooltip" class="stat-chart-tooltip"></div>
       </div>
       @if (isLoading) {
-        <div class="overlay"><vw-loader variant="panel" [loading]="true"></vw-loader></div>
+        <div class="stat-chart-overlay"><vw-loader variant="panel" [loading]="true"></vw-loader></div>
       } @else if (!hasStats) {
-        <p class="overlay hint">Choose weapons above and press Plot.</p>
+        <p class="stat-chart-overlay stat-hint">Choose weapons above and press Plot.</p>
       }
     </div>
 
@@ -120,7 +116,7 @@
             @for (row of sortedRows(); track row.id) {
               <tr>
                 <td class="left pinned">
-                  <span class="swatch" [style.background]="row.color"></span><a class="stat-link stat-name" routerLink="/ps2/item/{{ row.id }}" [title]="row.name">{{ row.name }}</a>&ngsp;<span class="weapon-id">{{ row.id }}</span>
+                  <span class="stat-swatch" [style.background]="row.color"></span><a class="stat-link stat-name" routerLink="/ps2/item/{{ row.id }}" [title]="row.name">{{ row.name }}</a>&ngsp;<span class="weapon-id">{{ row.id }}</span>
                 </td>
                 @if (row.latest === null) { <td class="dash">—</td> } @else { <td>{{ row.latest | number: '1.0-2' }}</td> }
                 @if (row.peak === null) { <td class="dash">—</td> } @else { <td>{{ row.peak | number: '1.0-2' }}</td> }

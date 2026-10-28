@@ -15,22 +15,22 @@
           @if (alarm()) {
             <vw-alert-indicator></vw-alert-indicator>
           }
-          <span class="time-left"><vw-countdown [end]="end()"></vw-countdown> remaining</span>
+          <span class="stat-pill amber tabular-nums"><vw-countdown [end]="end()"></vw-countdown> remaining</span>
         </div>
-        <span class="muted">Started {{ start() | date: 'shortTime' }}</span>
+        <span class="stat-hint">Started {{ start() | date: 'shortTime' }}</span>
       } @else {
-        <span class="label">Duration</span>
+        <span class="stat-label">Duration</span>
         <b>{{ durationMinutes() | number }} min</b>
-        <span class="muted">Ended {{ end() | date: 'shortTime' }}</span>
+        <span class="stat-hint">Ended {{ end() | date: 'shortTime' }}</span>
       }
     </div>
   </div>
-  <div class="tiles">
+  <div class="stat-tiles">
     @for (tile of tiles(); track tile.factionId) {
-      <div class="tile">
-        <div class="tile-label">{{ tile.factionId | factionName }}</div>
-        <div class="tile-value" [ngClass]="tile.factionId | factionColor">{{ tile.score | number: '1.0-0' }}%</div>
-        <div class="tile-sub">
+      <div class="stat-tile">
+        <div class="stat-label">{{ tile.factionId | factionName }}</div>
+        <div class="stat-tile-value" [ngClass]="tile.factionId | factionColor">{{ tile.score | number: '1.0-0' }}%</div>
+        <div class="stat-tile-sub">
           @if (tile.change !== null) {
             Started at {{ tile.started | number: '1.0-0' }}% · {{ formatChange(tile.change) }}
           } @else {
@@ -39,16 +39,16 @@
         </div>
       </div>
     }
-    <div class="tile">
-      <div class="tile-label">Started</div>
-      <div class="tile-value plain">{{ start() | date: 'shortTime' }}</div>
-      <div class="tile-sub">{{ start() | date: 'mediumDate' }}</div>
+    <div class="stat-tile">
+      <div class="stat-label">Started</div>
+      <div class="stat-tile-value">{{ start() | date: 'shortTime' }}</div>
+      <div class="stat-tile-sub">{{ start() | date: 'mediumDate' }}</div>
     </div>
     @if (showEnd()) {
-      <div class="tile">
-        <div class="tile-label">Ended</div>
-        <div class="tile-value plain">{{ end() | date: 'shortTime' }}</div>
-        <div class="tile-sub">{{ end() | date: 'mediumDate' }}</div>
+      <div class="stat-tile">
+        <div class="stat-label">Ended</div>
+        <div class="stat-tile-value">{{ end() | date: 'shortTime' }}</div>
+        <div class="stat-tile-sub">{{ end() | date: 'mediumDate' }}</div>
       </div>
     }
   </div>

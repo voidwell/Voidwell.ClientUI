@@ -1,12 +1,12 @@
 @let outfit = data();
 @if (outfit) {
-  <mat-card class="outfit-card mb-4" [class.bg-vs]="outfit.factionId === 1" [class.bg-nc]="outfit.factionId === 2" [class.bg-tr]="outfit.factionId === 3">
+  <mat-card class="outfit-card mb-4" [class.faction-head-vs]="outfit.factionId === 1" [class.faction-head-nc]="outfit.factionId === 2" [class.faction-head-tr]="outfit.factionId === 3">
     <div class="outfit-body">
       @if (outfit.factionId) {
         <vw-faction-icon class="emblem" [factionId]="outfit.factionId"></vw-faction-icon>
       }
       <div class="min-w-0">
-        <h1 class="outfit-name">
+        <h1 class="stat-head-title">
           @if (outfit.alias) {
             <span class="alias">[{{ outfit.alias }}]</span>
           }
@@ -14,7 +14,7 @@
         </h1>
         <div class="outfit-meta">
           @if (outfit.factionName) {
-            <span class="pill">{{ outfit.factionName }}</span>
+            <span class="stat-pill">{{ outfit.factionName }}</span>
           }
           @if (outfit.worldName) {
             <span>on <strong>{{ outfit.worldName }}</strong></span>

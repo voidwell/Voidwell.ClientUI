@@ -13,20 +13,20 @@ describe('PlanetsidePlayerStatsWeaponsCardComponent', () => {
     it('shows the accuracy, the damage spread, the accuracy bar and the supporting counts', () => {
         const el = render(500, 300);
 
-        expect(el.querySelector('.hero-value').textContent).toBe('25.00%');
-        expect(el.querySelector('.spread-value').textContent.trim()).toBe('+200');
-        expect(el.querySelector('.spread-value').classList).toContain('positive');
-        expect((el.querySelector('.bar-fill.accuracy') as HTMLElement).style.width).toBe('25%');
-        expect(el.querySelector('.bar-legend').textContent).toContain('20.00 shots per kill');
-        expect(el.querySelector('.bar-legend').textContent).toContain('5.00 landed per kill');
-        const tiles = Array.from(el.querySelectorAll('.tile')).map(t => t.querySelector('.tile-value').textContent.trim());
+        expect(el.querySelector('.stat-hero-value').textContent).toBe('25.00%');
+        expect(el.querySelector('.stat-badge').textContent.trim()).toBe('+200');
+        expect(el.querySelector('.stat-badge').classList).toContain('positive');
+        expect((el.querySelector('.stat-meter > .accuracy') as HTMLElement).style.width).toBe('25%');
+        expect(el.querySelector('.stat-meter-legend').textContent).toContain('20.00 shots per kill');
+        expect(el.querySelector('.stat-meter-legend').textContent).toContain('5.00 landed per kill');
+        const tiles = Array.from(el.querySelectorAll('.stat-metric')).map(t => t.querySelector('.stat-metric-value').textContent.trim());
         expect(tiles).toEqual(['1,000', '250', '500', '300']);
     });
 
     it('marks a negative damage spread', () => {
         const el = render(100, 400);
 
-        expect(el.querySelector('.spread-value').textContent.trim()).toBe('-300');
-        expect(el.querySelector('.spread-value').classList).toContain('negative');
+        expect(el.querySelector('.stat-badge').textContent.trim()).toBe('-300');
+        expect(el.querySelector('.stat-badge').classList).toContain('negative');
     });
 });
