@@ -3,6 +3,32 @@
     color: #edeff0;
 }
 
+.body {
+    position: relative;
+    overflow: hidden;
+    margin: -16px -16px 0;
+    padding: 16px 16px 0;
+}
+
+.art {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 210px;
+    background-position: center;
+    background-size: cover;
+    opacity: 0.85;
+    mask-image: linear-gradient(to right, #000 30%, transparent 100%);
+}
+
+.body > :not(.art) {
+    position: relative;
+}
+
+.has-art .head,
+.has-art .stat-tiles {
+    padding-left: 150px;
+}
+
 .head {
     display: flex;
     flex-wrap: wrap;
@@ -58,6 +84,19 @@ h1 {
 }
 
 @media (max-width: 700px) {
+    .art {
+        inset: 0 0 auto 0;
+        width: auto;
+        height: 120px;
+        opacity: 0.3;
+        mask-image: linear-gradient(to bottom, #000, transparent);
+    }
+
+    .has-art .head,
+    .has-art .stat-tiles {
+        padding-left: 16px;
+    }
+
     .status {
         align-items: flex-start;
         padding: 0;

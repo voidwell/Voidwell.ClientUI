@@ -1,4 +1,8 @@
 <mat-card class="header-card mb-4">
+  <div class="body" [class.has-art]="art()">
+    @if (art(); as src) {
+      <div class="art" [style.background-image]="'url(' + src + ')'"></div>
+    }
   <div class="head">
     <div class="titles">
       <h1>{{ title() }}</h1>
@@ -51,6 +55,7 @@
         <div class="stat-tile-sub">{{ end() | date: 'mediumDate' }}</div>
       </div>
     }
+  </div>
   </div>
   <mat-card-footer>
     <vw-tab-nav-sub-bar [links]="tabs()"></vw-tab-nav-sub-bar>

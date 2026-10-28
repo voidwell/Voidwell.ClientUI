@@ -38,6 +38,7 @@
                       <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.key)" [attr.aria-label]="'Show the details of ' + row.name" (click)="toggle(row.key)">
                         <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.key) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
                       </button>
+                      <vw-zone-image class="align-middle mr-2" [zoneId]="row.zoneId" [size]="26"></vw-zone-image>
                       <a class="stat-link stat-name" routerLink="/ps2/alerts/{{ row.worldId }}/{{ row.instanceId }}" [title]="row.name">{{ row.name }}</a>
                     </td>
                     <td class="left hs stat-muted">{{ row.serverName || '—' }}</td>
