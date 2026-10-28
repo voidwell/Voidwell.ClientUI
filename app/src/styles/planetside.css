@@ -242,6 +242,15 @@ mat-card-title a.stat-action {
     justify-content: flex-start;
 }
 
+/* The arrow before the label reverses the row, which flips which end is which. */
+.stat-table th .mat-sort-header-container.mat-sort-header-position-before {
+    justify-content: flex-start;
+}
+
+.stat-table th.left .mat-sort-header-container.mat-sort-header-position-before {
+    justify-content: flex-end;
+}
+
 .stat-table .lead {
     color: #fff;
     font-weight: 500;

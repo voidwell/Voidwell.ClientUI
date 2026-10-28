@@ -165,8 +165,6 @@ Keep new and reworked pages consistent with these principles.
 - Check every visual change in a browser at desktop and phone widths, with realistic data that includes the awkward
   cases (long names, missing values, zeros, empty lists).
 - On small screens, content wraps or stacks and stays aligned. Nothing should scroll the page sideways.
-- The `screenshot-page` skill (`.claude/skills/`) shows how to check a page without the real backend, and the
-  `commit-and-pr-on-windows` skill covers committing and opening a PR from this machine.
 
 ## Deployment
 

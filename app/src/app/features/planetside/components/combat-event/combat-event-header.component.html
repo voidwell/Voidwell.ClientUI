@@ -1,4 +1,8 @@
 <mat-card class="header-card mb-4">
+  <div class="body" [class.has-art]="art()">
+    @if (art(); as src) {
+      <div class="art" [style.background-image]="'url(' + src + ')'"></div>
+    }
   <div class="head">
     <div class="titles">
       <h1>{{ title() }}</h1>
@@ -17,11 +21,11 @@
           }
           <span class="stat-pill amber tabular-nums"><vw-countdown [end]="end()"></vw-countdown> remaining</span>
         </div>
-        <span class="stat-hint">Started {{ start() | date: 'shortTime' }}</span>
+        <span class="stat-hint">Started {{ start() | date: 'MMM d, h:mm a' }}</span>
       } @else {
         <span class="stat-label">Duration</span>
         <b>{{ durationMinutes() | number }} min</b>
-        <span class="stat-hint">Ended {{ end() | date: 'shortTime' }}</span>
+        <span class="stat-hint">{{ start() | date: 'MMM d, h:mm a' }} – {{ end() | date: sameDay() ? 'h:mm a' : 'MMM d, h:mm a' }}</span>
       }
     </div>
   </div>
@@ -39,18 +43,7 @@
         </div>
       </div>
     }
-    <div class="stat-tile">
-      <div class="stat-label">Started</div>
-      <div class="stat-tile-value">{{ start() | date: 'shortTime' }}</div>
-      <div class="stat-tile-sub">{{ start() | date: 'mediumDate' }}</div>
-    </div>
-    @if (showEnd()) {
-      <div class="stat-tile">
-        <div class="stat-label">Ended</div>
-        <div class="stat-tile-value">{{ end() | date: 'shortTime' }}</div>
-        <div class="stat-tile-sub">{{ end() | date: 'mediumDate' }}</div>
-      </div>
-    }
+  </div>
   </div>
   <mat-card-footer>
     <vw-tab-nav-sub-bar [links]="tabs()"></vw-tab-nav-sub-bar>
