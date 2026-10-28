@@ -1,4 +1,6 @@
-﻿<vw-loader [loading]="isLoading"></vw-loader>
+﻿@if (isLoading) {
+  <div class="map"></div>
+}
 @if (errorMessage) {
   <vw-error-card></vw-error-card>
 }
