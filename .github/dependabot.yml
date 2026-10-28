@@ -5,6 +5,11 @@ updates:
     schedule:
       interval: weekly
     open-pull-requests-limit: 10
+    ignore:
+      # Angular's compiler-cli pins TypeScript to a single minor (currently >=6.0 <6.1);
+      # bump it by hand when Angular supports the next one.
+      - dependency-name: typescript
+        update-types: ["version-update:semver-major", "version-update:semver-minor"]
     groups:
       angular:
         patterns:
