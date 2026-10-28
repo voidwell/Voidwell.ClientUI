@@ -15,9 +15,9 @@
   @if (tiles().length) {
     <div class="stat-tiles">
       @for (tile of tiles(); track tile.id) {
-        <div class="stat-tile" routerLinkActive="current">
+        <a class="stat-tile zone-tile" routerLink="/ps2/worlds/{{ worldId() }}/map/{{ tile.id }}" routerLinkActive="current">
           <div class="stat-label flex items-center justify-between min-h-4">
-            <a class="stat-link" routerLink="/ps2/worlds/{{ worldId() }}/map/{{ tile.id }}">{{ tile.name }}</a>
+            <span>{{ tile.name }}</span>
             @if (tile.cell.kind === 'alert') {
               <vw-alert-indicator></vw-alert-indicator>
             } @else if (tile.lockedBy !== null) {
@@ -50,7 +50,7 @@
               <i class="none"></i>
             }
           </div>
-        </div>
+        </a>
       }
     </div>
   }
