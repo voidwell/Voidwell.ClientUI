@@ -32,7 +32,7 @@
     "@ngrx/effects": "^22.0.1",
     "@ngrx/store": "^22.0.1",
     "@tailwindcss/postcss": "^4.3.3",
-    "angular-auth-oidc-client": "^22.0.1",
+    "angular-auth-oidc-client": "^22.0.2",
     "d3": "^7.9.0",
     "dynamics.js": "^1.1.5",
     "leaflet": "^1.9.4",
