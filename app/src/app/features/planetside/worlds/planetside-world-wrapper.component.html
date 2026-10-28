@@ -3,7 +3,7 @@
   <vw-error-card></vw-error-card>
 } @else if (!isLoading()) {
   <mat-card class="stat-card mb-4">
-    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 px-4 pb-2">
+    <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 pb-2">
       <mat-card-title>Servers</mat-card-title>
       <span class="stat-muted">{{ totalOnline() | number }} {{ totalOnline() === 1 ? 'player' : 'players' }} online across {{ onlineWorldCount() | number }} {{ onlineWorldCount() === 1 ? 'server' : 'servers' }}</span>
     </div>

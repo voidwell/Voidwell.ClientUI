@@ -32,6 +32,18 @@
     font-variant-numeric: tabular-nums;
 }
 
+/* The whole tile opens the zone's map */
+.zone-tile {
+    display: block;
+    color: inherit;
+}
+
+.zone-tile:hover,
+.zone-tile:focus-visible {
+    border-color: rgba(109, 187, 255, .5);
+    color: inherit;
+}
+
 /* The zone whose map is showing */
 .stat-tile.current {
     border-color: rgba(109, 187, 255, .5);
