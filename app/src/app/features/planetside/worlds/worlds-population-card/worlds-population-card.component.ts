@@ -7,7 +7,6 @@ import { catchError, map } from 'rxjs/operators';
 import { PopulationPeriod } from '@core/api/models/ps2/common.model';
 import { WorldRepository } from '@core/api/ps2/world.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 import { escapeHtml } from '../../population/population-figures';
 import { PopulationPoint, PopulationWorld, WorldPopulationSeries, populationSeries } from './worlds-population-figures';
 
@@ -16,13 +15,12 @@ const PERIOD_HOURS = 1;
 const MARGIN = { top: 8, right: 12, bottom: 26, left: 44 };
 
 /**
- * The players online on each server over the last hour, a line each with the three factions added up. The chips narrow
- * the chart to one server.
+ * The players online on each server over the last hour, a line each with the three factions added up. The chips switch servers on and off, all on to begin with.
  */
 @Component({
     selector: 'worlds-population-card',
     templateUrl: './worlds-population-card.component.html',
-    imports: [MatCard, MatCardTitle, MatCardContent, ChipsComponent, LoaderComponent]
+    imports: [MatCard, MatCardTitle, MatCardContent, LoaderComponent]
 })
 export class WorldsPopulationCardComponent {
     private worldRepository = inject(WorldRepository);
@@ -35,17 +33,13 @@ export class WorldsPopulationCardComponent {
 
     /** The history of each server, or `null` while it loads. */
     private readonly histories = signal<Record<number, PopulationPeriod[]> | null>(null);
-    /** The server the chart is narrowed to; every server's line when `null`. */
-    readonly selected = signal<number | null>(null);
+    /** The servers switched off; every server is plotted until it is picked here, including ones that arrive later. */
+    readonly deselected = signal<ReadonlySet<number>>(new Set());
 
     readonly isLoading = computed(() => this.histories() === null);
-    private readonly series = computed(() => populationSeries(this.worlds(), this.histories() ?? {}));
-    readonly shown = computed(() => this.series().filter(series => series.points.length && (this.selected() === null || series.id === this.selected())));
+    readonly series = computed(() => populationSeries(this.worlds(), this.histories() ?? {}));
+    readonly shown = computed(() => this.series().filter(series => series.points.length && !this.deselected().has(series.id)));
     readonly hasData = computed(() => this.shown().length > 0);
-    readonly options = computed<ChipOption<number | null>[]>(() => [
-        { value: null, label: 'All servers' },
-        ...this.series().map(series => ({ value: series.id, label: series.name }))
-    ]);
 
     constructor() {
         effect(() => {
@@ -77,6 +71,20 @@ export class WorldsPopulationCardComponent {
             });
             observer.observe(graph);
             onCleanup(() => observer.disconnect());
+        });
+    }
+
+    isOn(worldId: number): boolean {
+        return !this.deselected().has(worldId);
+    }
+
+    toggle(worldId: number): void {
+        this.deselected.update(off => {
+            const next = new Set(off);
+            if (!next.delete(worldId)) {
+                next.add(worldId);
+            }
+            return next;
         });
     }
 

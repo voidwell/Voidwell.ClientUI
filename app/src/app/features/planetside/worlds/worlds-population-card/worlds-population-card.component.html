@@ -1,8 +1,13 @@
 <mat-card class="stat-card mb-4">
   <mat-card-title>Population</mat-card-title>
   <mat-card-content>
-    <div class="mb-3">
-      <vw-chips label="Filter by server" [options]="options()" [value]="selected()" (choose)="selected.set($event)"></vw-chips>
+    <div class="flex flex-wrap gap-1.5 mb-3" role="group" aria-label="Servers to plot">
+      @for (series of series(); track series.id) {
+        <button type="button" class="stat-chip" [class.on]="isOn(series.id)" [attr.aria-pressed]="isOn(series.id)" (click)="toggle(series.id)">
+          @if (isOn(series.id)) {
+            <span class="stat-swatch" [style.background]="series.color"></span>
+          }{{ series.name }}</button>
+      }
     </div>
     <div class="stat-chart-area">
       <div class="stat-chart">
@@ -12,16 +17,9 @@
       @if (isLoading()) {
         <div class="stat-chart-overlay"><vw-loader variant="panel" [loading]="true"></vw-loader></div>
       } @else if (!hasData()) {
-        <p class="stat-chart-overlay stat-hint">No population to show.</p>
+        <p class="stat-chart-overlay stat-hint">{{ deselected().size >= series().length ? 'Pick a server to plot.' : 'No population to show.' }}</p>
       }
     </div>
-    @if (hasData()) {
-      <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2">
-        @for (series of shown(); track series.id) {
-          <span class="flex items-center"><span class="stat-swatch" [style.background]="series.color"></span>{{ series.name }}</span>
-        }
-      </div>
-    }
     <p class="stat-hint m-0 mt-2">Players online over the last hour. Times are UTC.</p>
   </mat-card-content>
 </mat-card>
