@@ -1,3 +1,11 @@
-﻿User-agent: *
+User-agent: *
+Disallow: /ps2/player/
+Disallow: /ps2/outfit/
+Disallow: /ps2/worlds/
+Disallow: /ps2/alerts/
+Disallow: /ps2/events/
+Disallow: /ps2/item/
+Disallow: /ps2/bulk
+Disallow: /admin
 
 Sitemap: https://voidwell.com/sitemap.xml
