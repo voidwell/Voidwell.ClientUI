@@ -12,6 +12,7 @@ import { PlanetsidePlayerStatsRecentSessionsCardComponent } from './recent-sessi
 import { PlanetsidePlayerStatsTopWeaponsCardComponent } from './top-weapons-card/planetside-player-stats-top-weapons-card.component';
 import { PlanetsidePlayerStatsIviCardComponent } from './ivi-card/planetside-player-stats-ivi-card.component';
 import { PlanetsidePlayerStatsDirectivesCardComponent } from './directives-card/planetside-player-stats-directives-card.component';
+import { PlanetsidePlayerStatsRecentTrendsCardComponent } from './recent-trends-card/planetside-player-stats-recent-trends-card.component';
 
 @Component({
     templateUrl: './planetside-player-stats.component.html',
@@ -26,7 +27,8 @@ import { PlanetsidePlayerStatsDirectivesCardComponent } from './directives-card/
         PlanetsidePlayerStatsIviCardComponent,
         PlanetsidePlayerStatsRecentSessionsCardComponent,
         PlanetsidePlayerStatsTopWeaponsCardComponent,
-        PlanetsidePlayerStatsDirectivesCardComponent
+        PlanetsidePlayerStatsDirectivesCardComponent,
+        PlanetsidePlayerStatsRecentTrendsCardComponent
     ]
 })
 

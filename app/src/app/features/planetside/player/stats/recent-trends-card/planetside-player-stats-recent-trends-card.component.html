@@ -1,0 +1,103 @@
+<mat-card class="stat-card">
+  <div class="stat-toolbar pt-3">
+    <mat-card-title>Recent trends <small>{{ caption() }}</small></mat-card-title>
+    <vw-chips label="Period" [options]="rangeOptions" [value]="range()" (choose)="range.set($event); hovered.set(null)"></vw-chips>
+  </div>
+
+  <div class="stat-tiles">
+    @for (tile of tiles(); track tile.label) {
+      <div class="stat-tile">
+        <div class="stat-label" [title]="tile.hint">{{ tile.label }}</div>
+        <div class="flex flex-wrap items-baseline gap-x-2">
+          <span class="stat-tile-value">{{ tile.value }}</span>
+          @if (tile.change !== null) {
+            <span class="trend-change" title="Compared with lifetime"
+              [class.up]="tile.change >= .02" [class.down]="tile.change <= -.02">{{ tile.change >= 0 ? '▲' : '▼' }} {{ (tile.change < 0 ? -tile.change : tile.change) | percent: '1.0-0' }}</span>
+          }
+        </div>
+        <div class="stat-tile-sub">{{ tile.sub }}</div>
+      </div>
+    }
+  </div>
+
+  <div class="trend-chart px-4 pb-4">
+    <div class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 pt-3.5">
+      <vw-chips label="Chart" [options]="metricOptions" [value]="metric()" (choose)="metric.set($event)"></vw-chips>
+      <div class="stat-hint flex flex-wrap gap-x-3.5 gap-y-1">
+        <span class="inline-flex items-center"><span class="stat-swatch bar-up"></span>{{ diverging() ? 'Kills' : def().label }} per {{ unit() }}</span>
+        @if (diverging()) {
+          <span class="inline-flex items-center"><span class="stat-swatch bar-down"></span>Deaths per {{ unit() }}</span>
+        }
+        @if (lifetimeLine() !== null) {
+          <span class="inline-flex items-center"><span class="lifetime-key"></span>Lifetime {{ format(lifetimeLine(), def().digits) }}</span>
+        }
+      </div>
+    </div>
+
+    @if (anyPlayed()) {
+      <div class="flex gap-2 mt-2.5" role="img" [attr.aria-label]="chartLabel()">
+        <div class="axis" aria-hidden="true">
+          <span>{{ format(axisMax(), def().digits) }}</span>
+          <span>{{ diverging() ? '0' : format(axisMax() / 2, def().digits) }}</span>
+          <span>{{ diverging() ? format(axisMax(), def().digits) : '0' }}</span>
+        </div>
+        <div class="flex-1 min-w-0">
+          <div class="plot" [class.diverging]="diverging()" (mouseleave)="hovered.set(null)">
+            <div class="bars" [class.dense]="range() === 'day'">
+              @for (bar of bars(); track bar.start.getTime(); let i = $index) {
+                <div class="bar" [class.on]="hovered() === i" (mouseenter)="hovered.set(i)">
+                  <div class="half up">
+                    @if (bar.up !== null) {
+                      <div class="fill up" [style.height.%]="bar.upHeight"></div>
+                    } @else if (!diverging()) {
+                      <div class="fill none"></div>
+                    }
+                  </div>
+                  @if (diverging()) {
+                    <div class="half down">
+                      @if (bar.down !== null) {
+                        <div class="fill down" [style.height.%]="bar.downHeight"></div>
+                      } @else {
+                        <div class="fill none"></div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            </div>
+            @if (lifetimeOffset() !== null) {
+              <div class="lifetime" [style.bottom.%]="lifetimeOffset()"></div>
+            }
+            @if (hoveredBucket(); as b) {
+              <div class="stat-chart-tooltip" [style.left.%]="tooltipLeft()">
+                <strong>{{ bucketTitle() }}</strong>
+                @if (!b.played) {
+                  <div class="stat-muted">Didn't play</div>
+                } @else if (diverging()) {
+                  <div><span class="stat-swatch bar-up"></span>{{ b.kills | number }} kills</div>
+                  <div><span class="stat-swatch bar-down"></span>{{ b.deaths | number }} deaths</div>
+                  <div class="stat-muted">KDR {{ format(kdr(b), '1.2-2') }}</div>
+                } @else {
+                  <div><span class="stat-swatch bar-up"></span>{{ format(hoveredBar()?.up ?? null, def().digits) }}{{ def().unit ?? '' }}</div>
+                  <div class="stat-muted">{{ format(b.seconds / 3600, '1.1-1') }} h played</div>
+                }
+              </div>
+            }
+          </div>
+          <div class="ticks" [class.dense]="range() === 'day'" aria-hidden="true">
+            @for (bar of bars(); track bar.start.getTime()) {
+              <span>{{ bar.label ? (bar.start | date: dateFormat() : 'UTC') : '' }}</span>
+            }
+          </div>
+        </div>
+      </div>
+    } @else {
+      <p class="stat-empty stat-muted">No play in the {{ caption() }}.</p>
+    }
+
+    <p class="stat-hint m-0">
+      From Daybreak's daily, weekly and monthly stat history{{ trends()?.asOf ? ', last saved ' : '' }}{{ trends()?.asOf | date: 'MMM d, y' : 'UTC' }}.
+      Days, weeks and months are in UTC. Changes compare the period with lifetime figures.
+    </p>
+  </div>
+</mat-card>
