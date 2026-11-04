@@ -30,7 +30,7 @@ describe('ActivityClassesCardComponent', () => {
 
         expect(names(el)).toEqual(['Heavy', 'Medic']);
 
-        (el.querySelectorAll('.stat-chip')[1] as HTMLButtonElement).click();
+        (el.querySelectorAll('.vw-chip')[1] as HTMLButtonElement).click();
         await fixture.whenStable();
         expect(names(el)).toEqual(['Heavy']);
     });

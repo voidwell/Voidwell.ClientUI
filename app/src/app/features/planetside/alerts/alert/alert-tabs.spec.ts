@@ -115,7 +115,7 @@ describe('PlanetsideAlertMapComponent', () => {
         await fixture.whenStable();
         const el: HTMLElement = fixture.nativeElement;
 
-        (el.querySelectorAll('.stat-chip')[1] as HTMLButtonElement).click();
+        (el.querySelectorAll('.vw-chip')[1] as HTMLButtonElement).click();
         await fixture.whenStable();
 
         expect(names(el)).toEqual(['Tawrich', 'Hvar']);
@@ -128,7 +128,7 @@ describe('PlanetsideAlertMapComponent', () => {
         await fixture.whenStable();
         const el: HTMLElement = fixture.nativeElement;
 
-        (el.querySelectorAll('.stat-chip')[0] as HTMLButtonElement).click();
+        (el.querySelectorAll('.vw-chip')[0] as HTMLButtonElement).click();
         await fixture.whenStable();
 
         expect(el.querySelector('table')).toBeNull();

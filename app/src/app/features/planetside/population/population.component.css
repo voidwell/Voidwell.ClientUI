@@ -11,18 +11,6 @@
     text-transform: uppercase;
 }
 
-.servers {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-}
-
-.servers .stat-chip {
-    display: inline-flex;
-    align-items: center;
-    padding: 5px 12px;
-}
-
 .stat-table-wrap {
     margin-top: 12px;
 }

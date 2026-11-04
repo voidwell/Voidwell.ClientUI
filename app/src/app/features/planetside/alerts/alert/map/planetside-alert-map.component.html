@@ -16,10 +16,7 @@
 }
 <mat-card class="stat-card mb-4">
   <mat-card-title>Map events</mat-card-title>
-  <div class="stat-chips" role="group" aria-label="Kinds of map event">
-    <button type="button" class="stat-chip" [class.on]="filter().captures" [attr.aria-pressed]="filter().captures" (click)="toggle('captures')">Captures</button>
-    <button type="button" class="stat-chip" [class.on]="filter().defends" [attr.aria-pressed]="filter().defends" (click)="toggle('defends')">Defends</button>
-  </div>
+  <vw-chips class="px-4 pt-1 pb-3" label="Kinds of map event" [options]="kindOptions" [values]="pickedKinds()" (choose)="toggle($event)"></vw-chips>
   <mat-card-content>
     @if (rows().length) {
       <div class="stat-table-wrap">

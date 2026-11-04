@@ -5,14 +5,7 @@
       <p class="error-text m-0 mb-3">{{ errorMessage }}</p>
     }
     <span class="label" id="servers-label">Servers</span>
-    <div class="servers" role="group" aria-labelledby="servers-label">
-      @for (world of availableWorlds; track world.id) {
-        <button type="button" class="stat-chip" [class.on]="isSelected(world)" [attr.aria-pressed]="isSelected(world)" [disabled]="isLoading" (click)="onToggleWorld(world)">
-          @if (selectedColor(world); as color) {
-            <span class="stat-swatch" [style.background]="color"></span>
-          }{{ world.name || 'Server ' + world.id }}</button>
-      }
-    </div>
+    <vw-chips class="servers" label="Servers" [options]="serverOptions" [values]="pickedIds" [disabled]="isLoading" (choose)="onToggleWorldId($event)"></vw-chips>
     <div class="flex flex-wrap items-center gap-3 mt-3">
       <button mat-flat-button (click)="onSubmit()" [disabled]="isLoading || selectedWorlds.length === 0">Plot</button>
       <span class="stat-hint">

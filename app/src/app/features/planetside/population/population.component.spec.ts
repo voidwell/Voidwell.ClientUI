@@ -49,7 +49,7 @@ describe('PopulationComponent', () => {
     it('lists the servers to pick from, and has nothing to chart', () => {
         const el: HTMLElement = create().nativeElement;
 
-        expect([...el.querySelectorAll('.servers .stat-chip')].map(chip => chip.textContent?.trim())).toEqual(['Osprey', 'Wainwright', 'Connery']);
+        expect([...el.querySelectorAll('.servers .vw-chip')].map(chip => chip.textContent?.trim())).toEqual(['Osprey', 'Wainwright', 'Connery']);
         expect(text(el, '.stat-hint')).toBe('Pick the servers to compare.');
         expect(el.textContent).toContain('Choose servers above and press Plot.');
         expect(el.querySelector('table')).toBeNull();
@@ -82,7 +82,7 @@ describe('PopulationComponent', () => {
     it('picks and drops a server with its chip, and says when the chart is out of date', () => {
         const fixture = create({ worlds: '17' });
         const el: HTMLElement = fixture.nativeElement;
-        const chips = () => [...el.querySelectorAll('.servers .stat-chip')] as HTMLButtonElement[];
+        const chips = () => [...el.querySelectorAll('.servers .vw-chip')] as HTMLButtonElement[];
 
         chips()[1].click();
         fixture.detectChanges();
@@ -123,7 +123,7 @@ describe('PopulationComponent', () => {
     it('marks a zoom range as picked, and clears it when the dates are changed', () => {
         const fixture = create({ worlds: '17' });
         const el: HTMLElement = fixture.nativeElement;
-        const chips = () => [...el.querySelectorAll('vw-chips .stat-chip')] as HTMLButtonElement[];
+        const chips = () => [...el.querySelectorAll('.stat-range-bar .vw-chip')] as HTMLButtonElement[];
 
         chips()[2].click();
         fixture.detectChanges();

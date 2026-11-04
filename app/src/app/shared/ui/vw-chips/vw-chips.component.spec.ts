@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import { Router, provideRouter } from '@angular/router';
 import { ChipOption, ChipsComponent } from './vw-chips.component';
 
 @Component({
@@ -19,7 +20,7 @@ class HostComponent {
 function create() {
     const fixture = TestBed.createComponent(HostComponent);
     fixture.detectChanges();
-    const chips = () => [...fixture.nativeElement.querySelectorAll('button.stat-chip')] as HTMLButtonElement[];
+    const chips = () => [...fixture.nativeElement.querySelectorAll('button.vw-chip')] as HTMLButtonElement[];
     return { fixture, chips };
 }
 
@@ -36,8 +37,8 @@ describe('ChipsComponent', () => {
     it('classes the count of an option that asks for it', () => {
         const { chips } = create();
 
-        expect(chips()[1].querySelector('.stat-chip-count')?.classList).toContain('faction-vs-text');
-        expect(chips()[2].querySelector('.stat-chip-count')).toBeNull();
+        expect(chips()[1].querySelector('.vw-chip-count')?.classList).toContain('faction-vs-text');
+        expect(chips()[2].querySelector('.vw-chip-count')).toBeNull();
     });
 
     it('selects the chip that is clicked, including the one whose value is null', () => {
@@ -61,5 +62,67 @@ describe('ChipsComponent', () => {
         fixture.detectChanges();
 
         expect(chips().every(chip => chip.disabled)).toBe(true);
+    });
+
+    describe('picking several at once', () => {
+        @Component({
+            imports: [ChipsComponent],
+            template: `<vw-chips [options]="options" [values]="picked()" (choose)="toggle($event)" />`
+        })
+        class MultiHostComponent {
+            readonly options: ChipOption<string>[] = [{ value: 'a', label: 'Alpha', swatch: '#ff0000' }, { value: 'b', label: 'Beta' }];
+            readonly picked = signal<string[]>(['a']);
+            toggle(value: string) {
+                this.picked.update(picked => picked.includes(value) ? picked.filter(p => p !== value) : [...picked, value]);
+            }
+        }
+
+        it('marks every picked chip and reports the one clicked', () => {
+            const fixture = TestBed.createComponent(MultiHostComponent);
+            fixture.detectChanges();
+            const chips = () => [...fixture.nativeElement.querySelectorAll('button.vw-chip')] as HTMLButtonElement[];
+            expect(chips().map(chip => chip.classList.contains('on'))).toEqual([true, false]);
+
+            chips()[1].click();
+            fixture.detectChanges();
+            expect(chips().map(chip => chip.getAttribute('aria-pressed'))).toEqual(['true', 'true']);
+
+            chips()[0].click();
+            fixture.detectChanges();
+            expect(chips().map(chip => chip.classList.contains('on'))).toEqual([false, true]);
+        });
+
+        it('shows the colour dot of an option that has one', () => {
+            const fixture = TestBed.createComponent(MultiHostComponent);
+            fixture.detectChanges();
+            const swatches = [...fixture.nativeElement.querySelectorAll('.stat-swatch')] as HTMLElement[];
+
+            expect(swatches.length).toBe(1);
+            expect(swatches[0].style.background).toBe('rgb(255, 0, 0)');
+        });
+    });
+
+    describe('links', () => {
+        @Component({
+            imports: [ChipsComponent],
+            template: `<vw-chips [options]="options" />`
+        })
+        class LinkHostComponent {
+            readonly options: ChipOption<string>[] = [{ value: 'indar', label: 'Indar', link: '/ps2/map/2' }, { value: 'hossin', label: 'Hossin', link: '/ps2/map/4' }];
+        }
+
+        it('renders anchors to the routes, marking the active one', async () => {
+            TestBed.configureTestingModule({ providers: [provideRouter([{ path: '**', children: [] }])] });
+            const fixture = TestBed.createComponent(LinkHostComponent);
+            await TestBed.inject(Router).navigateByUrl('/ps2/map/4');
+            fixture.detectChanges();
+            await fixture.whenStable();
+            fixture.detectChanges();
+            const links = [...fixture.nativeElement.querySelectorAll('a.vw-chip')] as HTMLAnchorElement[];
+
+            expect(links.map(link => link.getAttribute('href'))).toEqual(['/ps2/map/2', '/ps2/map/4']);
+            expect(links.map(link => link.classList.contains('on'))).toEqual([false, true]);
+            expect(fixture.nativeElement.querySelector('button')).toBeNull();
+        });
     });
 });

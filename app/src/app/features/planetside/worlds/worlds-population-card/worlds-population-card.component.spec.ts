@@ -20,7 +20,7 @@ function create(getWorldActivity: (worldId: number) => ReturnType<WorldRepositor
 describe('WorldsPopulationCardComponent', () => {
     it('offers a chip for each server, all of them on to begin with', () => {
         const fixture = create(id => of(activity(id)));
-        const chips = [...fixture.nativeElement.querySelectorAll('button.stat-chip')] as HTMLButtonElement[];
+        const chips = [...fixture.nativeElement.querySelectorAll('button.vw-chip')] as HTMLButtonElement[];
 
         expect(chips.map(chip => chip.textContent?.trim())).toEqual(['Cobalt', 'Emerald']);
         expect(chips.map(chip => chip.getAttribute('aria-pressed'))).toEqual(['true', 'true']);
@@ -29,7 +29,7 @@ describe('WorldsPopulationCardComponent', () => {
 
     it('switches a server off and on again with its chip', () => {
         const fixture = create(id => of(activity(id)));
-        const chips = () => [...fixture.nativeElement.querySelectorAll('button.stat-chip')] as HTMLButtonElement[];
+        const chips = () => [...fixture.nativeElement.querySelectorAll('button.vw-chip')] as HTMLButtonElement[];
 
         chips()[0].click();
         fixture.detectChanges();
@@ -44,7 +44,7 @@ describe('WorldsPopulationCardComponent', () => {
     it('asks for a server when every one is switched off', () => {
         const fixture = create(id => of(activity(id)));
 
-        for (const chip of fixture.nativeElement.querySelectorAll('button.stat-chip') as NodeListOf<HTMLButtonElement>) {
+        for (const chip of fixture.nativeElement.querySelectorAll('button.vw-chip') as NodeListOf<HTMLButtonElement>) {
             chip.click();
         }
         fixture.detectChanges();

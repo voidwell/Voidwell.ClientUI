@@ -9,6 +9,7 @@ import { WorldRepository } from '@core/api/ps2/world.repository';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { escapeHtml } from '../../population/population-figures';
 import { PopulationPoint, PopulationWorld, WorldPopulationSeries, populationSeries } from './worlds-population-figures';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 /** The hours of history plotted, as on a server's activity page. */
 const PERIOD_HOURS = 1;
@@ -20,7 +21,7 @@ const MARGIN = { top: 8, right: 12, bottom: 26, left: 44 };
 @Component({
     selector: 'worlds-population-card',
     templateUrl: './worlds-population-card.component.html',
-    imports: [MatCard, MatCardTitle, MatCardContent, LoaderComponent]
+    imports: [ChipsComponent, MatCard, MatCardTitle, MatCardContent, LoaderComponent]
 })
 export class WorldsPopulationCardComponent {
     private worldRepository = inject(WorldRepository);
@@ -40,6 +41,13 @@ export class WorldsPopulationCardComponent {
     readonly series = computed(() => populationSeries(this.worlds(), this.histories() ?? {}));
     readonly shown = computed(() => this.series().filter(series => series.points.length && !this.deselected().has(series.id)));
     readonly hasData = computed(() => this.shown().length > 0);
+    /** A chip for each server, with its line's colour beside it while it is plotted. */
+    readonly serverOptions = computed<ChipOption<number>[]>(() => this.series().map(series => ({
+        value: series.id,
+        label: series.name,
+        swatch: this.deselected().has(series.id) ? null : series.color
+    })));
+    readonly onIds = computed(() => this.series().filter(series => !this.deselected().has(series.id)).map(series => series.id));
 
     constructor() {
         effect(() => {
@@ -72,10 +80,6 @@ export class WorldsPopulationCardComponent {
             observer.observe(graph);
             onCleanup(() => observer.disconnect());
         });
-    }
-
-    isOn(worldId: number): boolean {
-        return !this.deselected().has(worldId);
     }
 
     toggle(worldId: number): void {

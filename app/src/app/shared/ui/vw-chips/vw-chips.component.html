@@ -1,0 +1,17 @@
+<div class="flex flex-wrap gap-1.5" role="group" [attr.aria-label]="label()">
+    @for (option of options(); track option.value) {
+        @if (option.link !== undefined) {
+            <a class="vw-chip" [routerLink]="option.link" routerLinkActive="on" ariaCurrentWhenActive="page">
+                <ng-container *ngTemplateOutlet="content; context: { $implicit: option }"></ng-container>
+            </a>
+        } @else {
+            <button type="button" class="vw-chip" [class.on]="isPicked(option)" [attr.aria-pressed]="isPicked(option)"
+                [disabled]="disabled()" (click)="choose.emit(option.value)">
+                <ng-container *ngTemplateOutlet="content; context: { $implicit: option }"></ng-container>
+            </button>
+        }
+    }
+</div>
+<ng-template #content let-option>
+    @if (option.swatch) {<span class="stat-swatch" [style.background]="option.swatch"></span>}{{ option.label }}@if (option.count != null) {&ngsp;<span class="vw-chip-count" [ngClass]="option.countClass ?? ''">{{ option.count | number }}</span>}
+</ng-template>

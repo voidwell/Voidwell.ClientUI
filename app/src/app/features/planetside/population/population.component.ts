@@ -118,6 +118,7 @@ export class PopulationComponent implements OnInit {
                 if (worlds) {
                     this.availableWorlds = worlds;
                     this.setupFromQueryParams();
+                    this.refreshServerChips();
                 }
 
                 this.isLoading = false;
@@ -167,22 +168,27 @@ export class PopulationComponent implements OnInit {
             .attr('height', this.graphHeight);
     }
 
-    isSelected(world: World): boolean {
-        return this.selectedWorlds.includes(world);
+    /** A chip for each server, with the colour of its line beside it while it is picked. Rebuilt when the picks change. */
+    serverOptions: ChipOption<number>[] = [];
+    pickedIds: number[] = [];
+
+    private refreshServerChips() {
+        this.pickedIds = this.selectedWorlds.map(world => world.id);
+        this.serverOptions = this.availableWorlds.map(world => {
+            const index = this.selectedWorlds.indexOf(world);
+            return { value: world.id, label: world.name || 'Server ' + world.id, swatch: index < 0 ? null : this.getLegendColor(index) };
+        });
     }
 
-    /** The colour of the line a picked server will have, or `null` when it is not picked. */
-    selectedColor(world: World): string | null {
-        const index = this.selectedWorlds.indexOf(world);
-        return index < 0 ? null : this.getLegendColor(index);
-    }
-
-    onToggleWorld(world: World) {
-        if (this.isSelected(world)) {
-            this.selectedWorlds = this.selectedWorlds.filter(selected => selected !== world);
-        } else {
-            this.selectedWorlds = [...this.selectedWorlds, world];
+    onToggleWorldId(worldId: number) {
+        const world = this.availableWorlds.find(a => a.id === worldId);
+        if (!world) {
+            return;
         }
+        this.selectedWorlds = this.selectedWorlds.includes(world)
+            ? this.selectedWorlds.filter(selected => selected !== world)
+            : [...this.selectedWorlds, world];
+        this.refreshServerChips();
         this.onSelectedWorldChange();
     }
 
