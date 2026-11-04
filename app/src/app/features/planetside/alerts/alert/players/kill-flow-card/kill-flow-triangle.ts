@@ -24,8 +24,10 @@ export interface TriangleEdge {
     /** Where each side's figure sits, just outside the edge. */
     aLabel: TrianglePoint;
     bLabel: TrianglePoint;
-    /** Where the leader's margin sits, just inside the edge. */
+    /** Where the leader's margin sits: outside a slanted edge, where the other edges can't crowd it, and above a flat one. */
     marginLabel: TrianglePoint;
+    /** How the margin's text hangs from `marginLabel`: away from a slanted edge so it never covers it. */
+    marginAnchor: 'start' | 'middle' | 'end';
 }
 
 export interface KillTriangle {
@@ -82,6 +84,7 @@ export function buildKillTriangle(pairs: readonly KillFlowPair[]): KillTriangle 
             nx = -nx;
             ny = -ny;
         }
+        const slanted = Math.abs(nx) > .3;
         const shifted = (point: TrianglePoint, by: number): TrianglePoint => ({ x: point.x + nx * by, y: point.y + ny * by });
 
         edges.push({
@@ -90,7 +93,8 @@ export function buildKillTriangle(pairs: readonly KillFlowPair[]): KillTriangle 
             bSegment: { x1: split.x, y1: split.y, x2: end.x, y2: end.y },
             aLabel: shifted(along(.2), LABEL_OFFSET),
             bLabel: shifted(along(.8), LABEL_OFFSET),
-            marginLabel: shifted(along(.5), -MARGIN_OFFSET)
+            marginLabel: shifted(along(.5), slanted ? LABEL_OFFSET : -MARGIN_OFFSET),
+            marginAnchor: !slanted ? 'middle' : nx > 0 ? 'start' : 'end'
         });
     }
     return { nodes: NODES, edges };

@@ -19,7 +19,7 @@
                 <text class="triangle-figure" text-anchor="middle" [attr.x]="edge.bLabel.x" [attr.y]="edge.bLabel.y + 4">
                   @if (mode() === 'kills') { {{ edge.pair.bKills | number }} } @else { {{ 1 - edge.pair.aShare | percent: '1.0-0' }} }
                 </text>
-                <text class="triangle-margin" text-anchor="middle" [attr.x]="edge.marginLabel.x" [attr.y]="edge.marginLabel.y + 4"
+                <text class="triangle-margin" [attr.text-anchor]="edge.marginAnchor" [attr.x]="edge.marginLabel.x" [attr.y]="edge.marginLabel.y + 4"
                   [attr.fill]="edge.pair.leader ? fill(edge.pair.leader) : null">
                   @if (edge.pair.leader) { {{ edge.pair.leader | factionCode }} +{{ edge.pair.margin | number }} } @else {Even}
                 </text>
