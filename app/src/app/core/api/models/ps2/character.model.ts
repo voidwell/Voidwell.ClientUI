@@ -41,6 +41,8 @@ export interface CharacterDetailsStatsHistory {
     day?: number[];
     month?: number[];
     week?: number[];
+    /** The UTC day `day[0]` holds; `week[0]` is its Sunday-based week and `month[0]` its month. Missing on rows stored before it was recorded. */
+    lastSaveDate?: IsoDateString;
 }
 
 export interface CharacterDetailsLifetimeStats {

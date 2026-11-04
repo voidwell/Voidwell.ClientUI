@@ -1,0 +1,181 @@
+:host {
+    container-type: inline-size;
+}
+
+/* Six tiles: one row when the card is wide, then two rows of three, then three rows of two */
+.stat-tiles {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+@container (min-width: 520px) {
+    .stat-tiles {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@container (min-width: 900px) {
+    .stat-tiles {
+        grid-template-columns: repeat(6, minmax(0, 1fr));
+    }
+}
+
+.trend-change {
+    display: inline-block;
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    color: #b4bfc3;
+    font-size: 12px;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+}
+
+.trend-change.up {
+    background: rgba(56, 142, 60, .2);
+    color: #6fd48a;
+}
+
+.trend-change.down {
+    background: rgba(255, 82, 82, .18);
+    color: #ff8a8a;
+}
+
+.trend-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border-top: 1px solid #344651;
+}
+
+.bar-up {
+    background: #3aa3ff;
+}
+
+.bar-down {
+    background: #e8955a;
+}
+
+.lifetime-key {
+    width: 14px;
+    margin-right: 8px;
+    border-top: 2px dashed #b4bfc3;
+}
+
+.axis {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-width: 30px;
+    height: 200px;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+    text-align: right;
+}
+
+/* Gridlines at the top, middle and bottom; the middle one is zero when deaths hang below it */
+.plot {
+    position: relative;
+    height: 200px;
+    border-top: 1px solid rgba(138, 155, 161, .12);
+    border-bottom: 1px solid rgba(138, 155, 161, .3);
+    background: linear-gradient(transparent calc(50% - .5px), rgba(138, 155, 161, .12) calc(50% - .5px), rgba(138, 155, 161, .12) calc(50% + .5px), transparent calc(50% + .5px));
+}
+
+.plot.diverging {
+    background: linear-gradient(transparent calc(50% - .5px), rgba(138, 155, 161, .35) calc(50% - .5px), rgba(138, 155, 161, .35) calc(50% + .5px), transparent calc(50% + .5px));
+}
+
+.bars,
+.ticks {
+    display: flex;
+    gap: 8px;
+}
+
+.bars.dense,
+.ticks.dense {
+    gap: 3px;
+}
+
+.bars {
+    position: absolute;
+    inset: 0;
+}
+
+.bar {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.half {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+}
+
+.half.up {
+    align-items: flex-end;
+}
+
+.half.down {
+    align-items: flex-start;
+}
+
+.fill {
+    width: 70%;
+    max-width: 28px;
+}
+
+.fill.up {
+    border-radius: 2px 2px 0 0;
+    background: #3aa3ff;
+}
+
+.fill.down {
+    border-radius: 0 0 2px 2px;
+    background: #e8955a;
+}
+
+.fill.none {
+    height: 1px;
+    background: rgba(138, 155, 161, .35);
+}
+
+.bar.on .fill.up,
+.bar.on .fill.down {
+    filter: brightness(1.25);
+}
+
+.lifetime {
+    position: absolute;
+    right: 0;
+    left: 0;
+    border-top: 2px dashed rgba(180, 191, 195, .7);
+    pointer-events: none;
+}
+
+.stat-chart-tooltip {
+    display: block;
+    top: 4px;
+    z-index: 1;
+    min-width: 120px;
+    transform: translateX(-50%);
+}
+
+.ticks {
+    margin-top: 6px;
+    color: #8a9ba1;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+}
+
+.ticks span {
+    flex: 1;
+    min-width: 0;
+    overflow: visible;
+    text-align: center;
+    white-space: nowrap;
+}

@@ -4,6 +4,9 @@
       <planetside-player-stats-overview-card class="card flex-[3_1_36rem]" [player]="playerData"></planetside-player-stats-overview-card>
       <planetside-player-stats-siege-card class="siege-container card flex-[1_1_18rem]" [captured]="playerData.lifetimeStats.facilityCaptureCount" [defended]="playerData.lifetimeStats.facilityDefendedCount"></planetside-player-stats-siege-card>
     </div>
+    @if (playerData.statsHistory?.length) {
+      <planetside-player-stats-recent-trends-card class="card" [player]="playerData"></planetside-player-stats-recent-trends-card>
+    }
     <div class="card-grid flex flex-wrap gap-4">
       <planetside-player-stats-class-usage-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-class-usage-card>
       <planetside-player-stats-vehicle-usage-card class="card flex-1 basis-96" [player]="playerData"></planetside-player-stats-vehicle-usage-card>
