@@ -6,7 +6,32 @@
     </div>
     <mat-card-content>
       <div class="flex flex-wrap gap-x-6 gap-y-4 px-4 pt-3">
-        @if (flow.pairs.length) {
+        @if (triangle(); as triangle) {
+          <div class="pairs flex flex-col gap-2">
+            <div class="stat-label">Head to head</div>
+            <svg class="triangle" [attr.viewBox]="viewBox" role="img" aria-label="Kills each empire scored on the other two">
+              @for (edge of triangle.edges; track edge.pair.a + ':' + edge.pair.b) {
+                <line class="triangle-edge" [attr.x1]="edge.aSegment.x1" [attr.y1]="edge.aSegment.y1" [attr.x2]="edge.aSegment.x2" [attr.y2]="edge.aSegment.y2" [attr.stroke]="fill(edge.pair.a)"></line>
+                <line class="triangle-edge" [attr.x1]="edge.bSegment.x1" [attr.y1]="edge.bSegment.y1" [attr.x2]="edge.bSegment.x2" [attr.y2]="edge.bSegment.y2" [attr.stroke]="fill(edge.pair.b)"></line>
+                <text class="triangle-figure" text-anchor="middle" [attr.x]="edge.aLabel.x" [attr.y]="edge.aLabel.y + 4">
+                  @if (mode() === 'kills') { {{ edge.pair.aKills | number }} } @else { {{ edge.pair.aShare | percent: '1.0-0' }} }
+                </text>
+                <text class="triangle-figure" text-anchor="middle" [attr.x]="edge.bLabel.x" [attr.y]="edge.bLabel.y + 4">
+                  @if (mode() === 'kills') { {{ edge.pair.bKills | number }} } @else { {{ 1 - edge.pair.aShare | percent: '1.0-0' }} }
+                </text>
+                <text class="triangle-margin" text-anchor="middle" [attr.x]="edge.marginLabel.x" [attr.y]="edge.marginLabel.y + 4"
+                  [attr.fill]="edge.pair.leader ? fill(edge.pair.leader) : null">
+                  @if (edge.pair.leader) { {{ edge.pair.leader | factionCode }} +{{ edge.pair.margin | number }} } @else {Even}
+                </text>
+              }
+              @for (node of triangle.nodes; track node.factionId) {
+                <circle [attr.cx]="node.x" [attr.cy]="node.y" [attr.r]="nodeRadius" [attr.fill]="fill(node.factionId)"></circle>
+                <text class="triangle-node" text-anchor="middle" [attr.x]="node.x" [attr.y]="node.y + 5">{{ node.factionId | factionCode }}</text>
+              }
+            </svg>
+            <p class="stat-hint m-0">Kills each empire scored on the other. Each edge is split in proportion to the kills each way.</p>
+          </div>
+        } @else if (flow.pairs.length) {
           <div class="pairs flex flex-col gap-3.5">
             <div class="stat-label">Head to head</div>
             @for (pair of flow.pairs; track pair.a + ':' + pair.b) {
