@@ -39,15 +39,23 @@ describe('buildKillTriangle', () => {
         expect(Math.hypot(edge.aSegment.x1 - vs.x, edge.aSegment.y1 - vs.y)).toBeCloseTo(TRIANGLE_NODE_RADIUS);
     });
 
-    it('puts the figures outside the edge and the margin inside', () => {
+    it('puts the figures outside the triangle, and the margin outside a slanted edge but inside the flat one', () => {
         const triangle = buildKillTriangle(pairs);
         const [vs, nc, tr] = triangle.nodes;
         const centre = { x: (vs.x + nc.x + tr.x) / 3, y: (vs.y + nc.y + tr.y) / 3 };
         const dist = (p: { x: number; y: number }) => Math.hypot(p.x - centre.x, p.y - centre.y);
 
         for (const edge of triangle.edges) {
-            expect(dist(edge.aLabel)).toBeGreaterThan(dist(edge.marginLabel));
-            expect(dist(edge.bLabel)).toBeGreaterThan(dist(edge.marginLabel));
+            const middle = { x: (edge.aSegment.x1 + edge.bSegment.x2) / 2, y: (edge.aSegment.y1 + edge.bSegment.y2) / 2 };
+            const flat = edge.aSegment.y1 === edge.bSegment.y2;
+            expect(dist(edge.aLabel)).toBeGreaterThan(dist(middle));
+            expect(dist(edge.marginLabel) > dist(middle)).toBe(!flat);
         }
+    });
+
+    it('hangs the margin away from each slanted edge and centres it under the flat one', () => {
+        const edges = buildKillTriangle(pairs).edges;
+
+        expect(edges.map(e => e.marginAnchor)).toEqual(['end', 'start', 'middle']);
     });
 });
