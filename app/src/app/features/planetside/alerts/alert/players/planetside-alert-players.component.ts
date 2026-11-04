@@ -7,6 +7,7 @@ import { MatSort, MatSortHeader, Sort } from '@angular/material/sort';
 import { PlanetsideCombatEventComponent } from '../../../components/combat-event/planetside-combat-event.component';
 import { cellOf, combatPlayerRows, sortRows } from '../../../components/combat-report/combat-report-figures';
 import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
+import { AlertKillFlowCardComponent } from './kill-flow-card/alert-kill-flow-card.component';
 
 /** The players table's rows per page. */
 export const ALERT_PLAYERS_PAGE_SIZE = 25;
@@ -14,7 +15,7 @@ export const ALERT_PLAYERS_PAGE_SIZE = 25;
 /** The players of an alert or event by their figures, their names in their faction's colour. */
 @Component({
     templateUrl: './planetside-alert-players.component.html',
-    imports: [MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, NgClass, DecimalPipe, PercentPipe, FactionColorPipe]
+    imports: [MatCard, MatCardTitle, MatCardContent, MatIcon, MatSort, MatSortHeader, RouterLink, NgClass, DecimalPipe, PercentPipe, FactionColorPipe, AlertKillFlowCardComponent]
 })
 export class PlanetsideAlertPlayersComponent {
     private parentEventComponent = inject(PlanetsideCombatEventComponent);
@@ -26,6 +27,11 @@ export class PlanetsideAlertPlayersComponent {
 
     private readonly rows = computed(() => combatPlayerRows(this.parentEventComponent.event()?.log?.stats?.participants));
     readonly total = computed(() => this.rows().length);
+    /** Kills by faction pair, or null when the report has none (older API responses). */
+    readonly factionKills = computed(() => {
+        const kills = this.parentEventComponent.event()?.log?.stats?.factionKills;
+        return kills?.length ? kills : null;
+    });
 
     private readonly filtered = computed(() => {
         const term = this.search().trim().toLowerCase();

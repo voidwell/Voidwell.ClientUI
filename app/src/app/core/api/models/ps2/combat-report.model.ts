@@ -90,6 +90,14 @@ export interface CombatReportStats {
     weapons?: CombatReportWeaponStats[];
     vehicles?: CombatReportVehicleStats[];
     classes?: CombatReportClassStats[];
+    /** Kills by attacker and victim faction; the same faction on both sides is team kills. Suicides are left out. */
+    factionKills?: CombatReportFactionKills[];
+}
+
+export interface CombatReportFactionKills {
+    attackerFactionId: number;
+    victimFactionId: number;
+    kills: number;
 }
 
 export interface CaptureLogRowOutfit {

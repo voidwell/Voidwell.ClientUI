@@ -1,0 +1,90 @@
+@if (flow(); as flow) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar pt-3">
+      <mat-card-title>Kill flow <small>who killed whom</small></mat-card-title>
+      <vw-chips label="Show" [options]="modeOptions" [value]="mode()" (choose)="mode.set($event)"></vw-chips>
+    </div>
+    <mat-card-content>
+      <div class="flex flex-wrap gap-x-6 gap-y-4 px-4 pt-3">
+        @if (flow.pairs.length) {
+          <div class="pairs flex flex-col gap-3.5">
+            <div class="stat-label">Head to head</div>
+            @for (pair of flow.pairs; track pair.a + ':' + pair.b) {
+              <div class="flex flex-col gap-1.5">
+                <div class="flex items-baseline justify-between gap-2 tabular-nums">
+                  <span><b [ngClass]="pair.a | factionColor">{{ pair.a | factionCode }}</b>&ngsp;
+                    <span class="stat-muted">@if (mode() === 'kills') { {{ pair.aKills | number }} } @else { {{ pair.aShare | percent: '1.0-0' }} }</span></span>
+                  <span class="pair-edge">@if (pair.leader) { {{ pair.leader | factionCode }} +{{ pair.margin | number }} } @else {Even}</span>
+                  <span class="text-right"><span class="stat-muted">@if (mode() === 'kills') { {{ pair.bKills | number }} } @else { {{ 1 - pair.aShare | percent: '1.0-0' }} }</span>&ngsp;
+                    <b [ngClass]="pair.b | factionColor">{{ pair.b | factionCode }}</b></span>
+                </div>
+                <div class="pair-bar" aria-hidden="true">
+                  <div [style.flex-basis.%]="pair.aShare * 100" [style.background]="fill(pair.a)"></div>
+                  <div class="flex-1" [style.background]="fill(pair.b)"></div>
+                </div>
+              </div>
+            }
+            <p class="stat-hint m-0">Kills each empire scored on the other.</p>
+          </div>
+        }
+
+        <div class="grid-wrap flex flex-col gap-2">
+          <div class="stat-label">Killer ↓ · Victim →</div>
+          <div class="stat-table-wrap">
+            <table class="stat-table stat-table-bright">
+              <thead>
+                <tr>
+                  <th class="left pinned" scope="col">Killer</th>
+                  @for (victim of flow.factions; track victim) {
+                    <th scope="col"><span [ngClass]="victim | factionColor">{{ victim | factionCode }}</span></th>
+                  }
+                  <th scope="col" title="Kills of other factions">Enemy kills</th>
+                  <th scope="col" title="Team kills: kills of their own faction, kept out of the totals">TKs</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (row of flow.rows; track row.factionId) {
+                  <tr>
+                    <th class="left pinned killer" scope="row"><span [ngClass]="row.factionId | factionColor">{{ row.factionId | factionCode }}</span></th>
+                    @for (cell of row.cells; track cell.victimFactionId) {
+                      @if (cell.kills === null) {
+                        <td class="dash" title="Team kills are counted under TKs">—</td>
+                      } @else {
+                        <td [style.background]="cell.kills ? tint(row.factionId, cell.weight) : null"
+                          [title]="(row.factionId | factionCode) + ' killed ' + (cell.kills | number) + ' ' + (cell.victimFactionId | factionCode) + (cell.share === null ? '' : ' · ' + (cell.share | percent: '1.0-0') + ' of their enemy kills')">
+                          @if (mode() === 'kills') {
+                            {{ cell.kills | number }}
+                          } @else if (cell.share === null) {
+                            —
+                          } @else {
+                            {{ cell.share | percent: '1.0-0' }}
+                          }
+                        </td>
+                      }
+                    }
+                    <td class="font-medium">{{ row.enemyKills | number }}</td>
+                    <td class="stat-muted">{{ row.teamkills | number }}</td>
+                  </tr>
+                }
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th class="left pinned" scope="row" title="Deaths to players of other factions">Deaths</th>
+                  @for (deaths of flow.deathsToEnemies; track $index) {
+                    <td class="font-medium">{{ deaths | number }}</td>
+                  }
+                  <td></td>
+                  <td></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </div>
+      <p class="stat-hint m-0 px-4 pt-3 pb-4">
+        Kills of a player's own faction count as team kills and are kept out of the totals; suicides are left out.
+        NSO are listed as their own faction (NS), since the empire they fought for isn't recorded.
+      </p>
+    </mat-card-content>
+  </mat-card>
+}
