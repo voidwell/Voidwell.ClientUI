@@ -7,6 +7,34 @@
     min-width: 0;
 }
 
+.triangle {
+    display: block;
+    width: 100%;
+    max-width: 340px;
+    height: auto;
+    font-variant-numeric: tabular-nums;
+}
+
+.triangle-edge {
+    stroke-width: 6;
+}
+
+.triangle-figure {
+    fill: #c9ccd3;
+    font-size: 12px;
+}
+
+.triangle-margin {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.triangle-node {
+    fill: #fff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
 .grid-wrap {
     flex: 999 1 480px;
     min-width: 0;

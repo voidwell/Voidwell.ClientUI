@@ -6,6 +6,7 @@ import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.compone
 import { FactionCodePipe } from '../../../../pipes/faction-code.pipe';
 import { FactionColorPipe } from '../../../../pipes/faction-color.pipe';
 import { buildKillFlow } from './kill-flow';
+import { buildKillTriangle, TRIANGLE_NODE_RADIUS, TRIANGLE_VIEWBOX } from './kill-flow-triangle';
 
 type KillFlowMode = 'kills' | 'share';
 
@@ -34,6 +35,10 @@ export class AlertKillFlowCardComponent {
     ];
 
     readonly flow = computed(() => buildKillFlow(this.kills()));
+    /** The head-to-head pairs as a triangle, when all three empires fight each other. */
+    readonly triangle = computed(() => buildKillTriangle(this.flow()?.pairs ?? []));
+    readonly viewBox = `0 0 ${TRIANGLE_VIEWBOX.width} ${TRIANGLE_VIEWBOX.height}`;
+    readonly nodeRadius = TRIANGLE_NODE_RADIUS;
 
     fill(factionId: number): string {
         return `rgb(${FACTION_RGB[factionId] ?? FACTION_RGB[4]})`;
