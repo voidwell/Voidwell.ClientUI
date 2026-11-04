@@ -4,11 +4,12 @@ import { FacilityEvent, Ps2ZoneMapComponent } from '../../components/ps2-zone-ma
 import { MatCard, MatCardContent, MatCardTitle } from '@angular/material/card';
 import { ZoneService } from '../../data/zone.service';
 import { FactionBarComponent } from '../../components/faction-bar/faction-bar.component';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 @Component({
     templateUrl: './map-simulator.component.html',
     styleUrls: ['./map-simulator.component.css'],
-    imports: [Ps2ZoneMapComponent, MatCard, MatCardTitle, MatCardContent, FactionBarComponent]
+    imports: [ChipsComponent, Ps2ZoneMapComponent, MatCard, MatCardTitle, MatCardContent, FactionBarComponent]
 })
 
 export class PlanetsideMapSimulatorComponent {
@@ -19,6 +20,8 @@ export class PlanetsideMapSimulatorComponent {
     /** Territory held, as a percentage each for neutral, VS, NC and TR (index 1 to 3 for the factions). */
     readonly score = signal<number[]>([0, 0, 0, 0]);
     readonly hideOverlay = signal(true);
+    readonly overlayOptions: ChipOption<'territory'>[] = [{ value: 'territory', label: 'Territory colours' }];
+    readonly overlayPicked = computed(() => this.hideOverlay() ? [] : ['territory' as const]);
     stateLog: { [facilityId: string]: number } = {};
     
     onFacilityCapture: EventEmitter<FacilityEvent> = new EventEmitter<FacilityEvent>();

@@ -74,7 +74,7 @@ describe('PlanetsideOutfitComponent', () => {
 
         search.value = '';
         search.dispatchEvent(new Event('input'));
-        (Array.from(element.querySelectorAll('.stat-chip')).find(chip => chip.textContent?.includes('Untracked')) as HTMLElement).click();
+        (Array.from(element.querySelectorAll('.vw-chip')).find(chip => chip.textContent?.includes('Untracked')) as HTMLElement).click();
         fixture.detectChanges();
         expect(names(element)).toEqual(['Dev']);
     });

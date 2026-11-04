@@ -465,34 +465,6 @@ span.stat-name {
     color: #93c5fd;
 }
 
-.stat-chips {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 6px;
-    padding: 4px 16px 12px;
-}
-
-.stat-chip {
-    padding: 3px 12px;
-    border: 1px solid #344651;
-    border-radius: 999px;
-    background: none;
-    color: #8a9ba1;
-    font: inherit;
-    font-size: 12px;
-    cursor: pointer;
-}
-
-.stat-chip.on {
-    border-color: rgba(109, 187, 255, .5);
-    background: rgba(109, 187, 255, .16);
-    color: #edeff0;
-}
-
-.stat-chip:focus-visible {
-    outline: 2px solid #6dbbff;
-}
-
 @media (max-width: 700px) {
     .stat-name {
         max-width: 150px;
@@ -545,10 +517,6 @@ span.stat-name {
 
 .stat-search:focus-within {
     outline: 2px solid #6dbbff;
-}
-
-.stat-chip-count {
-    margin-left: 2px;
 }
 
 .stat-pager {

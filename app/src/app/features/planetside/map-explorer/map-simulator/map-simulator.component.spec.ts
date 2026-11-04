@@ -35,12 +35,12 @@ describe('PlanetsideMapSimulatorComponent', () => {
         const el: HTMLElement = create().nativeElement;
 
         expect(el.querySelector('mat-card-title')?.textContent?.trim()).toBe('Indar');
-        expect(el.querySelector('.toggle')?.getAttribute('aria-pressed')).toBe('false');
+        expect(el.querySelector('.vw-chip')?.getAttribute('aria-pressed')).toBe('false');
     });
 
     it('turns the territory colours on and off with its button', () => {
         const fixture = create();
-        const toggle = fixture.nativeElement.querySelector('.toggle') as HTMLButtonElement;
+        const toggle = fixture.nativeElement.querySelector('.vw-chip') as HTMLButtonElement;
 
         toggle.click();
         fixture.detectChanges();

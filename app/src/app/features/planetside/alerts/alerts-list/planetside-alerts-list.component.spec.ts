@@ -73,7 +73,7 @@ describe('PlanetsideAlertsListComponent', () => {
         });
         const el: HTMLElement = fixture.nativeElement;
 
-        (el.querySelectorAll('.stat-chip')[2] as HTMLButtonElement).click();
+        (el.querySelectorAll('.vw-chip')[2] as HTMLButtonElement).click();
         fixture.detectChanges();
 
         expect(calls).toEqual([[0, undefined], [0, 13]]);

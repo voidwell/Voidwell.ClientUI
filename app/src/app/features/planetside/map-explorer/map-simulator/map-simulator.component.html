@@ -2,7 +2,7 @@
   <mat-card class="stat-card map-card">
     <div class="stat-toolbar">
       <mat-card-title>{{ zoneName() }}</mat-card-title>
-      <button type="button" class="stat-chip toggle" [class.on]="!hideOverlay()" [attr.aria-pressed]="!hideOverlay()" (click)="hideOverlay.set(!hideOverlay())">Territory colours</button>
+      <vw-chips class="ml-auto" [options]="overlayOptions" [values]="overlayPicked()" (choose)="hideOverlay.set(!hideOverlay())"></vw-chips>
     </div>
     <mat-card-content>
       <div class="map-container">

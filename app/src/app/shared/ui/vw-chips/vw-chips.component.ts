@@ -1,5 +1,6 @@
 import { Component, input, output } from '@angular/core';
-import { DecimalPipe, NgClass } from '@angular/common';
+import { DecimalPipe, NgClass, NgTemplateOutlet } from '@angular/common';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 /** One choice of a chip group: what it selects, how it reads, and optionally how many items it would show. */
 export interface ChipOption<T> {
@@ -8,25 +9,37 @@ export interface ChipOption<T> {
     count?: number | null;
     /** Classes for the count, such as a faction colour. */
     countClass?: string;
+    /** A colour dot shown before the label, such as a chart line's colour. */
+    swatch?: string | null;
+    /** Makes the chip a link to this route instead of a button; the chip is marked as picked while the route is active. */
+    link?: string;
 }
 
-/** A row of chips of which one is selected, for filters and ranges. `value` is the choice shown; `choose` reports the one clicked. */
+/**
+ * A row of chips, for filters, ranges and toggles. `choose` reports the chip clicked.
+ * - Single choice: `value` is the chip shown as picked.
+ * - Several at once: `values` lists every chip shown as picked, and the parent flips the one `choose` reports.
+ * - Navigation: options with a `link` are anchors that follow it.
+ */
 @Component({
     selector: 'vw-chips',
-    imports: [DecimalPipe, NgClass],
-    template: `
-        <div class="flex flex-wrap gap-1.5" role="group" [attr.aria-label]="label()">
-            @for (option of options(); track option.value) {
-                <button type="button" class="stat-chip" [class.on]="option.value === value()" [attr.aria-pressed]="option.value === value()"
-                    [disabled]="disabled()" (click)="choose.emit(option.value)">{{ option.label }}@if (option.count != null) {&ngsp;<span class="stat-chip-count" [ngClass]="option.countClass ?? ''">{{ option.count | number }}</span>}</button>
-            }
-        </div>`
+    templateUrl: './vw-chips.component.html',
+    styleUrl: './vw-chips.component.css',
+    imports: [DecimalPipe, NgClass, NgTemplateOutlet, RouterLink, RouterLinkActive]
 })
 export class ChipsComponent<T> {
     readonly options = input.required<readonly ChipOption<T>[]>();
+    /** The picked chip, when only one can be. */
     readonly value = input<T | null>(null);
+    /** Every picked chip, when several can be; takes the place of `value`. */
+    readonly values = input<readonly T[] | null>(null);
     readonly choose = output<T>();
     /** Names the group for assistive technology. */
     readonly label = input<string>();
     readonly disabled = input(false);
+
+    isPicked(option: ChipOption<T>): boolean {
+        const values = this.values();
+        return values ? values.includes(option.value) : option.value === this.value();
+    }
 }

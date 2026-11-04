@@ -1,14 +1,7 @@
 <mat-card class="stat-card mb-4">
   <mat-card-title>Population</mat-card-title>
   <mat-card-content>
-    <div class="flex flex-wrap gap-1.5 mb-3" role="group" aria-label="Servers to plot">
-      @for (series of series(); track series.id) {
-        <button type="button" class="stat-chip" [class.on]="isOn(series.id)" [attr.aria-pressed]="isOn(series.id)" (click)="toggle(series.id)">
-          @if (isOn(series.id)) {
-            <span class="stat-swatch" [style.background]="series.color"></span>
-          }{{ series.name }}</button>
-      }
-    </div>
+    <vw-chips class="mb-3" label="Servers to plot" [options]="serverOptions()" [values]="onIds()" (choose)="toggle($event)"></vw-chips>
     <div class="stat-chart-area">
       <div class="stat-chart">
         <div #graph class="stat-line-graph"></div>

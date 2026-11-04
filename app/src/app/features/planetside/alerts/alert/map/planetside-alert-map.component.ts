@@ -9,12 +9,13 @@ import { PlanetsideCombatEventComponent } from '../../../components/combat-event
 import { CaptureFilter, captureRows } from '../../../components/combat-report/combat-report-figures';
 import { FactionColorPipe } from '../../../pipes/faction-color.pipe';
 import { ReplayMapComponent } from './replay-map/replay-map.component';
+import { ChipOption, ChipsComponent } from '@shared/ui/vw-chips/vw-chips.component';
 
 /** The replay of an alert or event on its map, with the log of the facilities taken and held. */
 @Component({
     templateUrl: './planetside-alert-map.component.html',
     styleUrls: ['./planetside-alert-map.component.css'],
-    imports: [MatCard, MatCardTitle, MatCardContent, ReplayMapComponent, RouterLink, NgClass, DatePipe, FactionBarComponent, FactionIconComponent, FactionColorPipe]
+    imports: [ChipsComponent, MatCard, MatCardTitle, MatCardContent, ReplayMapComponent, RouterLink, NgClass, DatePipe, FactionBarComponent, FactionIconComponent, FactionColorPipe]
 })
 export class PlanetsideAlertMapComponent {
     private parentEventComponent = inject(PlanetsideCombatEventComponent);
@@ -23,6 +24,11 @@ export class PlanetsideAlertMapComponent {
     focusTimestampEmitter: EventEmitter<string> = new EventEmitter<string>();
 
     readonly filter = signal<CaptureFilter>({ captures: true, defends: false });
+    readonly kindOptions: ChipOption<keyof CaptureFilter>[] = [
+        { value: 'captures', label: 'Captures' },
+        { value: 'defends', label: 'Defends' }
+    ];
+    readonly pickedKinds = computed(() => this.kindOptions.map(option => option.value).filter(kind => this.filter()[kind]));
 
     /** The alert, when it has a map to replay; an event has none. */
     readonly alert = computed<AlertResult | null>(() => {

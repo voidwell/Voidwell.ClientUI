@@ -56,7 +56,7 @@ describe('PlanetsideWorldPlayersComponent', () => {
         await fixture.whenStable();
         const el: HTMLElement = fixture.nativeElement;
 
-        (el.querySelectorAll('.stat-chip')[2] as HTMLButtonElement).click();
+        (el.querySelectorAll('.vw-chip')[2] as HTMLButtonElement).click();
         await fixture.whenStable();
         expect(names(el)).toEqual(['Bravo', 'Alphonse']);
 
