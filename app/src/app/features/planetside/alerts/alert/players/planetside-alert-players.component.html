@@ -1,4 +1,7 @@
-﻿<mat-card class="stat-card mb-4">
+﻿@if (factionKills(); as factionKills) {
+  <alert-kill-flow-card [kills]="factionKills"></alert-kill-flow-card>
+}
+<mat-card class="stat-card mb-4">
   <div class="stat-toolbar">
     <mat-card-title>Players</mat-card-title>
     @if (total() > pageSize) {

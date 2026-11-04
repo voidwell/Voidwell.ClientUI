@@ -1,0 +1,52 @@
+:host {
+    display: block;
+}
+
+.pairs {
+    flex: 1 1 300px;
+    min-width: 0;
+}
+
+.grid-wrap {
+    flex: 999 1 480px;
+    min-width: 0;
+}
+
+.pair-edge {
+    padding: 1px 8px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    color: #edeff0;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.pair-bar {
+    display: flex;
+    gap: 2px;
+    height: 8px;
+    overflow: hidden;
+    border-radius: 4px;
+}
+
+.pair-bar > div {
+    flex-shrink: 0;
+}
+
+.pair-bar > .flex-1 {
+    flex-shrink: 1;
+}
+
+/* The killer column's names read as row labels, not as uppercase headers */
+.stat-table th.killer {
+    font-size: 13px;
+    letter-spacing: 0;
+    text-transform: none;
+}
+
+.stat-table tfoot th,
+.stat-table tfoot td {
+    border-top: 1px solid #344651;
+    border-bottom: 0;
+}
