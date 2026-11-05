@@ -1,39 +1,44 @@
-﻿import { ChangeDetectorRef, Component, computed, forwardRef, inject, effect, input, untracked } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
+﻿import { Component, computed, forwardRef, inject, effect, input, untracked } from '@angular/core';
 import { CustomEventRepository } from '@core/api/platform/custom-event.repository';
-import { getErrorMessage } from '@core/util/error-message';
 import { CustomEventDetails } from '@core/api/models/platform/custom-event.model';
-import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
-import { Breadcrumb, BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
-import { CombatEventHeaderComponent, FactionScores } from '../../components/combat-event/combat-event-header.component';
+import { Breadcrumb } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
+import { CombatEventHeaderView } from '../../components/combat-event/combat-event-header.component';
 import { PlanetsideCombatEventComponent } from '../../components/combat-event/planetside-combat-event.component';
-import { ZoneNamePipe } from '../../pipes/zone-name.pipe';
-import { WorldNamePipe } from '../../pipes/world-name.pipe';
+import { CombatEventPageComponent } from '../../components/combat-event-page/combat-event-page.component';
+import { WorldService } from '../../data/world.service';
+import { ZoneService } from '../../data/zone.service';
 
 @Component({
-    templateUrl: './planetside-event.component.html',
+    template: `<combat-event-page [header]="header()" [crumbs]="breadcrumbs()" [loading]="loading()" [errorMessage]="errorMessage()" [overview]="section() === null"></combat-event-page>`,
     providers: [{ provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideEventComponent) }],
-    imports: [LoaderComponent, ErrorCardComponent, BreadcrumbsComponent, CombatEventHeaderComponent, RouterOutlet, ZoneNamePipe, WorldNamePipe]
+    imports: [CombatEventPageComponent]
 })
 
 export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<CustomEventDetails> {
     private customEventRepository = inject(CustomEventRepository);
-    private cdr = inject(ChangeDetectorRef);
+    private worldService = inject(WorldService);
+    private zoneService = inject(ZoneService);
     readonly eventId = input<string>();
 
-    isLoading: boolean = true;
-    errorMessage: string = null;
+    readonly header = computed<CombatEventHeaderView | null>(() => {
+        const event = this.event();
+        if (!event) {
+            return null;
+        }
 
-    readonly start = computed(() => new Date(this.event()?.startDate ?? 0));
-    readonly end = computed(() => new Date(this.event()?.endDate ?? 0));
-
-    /** Territory held by each faction at the end of the event; `null` when it was not recorded. */
-    readonly scores = computed<FactionScores | null>(() => {
-        const score = this.event()?.score;
-        return score ? { vs: score[1] ?? 0, nc: score[2] ?? 0, tr: score[3] ?? 0 } : null;
+        const world = this.worldService.worlds()?.find(candidate => String(candidate.id) === String(event.serverId))?.name ?? '';
+        const zone = this.zoneService.zoneName(event.mapId) ?? '';
+        // Territory held by each faction at the end of the event; not every event recorded it
+        const score = event.score;
+        return {
+            title: event.name,
+            subtitle: `${world} › ${zone}`,
+            description: event.description ?? '',
+            start: new Date(event.startDate ?? 0),
+            end: new Date(event.endDate ?? 0),
+            scores: score ? { vs: score[1] ?? 0, nc: score[2] ?? 0, tr: score[3] ?? 0 } : null,
+            zoneId: event.mapId ?? null
+        };
     });
 
     /** Events, then this event, then the page under it, if one is showing. */
@@ -48,30 +53,10 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<Cus
 
     constructor() {
         super();
-
         effect(() => {
             const eventId = this.eventId();
 
-            untracked(() => {
-
-                this.isLoading = true;
-                this.errorMessage = null;
-
-                this.event.set(null);
-
-                this.customEventRepository.getEvent(eventId)
-                    .pipe(catchError(error => {
-                        this.errorMessage = getErrorMessage(error)
-                        this.isLoading = false;
-                        this.cdr.markForCheck();
-                        return throwError(() => error);
-                    }))
-                    .subscribe(data => {
-                        this.event.set(data);
-                        this.isLoading = false;
-                        this.cdr.markForCheck();
-                    });
-            });
+            untracked(() => this.load(this.customEventRepository.getEvent(eventId)));
         });
     }
 }
