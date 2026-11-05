@@ -1,65 +1,65 @@
-﻿import { ChangeDetectorRef, Component, computed, forwardRef, inject, effect, input, untracked } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { throwError } from 'rxjs';
-import { catchError, finalize } from 'rxjs/operators';
+﻿import { Component, computed, forwardRef, inject, effect, input, untracked } from '@angular/core';
 import { AlertRepository } from '@core/api/ps2/alert.repository';
-import { getErrorMessage } from '@core/util/error-message';
 import { AlertResult } from '@core/api/models/ps2/alert.model';
-import { LoaderComponent } from '@shared/ui/loader/loader.component';
-import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
-import { NavLink } from '@shared/ui/nav-link.model';
-import { Breadcrumb, BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
+import { Breadcrumb } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
 import { DEFAULT_ALERT_MINUTES } from '../../components/alert-view';
-import { CombatEventHeaderComponent, FactionScores } from '../../components/combat-event/combat-event-header.component';
+import { CombatEventHeaderView, FactionScores } from '../../components/combat-event/combat-event-header.component';
 import { PlanetsideCombatEventComponent } from '../../components/combat-event/planetside-combat-event.component';
-import { ZoneNamePipe } from '../../pipes/zone-name.pipe';
-import { WorldNamePipe } from '../../pipes/world-name.pipe';
+import { CombatEventPageComponent } from '../../components/combat-event-page/combat-event-page.component';
+import { ZoneService } from '../../data/zone.service';
+import { WorldService } from '../../data/world.service';
 
 @Component({
-    templateUrl: './planetside-alert.component.html',
+    template: `<combat-event-page [header]="header()" [crumbs]="breadcrumbs()" [loading]="loading()" [errorMessage]="errorMessage()" [overview]="section() === null"></combat-event-page>`,
     providers: [{ provide: PlanetsideCombatEventComponent, useExisting: forwardRef(() => PlanetsideAlertComponent) }],
-    imports: [LoaderComponent, ErrorCardComponent, BreadcrumbsComponent, CombatEventHeaderComponent, RouterOutlet, ZoneNamePipe, WorldNamePipe]
+    imports: [CombatEventPageComponent]
 })
 
 export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent<AlertResult> {
     private alertRepository = inject(AlertRepository);
-    private cdr = inject(ChangeDetectorRef);
+    private worldService = inject(WorldService);
+    private zoneService = inject(ZoneService);
     readonly worldId = input<string>();
     readonly instanceId = input<string>();
 
-    isLoading: boolean = true;
-    errorMessage: string = null;
-
-    readonly tabs: NavLink[] = [
-        { path: 'players', display: 'Players' },
-        { path: 'outfits', display: 'Outfits' },
-        { path: 'weapons', display: 'Weapons' },
-        { path: 'vehicles', display: 'Vehicles' },
-        { path: 'map', display: 'Map' }
-    ];
-
-    readonly start = computed(() => new Date(this.event()?.startDate ?? 0));
+    private readonly start = computed(() => new Date(this.event()?.startDate ?? 0));
 
     /** When the alert ended, or is due to end. */
-    readonly end = computed(() => {
+    private readonly end = computed(() => {
         const alert = this.event();
         return alert?.endDate ? new Date(alert.endDate) : new Date(this.start().getTime() + DEFAULT_ALERT_MINUTES * 60000);
     });
 
-    readonly scores = computed<FactionScores | null>(() => {
+    readonly header = computed<CombatEventHeaderView | null>(() => {
         const alert = this.event();
-        return alert ? { vs: alert.lastFactionVS, nc: alert.lastFactionNC, tr: alert.lastFactionTR } : null;
+        if (!alert) {
+            return null;
+        }
+
+        const world = this.worldService.worlds()?.find(candidate => candidate.id === alert.worldId)?.name ?? '';
+        const zone = this.zoneService.zoneName(alert.zoneId) ?? '';
+        return {
+            title: alert.metagameEvent?.name ?? 'Alert',
+            subtitle: `${world} › ${zone}`,
+            description: alert.metagameEvent?.description ?? '',
+            start: this.start(),
+            end: this.end(),
+            scores: { vs: alert.lastFactionVS, nc: alert.lastFactionNC, tr: alert.lastFactionTR },
+            startScores: { vs: alert.startFactionVS, nc: alert.startFactionNC, tr: alert.startFactionTR } satisfies FactionScores,
+            zoneId: alert.zoneId ?? null,
+            alarm: true
+        };
     });
 
-    readonly startScores = computed<FactionScores | null>(() => {
-        const alert = this.event();
-        return alert ? { vs: alert.startFactionVS, nc: alert.startFactionNC, tr: alert.startFactionTR } : null;
+    /** Alerts, then this alert, then the page under it, if one is showing. */
+    readonly breadcrumbs = computed<Breadcrumb[]>(() => {
+        const section = this.section();
+        return [
+            { label: 'Alerts', link: '/ps2/alerts' },
+            { label: this.event()?.metagameEvent?.name ?? 'Alert', link: section ? `/ps2/alerts/${this.worldId()}/${this.instanceId()}` : undefined },
+            ...(section ? [{ label: section }] : [])
+        ];
     });
-
-    readonly breadcrumbs = computed<Breadcrumb[]>(() => [
-        { label: 'Alerts', link: '/ps2/alerts' },
-        { label: this.event()?.metagameEvent?.name ?? 'Alert' }
-    ]);
 
     constructor() {
         super();
@@ -67,26 +67,7 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent<Ale
             const worldId = this.worldId();
             const instanceId = this.instanceId();
 
-            untracked(() => {
-
-                this.isLoading = true;
-                this.errorMessage = null;
-
-                this.event.set(null);
-
-                this.alertRepository.getAlert(worldId, instanceId)
-                    .pipe(catchError(error => {
-                        this.errorMessage = getErrorMessage(error)
-                        return throwError(() => error);
-                    }))
-                    .pipe(finalize(() => {
-                        this.isLoading = false;
-                        this.cdr.markForCheck();
-                    }))
-                    .subscribe(data => {
-                        this.event.set(data);
-                    });
-            });
+            untracked(() => this.load(this.alertRepository.getAlert(worldId, instanceId)));
         });
     }
 }

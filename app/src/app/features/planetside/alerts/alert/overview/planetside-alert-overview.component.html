@@ -1,0 +1,12 @@
+<alert-replay-card></alert-replay-card>
+@if (factionKills(); as factionKills) {
+  <alert-kill-flow-card [kills]="factionKills"></alert-kill-flow-card>
+}
+<div class="grid grid-cols-1 gap-4 lg:grid-cols-[repeat(2,minmax(0,1fr))]">
+  <alert-top-players-card [players]="players()"></alert-top-players-card>
+  <alert-top-outfits-card [outfits]="outfits()"></alert-top-outfits-card>
+</div>
+<div class="grid grid-cols-1 gap-4 mb-4 lg:grid-cols-[repeat(2,minmax(0,1fr))]">
+  <combat-weapons-card [weapons]="weapons()" heading="Top weapons" [sortable]="false" [limit]="10" viewAll="weapons"></combat-weapons-card>
+  <combat-vehicles-card [vehicles]="vehicles()" heading="Top vehicles" [sortable]="false" [limit]="10" viewAll="vehicles"></combat-vehicles-card>
+</div>

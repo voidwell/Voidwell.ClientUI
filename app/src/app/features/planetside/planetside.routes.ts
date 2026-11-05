@@ -22,6 +22,7 @@ import { PlanetsidePlayerSessionComponent } from './player/sessions/session/plan
 import { PlanetsideOutfitComponent } from './outfit/planetside-outfit.component';
 import { PlanetsideAlertsListComponent } from './alerts/alerts-list/planetside-alerts-list.component';
 import { PlanetsideAlertComponent } from './alerts/alert/planetside-alert.component';
+import { PlanetsideAlertOverviewComponent } from './alerts/alert/overview/planetside-alert-overview.component';
 import { PlanetsideAlertPlayersComponent } from './alerts/alert/players/planetside-alert-players.component';
 import { PlanetsideAlertOutfitsComponent } from './alerts/alert/outfits/planetside-alert-outfits.component';
 import { PlanetsideAlertWeaponsComponent } from './alerts/alert/weapons/planetside-alert-weapons.component';
@@ -88,7 +89,7 @@ const planetsideChildRoutes: Routes = [
                 path: 'alerts/:worldId/:instanceId',
                 component: PlanetsideAlertComponent,
                 children: [
-                    { path: '', redirectTo: 'players', pathMatch: 'full' },
+                    { path: '', component: PlanetsideAlertOverviewComponent, pathMatch: 'full' },
                     { path: 'players', component: PlanetsideAlertPlayersComponent },
                     { path: 'outfits', component: PlanetsideAlertOutfitsComponent },
                     { path: 'weapons', component: PlanetsideAlertWeaponsComponent },
@@ -101,7 +102,7 @@ const planetsideChildRoutes: Routes = [
                 path: 'events/:eventId',
                 component: PlanetsideEventComponent,
                 children: [
-                    { path: '', redirectTo: 'players', pathMatch: 'full' },
+                    { path: '', component: PlanetsideAlertOverviewComponent, pathMatch: 'full' },
                     { path: 'players', component: PlanetsideAlertPlayersComponent },
                     { path: 'outfits', component: PlanetsideAlertOutfitsComponent },
                     { path: 'weapons', component: PlanetsideAlertWeaponsComponent },

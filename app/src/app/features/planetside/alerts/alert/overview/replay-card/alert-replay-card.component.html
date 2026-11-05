@@ -1,0 +1,67 @@
+<div class="layout grid grid-cols-1 gap-4 mb-4" [class]="mapEnabled() ? 'has-map lg:grid-cols-[minmax(0,1fr)_360px]' : ''" [class.open]="drawerOpen()">
+  @if (mapEnabled()) {
+    @let a = alert()!;
+    <mat-card class="stat-card">
+      <mat-card-title class="stat-title-row">
+        <span>Replay</span>
+        <button type="button" class="stat-action drawer-toggle" aria-controls="alert-events" [attr.aria-expanded]="drawerOpen()" (click)="drawerOpen.set(true)">
+          <mat-icon fontSet="mdi" fontIcon="mdi-format-list-bulleted"></mat-icon>Events
+        </button>
+      </mat-card-title>
+      <mat-card-content>
+        <zone-replay-map
+          [zoneId]="a.zoneId"
+          [ownership]="a.zoneSnapshot"
+          [focusFacility]="focusFacilityEmitter"
+          [focusTimestamp]="focusTimestampEmitter"
+          [timeline]="a.log.captureLog"
+          [start]="a.startDate"
+          [end]="a.endDate"></zone-replay-map>
+      </mat-card-content>
+    </mat-card>
+  }
+  <mat-card id="alert-events" class="stat-card events">
+    <mat-card-title class="stat-title-row">
+      <span>Events</span>
+      <span class="title-actions">
+        <a class="stat-action" routerLink="map">View All &rarr;</a>
+        <button type="button" class="drawer-close" aria-label="Close events" (click)="drawerOpen.set(false)">
+          <mat-icon fontSet="mdi" fontIcon="mdi-close"></mat-icon>
+        </button>
+      </span>
+    </mat-card-title>
+    <vw-chips class="px-4 pt-1 pb-3" label="Kinds of map event" [options]="kindOptions" [values]="pickedKinds()" (choose)="toggle($event)"></vw-chips>
+    <mat-card-content>
+      @if (rows().length) {
+        <ul class="log">
+          @for (row of rows(); track $index) {
+            <li>
+              @if (mapEnabled()) {
+                <button type="button" class="time" (click)="onFocusTimestamp(row.timestamp)">{{ row.timestamp | date: 'shortTime' }}</button>
+              } @else {
+                <time class="time">{{ row.timestamp | date: 'shortTime' }}</time>
+              }
+              <span class="badge" [class.defend]="!row.isCapture" [class.capture]="row.isCapture" [title]="row.isCapture ? 'Captured' : 'Defended'">
+                <mat-icon fontSet="mdi" [fontIcon]="row.isCapture ? 'mdi-flag' : 'mdi-shield'"></mat-icon>
+              </span>
+              @if (mapEnabled()) {
+                <button type="button" class="facility" (click)="onFocusFacility(row.facilityId)">{{ row.facility }}</button>
+              } @else {
+                <span class="facility">{{ row.facility }}</span>
+              }
+              <span class="held">
+                @if (row.isCapture && row.loserId) {
+                  <vw-faction-icon [factionId]="row.loserId"></vw-faction-icon>
+                  <mat-icon class="arrow" fontSet="mdi" fontIcon="mdi-arrow-right"></mat-icon>
+                }
+                <vw-faction-icon [factionId]="row.winnerId"></vw-faction-icon>
+              </span>
+            </li>
+          }
+        </ul>
+      } @else {
+        <p class="stat-muted">No map events to show.</p>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -11,4 +11,8 @@ export class PlanetsideAlertWeaponsComponent {
     private parentEventComponent = inject(PlanetsideCombatEventComponent);
 
     readonly weapons = computed(() => this.parentEventComponent.event()?.log?.stats?.weapons);
+
+    constructor() {
+        this.parentEventComponent.section.set('Weapons');
+    }
 }
