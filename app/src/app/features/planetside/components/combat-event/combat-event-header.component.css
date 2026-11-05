@@ -6,18 +6,18 @@
 .body {
     position: relative;
     overflow: hidden;
-    margin: -16px -16px 0;
+    margin: -16px;
     padding: 16px 16px 0;
 }
 
 .art {
     position: absolute;
     inset: 0 auto 0 0;
-    width: 210px;
+    width: 160px;
     background-position: center;
     background-size: cover;
     opacity: 0.85;
-    mask-image: linear-gradient(to right, #000 30%, transparent 100%);
+    mask-image: linear-gradient(to right, #000 25%, transparent 100%);
 }
 
 .body > :not(.art) {

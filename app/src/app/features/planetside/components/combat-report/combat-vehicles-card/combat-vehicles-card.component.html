@@ -1,16 +1,29 @@
 <mat-card class="stat-card">
-  <mat-card-title>Vehicles @if (caption()) { <small>{{ caption() }}</small> }</mat-card-title>
+  <mat-card-title class="stat-title-row">
+    <span>{{ heading() }}@if (caption()) { <small> {{ caption() }}</small> }</span>
+    @if (viewAll(); as link) {
+      <a class="stat-action" [routerLink]="link">View All &rarr;</a>
+    }
+  </mat-card-title>
   <mat-card-content>
     @if (rows().length) {
       <div class="stat-table-wrap">
-        <table class="stat-table" matSort matSortActive="kills" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+        <table class="stat-table" matSort matSortActive="kills" matSortDirection="desc" matSortDisableClear [matSortDisabled]="!sortable()" (matSortChange)="onSort($event)">
           <thead>
             <tr>
+              @if (sortable()) {
               <th class="left pinned" mat-sort-header="name" start="asc">Vehicle</th>
               <th mat-sort-header="kills" start="desc" arrowPosition="before">Kills</th>
               <th mat-sort-header="deaths" start="desc" arrowPosition="before">Deaths</th>
               <th mat-sort-header="kdr" start="desc" arrowPosition="before" title="Kill/death ratio">K/D</th>
               <th mat-sort-header="teamkills" start="desc" arrowPosition="before" title="Team kills">TKs</th>
+              } @else {
+              <th class="left pinned">Vehicle</th>
+              <th>Kills</th>
+              <th>Deaths</th>
+              <th title="Kill/death ratio">K/D</th>
+              <th title="Team kills">TKs</th>
+              }
             </tr>
           </thead>
           <tbody>

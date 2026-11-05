@@ -1,0 +1,40 @@
+<mat-card class="stat-card mb-4">
+  <mat-card-title class="stat-title-row">
+    <span>Top outfits</span>
+    <a class="stat-action" routerLink="outfits">View All &rarr;</a>
+  </mat-card-title>
+  <vw-chips class="px-4 pt-1 pb-3" label="Filter outfits by empire" [options]="factionOptions" [value]="faction()" (choose)="faction.set($event)"></vw-chips>
+  <mat-card-content>
+    @if (rows().length) {
+      <div class="stat-table-wrap">
+        <table class="stat-table">
+          <thead>
+            <tr>
+              <th class="left pinned">Outfit</th>
+              <th title="Members who took part">Participants</th>
+              <th title="Facility captures">Captures</th>
+              <th>Kills</th>
+              <th title="Kill/death ratio">K/D</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (row of rows(); track row.id) {
+              <tr>
+                <td class="left pinned">
+                  <a class="stat-link stat-name" [ngClass]="row.factionId | factionColor" routerLink="/ps2/outfit/{{ row.id }}" [title]="row.name">
+                    @if (row.alias) { <span class="stat-muted">[{{ row.alias }}]</span>&ngsp;}{{ row.name }}</a>
+                </td>
+                <td>{{ row.participants | number }}</td>
+                <td>{{ row.captures | number }}</td>
+                <td>{{ row.kills | number }}</td>
+                @if (row.kdr === null) { <td class="dash">—</td> } @else { <td>{{ row.kdr | number: '1.2-2' }}</td> }
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    } @else {
+      <p class="stat-muted">{{ outfits().length ? 'No outfits of this empire.' : 'No outfits recorded.' }}</p>
+    }
+  </mat-card-content>
+</mat-card>

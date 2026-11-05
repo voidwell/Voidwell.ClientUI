@@ -1,0 +1,23 @@
+@if (errorMessage()) {
+  <vw-error-card></vw-error-card>
+} @else {
+  @if (loading() || !header()) {
+    <combat-event-skeleton [overview]="overview()"></combat-event-skeleton>
+  } @else {
+    @let head = header()!;
+    <vw-breadcrumbs [crumbs]="crumbs()"></vw-breadcrumbs>
+    <combat-event-header
+      [title]="head.title"
+      [subtitle]="head.subtitle"
+      [description]="head.description"
+      [start]="head.start"
+      [end]="head.end"
+      [scores]="head.scores"
+      [startScores]="head.startScores ?? null"
+      [zoneId]="head.zoneId"
+      [alarm]="head.alarm ?? false"></combat-event-header>
+  }
+  <div [hidden]="loading() || !header()">
+    <router-outlet></router-outlet>
+  </div>
+}

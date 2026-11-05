@@ -21,4 +21,8 @@ export class PlanetsideAlertOutfitsComponent {
     onSort(sort: Sort): void {
         this.sort.set(sort);
     }
+
+    constructor() {
+        this.parentEventComponent.section.set('Outfits');
+    }
 }

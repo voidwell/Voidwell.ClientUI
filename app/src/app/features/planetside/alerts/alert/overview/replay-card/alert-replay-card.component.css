@@ -1,0 +1,205 @@
+.log {
+    display: flex;
+    flex-direction: column;
+    max-height: 540px;
+    margin: 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.log li {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
+    font-size: 13px;
+}
+
+.time {
+    flex: none;
+    width: 54px;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: #8a9ba1;
+    font: inherit;
+    font-size: 12px;
+    font-variant-numeric: tabular-nums;
+    text-align: left;
+}
+
+button.time {
+    cursor: pointer;
+}
+
+button.time:hover {
+    color: #edeff0;
+}
+
+/* The faction that held or took the facility, held to a fixed width so the rows line up */
+.held {
+    display: flex;
+    flex: none;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 2px;
+    width: 64px;
+}
+
+.held .mat-icon {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+/* The kind of event, in the round green badge the player's sessions page uses */
+.badge {
+    display: inline-flex;
+    flex: none;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: color-mix(in srgb, #4caf50 16%, transparent);
+    color: #4caf50;
+}
+
+.badge.defend {
+    background: color-mix(in srgb, #9bae4e 16%, transparent);
+    color: #9bae4e;
+}
+
+.badge .mat-icon {
+    width: 14px;
+    height: 14px;
+    font-size: 14px;
+    line-height: 14px;
+}
+
+.held .arrow {
+    color: #8a9ba1;
+    font-size: 14px;
+    width: 14px;
+}
+
+/* A facility name focuses it on the map */
+button.facility {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    text-decoration: underline dashed;
+    text-decoration-color: color-mix(in srgb, currentColor 25%, transparent);
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+button.facility:hover {
+    opacity: .8;
+}
+
+button.facility:focus-visible,
+button.time:focus-visible {
+    outline: 2px solid #6dbbff;
+}
+
+.facility {
+    flex: 1;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.drawer-toggle,
+.drawer-close,
+.title-actions .drawer-close {
+    display: none;
+}
+
+.title-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.drawer-close {
+    padding: 2px;
+    border: 0;
+    background: none;
+    color: #8a9ba1;
+    cursor: pointer;
+}
+
+.drawer-close:hover {
+    color: #edeff0;
+}
+
+/* On a phone the events are a drawer that slides up over the map */
+@media (max-width: 700px) {
+    .has-map {
+        position: relative;
+    }
+
+    .has-map .drawer-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 0;
+        border: 0;
+        background: none;
+        font: inherit;
+        font-size: 13px;
+        line-height: 18px;
+        cursor: pointer;
+    }
+
+    .has-map .drawer-toggle .mat-icon {
+        display: block;
+        width: 18px;
+        height: 18px;
+        font-size: 18px;
+        line-height: 18px;
+    }
+
+    .has-map .drawer-close {
+        display: inline-flex;
+    }
+
+    .has-map .events {
+        position: absolute;
+        inset: 0;
+        z-index: 1100;
+        display: flex;
+        flex-direction: column;
+        visibility: hidden;
+        transform: translateY(100%);
+        transition: transform .2s ease, visibility .2s;
+    }
+
+    .has-map.open .events {
+        visibility: visible;
+        transform: none;
+    }
+
+    .has-map .events mat-card-content {
+        flex: 1;
+        min-height: 0;
+        overflow-y: auto;
+    }
+
+    .has-map .events .log {
+        max-height: none;
+        overflow: visible;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .has-map .events {
+        transition: none;
+    }
+}

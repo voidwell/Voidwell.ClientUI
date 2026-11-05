@@ -49,4 +49,8 @@ export class PlanetsideAlertMapComponent {
     onFocusTimestamp(timestamp: string) {
         this.focusTimestampEmitter.emit(timestamp);
     }
+
+    constructor() {
+        this.parentEventComponent.section.set('Map');
+    }
 }
