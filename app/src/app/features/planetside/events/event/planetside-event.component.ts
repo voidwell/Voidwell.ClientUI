@@ -7,7 +7,6 @@ import { getErrorMessage } from '@core/util/error-message';
 import { CustomEventDetails } from '@core/api/models/platform/custom-event.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
-import { NavLink } from '@shared/ui/nav-link.model';
 import { Breadcrumb, BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
 import { CombatEventHeaderComponent, FactionScores } from '../../components/combat-event/combat-event-header.component';
 import { PlanetsideCombatEventComponent } from '../../components/combat-event/planetside-combat-event.component';
@@ -28,14 +27,6 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<Cus
     isLoading: boolean = true;
     errorMessage: string = null;
 
-    readonly tabs: NavLink[] = [
-        { path: 'players', display: 'Players' },
-        { path: 'outfits', display: 'Outfits' },
-        { path: 'weapons', display: 'Weapons' },
-        { path: 'vehicles', display: 'Vehicles' },
-        { path: 'map', display: 'Map' }
-    ];
-
     readonly start = computed(() => new Date(this.event()?.startDate ?? 0));
     readonly end = computed(() => new Date(this.event()?.endDate ?? 0));
 
@@ -45,10 +36,15 @@ export class PlanetsideEventComponent extends PlanetsideCombatEventComponent<Cus
         return score ? { vs: score[1] ?? 0, nc: score[2] ?? 0, tr: score[3] ?? 0 } : null;
     });
 
-    readonly breadcrumbs = computed<Breadcrumb[]>(() => [
-        { label: 'Events', link: '/ps2/events' },
-        { label: this.event()?.name ?? 'Event' }
-    ]);
+    /** Events, then this event, then the page under it, if one is showing. */
+    readonly breadcrumbs = computed<Breadcrumb[]>(() => {
+        const section = this.section();
+        return [
+            { label: 'Events', link: '/ps2/events' },
+            { label: this.event()?.name ?? 'Event', link: section ? `/ps2/events/${this.eventId()}` : undefined },
+            ...(section ? [{ label: section }] : [])
+        ];
+    });
 
     constructor() {
         super();

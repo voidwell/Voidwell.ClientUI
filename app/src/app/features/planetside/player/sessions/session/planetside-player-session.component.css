@@ -249,7 +249,8 @@
 .kill, .vehicleKill { --event-color: #6dbbff; }
 .death, .vehicleLoss { --event-color: #ef5350; }
 .teamkill, .suicide { --event-color: #ffa726; }
-.capture, .defend { --event-color: #4caf50; }
+.capture { --event-color: #4caf50; }
+.defend { --event-color: #9bae4e; }
 .rankUp { --event-color: #e6b422; }
 
 .text {

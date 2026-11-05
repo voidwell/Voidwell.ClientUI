@@ -15,7 +15,7 @@
   </mat-card>
 }
 <mat-card class="stat-card mb-4">
-  <mat-card-title>Map events</mat-card-title>
+  <mat-card-title>Events</mat-card-title>
   <vw-chips class="px-4 pt-1 pb-3" label="Kinds of map event" [options]="kindOptions" [values]="pickedKinds()" (choose)="toggle($event)"></vw-chips>
   <mat-card-content>
     @if (rows().length) {

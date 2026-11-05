@@ -11,6 +11,9 @@ export class PlanetsideCombatEventComponent<T extends CombatEvent = CombatEvent>
     /** The loaded event or alert; `null` while loading. */
     readonly event = signal<T | null>(null);
 
+    /** The page under the event that is showing, for the breadcrumbs; each page sets its own, and the overview clears it. */
+    readonly section = signal<string | null>(null);
+
     get activeEvent(): T | null {
         return this.event();
     }

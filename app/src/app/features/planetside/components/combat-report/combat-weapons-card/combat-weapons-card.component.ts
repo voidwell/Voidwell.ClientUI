@@ -16,9 +16,21 @@ import { cellOf, sortRows, weaponRows } from '../combat-report-figures';
 export class CombatWeaponsCardComponent {
     readonly weapons = input<CombatReportWeaponStats[]>();
     readonly caption = input('');
+    /** Shows only this many of the top rows by kills, when set. */
+    /** The card's title. */
+    readonly heading = input('Weapons');
+    /** Whether the column headers sort the table. */
+    readonly sortable = input(true);
+    readonly limit = input<number | null>(null);
+    /** Where the full list is, shown as a "View All" link when set. */
+    readonly viewAll = input<string | readonly string[] | null>(null);
 
     readonly sort = signal<Sort>({ active: 'kills', direction: 'desc' });
-    readonly rows = computed(() => sortRows(weaponRows(this.weapons()), this.sort(), cellOf));
+    readonly rows = computed(() => {
+        const limit = this.limit();
+        const all = weaponRows(this.weapons());
+        return sortRows(limit === null ? all : sortRows(all, { active: 'kills', direction: 'desc' }, cellOf).slice(0, limit), this.sort(), cellOf);
+    });
 
     onSort(sort: Sort): void {
         this.sort.set(sort);

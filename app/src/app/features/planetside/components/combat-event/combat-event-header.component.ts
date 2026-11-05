@@ -1,9 +1,7 @@
 import { Component, computed, input } from '@angular/core';
 import { DatePipe, DecimalPipe, NgClass } from '@angular/common';
-import { MatCard, MatCardFooter } from '@angular/material/card';
-import { NavLink } from '@shared/ui/nav-link.model';
+import { MatCard } from '@angular/material/card';
 import { VWCountdownComponent } from '@shared/ui/vw-countdown/vw-countdown.component';
-import { VWTabNavSubBarComponent } from '@shared/ui/vw-tab-nav-sub-bar/vw-tab-nav-sub-bar.component';
 import { FactionColorPipe } from '../../pipes/faction-color.pipe';
 import { FactionNamePipe } from '../../pipes/faction-name.pipe';
 import { zoneImageUrl } from '../zone-image/zone-image';
@@ -32,14 +30,13 @@ export function formatChange(change: number): string {
 }
 
 /**
- * The header card of an alert or event: its name, where and when it ran, the factions' scores and the tabs of its
- * combat report. While it runs it shows the time left, with an alarm for an alert.
+ * The header card of an alert or event: its name, where and when it ran, the factions' scores. While it runs it shows the time left, with an alarm for an alert.
  */
 @Component({
     selector: 'combat-event-header',
     templateUrl: './combat-event-header.component.html',
     styleUrls: ['./combat-event-header.component.css'],
-    imports: [MatCard, MatCardFooter, NgClass, DatePipe, DecimalPipe, VWCountdownComponent, VWTabNavSubBarComponent, AlertIndicatorComponent, FactionColorPipe, FactionNamePipe]
+    imports: [MatCard, NgClass, DatePipe, DecimalPipe, VWCountdownComponent, AlertIndicatorComponent, FactionColorPipe, FactionNamePipe]
 })
 export class CombatEventHeaderComponent {
     readonly title = input.required<string>();
@@ -53,7 +50,6 @@ export class CombatEventHeaderComponent {
     readonly startScores = input<FactionScores | null>(null);
     /** Shows an alarm beside the time left, for an alert. */
     readonly alarm = input(false);
-    readonly tabs = input<NavLink[]>([]);
     /** The continent it happened on, for the artwork behind the header. */
     readonly zoneId = input<number | string | null>(null);
 

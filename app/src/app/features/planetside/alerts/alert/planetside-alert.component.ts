@@ -7,7 +7,6 @@ import { getErrorMessage } from '@core/util/error-message';
 import { AlertResult } from '@core/api/models/ps2/alert.model';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
 import { ErrorCardComponent } from '@shared/ui/error-card/error-card.component';
-import { NavLink } from '@shared/ui/nav-link.model';
 import { Breadcrumb, BreadcrumbsComponent } from '@shared/ui/vw-breadcrumbs/vw-breadcrumbs.component';
 import { DEFAULT_ALERT_MINUTES } from '../../components/alert-view';
 import { CombatEventHeaderComponent, FactionScores } from '../../components/combat-event/combat-event-header.component';
@@ -30,14 +29,6 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent<Ale
     isLoading: boolean = true;
     errorMessage: string = null;
 
-    readonly tabs: NavLink[] = [
-        { path: 'players', display: 'Players' },
-        { path: 'outfits', display: 'Outfits' },
-        { path: 'weapons', display: 'Weapons' },
-        { path: 'vehicles', display: 'Vehicles' },
-        { path: 'map', display: 'Map' }
-    ];
-
     readonly start = computed(() => new Date(this.event()?.startDate ?? 0));
 
     /** When the alert ended, or is due to end. */
@@ -56,10 +47,15 @@ export class PlanetsideAlertComponent extends PlanetsideCombatEventComponent<Ale
         return alert ? { vs: alert.startFactionVS, nc: alert.startFactionNC, tr: alert.startFactionTR } : null;
     });
 
-    readonly breadcrumbs = computed<Breadcrumb[]>(() => [
-        { label: 'Alerts', link: '/ps2/alerts' },
-        { label: this.event()?.metagameEvent?.name ?? 'Alert' }
-    ]);
+    /** Alerts, then this alert, then the page under it, if one is showing. */
+    readonly breadcrumbs = computed<Breadcrumb[]>(() => {
+        const section = this.section();
+        return [
+            { label: 'Alerts', link: '/ps2/alerts' },
+            { label: this.event()?.metagameEvent?.name ?? 'Alert', link: section ? `/ps2/alerts/${this.worldId()}/${this.instanceId()}` : undefined },
+            ...(section ? [{ label: section }] : [])
+        ];
+    });
 
     constructor() {
         super();
