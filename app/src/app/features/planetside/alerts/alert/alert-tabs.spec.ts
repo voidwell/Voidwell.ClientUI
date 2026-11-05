@@ -14,7 +14,7 @@ const player = (id: string, name: string, kills: number, extra: Partial<CombatRe
 
 const withEvent = (log: CustomEventDetails['log']) => ({
     provide: PlanetsideCombatEventComponent,
-    useValue: { event: signal({ log } as CustomEventDetails) }
+    useValue: { section: signal<string | null>(null), event: signal({ log } as CustomEventDetails) }
 });
 
 const names = (el: HTMLElement) => [...el.querySelectorAll('tbody tr')].map(row => row.querySelector('td.left:not(.stat-muted)')?.textContent?.replace(/\s+/g, ' ').trim());

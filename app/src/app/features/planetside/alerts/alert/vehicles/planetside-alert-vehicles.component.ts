@@ -11,4 +11,8 @@ export class PlanetsideAlertVehiclesComponent {
     private parentEventComponent = inject(PlanetsideCombatEventComponent);
 
     readonly vehicles = computed(() => this.parentEventComponent.event()?.log?.stats?.vehicles);
+
+    constructor() {
+        this.parentEventComponent.section.set('Vehicles');
+    }
 }
