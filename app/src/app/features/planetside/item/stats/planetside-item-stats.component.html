@@ -1,7 +1,7 @@
 ﻿@if (weaponData(); as weapon) {
   @let f = figures()!;
   <div class="overview flex flex-col gap-4">
-    <mat-card>
+    <mat-card class="stat-card">
       <mat-card-title>Specifications</mat-card-title>
       <mat-card-content>
         <div class="tiles">
@@ -75,7 +75,7 @@
     @if (f.hasDamage || f.hasAccuracy) {
       <div class="card-row flex flex-wrap gap-4">
         @if (f.hasDamage) {
-          <mat-card class="flex-1 basis-96">
+          <mat-card class="stat-card flex-1 basis-96">
             <mat-card-title>Damage by Range</mat-card-title>
             <mat-card-content>
               <item-damage-chart [weapon]="weapon"></item-damage-chart>
@@ -98,7 +98,7 @@
           </mat-card>
         }
         @if (f.hasAccuracy) {
-          <mat-card class="flex-1 basis-96">
+          <mat-card class="stat-card flex-1 basis-96">
             <mat-card-title>Accuracy</mat-card-title>
             <mat-card-content>
               <table class="accuracy">
