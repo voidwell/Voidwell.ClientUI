@@ -3,7 +3,7 @@
 } @else if (session(); as session) {
   <div class="flex flex-col gap-4">
     @let s = stats();
-    <mat-card>
+    <mat-card class="stat-card">
       <mat-card-content class="overview">
         <div class="hero">
           <div class="min-w-0">
@@ -50,7 +50,7 @@
     </mat-card>
 
     <div class="flex flex-wrap gap-4">
-      <mat-card class="flex-[2_1_420px]">
+      <mat-card class="stat-card flex-[2_1_420px]">
         <mat-card-title class="stat-title-row">
           <span>Activity</span>
           <span class="legend"><span class="dot kill"></span>Kills <span class="dot death"></span>Deaths</span>
@@ -72,7 +72,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card class="flex-[1_1_280px]">
+      <mat-card class="stat-card flex-[1_1_280px]">
         <mat-card-title class="stat-title-row">Top Weapons</mat-card-title>
         <mat-card-content>
           @for (usage of weapons(); track usage.weapon.id) {
@@ -96,7 +96,7 @@
       </mat-card>
     </div>
 
-    <mat-card>
+    <mat-card class="stat-card">
       <mat-card-title class="stat-title-row flex-wrap gap-3">
         <span>Event Log</span>
         <vw-chips label="Show" [options]="logFilterOptions()" [value]="logFilter()" (choose)="logFilter.set($event)"></vw-chips>

@@ -2,7 +2,7 @@
   @if (selected(); as row) {
     @let s = row.stats;
     <div class="flex flex-col gap-4">
-      <mat-card>
+      <mat-card class="stat-card">
         <mat-card-content class="overview">
           <div class="hero">
             <div class="flex min-w-0 items-center gap-3">
@@ -38,7 +38,7 @@
         </mat-card-content>
       </mat-card>
 
-      <mat-card>
+      <mat-card class="stat-card">
         <mat-card-title>Weapons</mat-card-title>
         <mat-card-content class="weapons">
           @if (weapons().length) {

@@ -10,7 +10,8 @@ describe('PlanetsidePlayerQuickStatsCardComponent', () => {
 
         fixture.componentRef.setInput('player', {
             lifetimeStats: { kills: 100, deaths: 50 },
-            times: { minutesPlayed: 600 }
+            times: { minutesPlayed: 600 },
+            infantryStats: { iviScore: 110 }
         } as CharacterDetails);
         fixture.detectChanges();
 
@@ -18,5 +19,7 @@ describe('PlanetsidePlayerQuickStatsCardComponent', () => {
         expect(text).toContain('Quick Stats');
         expect(text).toContain('2.00');
         expect(text).toContain('10h');
+        expect(text).toContain('IVI Score');
+        expect(text).toContain('110');
     });
 });

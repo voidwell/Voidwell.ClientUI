@@ -3,7 +3,7 @@
 } @else if (sessions(); as sessions) {
   <div class="flex flex-col gap-4">
     @let s = summary();
-    <mat-card>
+    <mat-card class="stat-card">
       <mat-card-content class="summary">
         <div class="stat">
           <span class="stat-value">{{ s.count }}</span>

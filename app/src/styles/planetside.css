@@ -66,10 +66,18 @@ mat-card.faction-head-tr {
 
 .stat-card mat-card-title {
     font-size: 14px;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+
+.stat-card .mat-mdc-card-title {
+    opacity: 0.65;
 }
 
 .stat-card mat-card-title small {
     margin-left: 8px;
+    letter-spacing: normal;
+    text-transform: none;
     color: #8a9ba1;
     font-size: 12px;
     font-weight: 400;
@@ -502,6 +510,7 @@ span.stat-name {
     width: 18px;
     height: 18px;
     font-size: 18px;
+    line-height: 18px;
 }
 
 .stat-search input {
@@ -758,4 +767,10 @@ span.stat-name {
     .stat-line-graph {
         height: 260px;
     }
+}
+
+/* A dialog that sits on a page of similar dark surfaces gets a light border to set it apart */
+
+.bordered-dialog .mat-mdc-dialog-surface {
+    border: 1px solid rgba(255, 255, 255, .12);
 }

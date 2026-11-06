@@ -29,7 +29,6 @@
                 <text class="triangle-node" text-anchor="middle" [attr.x]="node.x" [attr.y]="node.y + 5">{{ node.factionId | factionCode }}</text>
               }
             </svg>
-            <p class="stat-hint m-0">Kills each empire scored on the other. Each edge is split in proportion to the kills each way.</p>
           </div>
         } @else if (flow.pairs.length) {
           <div class="pairs flex flex-col gap-3.5">
@@ -49,7 +48,6 @@
                 </div>
               </div>
             }
-            <p class="stat-hint m-0">Kills each empire scored on the other.</p>
           </div>
         }
 
@@ -106,10 +104,6 @@
           </div>
         </div>
       </div>
-      <p class="stat-hint m-0 px-4 pt-3 pb-4">
-        Kills of a player's own faction count as team kills and are kept out of the totals; suicides are left out.
-        NSO are listed as their own faction (NS), since the empire they fought for isn't recorded.
-      </p>
     </mat-card-content>
   </mat-card>
 }

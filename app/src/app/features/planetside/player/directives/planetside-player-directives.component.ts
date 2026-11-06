@@ -115,6 +115,7 @@ export class PlanetsidePlayerDirectivesComponent {
     open(progress: DirectiveTreeProgress): void {
         this.dialog.open<DirectiveTreeDialog, DirectiveTreeDialogData>(DirectiveTreeDialog, {
             data: { progress },
+            panelClass: 'bordered-dialog',
             width: '760px',
             maxWidth: '95vw',
             autoFocus: 'dialog'

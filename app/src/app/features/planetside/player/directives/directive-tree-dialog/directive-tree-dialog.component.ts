@@ -41,9 +41,9 @@ export class DirectiveTreeDialog {
 
     readonly selectedCompleted = computed(() => completedObjectives(this.selected()));
 
-    /** Objectives of the selected tier, completed ones last so what is left to do comes first. */
+    /** Objectives of the selected tier, completed ones first, then those still in progress. */
     readonly objectives = computed(() => [...this.selected().directives]
-        .sort((a, b) => Number(isCompleted(a)) - Number(isCompleted(b)))
+        .sort((a, b) => Number(isCompleted(b)) - Number(isCompleted(a)))
         .map(directive => ({ directive, percent: objectivePercent(directive), completed: isCompleted(directive) })));
 
     /** One pip per objective the selected tier needs. */
