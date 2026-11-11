@@ -41,7 +41,7 @@
     "ngx-pipes": "^3.2.2",
     "postcss": "^8.5.32",
     "rxjs": "^7.8.2",
-    "tailwindcss": "^4.3.3",
+    "tailwindcss": "^4.3.5",
     "tinycolor2": "^1.6.0",
     "tslib": "^2.9.1",
     "zone.js": "^0.16.3"
