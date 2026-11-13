@@ -9,14 +9,20 @@
           @for (service of group.items; track service) {
             <li>
               <div class="service">
-                <span class="name">{{ service.name }}</span>
+                <div class="label">
+                  <span class="name">{{ service.name }}</span>
+                  @if (service.isLocked) {
+                    <span class="stat-pill lock" [attr.id]="'lock-' + key(service)" [title]="lockTitle(service)">Set by {{ service.lockedBy ?? 'configuration' }}</span>
+                  }
+                </div>
                 @if (service.details) {
                   <button type="button" class="stat-ghost" [attr.aria-expanded]="open().has(key(service))" (click)="toggleDetails(service)">Details</button>
                 }
                 <mat-slide-toggle
                   [checked]="service.isEnabled"
-                  [disabled]="service.isLoading"
+                  [disabled]="service.isLoading || service.isLocked"
                   [attr.aria-label]="service.name"
+                  [aria-describedby]="service.isLocked ? 'lock-' + key(service) : null"
                   (change)="onServiceUpdate(service, $event)"></mat-slide-toggle>
               </div>
               <vw-error-message [message]="service.errorMessage"></vw-error-message>

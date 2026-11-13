@@ -1,8 +1,9 @@
-﻿import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
+﻿import { HttpErrorResponse, HttpStatusCode } from '@angular/common/http';
+import { ChangeDetectorRef, Component, inject, signal } from '@angular/core';
 import { MatSlideToggleChange, MatSlideToggle } from '@angular/material/slide-toggle';
 import { Observable, throwError } from 'rxjs';
 import { catchError, finalize } from 'rxjs/operators';
-import { PlatformServiceState, ServiceState } from '@core/api/models/ps2/admin.model';
+import { PlatformServiceState, ServiceLockedError, ServiceState } from '@core/api/models/ps2/admin.model';
 import { ServicesRepository } from '@core/api/ps2/services.repository';
 import { getErrorMessage } from '@core/util/error-message';
 import { LoaderComponent } from '@shared/ui/loader/loader.component';
@@ -82,6 +83,11 @@ export class ServicesComponent {
             .pipe(catchError(error => {
                 service.errorMessage = getErrorMessage(error)
                 event.source.checked = !event.checked;
+                if (isLockedError(error)) {
+                    // Locked since the page loaded; show it so the switch stops being offered
+                    service.isLocked = true;
+                    service.lockedBy = error.error.lockedBy ?? null;
+                }
                 return throwError(() => error);
             }))
             .pipe(finalize(() => {
@@ -92,4 +98,13 @@ export class ServicesComponent {
                 Object.assign(service, serviceState);
             });
     }
+
+    lockTitle(service: ServiceRow): string {
+        return `Set by ${service.lockedBy ?? 'the server configuration'}, so it can't be changed here`;
+    }
+}
+
+function isLockedError(error: unknown): error is HttpErrorResponse & { error: ServiceLockedError } {
+    return error instanceof HttpErrorResponse && error.status === HttpStatusCode.Conflict
+        && typeof error.error === 'object' && error.error !== null && 'message' in error.error;
 }
