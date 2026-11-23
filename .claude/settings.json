@@ -1,4 +1,12 @@
 {
+  "extraKnownMarketplaces": {
+    "wakeops-plugins": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/wakeops/claude-plugins.git"
+      }
+    }
+  },
   "enabledPlugins": {
     "dev-skills@wakeops-plugins": true
   }
