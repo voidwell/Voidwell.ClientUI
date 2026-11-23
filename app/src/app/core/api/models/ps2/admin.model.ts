@@ -14,7 +14,17 @@ export interface CharacterLastSession {
 export interface ServiceState {
     isEnabled: boolean;
     name?: string;
+    /** True when appsettings or an environment variable sets the service's state, so it can't be changed at runtime. */
+    isLocked?: boolean;
+    /** The source that sets a locked service's state, such as `appsettings.json` or `environment variables`. */
+    lockedBy?: string | null;
     details?: unknown;
+}
+
+/** The body of the `409 Conflict` returned when enabling or disabling a locked service. */
+export interface ServiceLockedError {
+    message: string;
+    lockedBy?: string | null;
 }
 
 /** `GET ps2/store/updatelog` and `POST ps2/store/update/{storeName}` */

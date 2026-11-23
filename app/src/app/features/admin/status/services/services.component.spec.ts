@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
 import { of, throwError } from 'rxjs';
 import { PlatformServiceState } from '@core/api/models/ps2/admin.model';
@@ -5,7 +6,8 @@ import { ServicesRepository } from '@core/api/ps2/services.repository';
 import { ServicesComponent } from './services.component';
 
 const service = (platform: PlatformServiceState['platform'], name: string, isEnabled: boolean, details?: unknown): PlatformServiceState => ({ platform, name, isEnabled, details });
-const SERVICES = [
+// A fresh list for each test, because the component updates the rows it is given
+const services = () => [
     service('pc', 'Event stream', true, { connected: true }),
     service('pc', 'World monitor', false),
     service('ps4us', 'Event stream', true)
@@ -13,7 +15,7 @@ const SERVICES = [
 
 function create(repository: Partial<ServicesRepository> = {}) {
     TestBed.configureTestingModule({
-        providers: [{ provide: ServicesRepository, useValue: { getAllStatuses: () => of(SERVICES), enable: vi.fn(), disable: vi.fn(), ...repository } }]
+        providers: [{ provide: ServicesRepository, useValue: { getAllStatuses: () => of(services()), enable: vi.fn(), disable: vi.fn(), ...repository } }]
     });
     const fixture = TestBed.createComponent(ServicesComponent);
     fixture.detectChanges();
@@ -68,6 +70,38 @@ describe('ServicesComponent', () => {
 
         expect(enable).toHaveBeenCalledWith('World monitor', 'pc');
         expect(toggle.getAttribute('aria-checked')).toBe('true');
+    });
+
+    it('shows who locks a locked service and keeps its switch off limits', () => {
+        const locked = { ...service('pc', 'World monitor', false), isLocked: true, lockedBy: 'environment variables' };
+        const { el } = create({ getAllStatuses: () => of([service('pc', 'Event stream', true), locked]) });
+
+        const rows = [...sections(el)[0].querySelectorAll('li')];
+        expect(rows[0].querySelector('.lock')).toBeNull();
+        expect(rows[1].querySelector('.lock')?.textContent?.trim()).toBe('Set by environment variables');
+
+        const toggles = [...el.querySelectorAll('mat-slide-toggle button')] as HTMLButtonElement[];
+        expect(toggles[0].disabled).toBe(false);
+        expect(toggles[1].disabled).toBe(true);
+        expect(toggles[1].getAttribute('aria-describedby')).toBe(rows[1].querySelector('.lock')?.id);
+    });
+
+    it('marks a service locked when the server refuses the change', () => {
+        const enable = vi.fn(() => throwError(() => new HttpErrorResponse({
+            status: 409,
+            error: { message: "'World monitor' is locked because it is set by appsettings.json.", lockedBy: 'appsettings.json' }
+        })));
+        const { fixture, el } = create({ enable } as unknown as Partial<ServicesRepository>);
+
+        const toggle = sections(el)[0].querySelectorAll('mat-slide-toggle button')[1] as HTMLButtonElement;
+        toggle.click();
+        fixture.detectChanges();
+
+        const row = sections(el)[0].querySelectorAll('li')[1];
+        expect(toggle.getAttribute('aria-checked')).toBe('false');
+        expect(toggle.disabled).toBe(true);
+        expect(row.querySelector('.lock')?.textContent?.trim()).toBe('Set by appsettings.json');
+        expect(row.querySelector('vw-error-message')?.textContent).toContain('is locked because it is set by appsettings.json');
     });
 
     it('shows the error card when the services fail to load', () => {

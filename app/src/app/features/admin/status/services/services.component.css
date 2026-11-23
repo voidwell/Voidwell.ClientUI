@@ -24,11 +24,27 @@
     font-size: 14px;
 }
 
-.name {
+/* The name, with the lock pill beside it or, when space is short, beneath it */
+.label {
+    display: flex;
     flex: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 10px;
+    min-width: 0;
+}
+
+.name {
     color: #edeff0;
     min-width: 0;
     overflow-wrap: anywhere;
+}
+
+.lock {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .details {
