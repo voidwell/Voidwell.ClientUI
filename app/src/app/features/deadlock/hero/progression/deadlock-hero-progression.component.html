@@ -1,0 +1,50 @@
+<mat-card class="stat-card mb-4">
+  <div class="stat-toolbar"><mat-card-title>Over the match</mat-card-title></div>
+  <mat-card-content>
+    @if (curves.error()) {
+      <vw-error-card></vw-error-card>
+    } @else if (curves.value()) {
+      <vw-chips class="block mt-2 mb-3" label="Figure to chart" [options]="metricOptions" [value]="metric()" (choose)="metric.set($event)"></vw-chips>
+      <dl-line-chart [label]="metricLabel() + ' over the match'" [series]="series()" [xLabel]="minuteLabel" [yLabel]="valueLabel"></dl-line-chart>
+      <p class="stat-hint mt-3 mb-0">
+        Average {{ metricLabel().toLowerCase() }} of this hero's players so far, split by those who went on to win and to lose. The game records stats at 3, 6, 9, 12 and 15 minutes, then every 15 minutes; later points only cover matches that lasted that long, so they come from fewer, closer games.
+      </p>
+    } @else {
+      <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="stat-card mb-4">
+  <div class="stat-toolbar"><mat-card-title>Where souls come from</mat-card-title></div>
+  <mat-card-content>
+    @if (sources.error()) {
+      <p class="stat-hint m-0 mt-2">No data.</p>
+    } @else if (sources.value()) {
+      @if (sourceBars().length) {
+        <div class="flex flex-wrap gap-x-4 gap-y-1 mt-2 mb-3 stat-hint">
+          @for (item of legend(); track item.name) {
+            <span class="inline-flex items-center gap-1.5"><i class="stat-swatch" [style.background]="item.color"></i>{{ item.name }}</span>
+          }
+        </div>
+        @for (bar of sourceBars(); track bar.minute) {
+          <div class="flex items-center gap-3 mb-2">
+            <span class="stat-hint w-10 text-right tabular-nums">{{ bar.minute }}m</span>
+            <div class="stat-meter flex-1" role="img" [attr.aria-label]="'Sources of souls at ' + bar.minute + ' minutes'">
+              @for (segment of bar.segments; track segment.name) {
+                <div [style.width.%]="segment.share * 100" [style.background]="segment.color"
+                  [title]="segment.name + ': ' + (segment.souls | number: '1.0-0') + ' souls, ' + (segment.share | percent: '1.0-0')"></div>
+              }
+            </div>
+            <span class="stat-hint w-20 text-right tabular-nums" [title]="bar.samples + ' players'">{{ bar.netWorth | number: '1.0-0' }}</span>
+          </div>
+        }
+        <p class="stat-hint mt-3 mb-0">The share of a player's souls from each source, with the average souls so far at the right. Orb souls count towards the source that dropped them; Other is whatever the named sources do not explain, such as assists and breakables.</p>
+      } @else {
+        <p class="stat-hint m-0">Not enough players with stats in this period.</p>
+      }
+    } @else {
+      <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>

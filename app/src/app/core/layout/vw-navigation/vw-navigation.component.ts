@@ -108,6 +108,18 @@ const NAV_DATA: NavNode[] = [
                 children: []
             }
         ]
+    },
+    {
+        name: 'Deadlock',
+        url: '/deadlock',
+        icon: 'mdi-gamepad-variant',
+        exact: false,
+        children: [
+            { name: 'Overview', url: '/deadlock/overview', icon: null, exact: false, children: [] },
+            { name: 'Heroes', url: '/deadlock/heroes', icon: null, exact: false, children: [] },
+            { name: 'Items', url: '/deadlock/items', icon: null, exact: false, children: [] },
+            { name: 'Matches', url: '/deadlock/matches', icon: null, exact: false, children: [] }
+        ]
     }
 ];
 

@@ -1,0 +1,83 @@
+@if (overview.error()) {
+  <vw-error-card></vw-error-card>
+} @else if (overview.value(); as data) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar">
+      <mat-card-title>Overview</mat-card-title>
+      <span class="stat-hint">{{ data.query.from | date: 'mediumDate' : 'UTC' }} – {{ data.query.to | date: 'mediumDate' : 'UTC' }}</span>
+    </div>
+    <div class="stat-tiles">
+      <div class="stat-tile">
+        <div class="stat-label">Matches</div>
+        <div class="stat-tile-value">{{ data.totals.matches | number }}</div>
+        @if (data.modes.length > 1) {
+          <div class="stat-tile-sub">
+            @for (mode of data.modes; track mode.mode) {
+              {{ titleCase(mode.mode) }} {{ mode.share | percent: '1.0-0' }}{{ $last ? '' : ' · ' }}
+            }
+          </div>
+        }
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label">Average length</div>
+        <div class="stat-tile-value">{{ formatMinutes(data.totals.avgMatchMinutes) }}</div>
+        <div class="stat-tile-sub">Median {{ formatMinutes(data.duration.p50Minutes) }}</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label" title="How often the team that spawns on side 0 wins">Team 0 win rate</div>
+        <div class="stat-tile-value">{{ formatPercent(data.totals.team0WinRate) }}</div>
+        <div class="stat-tile-sub">{{ formatPercent(data.totals.team0WinRateLow) }} – {{ formatPercent(data.totals.team0WinRateHigh) }}</div>
+      </div>
+      <div class="stat-tile">
+        <div class="stat-label" title="The share of matches that recorded which heroes were banned">Ban coverage</div>
+        <div class="stat-tile-value">{{ formatPercent(data.totals.banCoverage) }}</div>
+        <div class="stat-tile-sub">Matches with bans recorded</div>
+      </div>
+    </div>
+  </mat-card>
+
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar"><mat-card-title>Matches per day</mat-card-title></div>
+    <mat-card-content>
+      @if (dailyBars().length) {
+        <dl-bar-chart label="Matches per day" [bars]="dailyBars()" [labelEvery]="dailyLabelEvery()"></dl-bar-chart>
+      } @else {
+        <p class="stat-hint m-0">No matches in this period.</p>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <div class="grid gap-4 mb-4 lg:grid-cols-2">
+    <mat-card class="stat-card">
+      <div class="stat-toolbar"><mat-card-title>Match length</mat-card-title></div>
+      <mat-card-content>
+        <dl-bar-chart label="Matches by length in minutes" [bars]="durationBars()" [labelEvery]="2"></dl-bar-chart>
+        <p class="stat-hint mt-3 mb-0">
+          Minutes. Half of matches end within {{ formatMinutes(data.duration.p50Minutes) }}; the shortest tenth end within {{ formatMinutes(data.duration.p10Minutes) }} and the longest tenth run past {{ formatMinutes(data.duration.p90Minutes) }}.
+        </p>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="stat-card">
+      <div class="stat-toolbar"><mat-card-title>Matches by hour</mat-card-title></div>
+      <mat-card-content>
+        <dl-bar-chart label="Matches started in each hour of the day" [bars]="hourBars()" [labelEvery]="3"></dl-bar-chart>
+        <p class="stat-hint mt-3 mb-0">Average matches started in each hour of the day, in UTC.</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  @if (ranks.value(); as rankData) {
+    @if (rankBars().length) {
+      <mat-card class="stat-card mb-4">
+        <div class="stat-toolbar"><mat-card-title>Rank spread</mat-card-title></div>
+        <mat-card-content>
+          <dl-bar-chart label="Matches by rank tier" [bars]="rankBars()"></dl-bar-chart>
+          <p class="stat-hint mt-3 mb-0">Matches by rank tier of the match, {{ rankData.matches | number }} in all. Hover a bar for the rank's name.</p>
+        </mat-card-content>
+      </mat-card>
+    }
+  }
+} @else {
+  <vw-loader variant="cards" [rows]="3" [loading]="true"></vw-loader>
+}

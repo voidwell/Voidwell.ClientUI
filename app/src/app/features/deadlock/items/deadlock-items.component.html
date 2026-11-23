@@ -1,0 +1,17 @@
+@if (items.error()) {
+  <vw-error-card></vw-error-card>
+} @else if (items.value(); as data) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar">
+      <mat-card-title>Items</mat-card-title>
+    </div>
+    <mat-card-content>
+      <p class="stat-hint m-0 mt-2 mb-3">
+        Items bought at least 100 times in {{ data.matches | number }} matches. An item bought late only shows up in long games, so a high win rate may owe to the game's length; open a row to compare win rates by when it was first bought.
+      </p>
+      <dl-items-table [items]="data.items"></dl-items-table>
+    </mat-card-content>
+  </mat-card>
+} @else {
+  <vw-loader variant="table" [rows]="10" [loading]="true"></vw-loader>
+}

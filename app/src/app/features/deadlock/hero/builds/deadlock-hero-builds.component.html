@@ -1,0 +1,195 @@
+<mat-card class="stat-card mb-4">
+  <div class="stat-toolbar"><mat-card-title>Item build</mat-card-title></div>
+  <mat-card-content>
+    @if (itemBuild.error()) {
+      <p class="stat-hint m-0 mt-2">The item build could not be worked out for this period.</p>
+    } @else if (itemBuild.value(); as build) {
+      <p class="stat-hint m-0 mt-2 mb-3">
+        The items that raised this hero's win rate most when bought together, in the order players usually buy them. Based on {{ build.games | number }} games of at most 60 days.
+        @if (stopReason()) { {{ stopReason() }} }
+      </p>
+      @if (build.items.length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table">
+            <thead>
+              <tr>
+                <th class="left" title="Order to buy in">#</th>
+                <th class="left pinned">Item</th>
+                <th class="left hs">Slot</th>
+                <th class="hs" title="Average time of the first purchase">Bought at</th>
+                <th class="hs" title="Share of the games that had the earlier items">Bought</th>
+                <th>Win rate</th>
+                <th title="Win rate with the item against without it, in percentage points">Lift</th>
+                <th class="hs" title="How much better it does with the earlier items than on its own, in percentage points">Synergy</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (step of build.items; track step.itemId) {
+                <tr>
+                  <td class="left stat-muted">{{ step.order }}</td>
+                  <td class="left pinned">
+                    @if (step.imageUrl) { <img class="dl-icon" [src]="step.imageUrl" alt=""> }
+                    {{ step.name ?? 'Item ' + step.itemId }}
+                    @if (step.core) { <span class="stat-pill ml-2" title="Bought in nearly every game, so it could not be compared">Core</span> }
+                  </td>
+                  <td class="left hs stat-muted">{{ titleCase(step.slot) || '—' }}</td>
+                  <td class="hs">{{ formatMinutes(step.buyTimeMinutes) }}</td>
+                  <td class="hs">{{ step.pickRate | percent: '1.0-0' }}</td>
+                  <td>{{ step.winRate | percent: '1.1-1' }}</td>
+                  @if (step.lift === null) { <td class="dash">—</td> } @else { <td [ngClass]="changeClass(step.lift)">{{ formatPoints(step.lift) }}</td> }
+                  @if (step.synergy === null) { <td class="hs dash">—</td> } @else { <td class="hs" [ngClass]="changeClass(step.synergy)">{{ formatPoints(step.synergy) }}</td> }
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+        @if (build.fullBuildWinRate !== null) {
+          <p class="stat-hint mt-3 mb-0">
+            Games with every item of the build: {{ build.fullBuildGames | number }}, won {{ formatPercent(build.fullBuildWinRate) }} of the time against {{ build.winRate | percent: '1.1-1' }} overall. Players who are ahead buy more, so part of that is not the build's doing.
+          </p>
+        }
+      } @else {
+        <p class="stat-hint m-0">No item clearly improved this hero's win rate.</p>
+      }
+    } @else {
+      <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>
+
+<div class="grid gap-4 mb-4 lg:grid-cols-2">
+  <mat-card class="stat-card">
+    <div class="stat-toolbar"><mat-card-title>Build split</mat-card-title></div>
+    <mat-card-content>
+      @if (shapes.error()) {
+        <p class="stat-hint m-0 mt-2">No data.</p>
+      } @else if (shapes.value()) {
+        <p class="stat-hint m-0 mt-2 mb-3">How many tier 3 and higher items went to weapon (W), spirit (S) and vitality (V).</p>
+        @if (shapeRows().length) {
+          <div class="stat-table-wrap">
+            <table class="stat-table">
+              <thead>
+                <tr>
+                  <th class="left pinned">Split</th>
+                  <th>Share</th>
+                  <th>Win rate</th>
+                  <th class="hs">Games</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (shape of shapeRows(); track shape.label) {
+                  <tr>
+                    <td class="left pinned">{{ shape.label }}</td>
+                    <td>{{ shape.share | percent: '1.0-0' }}<span class="dl-share"><i [style.width.%]="shape.share * 100"></i></span></td>
+                    <td [title]="'95% interval ' + formatPercent(shape.winRateLow) + ' – ' + formatPercent(shape.winRateHigh)">{{ shape.winRate | percent: '1.1-1' }}</td>
+                    <td class="hs">{{ shape.games | number }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="stat-hint m-0">No builds with enough games.</p>
+        }
+      } @else {
+        <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card">
+    <div class="stat-toolbar"><mat-card-title>Community builds</mat-card-title></div>
+    <mat-card-content>
+      @if (community.error()) {
+        <p class="stat-hint m-0 mt-2">No data.</p>
+      } @else if (community.value(); as data) {
+        <p class="stat-hint m-0 mt-2 mb-3">Builds players published and ran. {{ data.buildUseRate | percent: '1.0-0' }} of this hero's players ran one.</p>
+        @if (data.builds.length) {
+          <div class="stat-table-wrap">
+            <table class="stat-table">
+              <thead>
+                <tr>
+                  <th class="left pinned">Build</th>
+                  <th>Share</th>
+                  <th>Win rate</th>
+                  <th class="hs" title="Win rate against the hero's, in percentage points">Lift</th>
+                  <th class="hs">Games</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (build of data.builds; track build.buildId) {
+                  <tr>
+                    <td class="left pinned">#{{ build.buildId }}</td>
+                    <td>{{ build.share | percent: '1.1-1' }}</td>
+                    <td [title]="'95% interval ' + formatPercent(build.winRateLow) + ' – ' + formatPercent(build.winRateHigh)">{{ build.winRate | percent: '1.1-1' }}</td>
+                    <td class="hs" [ngClass]="changeClass(build.winRateLift)">{{ formatPoints(build.winRateLift) }}</td>
+                    <td class="hs">{{ build.games | number }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="stat-hint m-0">No community builds with enough games.</p>
+        }
+      } @else {
+        <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<mat-card class="stat-card mb-4">
+  <div class="stat-toolbar"><mat-card-title>Abilities</mat-card-title></div>
+  <mat-card-content>
+    @if (abilities.error()) {
+      <p class="stat-hint m-0 mt-2">No data.</p>
+    } @else if (abilities.value()) {
+      @if (suggestedOrder().length) {
+        <p class="stat-hint m-0 mt-2 mb-2">Level-up order players follow most often, one point at a time. It summarises what players do; no single player need have done exactly this.</p>
+        <ol class="flex flex-wrap gap-1.5 m-0 mb-4 p-0 list-none">
+          @for (step of suggestedOrder(); track step.place) {
+            <li class="stat-pill" [title]="'Point ' + step.place">{{ step.place }}. {{ step.name }}</li>
+          }
+        </ol>
+      }
+      @if (abilityRows().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table">
+            <thead>
+              <tr>
+                <th class="left pinned">Ability</th>
+                <th title="Share of games that learned it">Learned</th>
+                <th>Win rate</th>
+                <th class="hs" title="Share of games that put all four points into it">Maxed</th>
+                <th class="hs" title="Win rate of games that maxed it">Maxed win rate</th>
+                <th class="hs" title="Share of games that maxed it first">Maxed first</th>
+                <th class="hs" title="Average time of the first point">First point</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (ability of abilityRows(); track ability.abilityId) {
+                <tr>
+                  <td class="left pinned">
+                    @if (ability.imageUrl) { <img class="dl-icon" [src]="ability.imageUrl" alt=""> }
+                    {{ ability.name ?? 'Ability ' + ability.abilityId }}
+                  </td>
+                  <td>{{ ability.learnRate | percent: '1.0-0' }}</td>
+                  <td>{{ ability.winRate | percent: '1.1-1' }}</td>
+                  <td class="hs">{{ ability.maxedRate | percent: '1.0-0' }}</td>
+                  @if (ability.maxedWinRate === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ ability.maxedWinRate | percent: '1.1-1' }}</td> }
+                  <td class="hs">{{ ability.maxFirstRate | percent: '1.0-0' }}</td>
+                  <td class="hs">{{ formatMinutes(ability.avgFirstPointMinutes) }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="stat-hint m-0">No ability data for this period.</p>
+      }
+    } @else {
+      <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>

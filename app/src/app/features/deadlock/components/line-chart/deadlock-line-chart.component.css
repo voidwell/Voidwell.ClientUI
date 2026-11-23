@@ -1,0 +1,45 @@
+:host {
+    display: block;
+}
+
+.chart {
+    display: block;
+    width: 100%;
+}
+
+.grid {
+    stroke: rgba(138, 155, 161, .2);
+}
+
+.axis {
+    fill: #8a9ba1;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+}
+
+.line {
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2;
+}
+
+.dot {
+    stroke: #22313a;
+    stroke-width: 1.5;
+}
+
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    margin-top: 8px;
+    color: #8a9ba1;
+    font-size: 12px;
+}
+
+.legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}

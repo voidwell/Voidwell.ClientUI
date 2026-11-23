@@ -1,0 +1,84 @@
+@if (heroes.error()) {
+  <vw-error-card></vw-error-card>
+} @else if (heroes.value(); as data) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar">
+      <mat-card-title>Heroes</mat-card-title>
+      @if (searchable()) {
+        <label class="stat-search">
+          <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+          <input type="search" placeholder="Filter by name" aria-label="Filter heroes by name" [value]="search()" (input)="search.set($any($event.target).value)">
+        </label>
+      }
+    </div>
+    <mat-card-content>
+      <p class="stat-hint m-0 mt-2 mb-3">
+        {{ data.matches | number }} matches. Tiers rate heroes by win rate and need at least 100 games; the change is in percentage points against the period just before.
+      </p>
+      @if (rows().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="winRate" matSortDirection="desc" matSortDisableClear (matSortChange)="sort.set($event)">
+            <thead>
+              <tr>
+                <th class="left pinned" mat-sort-header="name" start="asc">Hero</th>
+                <th mat-sort-header="tier" start="desc" arrowPosition="before" title="Tier by win rate">Tier</th>
+                <th mat-sort-header="winRate" start="desc" arrowPosition="before">Win rate</th>
+                <th class="hs" mat-sort-header="winChange" start="desc" arrowPosition="before" title="Change in win rate in percentage points">Change</th>
+                <th class="hs" mat-sort-header="pickRate" start="desc" arrowPosition="before" title="Share of all player slots">Pick</th>
+                <th class="hs" mat-sort-header="banRate" start="desc" arrowPosition="before" title="Bans per match that recorded bans">Ban</th>
+                <th class="hs" mat-sort-header="kda" start="desc" arrowPosition="before" title="Kills plus assists per death">KDA</th>
+                <th class="hs" mat-sort-header="soulsPerMinute" start="desc" arrowPosition="before" title="Souls per minute">Souls/m</th>
+                <th class="hs" mat-sort-header="damagePerMinute" start="desc" arrowPosition="before" title="Player damage per minute">Dmg/m</th>
+                <th class="hs" mat-sort-header="healingPerMinute" start="desc" arrowPosition="before" title="Healing per minute">Heal/m</th>
+                <th class="hs" mat-sort-header="games" start="desc" arrowPosition="before">Games</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of rows(); track row.id) {
+                <tr>
+                  <td class="left pinned">
+                    <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(row.id)" [attr.aria-label]="'Show the details of ' + row.name" (click)="toggle(row.id)">
+                      <mat-icon fontSet="mdi" [fontIcon]="expanded().has(row.id) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+                    </button>
+                    @if (row.iconUrl) { <img class="dl-icon" [src]="row.iconUrl" alt=""> }
+                    <a class="stat-link" [routerLink]="['/deadlock/heroes', row.id]">{{ row.name }}</a>
+                  </td>
+                  @if (row.tier) { <td><span class="stat-pill dl-tier" [ngClass]="'tier-' + row.tier">{{ row.tier }}</span></td> } @else { <td class="dash">—</td> }
+                  <td [title]="'95% interval ' + formatPercent(row.winRateLow) + ' – ' + formatPercent(row.winRateHigh)">{{ row.winRate | percent: '1.1-1' }}</td>
+                  <td class="hs" [ngClass]="changeClass(row.winChange)">{{ formatPoints(row.winChange) }}</td>
+                  <td class="hs">{{ row.pickRate | percent: '1.1-1' }}</td>
+                  @if (row.banRate === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ row.banRate | percent: '1.1-1' }}</td> }
+                  <td class="hs">{{ row.kda | number: '1.2-2' }}</td>
+                  <td class="hs">{{ row.soulsPerMinute | number: '1.0-0' }}</td>
+                  @if (row.damagePerMinute === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ row.damagePerMinute | number: '1.0-0' }}</td> }
+                  @if (row.healingPerMinute === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ row.healingPerMinute | number: '1.0-0' }}</td> }
+                  <td class="hs">{{ row.games | number }}</td>
+                </tr>
+                @if (expanded().has(row.id)) {
+                  <tr class="stat-detail">
+                    <td colspan="3">
+                      <ul>
+                        <li><span>Change</span><span [ngClass]="changeClass(row.winChange)">{{ formatPoints(row.winChange) }}</span></li>
+                        <li><span>Pick rate</span><span>{{ row.pickRate | percent: '1.1-1' }}</span></li>
+                        <li><span>Ban rate</span><span>{{ row.banRate === null ? '—' : (row.banRate | percent: '1.1-1') }}</span></li>
+                        <li><span>KDA</span><span>{{ row.kda | number: '1.2-2' }}</span></li>
+                        <li><span>Souls per minute</span><span>{{ row.soulsPerMinute | number: '1.0-0' }}</span></li>
+                        <li><span>Damage per minute</span><span>{{ row.damagePerMinute === null ? '—' : (row.damagePerMinute | number: '1.0-0') }}</span></li>
+                        <li><span>Healing per minute</span><span>{{ row.healingPerMinute === null ? '—' : (row.healingPerMinute | number: '1.0-0') }}</span></li>
+                        <li><span>Games</span><span>{{ row.games | number }}</span></li>
+                      </ul>
+                    </td>
+                  </tr>
+                }
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="stat-hint m-0">{{ data.rows.length ? 'No heroes match.' : 'No matches in this period.' }}</p>
+      }
+    </mat-card-content>
+  </mat-card>
+} @else {
+  <vw-loader variant="table" [rows]="10" [loading]="true"></vw-loader>
+}

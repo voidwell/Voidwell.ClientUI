@@ -1,0 +1,8 @@
+<div class="bars" role="img" [attr.aria-label]="label()">
+  @for (bar of scaled(); track $index) {
+    <div class="bar" [title]="bar.title ?? bar.label + ': ' + bar.value">
+      <div class="fill" [style.height.%]="bar.height"></div>
+      <span class="caption">{{ bar.captioned ? bar.label : '' }}</span>
+    </div>
+  }
+</div>

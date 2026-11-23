@@ -1,0 +1,175 @@
+<mat-card class="stat-card mb-4">
+  <div class="stat-toolbar">
+    <mat-card-title>Souls lead</mat-card-title>
+    @if (lead.value()) {
+      <vw-chips label="Time of the match" [options]="leadOptions()" [value]="leadView()" (choose)="leadView.set($event)"></vw-chips>
+    }
+  </div>
+  <mat-card-content>
+    @if (lead.error()) {
+      <vw-error-card></vw-error-card>
+    } @else if (lead.value(); as data) {
+      <p class="stat-hint m-0 mt-2 mb-3">How often the team ahead on souls goes on to win. What is left is the comeback rate. A match rarely turns once a team is far ahead.</p>
+      @if (leadView() === 'curve') {
+        @if (data.minutes.length) {
+          <dl-line-chart label="Win rate of the team ahead and comeback rate by time of the match" [series]="leadSeries()" [xLabel]="minuteLabel" [yLabel]="rateLabel"></dl-line-chart>
+        } @else {
+          <p class="stat-hint m-0">No matches in this period.</p>
+        }
+      } @else {
+        <div class="stat-table-wrap">
+          <table class="stat-table">
+            <thead>
+              <tr>
+                <th class="left pinned">Lead in souls</th>
+                <th>Team ahead wins</th>
+                <th class="hs">Comeback</th>
+                <th>Matches</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (bucket of leadBuckets(); track bucket.leadFrom) {
+                <tr>
+                  <td class="left pinned">{{ leadRange(bucket.leadFrom, bucket.leadTo) }}</td>
+                  <td [title]="'95% interval ' + formatPercent(bucket.leaderWinRateLow) + ' – ' + formatPercent(bucket.leaderWinRateHigh)">{{ bucket.leaderWinRate | percent: '1.1-1' }}</td>
+                  <td class="hs">{{ bucket.comebackRate | percent: '1.1-1' }}</td>
+                  <td>{{ bucket.games | number }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      }
+    } @else {
+      <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="stat-card mb-4">
+  <div class="stat-toolbar"><mat-card-title>Team compositions</mat-card-title></div>
+  <mat-card-content>
+    @if (compositions.error()) {
+      <vw-error-card></vw-error-card>
+    } @else if (compositions.value(); as data) {
+      <p class="stat-hint m-0 mt-2 mb-3">
+        How teams do by the number of brawlers, assassins, marksmen, mystics and supports they field, in that order. Heroes with no archetype in the game data count as supports. {{ data.teams | number }} teams.
+      </p>
+      @if (compositionRows().length) {
+        <div class="stat-table-wrap">
+          <table class="stat-table" matSort matSortActive="games" matSortDirection="desc" matSortDisableClear (matSortChange)="compositionSort.set($event)">
+            <thead>
+              <tr>
+                <th class="left pinned" title="Brawlers / assassins / marksmen / mystics / supports">Composition</th>
+                <th mat-sort-header="share" start="desc" arrowPosition="before">Share</th>
+                <th mat-sort-header="winRate" start="desc" arrowPosition="before">Win rate</th>
+                <th class="hs" mat-sort-header="games" start="desc" arrowPosition="before">Teams</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (row of compositionRows(); track row.label) {
+                <tr>
+                  <td class="left pinned">{{ composition(row) }}</td>
+                  <td>{{ row.share | percent: '1.1-1' }}</td>
+                  <td [title]="'95% interval ' + formatPercent(row.winRateLow) + ' – ' + formatPercent(row.winRateHigh)">{{ row.winRate | percent: '1.1-1' }}</td>
+                  <td class="hs">{{ row.games | number }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      } @else {
+        <p class="stat-hint m-0">No compositions with enough teams in this period.</p>
+      }
+    } @else {
+      <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+    }
+  </mat-card-content>
+</mat-card>
+
+<div class="grid gap-4 mb-4">
+  <mat-card class="stat-card">
+    <div class="stat-toolbar"><mat-card-title>Objectives</mat-card-title></div>
+    <mat-card-content>
+      @if (objectives.error()) {
+        <p class="stat-hint m-0 mt-2">No data.</p>
+      } @else if (objectives.value(); as data) {
+        <p class="stat-hint m-0 mt-2 mb-3">The game records which objectives stood at the end of a match, not when they fell. Objectives that were never destroyed are left out.</p>
+        @if (data.objectives.length) {
+          <div class="stat-table-wrap">
+            <table class="stat-table">
+              <thead>
+                <tr>
+                  <th class="left pinned">Objective</th>
+                  <th title="Share of teams that had it destroyed at the end">Destroyed</th>
+                  <th title="Win rate of teams that had it destroyed">Win if lost</th>
+                  <th class="hs" title="Win rate of teams that still had it standing">Win if held</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (objective of data.objectives; track objective.objective) {
+                  <tr>
+                    <td class="left pinned">{{ objective.name }}@if (objective.lane !== null) { <span class="stat-muted"> · lane {{ objective.lane }}</span> }</td>
+                    <td>{{ objective.lostRate | percent: '1.0-0' }}</td>
+                    <td [title]="'95% interval ' + formatPercent(objective.winRateWhenLostLow) + ' – ' + formatPercent(objective.winRateWhenLostHigh)">{{ objective.winRateWhenLost | percent: '1.1-1' }}</td>
+                    <td class="hs" [title]="'95% interval ' + formatPercent(objective.winRateWhenHeldLow) + ' – ' + formatPercent(objective.winRateWhenHeldHigh)">{{ objective.winRateWhenHeld | percent: '1.1-1' }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        } @else {
+          <p class="stat-hint m-0">No objectives were destroyed in this period.</p>
+        }
+      } @else {
+        <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+      }
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="stat-card">
+    <div class="stat-toolbar"><mat-card-title>Leavers</mat-card-title></div>
+    <mat-card-content>
+      @if (leavers.error()) {
+        <p class="stat-hint m-0 mt-2">No data.</p>
+      } @else if (leavers.value(); as data) {
+        <p class="stat-hint m-0 mt-2 mb-3">A leaver is a player with a recorded abandon time. Three or more are grouped together.</p>
+        <div class="stat-tiles !px-0">
+          <div class="stat-tile">
+            <div class="stat-label">Players who left</div>
+            <div class="stat-tile-value">{{ data.leaverRate | percent: '1.1-1' }}</div>
+            <div class="stat-tile-sub">{{ data.leavers | number }} of {{ data.players | number }}</div>
+          </div>
+          <div class="stat-tile">
+            <div class="stat-label">Matches with a leaver</div>
+            <div class="stat-tile-value">{{ data.matchesWithLeaverRate | percent: '1.1-1' }}</div>
+          </div>
+        </div>
+        @if (data.scenarios.length) {
+          <div class="stat-table-wrap">
+            <table class="stat-table">
+              <thead>
+                <tr>
+                  <th class="left pinned" title="Leavers on the team, then on the enemy team">Leavers</th>
+                  <th>Win rate</th>
+                  <th class="hs">Teams</th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (scenario of data.scenarios; track scenario.label) {
+                  <tr>
+                    <td class="left pinned">{{ scenario.label }}</td>
+                    <td [title]="'95% interval ' + formatPercent(scenario.winRateLow) + ' – ' + formatPercent(scenario.winRateHigh)">{{ scenario.winRate | percent: '1.1-1' }}</td>
+                    <td class="hs">{{ scenario.games | number }}</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        }
+      } @else {
+        <vw-loader variant="rows" [rows]="5" [loading]="true"></vw-loader>
+      }
+    </mat-card-content>
+  </mat-card>
+</div>

@@ -1,0 +1,69 @@
+@if (context.detail.error()) {
+  <vw-breadcrumbs [crumbs]="[{ label: 'Heroes', link: '/deadlock/heroes' }, { label: 'Hero' }]"></vw-breadcrumbs>
+  <vw-error-card message="This hero has no matches in this period."></vw-error-card>
+} @else {
+  <vw-breadcrumbs [crumbs]="breadcrumbs()"></vw-breadcrumbs>
+  @if (context.detail.value(); as detail) {
+    @let hero = detail.hero;
+    @let info = context.info.value();
+    <mat-card class="stat-card mb-4">
+      <div class="dl-head">
+        @if (info?.imageUrl || hero.imageUrl) {
+          <img class="dl-head-portrait" [src]="info?.imageUrl ?? hero.imageUrl" alt="">
+        }
+        <div class="dl-head-body">
+          <h1 class="stat-head-title">{{ hero.name ?? 'Hero ' + hero.heroId }}</h1>
+          <div class="dl-head-meta">
+            @if (info?.heroType) { <span class="stat-pill">{{ titleCase(info?.heroType) }}</span> }
+            @if (info && !info.isPlayable) { <span class="stat-pill">Not playable</span> }
+          </div>
+        </div>
+        <div class="text-right">
+          <div class="stat-hero-value">{{ hero.winRate | percent: '1.1-1' }}</div>
+          <span class="stat-label" [title]="'95% interval ' + formatPercent(hero.winRateLow) + ' – ' + formatPercent(hero.winRateHigh)">Win rate</span>
+        </div>
+      </div>
+      <div class="stat-tiles">
+        <div class="stat-tile">
+          <div class="stat-label">Games</div>
+          <div class="stat-tile-value">{{ hero.games | number }}</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label" title="Share of all player slots">Pick rate</div>
+          <div class="stat-tile-value">{{ hero.pickRate | percent: '1.1-1' }}</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label" title="Bans per match that recorded bans">Ban rate</div>
+          <div class="stat-tile-value">{{ hero.banRate === null ? '—' : (hero.banRate | percent: '1.1-1') }}</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label" title="Kills plus assists per death">KDA</div>
+          <div class="stat-tile-value">{{ hero.kda | number: '1.2-2' }}</div>
+          <div class="stat-tile-sub">{{ hero.avgKills | number: '1.1-1' }} / {{ hero.avgDeaths | number: '1.1-1' }} / {{ hero.avgAssists | number: '1.1-1' }}</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Souls per minute</div>
+          <div class="stat-tile-value">{{ hero.soulsPerMinute | number: '1.0-0' }}</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Damage per minute</div>
+          <div class="stat-tile-value">{{ hero.damagePerMinute === null ? '—' : (hero.damagePerMinute | number: '1.0-0') }}</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Healing per minute</div>
+          <div class="stat-tile-value">{{ hero.healingPerMinute === null ? '—' : (hero.healingPerMinute | number: '1.0-0') }}</div>
+        </div>
+        <div class="stat-tile">
+          <div class="stat-label">Accuracy</div>
+          <div class="stat-tile-value">{{ hero.accuracy === null ? '—' : (hero.accuracy | percent: '1.0-0') }}</div>
+        </div>
+      </div>
+    </mat-card>
+  } @else {
+    <vw-loader [loading]="true"></vw-loader>
+  }
+  <vw-tab-nav-sub-bar [links]="navLinks"></vw-tab-nav-sub-bar>
+  <div class="pt-4">
+    <router-outlet></router-outlet>
+  </div>
+}

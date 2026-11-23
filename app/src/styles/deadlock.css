@@ -1,0 +1,93 @@
+/* Deadlock pages. They build on the shared stat-* classes in planetside.css and add only what is particular to them. */
+
+/* A hero's or item's small picture beside its name; it only helps to tell rows apart, so it stays small */
+.dl-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    border-radius: 4px;
+    object-fit: cover;
+    vertical-align: middle;
+}
+
+/* Better and worse than expected */
+.dl-up {
+    color: #5fcf8a;
+}
+
+.dl-down {
+    color: #e57373;
+}
+
+/* Tier letters of the hero tier list: the figure that matters on its row */
+.dl-tier {
+    min-width: 24px;
+    justify-content: center;
+    text-align: center;
+}
+
+.tier-S { color: #ffd166; }
+.tier-A { color: #5fcf8a; }
+.tier-B { color: #6cb6ff; }
+.tier-C { color: #b4bfc3; }
+.tier-D { color: #e57373; }
+
+/* A hero's header card: the portrait beside the name and the headline win rate */
+.dl-head {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+}
+
+.dl-head-portrait {
+    width: 72px;
+    height: 72px;
+    flex: none;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.dl-head-body {
+    min-width: 0;
+    flex: 1;
+}
+
+.dl-head-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+}
+
+/* A thin bar inside a table cell showing a share, capped at full */
+.dl-share {
+    display: inline-block;
+    width: 64px;
+    height: 6px;
+    margin-left: 8px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .08);
+    vertical-align: middle;
+}
+
+.dl-share > i {
+    display: block;
+    height: 100%;
+    background: #6cb6ff;
+}
+
+.dl-sub-heading {
+    margin: 16px 0 4px;
+    color: #8a9ba1;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+}
+
+.dl-head .stat-head-title {
+    color: #fff;
+}
