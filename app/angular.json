@@ -34,7 +34,8 @@
               "src/styles/tailwind.css",
               "src/styles/theme.scss",
               "src/styles/app.scss",
-              "src/styles/planetside.css"
+              "src/styles/planetside.css",
+              "src/styles/deadlock.css"
             ]
           },
           "configurations": {

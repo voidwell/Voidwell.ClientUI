@@ -5,3 +5,6 @@ export const PS2_API_URL = `${apiRoot}/ps2`;
 
 /** Base URL of the Voidwell.Platform API (all routes start with `platform`). */
 export const PLATFORM_API_URL = `${apiRoot}/platform`;
+
+/** Base URL of the Voidwell.Deadlock API (all routes start with `deadlock`). */
+export const DEADLOCK_API_URL = `${apiRoot}/deadlock`;

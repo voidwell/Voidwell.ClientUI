@@ -1,0 +1,10 @@
+<div class="content-container">
+  <div class="stat-range-bar pt-4">
+    <vw-chips label="Match mode" [options]="modeOptions" [value]="filter.mode()" (choose)="filter.mode.set($event)"></vw-chips>
+    <vw-chips label="Period" [options]="periodOptions" [value]="filter.period()" (choose)="filter.period.set($event)"></vw-chips>
+    @if (filter.mode() === 'ranked') {
+      <vw-chips label="Rank" [options]="bracketOptions()" [value]="filter.bracket()" (choose)="filter.bracket.set($event)"></vw-chips>
+    }
+  </div>
+  <router-outlet></router-outlet>
+</div>

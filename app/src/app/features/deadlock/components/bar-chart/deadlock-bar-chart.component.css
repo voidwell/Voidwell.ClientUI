@@ -1,0 +1,39 @@
+:host {
+    display: block;
+}
+
+.bars {
+    display: flex;
+    align-items: stretch;
+    gap: 3px;
+    height: 150px;
+}
+
+.bar {
+    display: flex;
+    flex: 1 1 0;
+    min-width: 0;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.fill {
+    border-radius: 2px 2px 0 0;
+    background: #6cb6ff;
+    opacity: .75;
+}
+
+.bar:hover .fill {
+    opacity: 1;
+}
+
+.caption {
+    height: 18px;
+    overflow: visible;
+    padding-top: 4px;
+    color: #8a9ba1;
+    font-size: 11px;
+    line-height: 14px;
+    text-align: center;
+    white-space: nowrap;
+}

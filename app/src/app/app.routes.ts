@@ -6,7 +6,8 @@ export const routes: Routes = [
     { path: '', redirectTo: 'blog', pathMatch: 'full' },
     { path: 'blog', loadChildren: () => import('@features/blog/blog.routes').then(m => m.BLOG_ROUTES) },
     { path: 'admin', loadChildren: () => import('@features/admin/admin.routes').then(m => m.ADMIN_ROUTES) },
-    { path: 'ps2', loadChildren: () => import('@features/planetside/planetside.routes').then(m => m.PLANETSIDE_ROUTES) }
+    { path: 'ps2', loadChildren: () => import('@features/planetside/planetside.routes').then(m => m.PLANETSIDE_ROUTES) },
+    { path: 'deadlock', loadChildren: () => import('@features/deadlock/deadlock.routes').then(m => m.DEADLOCK_ROUTES) }
 ];
 
 export const appRouterProviders = [

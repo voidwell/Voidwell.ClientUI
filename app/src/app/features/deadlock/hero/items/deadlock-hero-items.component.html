@@ -1,0 +1,13 @@
+@if (items.error()) {
+  <vw-error-card></vw-error-card>
+} @else if (items.value(); as data) {
+  <mat-card class="stat-card mb-4">
+    <div class="stat-toolbar"><mat-card-title>Items bought</mat-card-title></div>
+    <mat-card-content>
+      <p class="stat-hint m-0 mt-2 mb-3">Items bought at least 30 times by this hero's players. Lift is the win rate of its buyers against the hero's own win rate; read it with when the item is first bought, since late items only turn up in long games.</p>
+      <dl-items-table [items]="data.items" liftBaseline="the hero's own win rate"></dl-items-table>
+    </mat-card-content>
+  </mat-card>
+} @else {
+  <vw-loader variant="table" [rows]="8" [loading]="true"></vw-loader>
+}

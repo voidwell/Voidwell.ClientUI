@@ -1,0 +1,78 @@
+<div class="stat-range-bar px-4 pt-1">
+  <vw-chips label="Filter items by slot" [options]="slotOptions" [value]="slot()" (choose)="onSlot($event)"></vw-chips>
+  <label class="stat-search">
+    <mat-icon fontSet="mdi" fontIcon="mdi-magnify"></mat-icon>
+    <input type="search" placeholder="Filter by name" aria-label="Filter items by name" [value]="search()" (input)="onSearch($any($event.target).value)">
+  </label>
+</div>
+@if (pageRows().length) {
+  <div class="stat-table-wrap">
+    <table class="stat-table" matSort matSortActive="games" matSortDirection="desc" matSortDisableClear (matSortChange)="onSort($event)">
+      <thead>
+        <tr>
+          <th class="left pinned" mat-sort-header="name" start="asc">Item</th>
+          <th class="left hs" mat-sort-header="slotType" start="asc">Slot</th>
+          <th class="hs" mat-sort-header="tier" start="desc" arrowPosition="before" title="Shop tier">Tier</th>
+          <th class="hs" mat-sort-header="cost" start="desc" arrowPosition="before" title="Price in souls">Cost</th>
+          <th mat-sort-header="buyRate" start="desc" arrowPosition="before" title="Share of players who bought it">Bought</th>
+          <th mat-sort-header="winRate" start="desc" arrowPosition="before">Win rate</th>
+          <th mat-sort-header="winRateLift" start="desc" arrowPosition="before" [title]="'Win rate against ' + liftBaseline() + ', in percentage points. Late items are only bought in long games, so compare with when they are bought.'">Lift</th>
+          <th class="hs" mat-sort-header="keptRate" start="desc" arrowPosition="before" title="Share of buyers who still had it at the end">Kept</th>
+          <th class="hs" mat-sort-header="avgFirstBuyMinutes" start="asc" arrowPosition="before" title="Average time of the first purchase">First bought</th>
+          <th class="hs" mat-sort-header="games" start="desc" arrowPosition="before" title="Players who bought it">Games</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of pageRows(); track item.itemId) {
+          <tr>
+            <td class="left pinned">
+              <button type="button" class="stat-expand" [attr.aria-expanded]="expanded().has(item.itemId)" [attr.aria-label]="'Show the details of ' + item.name" (click)="toggle(item.itemId)">
+                <mat-icon fontSet="mdi" [fontIcon]="expanded().has(item.itemId) ? 'mdi-chevron-down' : 'mdi-chevron-right'"></mat-icon>
+              </button>
+              @if (item.imageUrl) { <img class="dl-icon" [src]="item.imageUrl" alt=""> }
+              {{ item.name ?? 'Item ' + item.itemId }}
+            </td>
+            <td class="left hs stat-muted">{{ titleCase(item.slotType) || '—' }}</td>
+            @if (item.tier === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ item.tier }}</td> }
+            @if (item.cost === null) { <td class="hs dash">—</td> } @else { <td class="hs">{{ item.cost | number }}</td> }
+            <td>{{ item.buyRate | percent: '1.1-1' }}</td>
+            <td [title]="'95% interval ' + formatPercent(item.winRateLow) + ' – ' + formatPercent(item.winRateHigh)">{{ item.winRate | percent: '1.1-1' }}</td>
+            <td [ngClass]="changeClass(item.winRateLift)">{{ formatPoints(item.winRateLift) }}</td>
+            <td class="hs">{{ item.keptRate | percent: '1.0-0' }}</td>
+            <td class="hs">{{ formatMinutes(item.avgFirstBuyMinutes) }}</td>
+            <td class="hs">{{ item.games | number }}</td>
+          </tr>
+          @if (expanded().has(item.itemId)) {
+            <tr class="stat-detail">
+              <td colspan="4">
+                <ul>
+                  <li><span>Slot</span><span>{{ titleCase(item.slotType) || '—' }}</span></li>
+                  <li><span>Tier</span><span>{{ item.tier ?? '—' }}</span></li>
+                  <li><span>Cost</span><span>{{ item.cost === null ? '—' : (item.cost | number) }}</span></li>
+                  <li><span>Kept</span><span>{{ item.keptRate | percent: '1.0-0' }}</span></li>
+                  <li><span>Win rate when kept</span><span>{{ formatPercent(item.keptWinRate) }}</span></li>
+                  <li><span>First bought</span><span>{{ formatMinutes(item.avgFirstBuyMinutes) }}</span></li>
+                  <li><span>Games</span><span>{{ item.games | number }}</span></li>
+                  <li><span>Win rate by first purchase</span><span>{{ timing(item) }}</span></li>
+                </ul>
+              </td>
+            </tr>
+          }
+        }
+      </tbody>
+    </table>
+  </div>
+  @if (count() > pageSize) {
+    <div class="stat-pager">
+      <span>Items <strong>{{ firstRow() | number }}–{{ lastRow() | number }}</strong> of {{ count() | number }}</span>
+      <button type="button" class="stat-page-button" aria-label="Previous page" [disabled]="page() === 0" (click)="page.set(page() - 1)">
+        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-left"></mat-icon>
+      </button>
+      <button type="button" class="stat-page-button" aria-label="Next page" [disabled]="!hasNext()" (click)="page.set(page() + 1)">
+        <mat-icon fontSet="mdi" fontIcon="mdi-chevron-right"></mat-icon>
+      </button>
+    </div>
+  }
+} @else {
+  <p class="stat-hint m-0 px-4 py-3">{{ items().length ? 'No items match.' : 'No items bought in this period.' }}</p>
+}

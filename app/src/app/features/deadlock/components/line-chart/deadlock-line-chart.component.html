@@ -1,0 +1,22 @@
+<svg class="chart" [attr.viewBox]="'0 0 ' + width() + ' ' + height" [attr.height]="height" role="img" [attr.aria-label]="label()">
+  @for (line of grid(); track $index) {
+    <line class="grid" [attr.x1]="padLeft" [attr.x2]="right()" [attr.y1]="line.y" [attr.y2]="line.y"></line>
+    <text class="axis" [attr.x]="padLeft - 6" [attr.y]="line.y + 4" text-anchor="end">{{ line.label }}</text>
+  }
+  @for (tick of ticks(); track $index) {
+    <text class="axis" [attr.x]="tick.x" [attr.y]="height - 8" text-anchor="middle">{{ tick.label }}</text>
+  }
+  @for (line of lines(); track line.label) {
+    <path class="line" [attr.d]="line.path" [attr.stroke]="line.color"></path>
+    @for (dot of line.dots; track $index) {
+      <circle class="dot" [attr.cx]="dot.cx" [attr.cy]="dot.cy" r="3.5" [attr.fill]="line.color"><title>{{ dot.title }}</title></circle>
+    }
+  }
+</svg>
+@if (series().length > 1) {
+  <div class="legend">
+    @for (line of lines(); track line.label) {
+      <span><i class="stat-swatch" [style.background]="line.color"></i>{{ line.label }}</span>
+    }
+  </div>
+}

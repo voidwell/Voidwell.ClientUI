@@ -1,0 +1,58 @@
+@if (detail.value(); as data) {
+  <div class="grid gap-4 mb-4 lg:grid-cols-2">
+    <mat-card class="stat-card">
+      <div class="stat-toolbar"><mat-card-title>Win rate by day</mat-card-title></div>
+      <mat-card-content>
+        @if (data.daily.length > 1) {
+          <dl-line-chart label="Win rate by day" [series]="winSeries()" [fitY]="true" [xLabel]="dayLabel" [yLabel]="rateLabel"></dl-line-chart>
+        } @else {
+          <p class="stat-hint m-0">Not enough days to show a trend.</p>
+        }
+      </mat-card-content>
+    </mat-card>
+    <mat-card class="stat-card">
+      <div class="stat-toolbar"><mat-card-title>Pick rate by day</mat-card-title></div>
+      <mat-card-content>
+        @if (data.daily.length > 1) {
+          <dl-line-chart label="Pick rate by day" [series]="pickSeries()" [fitY]="true" [xLabel]="dayLabel" [yLabel]="rateLabel"></dl-line-chart>
+        } @else {
+          <p class="stat-hint m-0">Not enough days to show a trend.</p>
+        }
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  @if (tiers().length) {
+    <mat-card class="stat-card mb-4">
+      <div class="stat-toolbar"><mat-card-title>Results by rank</mat-card-title></div>
+      <mat-card-content>
+        <div class="stat-table-wrap">
+          <table class="stat-table">
+            <thead>
+              <tr>
+                <th class="left pinned">Rank</th>
+                <th>Win rate</th>
+                <th class="hs" title="95% interval of the win rate">Interval</th>
+                <th class="hs" title="Share of all player slots in the rank">Pick</th>
+                <th>Games</th>
+              </tr>
+            </thead>
+            <tbody>
+              @for (tier of tiers(); track tier.tier) {
+                <tr>
+                  <td class="left pinned">{{ tier.tierName }}</td>
+                  <td>{{ tier.winRate | percent: '1.1-1' }}</td>
+                  <td class="hs stat-muted">{{ formatPercent(tier.winRateLow) }} – {{ formatPercent(tier.winRateHigh) }}</td>
+                  <td class="hs">{{ tier.pickRate | percent: '1.1-1' }}</td>
+                  <td>{{ tier.games | number }}</td>
+                </tr>
+              }
+            </tbody>
+          </table>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  }
+} @else if (detail.error()) {
+  <p class="stat-hint">Nothing to show.</p>
+}
